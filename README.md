@@ -10,6 +10,6 @@
 - `mvn jetty:run`
   - jetty runs by default on port 8080
   - if that's in use you can use instead:
-  - `mvn -Djetty.port=` `<anotherPort>` ` jetty:run`
+    `mvn -Djetty.port=` `<anotherPort>` ` jetty:run`
 
 Check localhost:<portUsed> to see if the application is running!
