@@ -12,4 +12,4 @@
   - if that's in use you can use instead:
     `mvn -Djetty.port=` `<anotherPort>` ` jetty:run`
 
-Check localhost:<portUsed> to see if the application is running!
+Check `localhost:<portUsed>` to see if the application is running!
