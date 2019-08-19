@@ -1,3 +1,6 @@
+# Folders where generated class are found
+*/target/*
+
 # Compiled class file
 *.class
 
