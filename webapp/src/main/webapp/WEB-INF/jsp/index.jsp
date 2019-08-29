@@ -1,18 +1,33 @@
 
 
-
-
-
 <html>
 <head>
+
+<%--    Slidebar--%>
 <link href="/resources/CSS/slideBar.css" rel="stylesheet">
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="${pageContext.request.contextPath}/WEB-INF/bootstrap/bootstrap.min.js"></script>
-    <script src="${pageContext.request.contextPath}/WEB-INF/bootstrap/jquery-1.11.1.min.js"></script>
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="${pageContext.request.contextPath}/WEB-INF/bootstrap/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/WEB-INF/bootstrap/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="/resources/js/slideBar.js"></script>
+
+<%--NavBar--%>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="/resouces/js/jquery.min.js"></script>
+<script src="/resouces/js/bootstrap.min.js"></script>
 
 </head>
 <body>
+<!-- Image and text -->
+<nav class="navbar navbar-inverse" style="margin-bottom: 0; border-radius: 0" >
+    <div class="container-fluid" >
+        <div class="navbar-header">
+              <div class="col" style="text-align: left" >
+                  <a class="navbar-brand" href="#">e-Lobby</a>
+              </div>
+        </div>
+
+    </div>
+</nav>
 <nav class="navbar navbar-inverse sidebar" role="navigation">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
