@@ -1,2 +1,3 @@
-/home/tomas/workspace/paw-tpe/webapp/src/main/java/ar/edu/itba/paw/webapp/config/WebConfig.java
-/home/tomas/workspace/paw-tpe/webapp/src/main/java/ar/edu/itba/paw/webapp/controller/HelloWorldController.java
+/Users/nicopaganini/Documents/ITBA/PAW/TPE/paw-tpe/webapp/src/main/java/ar/edu/itba/paw/webapp/controller/RoomController.java
+/Users/nicopaganini/Documents/ITBA/PAW/TPE/paw-tpe/webapp/src/main/java/ar/edu/itba/paw/webapp/controller/HelloWorldController.java
+/Users/nicopaganini/Documents/ITBA/PAW/TPE/paw-tpe/webapp/src/main/java/ar/edu/itba/paw/webapp/config/WebConfig.java
