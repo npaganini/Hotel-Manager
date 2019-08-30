@@ -16,7 +16,7 @@
 <script src="/resouces/js/bootstrap.min.js"></script>
 
 </head>
-<body>
+<body >
 <!-- Image and text -->
 <nav class="navbar navbar-inverse" style="margin-bottom: 0; border-radius: 0" >
     <div class="container-fluid" >
@@ -28,6 +28,7 @@
 
     </div>
 </nav>
+
 <nav class="navbar navbar-inverse sidebar" role="navigation">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -77,8 +78,9 @@
         </div>
     </div>
 </nav>
-<div class="main">
-    <!-- Content Here -->
+
+<div class="row wallpap" >
+<div>Hola pepito</div>
 </div>
 </body>
 </html>
