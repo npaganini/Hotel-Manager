@@ -1,6 +1,6 @@
-
-
+<%--@ taglib prefix=“c” uri=“http://java.sun.com/jstl/core_rt”--%>
 <html>
+
 <head>
 
 <%--    Slidebar--%>
@@ -12,8 +12,10 @@
 
 <%--NavBar--%>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-<script src="/resouces/js/jquery.min.js"></script>
-<script src="/resouces/js/bootstrap.min.js"></script>
+<script src="/resources/js/jquery.min.js"></script>
+<script src="/resources/js/bootstrap.min.js"></script>
+
+    <link href="/resources/CSS/my_style.css" rel="stylesheet">
 
 </head>
 <body >
@@ -78,9 +80,47 @@
         </div>
     </div>
 </nav>
+<div class="container cont" style="grid-auto-columns: auto; width: 100vw !important;margin-left: 0 !important; margin-right: 0 !important" >
+    <br>
+    <br>
+    <div class="row"  >
+        <div class="col myheader" style="grid-auto-columns: auto">
+            holaaaaa
+<%--            <img src="/resouces/WEB-INF//log.png" style="width: 50% ; hight:50%">--%>
+        </div>
 
-<div class="row wallpap" >
-<div>Hola pepito</div>
+            <div class="col-xs-6 form-group" style="z-index:9999;grid-auto-columns: auto">
+                <label  class="col-form-label">Habitacion</label>
+                <select class="chosen-select" id="SexoSeleccionado" name="SexoSeleccionado">
+                    <option value="aaa">-</option>
+<%--                    @foreach (var sexo in Model.SexosDisponibles)--%>
+<%--                    {--%>
+<%--                    <option @(Model.SexoSeleccionado == sexo.Id ? "selected" : "") value="@sexo.Id">@sexo.Nombre</option>--%>
+<%--                    }--%>
+<%--                </select>--%>
+                </select>
+            </div>
+
+
+        <div class="col-xs-6" style="grid-auto-columns: auto">Hola pepito</div>
+    </div>
 </div>
 </body>
 </html>
+<%--=======--%>
+<%--<body>--%>
+<%--<h2>${greeting}! it's working</h2>--%>
+<%--<h3>All Rooms List:</h3>--%>
+<%--<ul>--%>
+<%--    <c:forEach var="room" items="${RoomList}">--%>
+<%--        <li><c:out value="${room}" /></li>--%>
+<%--    </c:forEach>--%>
+<%--</ul>--%>
+<%--<h3>You Selected Room:</h3>--%>
+<%--<div>--%>
+<%--    <c:out value="${RoomNumber}"></c:out>--%>
+<%-->>>>>>> dc8873245c92335f7618badd8b951908f91afef9--%>
+<%--</div>--%>
+<%--</body>--%>
+
+
