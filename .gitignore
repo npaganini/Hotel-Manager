@@ -1,5 +1,6 @@
 # Folders where generated class are found
 */target/*
+webapp/target/*
 
 # Compiled class file
 *.class
