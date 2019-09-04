@@ -1,4 +1,4 @@
-<%--@ taglib prefix=“c” uri=“http://java.sun.com/jstl/core_rt”--%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <html>
 
 <head>
@@ -91,8 +91,14 @@
 
             <div class="col-xs-6 form-group" style="z-index:9999;grid-auto-columns: auto">
                 <label  class="col-form-label">Habitacion</label>
-                <select class="chosen-select" id="SexoSeleccionado" name="SexoSeleccionado">
-                    <option value="aaa">-</option>
+                <select class="chosen-select" id="HabSeleccionada" name="HabSeleccionada">
+                    <option value="-">-</option>
+                    <option value="hab_id">Hab 1</option>
+                    <c:forEach var="room" items="${RoomList}">
+                        <option value="hab_id">Hab 1</option>
+
+                    </c:forEach>
+
 <%--                    @foreach (var sexo in Model.SexosDisponibles)--%>
 <%--                    {--%>
 <%--                    <option @(Model.SexoSeleccionado == sexo.Id ? "selected" : "") value="@sexo.Id">@sexo.Nombre</option>--%>
