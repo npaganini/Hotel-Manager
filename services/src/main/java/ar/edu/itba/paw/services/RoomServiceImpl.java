@@ -3,7 +3,7 @@ package ar.edu.itba.paw.services;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RoomService {
+public class RoomServiceImpl {
 
     private String[] roomsList = {"101", "102", "201", "202"};
 
