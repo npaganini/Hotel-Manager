@@ -26,6 +26,17 @@
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
+            <groupId>ar.edu.itba.paw</groupId>
+            <artifactId>persistence</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ar.edu.itba.paw</groupId>
+            <artifactId>models</artifactId>
+            <version>${project.parent.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>

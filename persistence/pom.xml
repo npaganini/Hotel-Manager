@@ -32,6 +32,11 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+        <dependency>
+            <groupId>ar.edu.itba.paw</groupId>
+            <artifactId>models</artifactId>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>

@@ -1,19 +1,25 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.RoomService;
+import ar.edu.itba.paw.models.room.Room;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class RoomServiceImpl implements RoomService {
 
-    private String[] roomsList = {"101", "102", "201", "202"};
+    private List<Room> roomsList ;
 
-    public String[] getRoomsList() {
+
+
+
+    public List<Room> getRoomsList() {
         return roomsList;
     }
 
     @Override
-    public String getRoom(long roomID) {
+    public Room getRoom(long roomID) {
         return null;
     }
 }

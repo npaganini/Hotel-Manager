@@ -10,6 +10,9 @@
 <script src="${pageContext.request.contextPath}/WEB-INF/bootstrap/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="/resources/js/slideBar.js"></script>
 
+<%--    Table--%>
+    <link href="http://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
+    <script type="text/javascript" src="/resources/js/jquery.dataTables.min.js"></script>
 <%--NavBar--%>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 <script src="/resources/js/jquery.min.js"></script>
@@ -85,48 +88,50 @@
     <br>
     <div class="row"  >
         <div class="col myheader" style="grid-auto-columns: auto">
-            holaaaaa
-<%--            <img src="/resouces/WEB-INF//log.png" style="width: 50% ; hight:50%">--%>
+            Habitaciones
+        </div>
+        <br><br>
+        <div class="col-xs-6 form-group" style="z-index:9999;grid-auto-columns: auto">
+<%--                <label  class="col-form-label">Habitacion</label>--%>
+<%--                <select class="chosen-select" id="HabSeleccionada" name="HabSeleccionada">--%>
+<%--                    <option value="-">-</option>--%>
+        <table id="myTable" >
+            <thead>
+            <tr>
+                <th>ID</th>
+                 <th>Numero</th>
+                <th>Ocupada</th>
+             </tr>
+            </thead>
+            <tbody>
+            <c:forEach var="room" items="${RoomList}">
+             <tr>
+
+            <td>${room.id}</td>
+            <td>${room.number}</td>
+           <c:if test="${room.free == false}">
+            <td>No</td>
+           </c:if>
+            <c:if test="${room.free != false}">
+                <td>Si</td>
+            </c:if>
+
+             </tr>
+            </c:forEach>
+            </tbody>
+         </table>
+<%--                    <c:forEach var="room" items="${RoomList}">--%>
+<%--                        <option value="${room.id}">${room.number}</option>--%>
+<%--                    </c:forEach>--%>
+<%--                </select>--%>
         </div>
 
-            <div class="col-xs-6 form-group" style="z-index:9999;grid-auto-columns: auto">
-                <label  class="col-form-label">Habitacion</label>
-                <select class="chosen-select" id="HabSeleccionada" name="HabSeleccionada">
-                    <option value="-">-</option>
-                    <option value="hab_id">Hab 1</option>
-                    <c:forEach var="room" items="${RoomList}">
-                        <option value="hab_id">Hab 1</option>
-
-                    </c:forEach>
-
-<%--                    @foreach (var sexo in Model.SexosDisponibles)--%>
-<%--                    {--%>
-<%--                    <option @(Model.SexoSeleccionado == sexo.Id ? "selected" : "") value="@sexo.Id">@sexo.Nombre</option>--%>
-<%--                    }--%>
-<%--                </select>--%>
-                </select>
-            </div>
-
-
-        <div class="col-xs-6" style="grid-auto-columns: auto">Hola pepito</div>
     </div>
 </div>
 </body>
+
+<script>$(document).ready( function () {
+$('#myTable').DataTable();
+} );
+</script>
 </html>
-<%--=======--%>
-<%--<body>--%>
-<%--<h2>${greeting}! it's working</h2>--%>
-<%--<h3>All Rooms List:</h3>--%>
-<%--<ul>--%>
-<%--    <c:forEach var="room" items="${RoomList}">--%>
-<%--        <li><c:out value="${room}" /></li>--%>
-<%--    </c:forEach>--%>
-<%--</ul>--%>
-<%--<h3>You Selected Room:</h3>--%>
-<%--<div>--%>
-<%--    <c:out value="${RoomNumber}"></c:out>--%>
-<%-->>>>>>> dc8873245c92335f7618badd8b951908f91afef9--%>
-<%--</div>--%>
-<%--</body>--%>
-
-

@@ -28,7 +28,6 @@
             <groupId>ar.edu.itba.paw</groupId>
             <artifactId>models</artifactId>
             <version>${project.parent.version}</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

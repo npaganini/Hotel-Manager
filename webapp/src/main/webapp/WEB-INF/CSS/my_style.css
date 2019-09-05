@@ -1,6 +1,10 @@
 .myheader{
-    background-color:black; height:50px;
-    text-align: center
+    background-color:black; height:40px;
+    text-align: left;
+    color: white;
+    font-family: Arial;
+    font-weight: bold;
+    font-size: 25px;
 }
 
 .cont{
