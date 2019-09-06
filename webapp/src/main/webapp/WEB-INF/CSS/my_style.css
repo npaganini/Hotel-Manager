@@ -8,5 +8,7 @@
 }
 
 .cont{
-    background-color:lightgrey;
+    /*background-color:lightgrey;*/
+
+background-image: url("../utilities/beige-tiles.png");
 }
