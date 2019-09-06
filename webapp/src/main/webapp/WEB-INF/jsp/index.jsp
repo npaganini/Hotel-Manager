@@ -5,18 +5,20 @@
 
 <%--    Slidebar--%>
 <link href="/resources/CSS/slideBar.css" rel="stylesheet">
-<link href="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="${pageContext.request.contextPath}/WEB-INF/bootstrap/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/WEB-INF/bootstrap/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="/resources/js/slideBar.js"></script>
 
-<%--    Table--%>
-    <link href="http://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
-    <script type="text/javascript" src="/resources/js/jquery.dataTables.min.js"></script>
-<%--NavBar--%>
+
+
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 <script src="/resources/js/jquery.min.js"></script>
 <script src="/resources/js/bootstrap.min.js"></script>
+
+
+    <script type="text/javascript" src="/resources/js/slideBar.js"></script>
+
+
+    <link href="http://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
+    <script type="text/javascript" src="/resources/js/jquery.dataTables.min.js"></script>
+    <%--NavBar--%>
 
     <link href="/resources/CSS/my_style.css" rel="stylesheet">
 
@@ -120,10 +122,6 @@
             </c:forEach>
             </tbody>
          </table>
-<%--                    <c:forEach var="room" items="${RoomList}">--%>
-<%--                        <option value="${room.id}">${room.number}</option>--%>
-<%--                    </c:forEach>--%>
-<%--                </select>--%>
         </div>
 
     </div>
