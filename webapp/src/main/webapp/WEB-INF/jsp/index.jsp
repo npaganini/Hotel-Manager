@@ -1,4 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <html>
 
 <head>
@@ -11,16 +13,11 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 <script src="/resources/js/jquery.min.js"></script>
 <script src="/resources/js/bootstrap.min.js"></script>
-
-
-    <script type="text/javascript" src="/resources/js/slideBar.js"></script>
-
-
-    <link href="http://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
-    <script type="text/javascript" src="/resources/js/jquery.dataTables.min.js"></script>
-    <%--NavBar--%>
-
-    <link href="/resources/CSS/my_style.css" rel="stylesheet">
+<script type="text/javascript" src="/resources/js/slideBar.js"></script>
+<link href="http://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
+<script type="text/javascript" src="/resources/js/jquery.dataTables.min.js"></script>
+<link href="/resources/CSS/my_style.css" rel="stylesheet">
+<script src='https://kit.fontawesome.com/a076d05399.js'></script>
 
 </head>
 <body >
@@ -101,21 +98,26 @@
             <thead>
             <tr>
                 <th>ID</th>
-                 <th>Numero</th>
+                <th>Numero</th>
+                <th>Tipo</th>
                 <th>Ocupada</th>
+                <th>Acciones</th>
              </tr>
             </thead>
             <tbody>
             <c:forEach var="room" items="${RoomList}">
              <tr>
 
-            <td>${room.id}</td>
-            <td>${room.number}</td>
-           <c:if test="${room.freeNow == false}">
-            <td>No</td>
+            <td style="text-align: center">${room.id}</td>
+            <td style="text-align: center">${room.number}</td>
+            <td>${room.roomType}</td>
+           <c:if test="${room.free == false}">
+            <td style="text-align: center">No</td>
+            <td style="text-align: center"><a id="${room.id}" href="/rooms/checkin"><i class='fas fa-thumbtack' style='font-size:24px'></i></a></td>
            </c:if>
-            <c:if test="${room.freeNow != false}">
-                <td>Si</td>
+            <c:if test="${room.free != false}">
+                <td style="text-align: center">Si</td>
+                <td></td>
             </c:if>
 
              </tr>
@@ -128,8 +130,10 @@
 </div>
 </body>
 
-<script>$(document).ready( function () {
+<script>
+$(document).ready( function () {
 $('#myTable').DataTable();
 } );
 </script>
+
 </html>
