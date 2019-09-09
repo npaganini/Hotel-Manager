@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.services;
 
-import ar.edu.itba.paw.interfaces.RoomService;
+import ar.edu.itba.paw.interfaces.services.RoomService;
 import ar.edu.itba.paw.models.room.Room;
 import org.springframework.stereotype.Component;
 

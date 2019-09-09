@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.interfaces.RoomService;
+import ar.edu.itba.paw.interfaces.services.RoomService;
 import ar.edu.itba.paw.models.room.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

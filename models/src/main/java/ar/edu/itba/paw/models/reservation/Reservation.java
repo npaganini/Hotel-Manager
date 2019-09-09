@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.room.Room;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -14,15 +15,10 @@ import java.util.List;
 public class Reservation {
 
     private long id;
-    private Room room;
-    private Calendar startDate;
-    private Calendar endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private List<Charge> extraCharges = new ArrayList<>();
-
-    public Reservation(Room room, Calendar startDate, Calendar endDate) {
-        this.room = room;
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }
+    private String userEmail;
+    private long roomId;
 
 }

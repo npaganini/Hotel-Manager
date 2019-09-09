@@ -9,12 +9,12 @@ public class Room {
 
     private long id;
     private RoomType roomType;
-    private boolean free;
+    private boolean freeNow;
     private int number; // > 0
 
     public Room(RoomType roomType, int number) {
         this.roomType = roomType;
         this.number = number;
-        this.free = false;
+        this.freeNow = false;
     }
 }
