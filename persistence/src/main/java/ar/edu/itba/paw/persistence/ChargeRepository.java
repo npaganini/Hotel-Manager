@@ -13,12 +13,15 @@ public class ChargeRepository extends SimpleRepository<Charge> implements Charge
 
     private final static RowMapper<Charge> ROW_MAPPER = (resultSet, rowNum) -> new Charge(resultSet);
 
-    private final SimpleJdbcInsert simpleJdbcInsert;
-
     @Autowired
-    public ChargeRepository(DataSource dataSource, SimpleJdbcInsert simpleJdbcInsert) {
+    public ChargeRepository(DataSource dataSource) {
         super(new JdbcTemplate(dataSource));
-        this.simpleJdbcInsert = simpleJdbcInsert;
+        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " + getTableName() + "(" +
+                "id SERIAL PRIMARY KEY, " +
+                "productId INTEGER, " +
+                "reservationId INTEGER," +
+                "productId FOREIGN KEY REFERENCES product," +
+                "reservationId FOREIGN KEY REFERENCES reservation)");
     }
 
     @Override

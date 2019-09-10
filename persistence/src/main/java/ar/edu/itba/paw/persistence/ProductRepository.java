@@ -11,14 +11,15 @@ import javax.sql.DataSource;
 
 public class ProductRepository extends SimpleRepository<Product> implements ProductDao {
 
-    private final SimpleJdbcInsert simpleJdbcInsert;
-
     private final static RowMapper<Product> ROW_MAPPER = (resultSet, i) -> new Product(resultSet);
 
     @Autowired
-    public ProductRepository(DataSource dataSource, SimpleJdbcInsert simpleJdbcInsert) {
+    public ProductRepository(DataSource dataSource) {
         super(new JdbcTemplate(dataSource));
-        this.simpleJdbcInsert = simpleJdbcInsert;
+        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " + getTableName() + " (" +
+                "id SERIAL PRIMARY KEY," +
+                "description VARCHAR(150)," +
+                "price DOUBLE PRECISION)");
     }
 
     @Override

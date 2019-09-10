@@ -11,14 +11,18 @@ import javax.sql.DataSource;
 
 public class ReservationRepository extends SimpleRepository<Reservation> implements ReservationDao {
 
-    private final SimpleJdbcInsert simpleJdbcInsert;
-
     private static final RowMapper<Reservation> ROW_MAPPER = (resultSet, i) -> new Reservation(resultSet);
 
     @Autowired
-    public ReservationRepository(DataSource dataSource, SimpleJdbcInsert simpleJdbcInsert) {
+    public ReservationRepository(DataSource dataSource) {
         super(new JdbcTemplate(dataSource));
-        this.simpleJdbcInsert = simpleJdbcInsert;
+        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " + getTableName() + " (" +
+                "id SERIAL PRIMARY KEY," +
+                "startDate TIMESTAMP," +
+                "endDate TIMESTAMP," +
+                "userEmail VARCHAR(100)," +
+                "roomId INTEGER," +
+                "FOREIGN KEY roomId REFERENCES room)");
     }
 
     @Override

@@ -14,14 +14,16 @@ import java.util.List;
 
 public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
 
-    private final SimpleJdbcInsert simpleJdbcInsert;
-
     private static final RowMapper<Room> ROW_MAPPER = (resultSet, i) -> new Room(resultSet);
 
     @Autowired
-    public RoomRepository(DataSource dataSource, SimpleJdbcInsert simpleJdbcInsert) {
+    public RoomRepository(DataSource dataSource) {
         super(new JdbcTemplate(dataSource));
-        this.simpleJdbcInsert = simpleJdbcInsert;
+        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " + getTableName() + " (" +
+                "id SERIAL PRIMARY KEY, " +
+                "roomType VARCHAR(15), " +
+                "freeNow BOOLEAN, " +
+                "number INTEGER)");
     }
 
     @Override

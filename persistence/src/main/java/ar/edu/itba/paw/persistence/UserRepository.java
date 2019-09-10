@@ -11,14 +11,14 @@ import javax.sql.DataSource;
 
 public class UserRepository extends SimpleRepository<User> implements UserDao {
 
-    private final SimpleJdbcInsert simpleJdbcInsert;
-
     private static final RowMapper<User> ROW_MAPPER = (resultSet, i) -> new User(resultSet);
 
     @Autowired
-    public UserRepository(DataSource dataSource, SimpleJdbcInsert simpleJdbcInsert) {
+    public UserRepository(DataSource dataSource) {
         super(new JdbcTemplate(dataSource));
-        this.simpleJdbcInsert = simpleJdbcInsert;
+        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " + getTableName() + " (" +
+                "id SERIAL PRIMARY KEY ," +
+                "email varchar(100))");
     }
 
     @Override
