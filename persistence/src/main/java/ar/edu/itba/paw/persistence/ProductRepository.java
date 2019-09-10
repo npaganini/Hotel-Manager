@@ -11,23 +11,28 @@ import javax.sql.DataSource;
 
 public class ProductRepository extends SimpleRepository<Product> implements ProductDao {
 
+    private final SimpleJdbcInsert simpleJdbcInsert;
+
+    private final static RowMapper<Product> ROW_MAPPER = (resultSet, i) -> new Product(resultSet);
+
     @Autowired
-    public ProductRepository(DataSource dataSource) {
+    public ProductRepository(DataSource dataSource, SimpleJdbcInsert simpleJdbcInsert) {
         super(new JdbcTemplate(dataSource));
+        this.simpleJdbcInsert = simpleJdbcInsert;
     }
 
     @Override
-    RowMapper<Product> getRawMapper() {
-        return null;
+    RowMapper<Product> getRowMapper() {
+        return ROW_MAPPER;
     }
 
     @Override
     String getTableName() {
-        return null;
+        return Product.TABLE_NAME;
     }
 
     @Override
     SimpleJdbcInsert getJdbcInsert() {
-        return null;
+        return simpleJdbcInsert;
     }
 }

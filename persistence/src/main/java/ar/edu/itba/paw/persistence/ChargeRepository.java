@@ -11,23 +11,28 @@ import javax.sql.DataSource;
 
 public class ChargeRepository extends SimpleRepository<Charge> implements ChargeDao {
 
+    private final static RowMapper<Charge> ROW_MAPPER = (resultSet, rowNum) -> new Charge(resultSet);
+
+    private final SimpleJdbcInsert simpleJdbcInsert;
+
     @Autowired
-    public ChargeRepository(DataSource dataSource) {
+    public ChargeRepository(DataSource dataSource, SimpleJdbcInsert simpleJdbcInsert) {
         super(new JdbcTemplate(dataSource));
+        this.simpleJdbcInsert = simpleJdbcInsert;
     }
 
     @Override
-    RowMapper<Charge> getRawMapper() {
-        return null;
+    RowMapper<Charge> getRowMapper() {
+        return ROW_MAPPER;
     }
 
     @Override
     String getTableName() {
-        return null;
+        return Charge.TABLE_NAME;
     }
 
     @Override
     SimpleJdbcInsert getJdbcInsert() {
-        return null;
+        return simpleJdbcInsert;
     }
 }

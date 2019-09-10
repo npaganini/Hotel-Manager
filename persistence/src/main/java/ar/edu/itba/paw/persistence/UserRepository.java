@@ -11,23 +11,28 @@ import javax.sql.DataSource;
 
 public class UserRepository extends SimpleRepository<User> implements UserDao {
 
+    private final SimpleJdbcInsert simpleJdbcInsert;
+
+    private static final RowMapper<User> ROW_MAPPER = (resultSet, i) -> new User(resultSet);
+
     @Autowired
-    public UserRepository(DataSource dataSource) {
+    public UserRepository(DataSource dataSource, SimpleJdbcInsert simpleJdbcInsert) {
         super(new JdbcTemplate(dataSource));
+        this.simpleJdbcInsert = simpleJdbcInsert;
     }
 
     @Override
-    RowMapper<User> getRawMapper() {
-        return null;
+    RowMapper<User> getRowMapper() {
+        return ROW_MAPPER;
     }
 
     @Override
     String getTableName() {
-        return null;
+        return User.TABLE_NAME;
     }
 
     @Override
     SimpleJdbcInsert getJdbcInsert() {
-        return null;
+        return simpleJdbcInsert;
     }
 }

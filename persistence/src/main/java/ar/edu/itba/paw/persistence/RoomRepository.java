@@ -14,9 +14,14 @@ import java.util.List;
 
 public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
 
+    private final SimpleJdbcInsert simpleJdbcInsert;
+
+    private static final RowMapper<Room> ROW_MAPPER = (resultSet, i) -> new Room(resultSet);
+
     @Autowired
-    public RoomRepository(DataSource dataSource) {
+    public RoomRepository(DataSource dataSource, SimpleJdbcInsert simpleJdbcInsert) {
         super(new JdbcTemplate(dataSource));
+        this.simpleJdbcInsert = simpleJdbcInsert;
     }
 
     @Override
@@ -30,17 +35,17 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
     }
 
     @Override
-    RowMapper<Room> getRawMapper() {
-        return null;
+    RowMapper<Room> getRowMapper() {
+        return ROW_MAPPER;
     }
 
     @Override
     String getTableName() {
-        return null;
+        return Room.TABLE_NAME;
     }
 
     @Override
     SimpleJdbcInsert getJdbcInsert() {
-        return null;
+        return simpleJdbcInsert;
     }
 }

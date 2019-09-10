@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public abstract class SimpleRepository<T extends SqlObject> implements SimpleDao<T> {
@@ -26,11 +25,11 @@ public abstract class SimpleRepository<T extends SqlObject> implements SimpleDao
 
     @Override
     public Optional<T> findById(long id) {
-        List<T> resultSet = jdbcTemplate.query("SELECT FROM " + getTableName() + " WHERE id = ?", getRawMapper(), id);
+        List<T> resultSet = jdbcTemplate.query("SELECT FROM " + getTableName() + " WHERE id = ?", getRowMapper(), id);
         return resultSet.size() > 0 ? Optional.of(resultSet.get(0)) : Optional.empty();
     }
 
-    abstract RowMapper<T> getRawMapper();
+    abstract RowMapper<T> getRowMapper();
     abstract String getTableName();
     abstract SimpleJdbcInsert getJdbcInsert();
 }

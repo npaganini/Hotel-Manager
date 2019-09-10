@@ -11,23 +11,28 @@ import javax.sql.DataSource;
 
 public class ReservationRepository extends SimpleRepository<Reservation> implements ReservationDao {
 
+    private final SimpleJdbcInsert simpleJdbcInsert;
+
+    private static final RowMapper<Reservation> ROW_MAPPER = (resultSet, i) -> new Reservation(resultSet);
+
     @Autowired
-    public ReservationRepository(DataSource dataSource) {
+    public ReservationRepository(DataSource dataSource, SimpleJdbcInsert simpleJdbcInsert) {
         super(new JdbcTemplate(dataSource));
+        this.simpleJdbcInsert = simpleJdbcInsert;
     }
 
     @Override
-    RowMapper<Reservation> getRawMapper() {
-        return null;
+    RowMapper<Reservation> getRowMapper() {
+        return ROW_MAPPER;
     }
 
     @Override
     String getTableName() {
-        return null;
+        return Reservation.TABLE_NAME;
     }
 
     @Override
     SimpleJdbcInsert getJdbcInsert() {
-        return null;
+        return simpleJdbcInsert;
     }
 }
