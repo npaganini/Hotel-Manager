@@ -46,10 +46,11 @@ public class RoomController {
     }
 
     @PostMapping("/checkin")
-    public void checkIn(long roomID,LocalDate startDate, LocalDate endDate) {
-        Room r =roomService.getRoom(roomID);
-        r.setFree(false);
-
+    public ModelAndView checkIn(@Valid @ModelAttribute("registerForm")final ReservationForm ) {
+        final ModelAndView mav = new ModelAndView("checkin");
+       roomService.setRooms();
+        mav.addObject("allRooms",roomService.getRoomsList());
+        return mav;
     }
 
     @PostMapping("/checkout")

@@ -27,6 +27,7 @@ public class Room implements SqlObject {
 
     public Room(RoomType roomType, int number) {
         this.roomType = roomType;
+        this.id = id;
         this.number = number;
         this.freeNow = false;
     }

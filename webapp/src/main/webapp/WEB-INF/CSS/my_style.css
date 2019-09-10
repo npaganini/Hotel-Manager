@@ -1,5 +1,5 @@
 .myheader{
-    background-color:black; height:40px;
+    background-color:black; height:35px;
     text-align: left;
     color: white;
     font-family: Arial;
@@ -8,7 +8,39 @@
 }
 
 .cont{
-    /*background-color:lightgrey;*/
-
     background-image: url("../utilities/cork-wallet.png");
+}
+
+/* for calendar*/
+
+.form-question {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 0 3rem;
+    min-height: 3rem;
+}
+.form-question__title {
+    color: #342357;
+    font-size: 1.5rem;
+    padding: 1rem;
+}
+.input-container {
+    border-bottom: solid 2px #333333;
+}
+.input-container input {
+    border: none;
+    box-sizing: border-box;
+    outline: 0;
+    padding: .75rem;
+    width: 100%;
+}
+
+/* end calendar*/
+
+.items{
+    font-family: Arial;
+    font-size: 20px;
+    color: black;
+
 }

@@ -1,19 +1,22 @@
+
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 
 <html>
 
 <head>
 
-<link href="/resources/CSS/slideBar.css" rel="stylesheet">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-<script src="/resources/js/jquery.min.js"></script>
-<script src="/resources/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/resources/js/slideBar.js"></script>
-<link href="http://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
-<script type="text/javascript" src="/resources/js/jquery.dataTables.min.js"></script>
-<link href="/resources/CSS/my_style.css" rel="stylesheet">
-<script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <link href="/resources/CSS/slideBar.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="/resources/js/jquery.min.js"></script>
+    <script src="/resources/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/resources/js/slideBar.js"></script>
+    <link href="http://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
+    <script type="text/javascript" src="/resources/js/jquery.dataTables.min.js"></script>
+    <link href="/resources/CSS/my_style.css" rel="stylesheet">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
 
 </head>
 <body >
@@ -21,9 +24,9 @@
 <nav class="navbar navbar-inverse" style="margin-bottom: 0; border-radius: 0" >
     <div class="container-fluid" >
         <div class="navbar-header">
-              <div class="col" style="text-align: left" >
-                  <a class="navbar-brand" href="#">e-Lobby</a>
-              </div>
+            <div class="col" style="text-align: left" >
+                <a class="navbar-brand" href="#">e-Lobby</a>
+            </div>
         </div>
 
     </div>
@@ -81,46 +84,70 @@
 <div class="container cont" style="grid-auto-columns: auto; width: 100vw !important;margin-left: 0 !important; margin-right: 0 !important" >
     <br>
     <br>
-    <div class="row"  >
+    <div class="row" style="height: 45px" >
         <div class="col myheader" style="grid-auto-columns: auto">
-            Habitaciones
+            Check-in
         </div>
+    </div>
         <br>
-        <div class = "col" style="text-align: right; margin-right: 20px"><button type="button" class="btn btn-danger btn-lg"><a href="/rooms/checkin" style="color: white">Nueva Reserva</a> </button></div>
         <br>
-        <div class="col-xs-10 form-group" style="z-index:9999;grid-auto-columns: auto">
-        <table id="myTable" >
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Numero</th>
-                <th>Tipo</th>
-                <th>Ocupada</th>
-                <th>Informacion</th>
-             </tr>
-            </thead>
-            <tbody>
-            <c:forEach var="room" items="${RoomList}">
-             <tr>
+    <div class="row" style="height: 45px">
+        <div class="col-xs-5">
+            <div class="form-question">
+                <div class="form-question__title">
+                    <span class="items">Desde:</span>
+                </div>
+                <div class="input-container">
+                    <input id="from_date" type="date" name="effective-date" minlength="1" maxlength="64" placeholder=" " autocomplete="nope" required="required"></input>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-5">
+            <div class="form-question">
+                <div class="form-question__title">
+                    <span class="items">Hasta:</span>
+                </div>
+                <div class="input-container">
+                    <input id="to_date" type="date" name="effective-date" minlength="1" maxlength="64" placeholder=" " autocomplete="nope" required="required"></input>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row" style="height: 45px">
+        <div class="col-xs-5">
+            <span class="items">
+                Habitacion:
+            </span>
+            <div id="room_number">
+                <select>
+                    <option value="blank">-</option>
+                    <c:forEach var="room" items="${allRooms}">
+                        <c:if test="${room.free == true}">
+                        <option value="${room.id}"> ${room.number}</option>
+                        </c:if>
+                    </c:forEach>
+                </select>
+            </div>
+        </div>
+         <div class="col-xs-5">
+              <span class="items">Email del titular:</span>
+              <div class="input-group">
+                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                 <input id="email" type="text" class="form-control" name="email" placeholder="Email">
+             </div>
+         </div>
+    </div>
 
-            <td style="text-align: left">${room.id}</td>
-            <td style="text-align: left">${room.number}</td>
-            <td>${room.roomType}</td>
-           <c:if test="${room.free == false}">
-                <td style="text-align: left">Si</td>
-                <td style="text-align: left">-</td>
-
-           </c:if>
-            <c:if test="${room.free != false}">
-                <td style="text-align: left">No</td>
-                <td style="text-align: left"><a id="${room.id}" href="/rooms/checkin"><i class='fas fa-comment' style='font-size:24px; color: #0c0c0c'></i></a></td>
-
-            </c:if>
-
-             </tr>
-            </c:forEach>
-            </tbody>
-         </table>
+    <div class="row" style="height: 45px">
+        <br><br>
+        <div class="col-xs-2">
+            <button type="button" class="btn btn-danger btn-lg"><a href="/rooms/checkin" style="color: white">Reservar</a> </button>
+        </div>
+        <div class="col-xs-2">
+            <button type="button" class="btn btn-danger btn-lg"><a href="/rooms/checkin" style="color: white">Cancelar</a> </button>
         </div>
 
     </div>
@@ -128,9 +155,7 @@
 </body>
 
 <script>
-$(document).ready( function () {
-$('#myTable').DataTable();
-} );
 </script>
 
 </html>
+
