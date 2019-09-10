@@ -5,11 +5,7 @@
 
 <head>
 
-<%--    Slidebar--%>
 <link href="/resources/CSS/slideBar.css" rel="stylesheet">
-
-
-
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 <script src="/resources/js/jquery.min.js"></script>
 <script src="/resources/js/bootstrap.min.js"></script>
@@ -90,10 +86,7 @@
             Habitaciones
         </div>
         <br><br>
-        <div class="col-xs-6 form-group" style="z-index:9999;grid-auto-columns: auto">
-<%--                <label  class="col-form-label">Habitacion</label>--%>
-<%--                <select class="chosen-select" id="HabSeleccionada" name="HabSeleccionada">--%>
-<%--                    <option value="-">-</option>--%>
+        <div class="col-xs-10 form-group" style="z-index:9999;grid-auto-columns: auto">
         <table id="myTable" >
             <thead>
             <tr>
@@ -101,23 +94,23 @@
                 <th>Numero</th>
                 <th>Tipo</th>
                 <th>Ocupada</th>
-                <th>Acciones</th>
+                <th>Informacion</th>
              </tr>
             </thead>
             <tbody>
             <c:forEach var="room" items="${RoomList}">
              <tr>
 
-            <td style="text-align: center">${room.id}</td>
-            <td style="text-align: center">${room.number}</td>
+            <td style="text-align: left">${room.id}</td>
+            <td style="text-align: left">${room.number}</td>
             <td>${room.roomType}</td>
            <c:if test="${room.free == false}">
-            <td style="text-align: center">No</td>
-            <td style="text-align: center"><a id="${room.id}" href="/rooms/checkin"><i class='fas fa-thumbtack' style='font-size:24px'></i></a></td>
+            <td style="text-align: left">No</td>
+            <td style="text-align: left"><a id="${room.id}" href="/rooms/checkin"><i class='fas fa-comment' style='font-size:24px; color: #0c0c0c'></i></a></td>
            </c:if>
             <c:if test="${room.free != false}">
-                <td style="text-align: center">Si</td>
-                <td></td>
+                <td style="text-align: left">Si</td>
+                <td style="text-align: left">-</td>
             </c:if>
 
              </tr>
