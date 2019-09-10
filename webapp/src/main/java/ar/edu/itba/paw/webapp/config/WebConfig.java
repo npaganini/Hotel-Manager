@@ -14,7 +14,7 @@ import org.springframework.web.servlet.view.JstlView;
 import javax.sql.DataSource;
 
 @EnableWebMvc
-@ComponentScan({"ar.edu.itba.paw.webapp.controller", "ar.edu.itba.paw.services"})
+@ComponentScan({"ar.edu.itba.paw.webapp.controller", "ar.edu.itba.paw.services", "ar.edu.itba.paw.persistence"})
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
@@ -38,7 +38,7 @@ public class WebConfig implements WebMvcConfigurer {
     public DataSource dataSource() {
         final SimpleDriverDataSource ds = new SimpleDriverDataSource();
         ds.setDriverClass(org.postgresql.Driver.class);
-        ds.setUrl("jdbc:postgresql://localhost/paw");
+        ds.setUrl("jdbc:postgresql://localhost/postgres");
         ds.setUsername("postgres");
         ds.setPassword("postgres");
         return ds;

@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 
+@Repository
 public class UserRepository extends SimpleRepository<User> implements UserDao {
 
     private static final RowMapper<User> ROW_MAPPER = (resultSet, i) -> new User(resultSet);
@@ -16,9 +18,6 @@ public class UserRepository extends SimpleRepository<User> implements UserDao {
     @Autowired
     public UserRepository(DataSource dataSource) {
         super(new JdbcTemplate(dataSource));
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " + getTableName() + " (" +
-                "id SERIAL PRIMARY KEY ," +
-                "email varchar(100))");
     }
 
     @Override

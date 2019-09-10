@@ -1,16 +1,25 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.services.RoomService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class HelloWorldController {
-	
-	@RequestMapping("/")
-	public ModelAndView helloWorld() {
-		final ModelAndView mav = new ModelAndView("index");
-		mav.addObject("greeting", "PAW");
-		return mav;
-	}
+
+    private final RoomService roomService;
+
+    @Autowired
+    public HelloWorldController(RoomService roomService) {
+        this.roomService = roomService;
+    }
+
+    @RequestMapping("/")
+    public ModelAndView helloWorld() {
+        final ModelAndView mav = new ModelAndView("index");
+        mav.addObject("greeting", "PAW");
+        return mav;
+    }
 }

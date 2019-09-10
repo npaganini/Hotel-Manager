@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 
+@Repository
 public class ReservationRepository extends SimpleRepository<Reservation> implements ReservationDao {
 
     private static final RowMapper<Reservation> ROW_MAPPER = (resultSet, i) -> new Reservation(resultSet);
@@ -22,7 +24,7 @@ public class ReservationRepository extends SimpleRepository<Reservation> impleme
                 "endDate TIMESTAMP," +
                 "userEmail VARCHAR(100)," +
                 "roomId INTEGER," +
-                "FOREIGN KEY roomId REFERENCES room)");
+                "FOREIGN KEY (roomId) REFERENCES room(id))");
     }
 
     @Override

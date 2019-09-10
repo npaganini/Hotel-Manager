@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 
+@Repository
 public class ProductRepository extends SimpleRepository<Product> implements ProductDao {
 
     private final static RowMapper<Product> ROW_MAPPER = (resultSet, i) -> new Product(resultSet);
@@ -16,10 +18,6 @@ public class ProductRepository extends SimpleRepository<Product> implements Prod
     @Autowired
     public ProductRepository(DataSource dataSource) {
         super(new JdbcTemplate(dataSource));
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " + getTableName() + " (" +
-                "id SERIAL PRIMARY KEY," +
-                "description VARCHAR(150)," +
-                "price DOUBLE PRECISION)");
     }
 
     @Override

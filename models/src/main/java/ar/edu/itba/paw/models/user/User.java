@@ -14,7 +14,7 @@ public class User implements SqlObject {
     public final static String KEY_ID = "id";
     public final static String KEY_EMAIL = "email";
 
-    public final static String TABLE_NAME = "user";
+    public final static String TABLE_NAME = "users";
 
     private long id;
     private String email;

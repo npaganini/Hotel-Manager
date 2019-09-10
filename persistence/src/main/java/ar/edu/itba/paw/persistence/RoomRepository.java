@@ -7,11 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.time.LocalDate;
 import java.util.List;
 
+@Repository
 public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
 
     private static final RowMapper<Room> ROW_MAPPER = (resultSet, i) -> new Room(resultSet);
@@ -19,11 +21,6 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
     @Autowired
     public RoomRepository(DataSource dataSource) {
         super(new JdbcTemplate(dataSource));
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " + getTableName() + " (" +
-                "id SERIAL PRIMARY KEY, " +
-                "roomType VARCHAR(15), " +
-                "freeNow BOOLEAN, " +
-                "number INTEGER)");
     }
 
     @Override

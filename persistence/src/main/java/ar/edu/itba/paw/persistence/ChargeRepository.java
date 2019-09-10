@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 
+@Repository
 public class ChargeRepository extends SimpleRepository<Charge> implements ChargeDao {
 
     private final static RowMapper<Charge> ROW_MAPPER = (resultSet, rowNum) -> new Charge(resultSet);
@@ -16,12 +18,10 @@ public class ChargeRepository extends SimpleRepository<Charge> implements Charge
     @Autowired
     public ChargeRepository(DataSource dataSource) {
         super(new JdbcTemplate(dataSource));
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " + getTableName() + "(" +
+        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " + getTableName() + " (" +
                 "id SERIAL PRIMARY KEY, " +
-                "productId INTEGER, " +
-                "reservationId INTEGER," +
-                "productId FOREIGN KEY REFERENCES product," +
-                "reservationId FOREIGN KEY REFERENCES reservation)");
+                "productId INTEGER REFERENCES product (id), " +
+                "reservationId INTEGER REFERENCES reservation (id))");
     }
 
     @Override
