@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.services.RoomService;
 import ar.edu.itba.paw.models.room.Room;
+import ar.edu.itba.paw.models.room.RoomType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -21,21 +22,20 @@ public class RoomController {
         this.roomService = roomService;
     }
 
-    //@RequestMapping(value = "/rooms", method = RequestMethod.GET)
     @GetMapping("")
     public ModelAndView getAllRooms() {
         final ModelAndView mav = new ModelAndView("index");
         List<Room> r = new ArrayList<Room>();
-        Room h1 = new Room(1,100);
+        Room h1 = new Room(RoomType.SIMPLE,100);
         r.add(h1);
 
-        Room h2 = new Room(2,102);
+        Room h2 = new Room(RoomType.DOUBLE,102);
         r.add(h2);
 
-        Room h3 = new Room(3,103);
+        Room h3 = new Room(RoomType.DOUBLE,103);
         r.add(h3);
 
-        Room h4 = new Room(4,104);
+        Room h4 = new Room(RoomType.TRIPLE,104);
         r.add(h4);
 
         mav.addObject("RoomList",r);
