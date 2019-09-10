@@ -25,6 +25,7 @@ public class Reservation implements SqlObject {
     private long id;
     private LocalDate startDate;
     private LocalDate endDate;
+    private List<Charge> extraCharges = new ArrayList<>();
     private String userEmail;
     private long roomId;
 
