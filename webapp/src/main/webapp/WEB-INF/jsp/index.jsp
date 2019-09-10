@@ -111,10 +111,10 @@
 
             <td>${room.id}</td>
             <td>${room.number}</td>
-           <c:if test="${room.free == false}">
+           <c:if test="${room.freeNow == false}">
             <td>No</td>
            </c:if>
-            <c:if test="${room.free != false}">
+            <c:if test="${room.freeNow != false}">
                 <td>Si</td>
             </c:if>
 
