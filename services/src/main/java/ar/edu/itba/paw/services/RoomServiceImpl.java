@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.List;
 
+import static ar.edu.itba.paw.models.room.RoomType.*;
+
 @Component
 public class RoomServiceImpl implements RoomService {
 
@@ -18,11 +20,13 @@ public class RoomServiceImpl implements RoomService {
     private final RoomDao roomDao;
     private final UserDao userDao;
 
+
     @Autowired
     public RoomServiceImpl(RoomDao roomDao, UserDao userDao, ReservationDao reservationDao) {
         this.reservationDao = reservationDao;
         this.roomDao = roomDao;
         this.userDao = userDao;
+
     }
 
     public List<Room> getRoomsList() {
