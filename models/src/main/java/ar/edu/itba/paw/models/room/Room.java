@@ -27,9 +27,8 @@ public class Room implements SqlObject {
 
     public Room(RoomType roomType, int number) {
         this.roomType = roomType;
-        this.id = id;
         this.number = number;
-        this.freeNow = false;
+        this.freeNow = true;
     }
 
     public Room(ResultSet resultSet) throws SQLException {
@@ -39,9 +38,11 @@ public class Room implements SqlObject {
         this.number = resultSet.getInt(KEY_NUMBER);
     }
 
-    public Room(RoomType roomType, int roomFloor, int number) {
+    public Room(int id, RoomType roomType, int roomFloor, int number) {
         this.roomType = roomType;
         this.number = number;
+        this.id = id;
+        this.freeNow = true;
     }
 
     @Override

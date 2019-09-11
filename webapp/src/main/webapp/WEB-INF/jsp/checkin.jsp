@@ -128,7 +128,7 @@
                 <form:select path="roomId">
                     <form:option value="0">-</form:option>
                     <c:forEach var="room" items="${allRooms}">
-                        <c:if test="${room.freeNow== true}">
+                        <c:if test="${room.freeNow == true}">
                         <form:option value="${room.id}"> ${room.number}</form:option>
                         </c:if>
                     </c:forEach>

@@ -22,7 +22,7 @@ public class RoomServiceImpl implements RoomService {
 
 
     @Autowired
-    public RoomServiceImpl(ProductDao productDao, UserDao userDao, RoomDao roomDao, ReservationDao reservationDao, ChargeDao chargeDao) {
+    public RoomServiceImpl(ProductDao productDao, RoomDao roomDao, UserDao userDao, ReservationDao reservationDao, ChargeDao chargeDao) {
         this.productDao = productDao;
         this.roomDao = roomDao;
         this.userDao = userDao;
@@ -30,35 +30,37 @@ public class RoomServiceImpl implements RoomService {
         this.chargeDao = chargeDao;
     }
 
-	private List<Room> roomsList = new ArrayList<Room>();
-    Room h1 = new Room(SIMPLE,1,100);
+    private List<Room> roomsList = new ArrayList<Room>();
 
-    Room h2 = new Room(DOUBLE,2,102);
+    Room h1 = new Room(1, SIMPLE, 1, 100);
 
-    Room h5 = new Room(SIMPLE,17,251);
+    Room h2 = new Room(2, DOUBLE, 2, 102);
 
-    Room h3 = new Room(TRIPLE,3,103);
+    Room h5 = new Room(3, SIMPLE, 17, 251);
 
-    Room h4 = new Room(SIMPLE, 4,104);
+    Room h3 = new Room(4, TRIPLE, 3, 103);
 
-    public void setRooms(){
-        roomsList.add(h1);
-        roomsList.add(h2);
-        roomsList.add(h3);
-        roomsList.add(h4);
-        roomsList.add(h5);
+    Room h4 = new Room(5, SIMPLE, 4, 104);
+
+    public void setRooms() {
+        if (roomsList.size() == 0) {
+            roomsList.add(h1);
+            roomsList.add(h2);
+            roomsList.add(h3);
+            roomsList.add(h4);
+            roomsList.add(h5);
+        }
     }
 
     public List<Room> getRoomsList() {
+        if (roomsList.size() == 0) setRooms();
         return roomsList;
     }
 
     @Override
     public Room getRoom(long roomID) {
-
-
-        for (Room room:roomsList) {
-            if(room.getId() == roomID)
+        for (Room room : roomsList) {
+            if (room.getId() == roomID)
                 return room;
         }
         return null;
