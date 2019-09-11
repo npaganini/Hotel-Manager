@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -46,7 +47,7 @@ public class RoomController {
     }
 
     @PostMapping("/checkin")
-    public ModelAndView checkIn(@Valid @ModelAttribute("registerForm")final ReservationForm ) {
+    public ModelAndView checkIn(@Valid @ModelAttribute("registerForm") final ReservationForm reservationForm) {
         final ModelAndView mav = new ModelAndView("checkin");
        roomService.setRooms();
         mav.addObject("allRooms",roomService.getRoomsList());
