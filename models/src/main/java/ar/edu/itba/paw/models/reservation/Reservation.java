@@ -47,6 +47,8 @@ public class Reservation implements SqlObject {
         this.roomId = roomId;
         this.endDate = endDate;
         this.userEmail = userEmail;
+        this. startDate = startDate;
+        this.endDate = endDate;
     }
 
     @Override
