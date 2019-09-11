@@ -96,7 +96,8 @@
                 <th>Numero</th>
                 <th>Tipo</th>
                 <th>Ocupada</th>
-                <th>Informacion</th>
+                <th>Desde</th>
+                <th>Hasta</th>
              </tr>
             </thead>
             <tbody>
@@ -108,14 +109,17 @@
             <td>${room.roomType}</td>
            <c:if test="${room.freeNow== false}">
                 <td style="text-align: left">Si</td>
-                <td style="text-align: left">-</td>
+                <td style="text-align: left">${room.reserva.startDate}</td>
+               <td style="text-align: left">${room.reserva.endDate}</td>
 
            </c:if>
             <c:if test="${room.freeNow!= false}">
                 <td style="text-align: left">No</td>
-                <td style="text-align: left"><a id="${room.id}" href="/rooms/checkin"><i class='fas fa-comment' style='font-size:24px; color: #0c0c0c'></i></a></td>
+                <td style="text-align: left">-</td>
+                <td style="text-align: left">-</td>
 
             </c:if>
+
 
              </tr>
             </c:forEach>

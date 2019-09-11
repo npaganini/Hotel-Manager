@@ -2,6 +2,7 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.daos.*;
 import ar.edu.itba.paw.interfaces.services.RoomService;
+import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -64,5 +65,10 @@ public class RoomServiceImpl implements RoomService {
                 return room;
         }
         return null;
+    }
+
+    @Override
+    public void doReservation(Reservation reserva) {
+        getRoom(reserva.getRoomId()).setReserva(reserva);
     }
 }

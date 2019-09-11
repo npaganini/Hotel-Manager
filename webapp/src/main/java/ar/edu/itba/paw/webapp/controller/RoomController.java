@@ -45,6 +45,7 @@ public class RoomController {
     public ModelAndView checkInPost(@ModelAttribute("reservationForm") final ReservationForm form) {
         final ModelAndView mav = new ModelAndView("checkinPost");
         Reservation reserva = new Reservation(form.getRoomId(), form.getUserEmail(), Date.valueOf(form.getStartDate()).toLocalDate(), Date.valueOf(form.getEndDate()).toLocalDate());
+        roomService.doReservation(reserva);
         mav.addObject("reserva", reserva);
         return mav;
     }
@@ -54,3 +55,4 @@ public class RoomController {
         // do mark room as in-use
     }
 }
+

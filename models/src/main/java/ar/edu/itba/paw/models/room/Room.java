@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.models.room;
 
 import ar.edu.itba.paw.models.SqlObject;
+import ar.edu.itba.paw.models.reservation.Reservation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -24,6 +25,7 @@ public class Room implements SqlObject {
     private RoomType roomType;
     private boolean freeNow;
     private int number; // > 0
+    private Reservation reserva;
 
     public Room(RoomType roomType, int number) {
         this.roomType = roomType;
@@ -58,5 +60,10 @@ public class Room implements SqlObject {
     @Override
     public void setId(long id) {
         this.id = id;
+    }
+
+    public void setReserva(Reservation reserva) {
+        this.reserva = reserva;
+        this.freeNow = false;
     }
 }
