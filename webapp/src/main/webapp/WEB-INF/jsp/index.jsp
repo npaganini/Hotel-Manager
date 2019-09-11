@@ -106,12 +106,12 @@
             <td style="text-align: left">${room.id}</td>
             <td style="text-align: left">${room.number}</td>
             <td>${room.roomType}</td>
-           <c:if test="${room.free == false}">
+           <c:if test="${room.freeNow== false}">
                 <td style="text-align: left">Si</td>
                 <td style="text-align: left">-</td>
 
            </c:if>
-            <c:if test="${room.free != false}">
+            <c:if test="${room.freeNow!= false}">
                 <td style="text-align: left">No</td>
                 <td style="text-align: left"><a id="${room.id}" href="/rooms/checkin"><i class='fas fa-comment' style='font-size:24px; color: #0c0c0c'></i></a></td>
 

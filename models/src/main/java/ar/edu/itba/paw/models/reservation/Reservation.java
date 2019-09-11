@@ -1,17 +1,22 @@
 package ar.edu.itba.paw.models.reservation;
 
 import ar.edu.itba.paw.models.SqlObject;
+import ar.edu.itba.paw.models.charge.Charge;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Reservation implements SqlObject {
 
     public final static String KEY_ID = "id";
@@ -35,6 +40,13 @@ public class Reservation implements SqlObject {
         this.endDate = resultSet.getDate(KEY_END_DATE).toLocalDate();
         this.userEmail = resultSet.getString(KEY_USER_EMAIL);
         this.roomId = resultSet.getLong(KEY_ROOM_ID);
+    }
+
+    public Reservation(long roomId, String userEmail, LocalDate startDate, LocalDate endDate) {
+        this.startDate = startDate;
+        this.roomId = roomId;
+        this.endDate = endDate;
+        this.userEmail = userEmail;
     }
 
     @Override

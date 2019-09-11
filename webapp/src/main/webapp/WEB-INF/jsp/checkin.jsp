@@ -81,6 +81,8 @@
         </div>
     </div>
 </nav>
+<c:url value="/rooms/checkinPost" var="postPath"/>
+<form:form modelAttribute="reservationForm" action="${postPath}" method="post">
 <div class="container cont" style="grid-auto-columns: auto; width: 100vw !important;margin-left: 0 !important; margin-right: 0 !important" >
     <br>
     <br>
@@ -95,10 +97,12 @@
         <div class="col-xs-5">
             <div class="form-question">
                 <div class="form-question__title">
-                    <span class="items">Desde:</span>
+                    <form:label class="items" path="startDate">Desde: </form:label>
+
                 </div>
+
                 <div class="input-container">
-                    <input id="from_date" type="date" name="effective-date" minlength="1" maxlength="64" placeholder=" " autocomplete="nope" required="required"></input>
+                    <form:input id="from_date" path="startDate" type="date" name="effective-date" minlength="1" maxlength="64" placeholder=" " autocomplete="nope" required="required"></form:input>
                     <span class="bar"></span>
                 </div>
             </div>
@@ -106,37 +110,36 @@
         <div class="col-xs-5">
             <div class="form-question">
                 <div class="form-question__title">
-                    <span class="items">Hasta:</span>
+                    <form:label class="items" path="endDate">Hasta: </form:label>
                 </div>
                 <div class="input-container">
-                    <input id="to_date" type="date" name="effective-date" minlength="1" maxlength="64" placeholder=" " autocomplete="nope" required="required"></input>
+                    <form:input id="to_date" path="endDate" type="date" name="effective-date" minlength="1" maxlength="64" placeholder=" " autocomplete="nope" required="required"></form:input>
                     <span class="bar"></span>
                 </div>
             </div>
         </div>
     </div>
     <br>
+
     <div class="row" style="height: 45px">
         <div class="col-xs-5">
-            <span class="items">
-                Habitacion:
-            </span>
+            <form:label class="items" path="roomId">Habitacion: </form:label>
             <div id="room_number">
-                <select>
-                    <option value="blank">-</option>
+                <form:select path="roomId">
+                    <form:option value="0">-</form:option>
                     <c:forEach var="room" items="${allRooms}">
-                        <c:if test="${room.free == true}">
-                        <option value="${room.id}"> ${room.number}</option>
+                        <c:if test="${room.freeNow== true}">
+                        <form:option value="${room.id}"> ${room.number}</form:option>
                         </c:if>
                     </c:forEach>
-                </select>
+                </form:select>
             </div>
         </div>
          <div class="col-xs-5">
-              <span class="items">Email del titular:</span>
+             <form:label class="items" path="userEmail">Email del titular: </form:label>
               <div class="input-group">
                  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                 <input id="email" type="text" class="form-control" name="email" placeholder="Email">
+                  <form:input id="email" path="userEmail" type="text" class="form-control" name="email" placeholder="Email"></form:input>
              </div>
          </div>
     </div>
@@ -144,7 +147,7 @@
     <div class="row" style="height: 45px">
         <br><br>
         <div class="col-xs-2">
-            <button type="button" class="btn btn-danger btn-lg"><a href="/rooms/checkin" style="color: white">Reservar</a> </button>
+            <input type="submit" value="Reservar"/>
         </div>
         <div class="col-xs-2">
             <button type="button" class="btn btn-danger btn-lg"><a href="/rooms/checkin" style="color: white">Cancelar</a> </button>
@@ -152,6 +155,7 @@
 
     </div>
 </div>
+</form:form>
 </body>
 
 <script>

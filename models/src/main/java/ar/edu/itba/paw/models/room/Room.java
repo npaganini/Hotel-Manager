@@ -39,6 +39,11 @@ public class Room implements SqlObject {
         this.number = resultSet.getInt(KEY_NUMBER);
     }
 
+    public Room(RoomType roomType, int roomFloor, int number) {
+        this.roomType = roomType;
+        this.number = number;
+    }
+
     @Override
     public Map<String, Object> toMap() {
         Map<String, Object> roomToMap = new HashMap<>();
