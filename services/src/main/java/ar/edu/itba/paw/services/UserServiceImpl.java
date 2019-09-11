@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.interfaces.daos.ProductDao;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import org.springframework.stereotype.Component;
 
@@ -8,9 +9,14 @@ import java.util.*;
 @Component
 public class UserServiceImpl implements UserService {
 
-    private String[] productsList = {"Coca-Cola", "Papas Dia"};
+    private final ProductDao productDao;
+//    private String[] productsList = {"Coca-Cola", "Papas Dia"};
     private String[] toursList = {"City Tour"};
     private String[] classesList = {"Clase de Tango"};
+
+    public UserServiceImpl(ProductDao productDao) {
+        this.productDao = productDao;
+    }
 
 
     @Override
@@ -22,8 +28,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<?> checkProductsPurchased() {
-        return new LinkedList<>(Arrays.asList(productsList));
+    public List<ProductDao> checkProductsPurchased() {
+        return new LinkedList<>(Arrays.asList(productDao));
     }
 
     @Override
