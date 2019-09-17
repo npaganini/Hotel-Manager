@@ -1,23 +1,35 @@
 package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.interfaces.daos.ChargeDao;
 import ar.edu.itba.paw.interfaces.daos.ProductDao;
+import ar.edu.itba.paw.interfaces.daos.UserDao;
 import ar.edu.itba.paw.interfaces.services.UserService;
+import ar.edu.itba.paw.models.product.Product;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+
 
 @Component
 public class UserServiceImpl implements UserService {
 
     private final ProductDao productDao;
-//    private String[] productsList = {"Coca-Cola", "Papas Dia"};
+    private final ChargeDao chargeDao;
+    private final UserDao userDao;
+
+    private List<Product> productsList;
     private String[] toursList = {"City Tour"};
     private String[] classesList = {"Clase de Tango"};
 
-    public UserServiceImpl(ProductDao productDao) {
+    @Autowired
+    public UserServiceImpl(ProductDao productDao, ChargeDao chargeDao, UserDao userDao) {
         this.productDao = productDao;
-    }
+        this.chargeDao = chargeDao;
+        this.userDao = userDao;
 
+//        productsList.add(new Product())
+    }
 
     @Override
     public List<?> checkServicesUsed() {
@@ -28,8 +40,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<ProductDao> checkProductsPurchased() {
-        return new LinkedList<>(Arrays.asList(productDao));
+    public List<Product> checkProductsPurchased() {
+        return new LinkedList<Product>(Arrays.asList(productDao.));
+//        return Collections.emptyList();
     }
 
     @Override
@@ -39,6 +52,7 @@ public class UserServiceImpl implements UserService {
         Map<String, List<?>> expenses = new HashMap<>();
         expenses.put("Minibar", minibar);
         expenses.put("Other services", services);
+        System.out.println(expenses);
         return expenses;
     }
 
@@ -60,6 +74,5 @@ public class UserServiceImpl implements UserService {
 //    @Override
 //    public boolean checkOut() {
 //        return false;
-
 //    }
 }

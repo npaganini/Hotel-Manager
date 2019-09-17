@@ -19,37 +19,34 @@ public class UserController {
 
     @GetMapping("/all")
     public ModelAndView getAllExpenses() {
-        final ModelAndView mav = new ModelAndView("index");
-        mav.addObject("RoomList", userService.checkAllExpenses());
+        final ModelAndView mav = new ModelAndView("expenses");
+        mav.addObject("ExpensesList", userService.checkAllExpenses());
         return mav;
     }
 
     @GetMapping("/tours")
     public ModelAndView getAllTours() {
-        final ModelAndView mav = new ModelAndView("index");
-        mav.addObject("RoomList", userService.checkAllExpenses());
+        final ModelAndView mav = new ModelAndView("expenses");
+        mav.addObject("ToursList", userService.checkServicesUsed());
         return mav;
     }
 
     @GetMapping("/products")
     public ModelAndView getAllProducts() {
-        final ModelAndView mav = new ModelAndView("index");
-        mav.addObject("RoomList", userService.checkAllExpenses());
+        final ModelAndView mav = new ModelAndView("expenses");
+        mav.addObject("ProductsList", userService.checkProductsPurchased());
         return mav;
     }
 
 //    @PostMapping("/checkin")
 //    public void checkIn(long reservationID) {
-//        // TODO: mark room as in-use
 //    }
 //
 //    @PostMapping("/checkout")
 //    public void checkOut(int roomNumber) {
-//        // TODO: mark room as free if it's occupied by current user
 //    }
 //
 //    @PostMapping("/checkout")
 //    public void checkOut() {
-//        // TODO: mark in-use room as free
 //    }
 }
