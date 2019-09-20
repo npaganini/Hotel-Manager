@@ -37,16 +37,4 @@ public class UserController {
         mav.addObject("ProductsList", userService.checkProductsPurchased());
         return mav;
     }
-
-//    @PostMapping("/checkin")
-//    public void checkIn(long reservationID) {
-//    }
-//
-//    @PostMapping("/checkout")
-//    public void checkOut(int roomNumber) {
-//    }
-//
-//    @PostMapping("/checkout")
-//    public void checkOut() {
-//    }
 }

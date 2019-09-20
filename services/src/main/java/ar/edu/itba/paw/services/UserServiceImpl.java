@@ -23,12 +23,10 @@ public class UserServiceImpl implements UserService {
     private String[] classesList = {"Clase de Tango"};
 
     @Autowired
-    public UserServiceImpl(ProductDao productDao, ChargeDao chargeDao, UserDao userDao) {
+    public UserServiceImpl(ProductDao productDao, UserDao userDao, ChargeDao chargeDao) {
         this.productDao = productDao;
         this.chargeDao = chargeDao;
         this.userDao = userDao;
-
-//        productsList.add(new Product())
     }
 
     @Override
@@ -41,8 +39,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Product> checkProductsPurchased() {
-        return new LinkedList<Product>(Arrays.asList(productDao.));
-//        return Collections.emptyList();
+//        return new LinkedList<Product>(Arrays.asList(productDao.));
+        return Collections.emptyList();
     }
 
     @Override
@@ -52,27 +50,7 @@ public class UserServiceImpl implements UserService {
         Map<String, List<?>> expenses = new HashMap<>();
         expenses.put("Minibar", minibar);
         expenses.put("Other services", services);
-        System.out.println(expenses);
+//        System.out.println(expenses);
         return expenses;
     }
-
-//    @Override
-//    public boolean checkIn(long reservationID) {
-//        return false;
-//    }
-//
-//    @Override
-//    public boolean checkOut(long reservationID) {
-//        return false;
-//    }
-//
-//    @Override
-//    public boolean checkOut(int roomNumber) {
-//        return false;
-//    }
-//
-//    @Override
-//    public boolean checkOut() {
-//        return false;
-//    }
 }

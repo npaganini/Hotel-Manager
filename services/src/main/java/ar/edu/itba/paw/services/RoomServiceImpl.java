@@ -20,7 +20,7 @@ public class RoomServiceImpl implements RoomService {
     private List<Room> roomsList;
 
     @Autowired
-    public RoomServiceImpl(ChargeDao chargeDao, ProductDao productDao, ReservationDao reservationDao, RoomDao roomDao, UserDao userDao) {
+    public RoomServiceImpl(ProductDao productDao, UserDao userDao, RoomDao roomDao, ReservationDao reservationDao, ChargeDao chargeDao) {
         this.productDao = productDao;
         this.roomDao = roomDao;
         this.userDao = userDao;
