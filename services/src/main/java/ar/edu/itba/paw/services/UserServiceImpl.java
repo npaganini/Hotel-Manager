@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
     private final ChargeDao chargeDao;
     private final UserDao userDao;
 
-    private List<Product> productsList;
+//    private List<Product> productsList;
     private String[] toursList = {"City Tour"};
     private String[] classesList = {"Clase de Tango"};
 
@@ -27,6 +27,13 @@ public class UserServiceImpl implements UserService {
         this.productDao = productDao;
         this.chargeDao = chargeDao;
         this.userDao = userDao;
+    }
+
+    @Override
+    public List<Product> getProducts() {
+        List<Product> productList = new LinkedList<>();
+        productList.addAll(productDao.getAllProducts());
+        return productList;
     }
 
     @Override
@@ -39,8 +46,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Product> checkProductsPurchased() {
-//        return new LinkedList<Product>(Arrays.asList(productDao.));
-        return Collections.emptyList();
+        List<Product> productList = new LinkedList<>();
+        productList.addAll(productDao.getAllProducts());
+        return productList;
+//        return Collections.emptyList();
     }
 
     @Override

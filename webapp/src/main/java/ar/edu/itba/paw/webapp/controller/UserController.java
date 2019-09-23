@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfaces.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -17,22 +18,29 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/all")
-    public ModelAndView getAllExpenses() {
-        final ModelAndView mav = new ModelAndView("expenses");
-        mav.addObject("ExpensesList", userService.checkAllExpenses());
-        return mav;
-    }
-
-    @GetMapping("/tours")
-    public ModelAndView getAllTours() {
-        final ModelAndView mav = new ModelAndView("expenses");
-        mav.addObject("ToursList", userService.checkServicesUsed());
-        return mav;
-    }
+//    @GetMapping("/all")
+//    public ModelAndView getAllExpenses() {
+//        final ModelAndView mav = new ModelAndView("expenses");
+//        mav.addObject("ExpensesList", userService.checkAllExpenses());
+//        return mav;
+//    }
+//
+//    @GetMapping("/tours")
+//    public ModelAndView getAllTours() {
+//        final ModelAndView mav = new ModelAndView("expenses");
+//        mav.addObject("ToursList", userService.checkServicesUsed());
+//        return mav;
+//    }
 
     @GetMapping("/products")
     public ModelAndView getAllProducts() {
+        final ModelAndView mav = new ModelAndView("browseProducts");
+        mav.addObject("ProductsList", userService.getProducts());
+        return mav;
+    }
+
+    @GetMapping("/expenses")
+    public ModelAndView buyProducts() {
         final ModelAndView mav = new ModelAndView("expenses");
         mav.addObject("ProductsList", userService.checkProductsPurchased());
         return mav;

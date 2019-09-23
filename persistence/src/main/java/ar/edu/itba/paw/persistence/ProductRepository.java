@@ -9,6 +9,8 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ProductRepository extends SimpleRepository<Product> implements ProductDao {
@@ -33,5 +35,11 @@ public class ProductRepository extends SimpleRepository<Product> implements Prod
     @Override
     SimpleJdbcInsert getJdbcInsert() {
         return simpleJdbcInsert;
+    }
+
+    @Override
+    public List<Product> getAllProducts() {
+        List<Product> resultSet = jdbcTemplate.query("SELECT * FROM " + getTableName(), getRowMapper());
+        return resultSet;
     }
 }

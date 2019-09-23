@@ -12,6 +12,8 @@ public interface UserService {
 
     List<Product> checkProductsPurchased();
 
+    List<Product> getProducts();
+
     Map<?, List<?>> checkAllExpenses();
 
 //    boolean checkIn(long reservationID);
