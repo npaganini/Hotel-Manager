@@ -38,4 +38,17 @@ public class ChargeRepository extends SimpleRepository<Charge> implements Charge
     SimpleJdbcInsert getJdbcInsert() {
         return simpleJdbcInsert;
     }
+
+    @Override
+    public boolean addCharge(Charge product) {
+        try {
+            jdbcTemplate.execute("INSERT INTO " + getTableName()
+                    + " (productid, reservationid) "
+                    + "VALUES (" + product.getProductId() + ", " + product.getReservationId() + ");"
+            );
+        } catch (Exception sqlE) {
+            return false;
+        }
+        return true;
+    }
 }

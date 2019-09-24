@@ -29,6 +29,11 @@ public class Charge implements SqlObject {
         this.reservationId = resultSet.getLong(KEY_RESERVATIONID);
     }
 
+    public Charge(long productID, long reservationID) {
+        this.productId = productID;
+        this.reservationId = reservationID;
+    }
+
     @Override
     public Map<String, Object> toMap() {
         Map<String, Object> chargeToMap = new HashMap<>();
