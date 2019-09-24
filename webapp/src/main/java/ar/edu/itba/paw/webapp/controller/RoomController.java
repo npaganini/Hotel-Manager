@@ -1,19 +1,14 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.services.RoomService;
-import ar.edu.itba.paw.models.room.Room;
-import ar.edu.itba.paw.models.room.RoomType;
+import ar.edu.itba.paw.models.reservation.Reservation;
+import form.ReservationForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.sql.Date;
 
 @Controller
 @RequestMapping("/rooms")
@@ -28,33 +23,31 @@ public class RoomController {
     @GetMapping("")
     public ModelAndView getAllRooms() {
         final ModelAndView mav = new ModelAndView("index");
-        List<Room> r = new ArrayList<Room>();
-        Room h1 = new Room(RoomType.SIMPLE,100);
-        r.add(h1);
-
-        Room h2 = new Room(RoomType.DOUBLE,102);
-        r.add(h2);
-
-        Room h3 = new Room(RoomType.DOUBLE,103);
-        r.add(h3);
-
-        Room h4 = new Room(RoomType.TRIPLE,104);
-        r.add(h4);
-
-        mav.addObject("RoomList",r);
+        mav.addObject("RoomList", roomService.getRoomsList());
         return mav;
     }
 
     @GetMapping("/room/{id}")
-    public ModelAndView getRoom(@PathVariable  long id) {
-        final ModelAndView mav = new ModelAndView("romm");
+    public ModelAndView getRoom(@PathVariable long id) {
+        final ModelAndView mav = new ModelAndView("room");
         mav.addObject("RoomSelected", roomService.getRoom(id));
         return mav;
     }
 
-    @PostMapping("/checkin")
-    public void checkIn(long roomID, Calendar startDate, Calendar endDate) {
-        // do mark room as in-use
+    @GetMapping("/checkin")
+    public ModelAndView checkIn(@ModelAttribute("reservationForm") final ReservationForm form) {
+        final ModelAndView mav = new ModelAndView("checkin");
+        mav.addObject("allRooms", roomService.getRoomsList());
+        return mav;
+    }
+
+    @PostMapping("/checkinPost")
+    public ModelAndView checkInPost(@ModelAttribute("reservationForm") final ReservationForm form) {
+        final ModelAndView mav = new ModelAndView("checkinPost");
+        Reservation reserva = new Reservation(form.getRoomId(), form.getUserEmail(), Date.valueOf(form.getStartDate()).toLocalDate(), Date.valueOf(form.getEndDate()).toLocalDate());
+        roomService.doReservation(reserva);
+        mav.addObject("reserva", reserva);
+        return mav;
     }
 
     @PostMapping("/checkout")
@@ -62,3 +55,4 @@ public class RoomController {
         // do mark room as in-use
     }
 }
+

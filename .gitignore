@@ -5,6 +5,8 @@ webapp/target/*
 # Compiled class file
 *.class
 
+*.orig
+
 # Log file
 *.log
 
