@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.charge.Charge;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,16 +17,18 @@ import java.util.Map;
 
 @Getter
 @NoArgsConstructor
+@Setter
 @AllArgsConstructor
 public class Reservation implements SqlObject {
 
     public final static String KEY_ID = "id";
-    public final static String KEY_START_DATE = "startDate";
-    public final static String KEY_END_DATE = "endDate";
-    public final static String KEY_USER_EMAIL = "userEmail";
-    public final static String KEY_ROOM_ID = "roomId";
-
+    public final static String KEY_START_DATE = "start_date";
+    public final static String KEY_END_DATE = "end_date";
+    public final static String KEY_USER_EMAIL = "user_email";
+    public final static String KEY_ROOM_ID = "room_id";
     public final static String TABLE_NAME = "reservation";
+
+    private final static String KEY_USER_ID = "user_id";
 
     private long id;
     private LocalDate startDate;
@@ -33,6 +36,7 @@ public class Reservation implements SqlObject {
     private List<Charge> extraCharges = new ArrayList<>();
     private String userEmail;
     private long roomId;
+    private long userId;
 
     public Reservation(ResultSet resultSet) throws SQLException {
         this.id = resultSet.getLong(KEY_ID);
@@ -40,15 +44,15 @@ public class Reservation implements SqlObject {
         this.endDate = resultSet.getDate(KEY_END_DATE).toLocalDate();
         this.userEmail = resultSet.getString(KEY_USER_EMAIL);
         this.roomId = resultSet.getLong(KEY_ROOM_ID);
+        this.userId = resultSet.getLong(KEY_USER_ID);
     }
 
-    public Reservation(long roomId, String userEmail, LocalDate startDate, LocalDate endDate) {
+    public Reservation(long roomId, String userEmail, LocalDate startDate, LocalDate endDate, long userId) {
         this.startDate = startDate;
         this.roomId = roomId;
         this.endDate = endDate;
         this.userEmail = userEmail;
-        this. startDate = startDate;
-        this.endDate = endDate;
+        this.userId = userId;
     }
 
     @Override
@@ -59,6 +63,7 @@ public class Reservation implements SqlObject {
         reservationToMap.put(KEY_END_DATE, getEndDate());
         reservationToMap.put(KEY_USER_EMAIL, getUserEmail());
         reservationToMap.put(KEY_ROOM_ID, getRoomId());
+        reservationToMap.put(KEY_USER_ID, getUserId());
         return reservationToMap;
     }
 

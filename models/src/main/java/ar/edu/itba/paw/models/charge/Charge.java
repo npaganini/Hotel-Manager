@@ -14,8 +14,8 @@ import java.util.Map;
 public class Charge implements SqlObject {
 
     public final static String KEY_ID = "id";
-    public final static String KEY_PRODUCTID = "productId";
-    public final static String KEY_RESERVATIONID = "reservationId";
+    public final static String KEY_PRODUCTID = "product_id";
+    public final static String KEY_RESERVATIONID = "reservation_id";
 
     public final static String TABLE_NAME = "charge";
 

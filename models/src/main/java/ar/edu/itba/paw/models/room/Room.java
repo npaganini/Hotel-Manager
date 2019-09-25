@@ -4,6 +4,7 @@ import ar.edu.itba.paw.models.SqlObject;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,12 +12,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Getter
+@Setter
 @AllArgsConstructor
 public class Room implements SqlObject {
 
     public static final String KEY_ID = "id";
-    public static final String KEY_ROOM_TYPE = "roomType";
-    public static final String KEY_FREE_NOW = "isFreeNow";
+    public static final String KEY_ROOM_TYPE = "room_type";
+    public static final String KEY_FREE_NOW = "is_free_now";
     public static final String KEY_NUMBER = "number";
 
     public static final String TABLE_NAME = "room";
@@ -25,7 +27,6 @@ public class Room implements SqlObject {
     private RoomType roomType;
     private boolean freeNow;
     private int number; // > 0
-    private Reservation reserva;
 
     public Room(RoomType roomType, int number) {
         this.roomType = roomType;
@@ -50,10 +51,10 @@ public class Room implements SqlObject {
     @Override
     public Map<String, Object> toMap() {
         Map<String, Object> roomToMap = new HashMap<>();
-        roomToMap.put("id", getId());
-        roomToMap.put("roomType", getRoomType().toString());
-        roomToMap.put("freeNow", isFreeNow());
-        roomToMap.put("number", getNumber());
+        roomToMap.put(KEY_ID, getId());
+        roomToMap.put(KEY_ROOM_TYPE, getRoomType().toString());
+        roomToMap.put(KEY_FREE_NOW, isFreeNow());
+        roomToMap.put(KEY_NUMBER, getNumber());
         return roomToMap;
     }
 
@@ -62,8 +63,4 @@ public class Room implements SqlObject {
         this.id = id;
     }
 
-    public void setReserva(Reservation reserva) {
-        this.reserva = reserva;
-        this.freeNow = false;
-    }
 }

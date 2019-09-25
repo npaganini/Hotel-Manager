@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.models.product;
 
 import ar.edu.itba.paw.models.SqlObject;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.sql.ResultSet;
@@ -9,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Getter
+@AllArgsConstructor
 public class Product implements SqlObject {
 
     public final static String KEY_ID = "id";
@@ -25,6 +27,11 @@ public class Product implements SqlObject {
         this.id = resultSet.getLong(KEY_ID);
         this.description = resultSet.getString(KEY_DESCRIPTION);
         this.price = resultSet.getDouble(KEY_PRICE);
+    }
+
+    public Product(String description, double price) {
+        this.description = description;
+        this.price = price;
     }
 
     @Override

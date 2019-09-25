@@ -4,8 +4,9 @@ import ar.edu.itba.paw.interfaces.daos.RoomDao;
 import ar.edu.itba.paw.models.room.Room;
 import ar.edu.itba.paw.models.room.RoomType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
@@ -20,17 +21,36 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
 
     @Autowired
     public RoomRepository(DataSource dataSource) {
-        super(new JdbcTemplate(dataSource));
+        super(new NamedParameterJdbcTemplate(dataSource));
+        getHardcodedRooms().parallelStream().forEach(this::save);
     }
 
     @Override
     public List<Room> findAllFreeBetweenDates(LocalDate startDate, LocalDate endDate) {
-        return null;
+        /*MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+        parameterSource.addValue("startDate", startDate);
+        parameterSource.addValue("endDate", endDate);
+         return jdbcTemplateWithNamedParameter.query("SELECT r FROM " + getTableName() + " r NATURAL JOIN " + Reservation.TABLE_NAME
+                + " res" + " WHERE res.start_date <= :startDate AND res.end_date >= :endDate GROUP BY r.id",
+                parameterSource, getRowMapper()); */
+        return jdbcTemplateWithNamedParameter.getJdbcTemplate().query("SELECT * FROM " + getTableName() +
+                " r WHERE " + Room.KEY_FREE_NOW + " = true", getRowMapper());
     }
+
 
     @Override
     public List<Room> findByRoomType(RoomType roomType) {
-        return null;
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+        parameterSource.addValue("roomType", roomType);
+        return jdbcTemplateWithNamedParameter.query("SELECT * FROM " + getTableName() + " r WHERE r.room_type = :roomType",
+                parameterSource, getRowMapper());
+    }
+
+    @Override
+    public void reservateRoom(long roomId) {
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+        parameterSource.addValue("roomId", roomId);
+        jdbcTemplateWithNamedParameter.update("UPDATE " + Room.TABLE_NAME + " SET " + Room.KEY_FREE_NOW + " = false ", parameterSource);
     }
 
     @Override

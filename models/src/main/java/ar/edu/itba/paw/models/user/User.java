@@ -24,6 +24,10 @@ public class User implements SqlObject {
         this.email = resultSet.getString(KEY_EMAIL);
     }
 
+    public User(String email) {
+        this.email = email;
+    }
+
     @Override
     public Map<String, Object> toMap() {
         Map<String, Object> userToMap = new HashMap<>();

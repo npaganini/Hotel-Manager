@@ -9,8 +9,6 @@ public interface RoomService {
 
     List<Room> getRoomsList();
 
-    void setRooms();
-
     Room getRoom(long roomID);
 
     void doReservation(Reservation reserva);

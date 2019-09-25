@@ -11,7 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 import java.sql.Date;
 
 @Controller
-@RequestMapping("/rooms")
 public class RoomController {
     private final RoomService roomService;
 
@@ -20,41 +19,41 @@ public class RoomController {
         this.roomService = roomService;
     }
 
-    @GetMapping("")
+    @GetMapping("/")
     public ModelAndView getAllRooms() {
         final ModelAndView mav = new ModelAndView("index");
         mav.addObject("RoomList", roomService.getRoomsList());
         return mav;
     }
 
-    @GetMapping("/room/{id}")
+    @GetMapping("/rooms/room/{id}")
     public ModelAndView getRoom(@PathVariable long id) {
         final ModelAndView mav = new ModelAndView("room");
         mav.addObject("RoomSelected", roomService.getRoom(id));
         return mav;
     }
 
-    @GetMapping("/checkin")
+    @GetMapping("/rooms/checkin")
     public ModelAndView checkIn(@ModelAttribute("reservationForm") final ReservationForm form) {
         final ModelAndView mav = new ModelAndView("checkin");
         mav.addObject("allRooms", roomService.getRoomsList());
         return mav;
     }
 
-    @PostMapping("/checkinPost")
+    @PostMapping("/rooms/checkinPost")
     public ModelAndView checkInPost(@ModelAttribute("reservationForm") final ReservationForm form) {
         final ModelAndView mav = new ModelAndView("checkinPost");
-        Reservation reserva = new Reservation(form.getRoomId(), form.getUserEmail(), Date.valueOf(form.getStartDate()).toLocalDate(), Date.valueOf(form.getEndDate()).toLocalDate());
+        Reservation reserva = new Reservation(form.getRoomId(),
+                form.getUserEmail(), Date.valueOf(form.getStartDate()).toLocalDate(),
+                Date.valueOf(form.getEndDate()).toLocalDate(), 0L);
         roomService.doReservation(reserva);
         mav.addObject("reserva", reserva);
         return mav;
     }
 
-    @PostMapping("/checkout")
+    @PostMapping("/rooms/checkout")
     public void checkOut(long roomID) {
         // do mark room as in-use
     }
-
-
 
 }

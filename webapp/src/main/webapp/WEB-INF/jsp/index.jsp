@@ -107,13 +107,13 @@
             <td style="text-align: left">${room.id}</td>
             <td style="text-align: left">${room.number}</td>
             <td>${room.roomType}</td>
-           <c:if test="${room.freeNow== false}">
+           <c:if test="${room.freeNow == true}">
                 <td style="text-align: left">Si</td>
-                <td style="text-align: left">${room.reserva.startDate}</td>
-               <td style="text-align: left">${room.reserva.endDate}</td>
+                <td style="text-align: left"></td>
+               <td style="text-align: left"></td>
 
            </c:if>
-            <c:if test="${room.freeNow!= false}">
+            <c:if test="${room.freeNow == false}">
                 <td style="text-align: left">No</td>
                 <td style="text-align: left">-</td>
                 <td style="text-align: left">-</td>

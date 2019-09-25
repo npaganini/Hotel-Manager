@@ -3,14 +3,13 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.interfaces.daos.ProductDao;
 import ar.edu.itba.paw.models.product.Product;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class ProductRepository extends SimpleRepository<Product> implements ProductDao {
@@ -19,7 +18,8 @@ public class ProductRepository extends SimpleRepository<Product> implements Prod
 
     @Autowired
     public ProductRepository(DataSource dataSource) {
-        super(new JdbcTemplate(dataSource));
+        super(new NamedParameterJdbcTemplate(dataSource));
+        super.getHardcodedProducts().parallelStream().forEach(this::save);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class ProductRepository extends SimpleRepository<Product> implements Prod
 
     @Override
     public List<Product> getAllProducts() {
-        List<Product> resultSet = jdbcTemplate.query("SELECT * FROM " + getTableName(), getRowMapper());
+        List<Product> resultSet = jdbcTemplateWithNamedParameter.query("SELECT * FROM " + getTableName(), getRowMapper());
         return resultSet;
     }
 }

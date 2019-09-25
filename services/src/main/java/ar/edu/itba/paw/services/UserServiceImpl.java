@@ -2,6 +2,7 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.daos.ChargeDao;
 import ar.edu.itba.paw.interfaces.daos.ProductDao;
+import ar.edu.itba.paw.interfaces.daos.ReservationDao;
 import ar.edu.itba.paw.interfaces.daos.UserDao;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.charge.Charge;
@@ -19,22 +20,21 @@ public class UserServiceImpl implements UserService {
     private final ChargeDao chargeDao;
     private final UserDao userDao;
 
-//    private List<Product> productsList;
     private String[] toursList = {"City Tour"};
     private String[] classesList = {"Clase de Tango"};
+    private final ReservationDao reservationDao;
 
     @Autowired
-    public UserServiceImpl(ProductDao productDao, UserDao userDao, ChargeDao chargeDao) {
+    public UserServiceImpl(ProductDao productDao, UserDao userDao, ChargeDao chargeDao, ReservationDao reservationDao) {
         this.productDao = productDao;
         this.chargeDao = chargeDao;
         this.userDao = userDao;
+        this.reservationDao = reservationDao;
     }
 
     @Override
     public List<Product> getProducts() {
-        List<Product> productList = new LinkedList<>();
-        productList.addAll(productDao.getAllProducts());
-        return productList;
+        return  new LinkedList<>(productDao.getAllProducts());
     }
 
     @Override
@@ -47,24 +47,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Product> checkProductsPurchased() {
-        List<Product> productList = new LinkedList<>();
-        productList.addAll(productDao.getAllProducts());
-        return productList;
+        return new LinkedList<>(productDao.getAllProducts());
     }
 
     @Override
     public Map<String, List<?>> checkAllExpenses() {
         List<?> minibar = checkProductsPurchased();
         List<?> services = checkServicesUsed();
-        Map<String, List<?>> expenses = new HashMap<>();
-//        expenses.put("Minibar", minibar);
+        //        expenses.put("Minibar", minibar);
 //        expenses.put("Other services", services);
-        return expenses;
+        return new HashMap<>();
     }
 
     @Override
     public long getReservation(long userID) {
-        return 2;
+        return reservationDao.findLastReservationByUserId(userID).getId();
     }
 
     @Override
