@@ -53,8 +53,8 @@ public class WebConfig implements WebMvcConfigurer {
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
 
-        mailSender.setUsername("tdallas@itba.edu.ar");
-        mailSender.setPassword("password");
+        mailSender.setUsername("paw.hotel.manager@gmail.com");
+        mailSender.setPassword("hotelM.123");
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
