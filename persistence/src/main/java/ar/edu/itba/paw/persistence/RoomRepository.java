@@ -22,7 +22,9 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
     @Autowired
     public RoomRepository(DataSource dataSource) {
         super(new NamedParameterJdbcTemplate(dataSource));
-        getHardcodedRooms().parallelStream().forEach(this::save);
+        if (jdbcTemplateWithNamedParameter.getJdbcTemplate()
+                .query("SELECT * FROM " + Room.TABLE_NAME, getRowMapper()).size() == 0)
+            getHardcodedRooms().parallelStream().forEach(this::save);
     }
 
     @Override
@@ -50,7 +52,8 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
     public void reservateRoom(long roomId) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
         parameterSource.addValue("roomId", roomId);
-        jdbcTemplateWithNamedParameter.update("UPDATE " + Room.TABLE_NAME + " SET " + Room.KEY_FREE_NOW + " = false ", parameterSource);
+        jdbcTemplateWithNamedParameter.update("UPDATE " + Room.TABLE_NAME + " SET " + Room.KEY_FREE_NOW + " " +
+                "= false WHERE id = :roomId ", parameterSource);
     }
 
     @Override

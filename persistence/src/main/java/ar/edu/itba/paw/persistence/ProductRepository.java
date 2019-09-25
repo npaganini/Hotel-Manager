@@ -19,7 +19,9 @@ public class ProductRepository extends SimpleRepository<Product> implements Prod
     @Autowired
     public ProductRepository(DataSource dataSource) {
         super(new NamedParameterJdbcTemplate(dataSource));
-        super.getHardcodedProducts().parallelStream().forEach(this::save);
+        if (jdbcTemplateWithNamedParameter.getJdbcTemplate()
+                .query("SELECT * FROM " + Product.TABLE_NAME, getRowMapper()).size() == 0)
+            getHardcodedProducts().parallelStream().forEach(this::save);
     }
 
     @Override

@@ -1,6 +1,9 @@
 package ar.edu.itba.paw.services;
 
-import ar.edu.itba.paw.interfaces.daos.*;
+import ar.edu.itba.paw.interfaces.daos.ReservationDao;
+import ar.edu.itba.paw.interfaces.daos.RoomDao;
+import ar.edu.itba.paw.interfaces.daos.UserDao;
+import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.RoomService;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
@@ -11,22 +14,22 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.List;
 
-import static ar.edu.itba.paw.models.room.RoomType.*;
-
 @Component
 public class RoomServiceImpl implements RoomService {
 
     private final ReservationDao reservationDao;
     private final RoomDao roomDao;
     private final UserDao userDao;
+    private final EmailService emailService;
 
 
     @Autowired
-    public RoomServiceImpl(RoomDao roomDao, UserDao userDao, ReservationDao reservationDao) {
+    public RoomServiceImpl(RoomDao roomDao, UserDao userDao, ReservationDao reservationDao, EmailService emailService) {
         this.reservationDao = reservationDao;
         this.roomDao = roomDao;
         this.userDao = userDao;
 
+        this.emailService = emailService;
     }
 
     public List<Room> getRoomsList() {
@@ -49,5 +52,7 @@ public class RoomServiceImpl implements RoomService {
         }
         reservationDao.save(reserva);
         roomDao.reservateRoom(reserva.getRoomId());
+        emailService.sendConfirmationOfReservation(reserva.getUserEmail(), "Reserva confirmada",
+                "Su reserva ha sido confirmada!");
     }
 }
