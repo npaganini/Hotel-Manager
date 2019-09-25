@@ -19,7 +19,7 @@
 <div class="form-group" style="grid-auto-columns: auto">
     <h3>Products Ofrecidos:</h3>
     <c:set var="colCounter" value="0" scope="page"/>
-    <form:form method="POST" action="buyProducts" modelAttribute="buyProducts">
+    <form:form method="POST" action="buyProducts" modelAttribute="ProductForm">
         <c:forEach var="product" items="${ProductsList}">
             <c:if test="${colCounter%4 == 0}">
                 <div class="row text-center">

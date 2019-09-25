@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("/user/{userId}")
+@RequestMapping("/user/{reservationID}")
 public class UserController {
     private final UserService userService;
 
@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public ModelAndView getAllExpenses(@PathVariable String userId) {
+    public ModelAndView getAllExpenses(@PathVariable String reservationID) {
         final ModelAndView mav = new ModelAndView("expenses");
         mav.addObject("ExpensesList", userService.checkAllExpenses());
         return mav;
@@ -38,25 +38,28 @@ public class UserController {
 //    }
 
     @GetMapping("/products")
-    public ModelAndView getAllProducts(@PathVariable String userId) {
+    public ModelAndView getAllProducts(@PathVariable String reservationID) {
         final ModelAndView mav = new ModelAndView("browseProducts");
         mav.addObject("ProductsList", userService.getProducts());
         return mav;
     }
 
     @GetMapping("/expenses")
-    public ModelAndView boughtProducts(@PathVariable String userId) {
+    public ModelAndView boughtProducts(@PathVariable String reservationID) {
         final ModelAndView mav = new ModelAndView("expenses");
         mav.addObject("ProductsList", userService.checkProductsPurchased());
         return mav;
     }
 
     @PostMapping("/buyProducts")
-    public ModelAndView buyProducts(@ModelAttribute("reservationForm") final ProductsForm form, @PathVariable String userId) {
+    public ModelAndView buyProducts(@ModelAttribute("ProductForm") final ProductsForm form, @PathVariable String reservationID) {
         final ModelAndView mav = new ModelAndView("buyProducts");
-        Charge charge = new Charge(form.getProductId(), userService.getReservation(Long.parseLong(userId)));
-        mav.addObject("charge", userService.addCharge(charge));
-        return mav;
+        if(form != null) {
+            Charge charge = new Charge((long) 2, userService.getReservation(reservationID));
+            mav.addObject("charge", userService.addCharge(charge));
+            return mav;
+        }
+        return new ModelAndView("redirect:/products");
     }
 
 }
