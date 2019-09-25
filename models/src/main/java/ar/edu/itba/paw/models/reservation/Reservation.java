@@ -10,10 +10,7 @@ import lombok.Setter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Getter
 @NoArgsConstructor
@@ -26,6 +23,8 @@ public class Reservation implements SqlObject {
     public final static String KEY_END_DATE = "end_date";
     public final static String KEY_USER_EMAIL = "user_email";
     public final static String KEY_ROOM_ID = "room_id";
+    public final static String KEY_HASH = "hash";
+
     public final static String TABLE_NAME = "reservation";
 
     private final static String KEY_USER_ID = "user_id";
@@ -37,6 +36,7 @@ public class Reservation implements SqlObject {
     private String userEmail;
     private long roomId;
     private long userId;
+    private String hash = UUID.randomUUID().toString();
 
     public Reservation(ResultSet resultSet) throws SQLException {
         this.id = resultSet.getLong(KEY_ID);
@@ -45,6 +45,7 @@ public class Reservation implements SqlObject {
         this.userEmail = resultSet.getString(KEY_USER_EMAIL);
         this.roomId = resultSet.getLong(KEY_ROOM_ID);
         this.userId = resultSet.getLong(KEY_USER_ID);
+        this.hash = resultSet.getString(KEY_HASH);
     }
 
     public Reservation(long roomId, String userEmail, LocalDate startDate, LocalDate endDate, long userId) {
@@ -64,11 +65,16 @@ public class Reservation implements SqlObject {
         reservationToMap.put(KEY_USER_EMAIL, getUserEmail());
         reservationToMap.put(KEY_ROOM_ID, getRoomId());
         reservationToMap.put(KEY_USER_ID, getUserId());
+        reservationToMap.put(KEY_HASH, getHash());
         return reservationToMap;
     }
 
     @Override
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String toString() {
+        return "Reservation id: " + id + " for " + startDate + " to " + endDate + ". User: " + userEmail + " and hash " + hash;
     }
 }

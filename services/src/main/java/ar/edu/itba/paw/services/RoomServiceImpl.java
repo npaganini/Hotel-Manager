@@ -53,6 +53,7 @@ public class RoomServiceImpl implements RoomService {
         reservationDao.save(reserva);
         roomDao.reservateRoom(reserva.getRoomId());
         emailService.sendConfirmationOfReservation(reserva.getUserEmail(), "Reserva confirmada",
-                "Su reserva ha sido confirmada!");
+                "Su reserva ha sido confirmada! " +
+                        "Hash de la reserva: " + reserva.getHash());
     }
 }

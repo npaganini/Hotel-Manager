@@ -27,17 +27,17 @@ public abstract class SimpleRepository<T extends SqlObject> implements SimpleDao
                 new SimpleJdbcInsert(jdbcTemplateWithNamedParameter.getJdbcTemplate())
                         .withTableName(getTableName())
                         .usingGeneratedKeyColumns(KEY_ID);
-        if (getTableName().equals(Product.TABLE_NAME)) jdbcTemplateWithNamedParameter.getJdbcTemplate()
-                .execute("CREATE TABLE IF NOT EXISTS " + getTableName() + " (" +
+        jdbcTemplateWithNamedParameter.getJdbcTemplate()
+                .execute("CREATE TABLE IF NOT EXISTS " + Product.TABLE_NAME + " (" +
                         "id SERIAL PRIMARY KEY, " +
                         "description VARCHAR(150), " +
                         "price DOUBLE PRECISION);");
-        if (getTableName().equals(User.TABLE_NAME)) jdbcTemplateWithNamedParameter.getJdbcTemplate()
-                .execute("CREATE TABLE IF NOT EXISTS " + getTableName() + " (" +
+        jdbcTemplateWithNamedParameter.getJdbcTemplate()
+                .execute("CREATE TABLE IF NOT EXISTS " + User.TABLE_NAME + " (" +
                         "id SERIAL PRIMARY KEY ," +
                         "email varchar(100));");
-        if (getTableName().equals(Room.TABLE_NAME)) jdbcTemplateWithNamedParameter.getJdbcTemplate()
-                .execute("CREATE TABLE IF NOT EXISTS " + getTableName() + " (" +
+        jdbcTemplateWithNamedParameter.getJdbcTemplate()
+                .execute("CREATE TABLE IF NOT EXISTS " + Room.TABLE_NAME + " (" +
                         "id SERIAL PRIMARY KEY, " +
                         "room_type VARCHAR(15), " +
                         "is_free_now BOOLEAN, " +
