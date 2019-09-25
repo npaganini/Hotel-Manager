@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.sql.Date;
 
 @Controller
+@RequestMapping("/rooms")
 public class RoomController {
     private final RoomService roomService;
 
