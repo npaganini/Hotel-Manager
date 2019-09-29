@@ -1,6 +1,7 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <html>
 <head>
     <title>User</title>
@@ -19,7 +20,7 @@
 <div class="form-group" style="grid-auto-columns: auto">
     <h3>Products Ofrecidos:</h3>
     <c:set var="colCounter" value="0" scope="page"/>
-    <form:form method="POST" action="buyProducts" modelAttribute="ProductForm">
+    <form:form modelAttribute="productForm" method="POST" action="buyProducts" >
         <c:forEach var="product" items="${ProductsList}">
             <c:if test="${colCounter%4 == 0}">
                 <div class="row text-center">
@@ -31,7 +32,8 @@
                             <h5 class="card-title text-center">${product.description}</h5>
                             <p class="card-text price text-center">$${product.price}</p>
                             <c:set var="productID" value="${product.id}"/>
-                            <input type="hidden" name="product" value="<c:out value='${productID}'/>"/>
+                            <input type="hidden" name="product" value="<c:out value='${productID}'/>"/> <%-- should be hash --%>
+<%--                            <form:hidden path="productID"/>--%>
                             <input class="btn btn-primary" type="submit" value="Comprar"/>
                         </div>
                     </div>
@@ -44,4 +46,9 @@
     </form:form>
 </div>
 </body>
+<script>
+    $(document).ready(function() {
+        //
+    });
+</script>
 </html>
