@@ -20,7 +20,6 @@
 <div class="form-group" style="grid-auto-columns: auto">
     <h3>Products Ofrecidos:</h3>
     <c:set var="colCounter" value="0" scope="page"/>
-    <form:form modelAttribute="productForm" method="POST" action="buyProducts" >
         <c:forEach var="product" items="${ProductsList}">
             <c:if test="${colCounter%4 == 0}">
                 <div class="row text-center">
@@ -31,10 +30,12 @@
                         <div class="card-body text-center">
                             <h5 class="card-title text-center">${product.description}</h5>
                             <p class="card-text price text-center">$${product.price}</p>
+<form:form modelAttribute="productForm" method="POST" action="buyProducts" >
                             <c:set var="productID" value="${product.id}"/>
                             <input type="hidden" name="product" value="<c:out value='${productID}'/>"/> <%-- should be hash --%>
 <%--                            <form:hidden path="productID"/>--%>
                             <input class="btn btn-primary" type="submit" value="Comprar"/>
+</form:form>
                         </div>
                     </div>
                 </div>
@@ -43,7 +44,6 @@
                 </div>
             </c:if>
         </c:forEach>
-    </form:form>
 </div>
 </body>
 <script>
