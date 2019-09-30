@@ -8,7 +8,6 @@
 
 <head>
 
-    <link href="/resources/CSS/slideBar.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="/resources/js/jquery.min.js"></script>
     <script src="/resources/js/bootstrap.min.js"></script>
@@ -20,19 +19,7 @@
 
 </head>
 <body >
-<!-- Image and text -->
-<nav class="navbar navbar-inverse" style="margin-bottom: 0; border-radius: 0" >
-    <div class="container-fluid" >
-        <div class="navbar-header">
-            <div class="col" style="text-align: left" >
-                <a class="navbar-brand" href="#">e-Lobby</a>
-            </div>
-        </div>
-
-    </div>
-</nav>
-
-<nav class="navbar navbar-inverse sidebar" role="navigation">
+<nav class="navbar navbar-inverse sidebar" style="z-index: initial !important;" role="navigation">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -83,78 +70,76 @@
 </nav>
 <c:url value="/rooms/checkinPost" var="postPath"/>
 <form:form modelAttribute="reservationForm" action="${postPath}" method="post">
-<div class="container cont" style="grid-auto-columns: auto; width: 100vw !important;margin-left: 0 !important; margin-right: 0 !important" >
-    <br>
-    <br>
-    <div class="row" style="height: 45px" >
-        <div class="col myheader" style="grid-auto-columns: auto">
-            Check-in
+    <div class="container cont" style="height: 100vh !important; width: 100vw !important;" >
+        <div class="row">
+            <div class="col myheader" style="grid-auto-columns: auto">
+                Check-in
+            </div>
         </div>
-    </div>
         <br>
         <br>
-    <div class="row" style="height: 45px">
-        <div class="col-xs-5">
-            <div class="form-question">
-                <div class="form-question__title">
-                    <form:label class="items" path="startDate">Desde: </form:label>
+        <div class="row" style="height: 45px">
+            <div class="col-xs-5">
+                <div class="form-question">
+                    <div class="form-question__title">
+                        <form:label class="items" path="startDate">Desde: </form:label>
 
+                    </div>
+
+                    <div class="input-container">
+                        <form:input id="from_date" path="startDate" type="date" name="effective-date" minlength="1" maxlength="64" placeholder=" " autocomplete="nope" required="required"></form:input>
+                        <span class="bar"></span>
+                    </div>
                 </div>
-
-                <div class="input-container">
-                    <form:input id="from_date" path="startDate" type="date" name="effective-date" minlength="1" maxlength="64" placeholder=" " autocomplete="nope" required="required"></form:input>
-                    <span class="bar"></span>
+            </div>
+            <div class="col-xs-5">
+                <div class="form-question">
+                    <div class="form-question__title">
+                        <form:label class="items" path="endDate">Hasta: </form:label>
+                    </div>
+                    <div class="input-container">
+                        <form:input id="to_date" path="endDate" type="date" name="effective-date" minlength="1" maxlength="64" placeholder=" " autocomplete="nope" required="required"></form:input>
+                        <span class="bar"></span>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-xs-5">
-            <div class="form-question">
-                <div class="form-question__title">
-                    <form:label class="items" path="endDate">Hasta: </form:label>
+        <br>
+
+        <div class="row" style="height: 45px">
+            <div class="col-xs-5">
+                <form:label class="items" path="roomId">Habitacion: </form:label>
+                <div id="room_number">
+                    <form:select path="roomId">
+                        <form:option value="0">-</form:option>
+                        <c:forEach var="room" items="${allRooms}">
+                            <c:if test="${room.freeNow == true}">
+                                <form:option value="${room.id}"> ${room.number}</form:option>
+                            </c:if>
+                        </c:forEach>
+                    </form:select>
                 </div>
-                <div class="input-container">
-                    <form:input id="to_date" path="endDate" type="date" name="effective-date" minlength="1" maxlength="64" placeholder=" " autocomplete="nope" required="required"></form:input>
-                    <span class="bar"></span>
+            </div>
+            <div class="col-xs-5">
+                <form:label class="items" path="userEmail">Email del titular: </form:label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                    <form:input id="email" path="userEmail" type="text" class="form-control" name="email" placeholder="Email"></form:input>
                 </div>
             </div>
         </div>
-    </div>
-    <br>
 
-    <div class="row" style="height: 45px">
-        <div class="col-xs-5">
-            <form:label class="items" path="roomId">Habitacion: </form:label>
-            <div id="room_number">
-                <form:select path="roomId">
-                    <form:option value="0">-</form:option>
-                    <c:forEach var="room" items="${allRooms}">
-                        <c:if test="${room.freeNow == true}">
-                        <form:option value="${room.id}"> ${room.number}</form:option>
-                        </c:if>
-                    </c:forEach>
-                </form:select>
+        <div class="row" style="height: 45px">
+            <br><br>
+            <div class="col-xs-2">
+                <input type="submit" value="Reservar"/>
             </div>
-        </div>
-         <div class="col-xs-5">
-             <form:label class="items" path="userEmail">Email del titular: </form:label>
-              <div class="input-group">
-                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                  <form:input id="email" path="userEmail" type="text" class="form-control" name="email" placeholder="Email"></form:input>
-             </div>
-         </div>
-    </div>
+            <div class="col-xs-2">
+                <button type="button" class="btn btn-danger btn-lg"><a href="/rooms/checkin" style="color: white">Cancelar</a> </button>
+            </div>
 
-    <div class="row" style="height: 45px">
-        <br><br>
-        <div class="col-xs-2">
-            <input type="submit" value="Reservar"/>
         </div>
-        <div class="col-xs-2">
-            <button type="button" class="btn btn-danger btn-lg"><a href="/rooms/checkin" style="color: white">Cancelar</a> </button>
-        </div>
-
     </div>
-</div>
 </form:form>
 </body>
 
@@ -162,4 +147,3 @@
 </script>
 
 </html>
-

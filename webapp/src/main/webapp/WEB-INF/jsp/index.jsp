@@ -5,7 +5,6 @@
 
 <head>
 
-<link href="/resources/CSS/slideBar.css" rel="stylesheet">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 <script src="/resources/js/jquery.min.js"></script>
 <script src="/resources/js/bootstrap.min.js"></script>
@@ -17,19 +16,10 @@
 
 </head>
 <body >
-<!-- Image and text -->
-<nav class="navbar navbar-inverse" style="margin-bottom: 0; border-radius: 0" >
-    <div class="container-fluid" >
-        <div class="navbar-header">
-              <div class="col" style="text-align: left" >
-                  <a class="navbar-brand" href="#">e-Lobby</a>
-              </div>
-        </div>
-
-    </div>
-</nav>
-
-<nav class="navbar navbar-inverse sidebar" role="navigation">
+<div class="container cont" style="height: 100vh !important; width: 100vw !important;margin-left: 0 !important; margin-right: 0 !important" >
+<div class="row">
+    <div class="col">
+    <nav class="navbar navbar-inverse sidebar" style="z-index: initial !important;" role="navigation">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -78,17 +68,19 @@
         </div>
     </div>
 </nav>
-<div class="container cont" style="grid-auto-columns: auto; width: 100vw !important;margin-left: 0 !important; margin-right: 0 !important" >
-    <br>
-    <br>
-    <div class="row"  >
-        <div class="col myheader" style="grid-auto-columns: auto">
-            Habitaciones
+    </div>
+</div>
+    <div class="row myheader"  >
+        <div class="col-xs-6 " style="text-align: left" >Habitaciones</div>
+        <div class="col-xs-6" style="text-align: right">
+            <button type="button" class="btn btn-danger btn-lg" style="height: 35px !important;" ><a href="/rooms/reservation" style="color: white">Nueva Reserva</a> </button>
+
         </div>
+    </div>
         <br>
-        <div class = "col" style="text-align: right; margin-right: 20px"><button type="button" class="btn btn-danger btn-lg"><a href="/rooms/checkin" style="color: white">Nueva Reserva</a> </button></div>
         <br>
-        <div class="col-xs-10 form-group" style="z-index:9999;grid-auto-columns: auto">
+        <div class="row">
+        <div class="col-xs-12 form-group" style="z-index:9999;grid-auto-columns: auto">
         <table id="myTable" >
             <thead>
             <tr>
@@ -125,6 +117,7 @@
             </c:forEach>
             </tbody>
          </table>
+        </div>
         </div>
 
     </div>
