@@ -30,12 +30,16 @@
                         <div class="card-body text-center">
                             <h5 class="card-title text-center">${product.description}</h5>
                             <p class="card-text price text-center">$${product.price}</p>
-<form:form modelAttribute="productForm" method="POST" action="buyProducts" >
+<%--<form:form modelAttribute="productForm" method="POST" action="buyProducts" >--%>
                             <c:set var="productID" value="${product.id}"/>
-                            <input type="hidden" name="product" value="<c:out value='${productID}'/>"/> <%-- should be hash --%>
 <%--                            <form:hidden path="productID"/>--%>
-                            <input class="btn btn-primary" type="submit" value="Comprar"/>
-</form:form>
+<%--                            <input class="btn btn-primary" type="submit" value="Comprar"/>--%>
+<%--                            <a href="${pageContext.request.contextPath}/buyProduct?id=${product.id}">Comprar</a>--%>
+                            <form action="buyProducts.jsp" name="buyProducts" method="post">
+                                <input type="hidden" name="product" value="<c:out value='${productID}'/>"/> <%-- should be hash --%>
+                                <a href="buyProducts?id=${product.id}">Comprar</a>
+                            </form>
+<%--</form:form>--%>
                         </div>
                     </div>
                 </div>

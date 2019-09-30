@@ -21,6 +21,8 @@ public interface UserService {
 
     long getReservation(String reservationHash);
 
+    long getProduct(String productHash);
+
     boolean addCharge(Charge product);
 
 //    boolean checkIn(long reservationID);

@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.jws.WebParam;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,29 +52,42 @@ public class UserController {
         return mav;
     }
 
+    @GetMapping("/buyProducts")
+
     @PostMapping("/buyProducts")
-    public ModelAndView buyProducts(@ModelAttribute("productForm") final ProductsForm form, @PathVariable String reservationID, BindingResult result, ModelMap model) {
-// Field error in object 'ProductForm' on field 'productId': rejected value [null];
-// codes [typeMismatch.ProductForm.productId,typeMismatch.productId,typeMismatch.long,typeMismatch];
-// arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [ProductForm.productId,productId];
-// arguments []; default message [productId]]; default message [Failed to convert value of type 'null' to required type 'long';
-// nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [null] to type [long] for value 'null';
-// nested exception is java.lang.IllegalArgumentException: A null value cannot be assigned to a primitive type]]
-
-
-// The request sent by the client was syntactically incorrect. BAD REQUEST STATUS 400
-        if (result.hasErrors()) {
-            return new ModelAndView("redirect:/products");
-        }
-        final ModelAndView mav = new ModelAndView("buyProducts");
-//        model.addAttribute("productID", form.getProductId());
-        if(form != null) {
-//            Charge charge = new Charge((Long) model.get("productID"), userService.getReservation(reservationID));
-            Charge charge = new Charge(form.getProductId(), userService.getReservation(reservationID));
+    public ModelAndView buyProduct(@RequestParam(name = "id") String product_hash, @PathVariable String reservationID) {
+        if(product_hash != null) {
+            final ModelAndView mav = new ModelAndView("buyProducts");
+            Charge charge = new Charge(userService.getProduct(product_hash), userService.getReservation(reservationID));
             mav.addObject("charge", userService.addCharge(charge));
             return mav;
         }
         return new ModelAndView("redirect:/products");
     }
+
+//    @PostMapping("/buyProducts")
+//    public ModelAndView buyProducts(@ModelAttribute("productForm") final ProductsForm form, @PathVariable String reservationID, BindingResult result, ModelMap model) {
+//// Field error in object 'ProductForm' on field 'productId': rejected value [null];
+//// codes [typeMismatch.ProductForm.productId,typeMismatch.productId,typeMismatch.long,typeMismatch];
+//// arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [ProductForm.productId,productId];
+//// arguments []; default message [productId]]; default message [Failed to convert value of type 'null' to required type 'long';
+//// nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [null] to type [long] for value 'null';
+//// nested exception is java.lang.IllegalArgumentException: A null value cannot be assigned to a primitive type]]
+//
+//
+//// The request sent by the client was syntactically incorrect. BAD REQUEST STATUS 400
+//        if (result.hasErrors()) {
+//            return new ModelAndView("redirect:/products");
+//        }
+//        final ModelAndView mav = new ModelAndView("buyProducts");
+////        model.addAttribute("productID", form.getProductId());
+//        if(form != null) {
+////            Charge charge = new Charge((Long) model.get("productID"), userService.getReservation(reservationID));
+//            Charge charge = new Charge(form.getProductId(), userService.getReservation(reservationID));
+//            mav.addObject("charge", userService.addCharge(charge));
+//            return mav;
+//        }
+//        return new ModelAndView("redirect:/products");
+//    }
 
 }
