@@ -57,8 +57,9 @@ public class RoomController {
     }
 
     @GetMapping("/rooms/reservations")
-    public void reservations(){
-
+    public ModelAndView reservations() {
+        final ModelAndView mav = new ModelAndView("reservations");
+        return mav;
     }
 
 }

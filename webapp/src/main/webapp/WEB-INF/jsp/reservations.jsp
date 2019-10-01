@@ -11,6 +11,24 @@
     <link href="/resources/CSS/my_style.css" rel="stylesheet">
     <script src='https://kit.fontawesome.com/a076d05399.js'></script>
 
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+
 </head>
 <body>
 <div class="container cont" style="height: 100vh !important; width: 100vw !important;margin-left: 0 !important; margin-right: 0 !important" >
@@ -54,21 +72,18 @@
         </div>
     </div>
     <div class="row myheader">
-        <div class="col-xs-12 " style="text-align: left" >Reservacion</div>
+        <div class="col-xs-12 " style="text-align: left" >Reservas</div>
     </div>
     <br>
     <br>
     <div class="row" style="height: 45px">
         <div class="col-xs-12">
             <table>
-                <thead>
                 <tr>
                     <th>Company</th>
                     <th>Contact</th>
                     <th>Country</th>
                 </tr>
-                </thead>
-                <tbody>
                 <tr>
                     <td>Alfreds Futterkiste</td>
                     <td>Maria Anders</td>
@@ -99,7 +114,6 @@
                     <td>Giovanni Rovelli</td>
                     <td>Italy</td>
                 </tr>
-                </tbody>
             </table>
 
         </div>

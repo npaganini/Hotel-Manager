@@ -6,13 +6,13 @@
 <head>
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-<script src="/resources/js/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 <script src="/resources/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/resources/js/slideBar.js"></script>
-<link href="http://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
-<script type="text/javascript" src="/resources/js/jquery.dataTables.min.js"></script>
 <link href="/resources/CSS/my_style.css" rel="stylesheet">
 <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+<script src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js'></script>
 
 </head>
 <body >
@@ -67,7 +67,7 @@
         <br>
         <div class="row">
         <div class="col-xs-12 form-group" style="z-index:9999;grid-auto-columns: auto">
-        <table id="myTable" >
+        <table id="myTable" class="display" style="width:100%" >
             <thead>
             <tr>
                 <th>ID</th>
@@ -112,7 +112,10 @@
 
 <script>
 $(document).ready( function () {
-$('#myTable').DataTable();
+$('#myTable').DataTable({
+    "info" : false,
+    "search" : false
+});
 } );
 </script>
 
