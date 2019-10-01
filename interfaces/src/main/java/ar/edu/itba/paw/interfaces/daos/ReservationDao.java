@@ -6,4 +6,6 @@ import java.security.cert.Extension;
 
 public interface ReservationDao extends SimpleDao<Reservation> {
     Reservation findLastReservationByUserId(long userID);
+
+    Reservation findReservationByHash(String hash);
 }
