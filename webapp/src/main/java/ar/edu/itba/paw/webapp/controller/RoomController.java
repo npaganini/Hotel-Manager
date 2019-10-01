@@ -56,4 +56,9 @@ public class RoomController {
         // do mark room as in-use
     }
 
+    @GetMapping("/rooms/reservations")
+    public void reservations(){
+
+    }
+
 }
