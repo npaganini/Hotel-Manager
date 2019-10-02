@@ -33,8 +33,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     public List<Room> getRoomsList() {
-        LocalDate lastYear = LocalDate.now().withYear(2018);
-        return roomDao.findAllFreeBetweenDates(lastYear, LocalDate.now());
+        return roomDao.findAllFree();
     }
 
     @Override
