@@ -16,17 +16,23 @@ public class Product implements SqlObject {
     public final static String KEY_ID = "id";
     public final static String KEY_DESCRIPTION = "description";
     public final static String KEY_PRICE = "price";
+    public final static String KEY_FILE_PATH = "file_path";
+    public final static String KEY_ENABLE = "enable";
 
     public final static String TABLE_NAME = "product";
 
     private long id;
     private String description;
     private double price;
+    private String filePath;
+    private boolean enable;
 
     public Product(ResultSet resultSet) throws SQLException {
         this.id = resultSet.getLong(KEY_ID);
         this.description = resultSet.getString(KEY_DESCRIPTION);
         this.price = resultSet.getDouble(KEY_PRICE);
+        this.filePath = resultSet.getString(KEY_FILE_PATH);
+        this.enable = resultSet.getBoolean(KEY_ENABLE);
     }
 
     public Product(String description, double price) {
@@ -40,17 +46,14 @@ public class Product implements SqlObject {
         productToMap.put(KEY_ID, getId());
         productToMap.put(KEY_DESCRIPTION, getDescription());
         productToMap.put(KEY_PRICE, getPrice());
+        productToMap.put(KEY_FILE_PATH, getFilePath());
+        productToMap.put(KEY_ENABLE, isEnable());
         return productToMap;
     }
 
     @Override
     public void setId(long id) {
         this.id = id;
-    }
-
-    @Override
-    public String toString() {
-        return "" + this.description;
     }
 
 }
