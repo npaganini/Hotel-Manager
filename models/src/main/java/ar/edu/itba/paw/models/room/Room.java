@@ -28,24 +28,11 @@ public class Room implements SqlObject {
     private boolean freeNow;
     private int number; // > 0
 
-    public Room(RoomType roomType, int number) {
-        this.roomType = roomType;
-        this.number = number;
-        this.freeNow = true;
-    }
-
     public Room(ResultSet resultSet) throws SQLException {
         this.id = resultSet.getLong(KEY_ID);
         this.roomType = RoomType.valueOf(resultSet.getString(KEY_ROOM_TYPE));
         this.freeNow = resultSet.getBoolean(KEY_FREE_NOW);
         this.number = resultSet.getInt(KEY_NUMBER);
-    }
-
-    public Room(int id, RoomType roomType, int roomFloor, int number) {
-        this.roomType = roomType;
-        this.number = number;
-        this.id = id;
-        this.freeNow = true;
     }
 
     @Override
