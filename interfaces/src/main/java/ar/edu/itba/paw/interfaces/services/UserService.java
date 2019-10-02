@@ -19,17 +19,10 @@ public interface UserService {
 
     long getReservation(long userID);
 
-    long getReservation(String reservationHash);
+    long getReservationID(String reservationHash);
 
-    long getProduct(String productHash);
+    long getProductID(String productHash);
 
     boolean addCharge(Charge product);
 
-//    boolean checkIn(long reservationID);
-//
-//    boolean checkOut(long reservationID);
-//
-//    boolean checkOut(int roomNumber);
-//
-//    boolean checkOut();
 }

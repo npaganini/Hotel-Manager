@@ -21,7 +21,7 @@
     <h3>Products Ofrecidos:</h3>
     <c:set var="colCounter" value="0" scope="page"/>
         <c:forEach var="product" items="${ProductsList}">
-            <c:if test="${colCounter%4 == 0}">
+            <c:if test="${colCounter%3 == 0}">
                 <div class="row text-center">
             </c:if>
                 <div class="col-sm-3">
@@ -30,16 +30,10 @@
                         <div class="card-body text-center">
                             <h5 class="card-title text-center">${product.description}</h5>
                             <p class="card-text price text-center">$${product.price}</p>
-<%--<form:form modelAttribute="productForm" method="POST" action="buyProducts" >--%>
-                            <c:set var="productID" value="${product.id}"/>
-<%--                            <form:hidden path="productID"/>--%>
-<%--                            <input class="btn btn-primary" type="submit" value="Comprar"/>--%>
-<%--                            <a href="${pageContext.request.contextPath}/buyProduct?id=${product.id}">Comprar</a>--%>
-                            <form action="buyProducts.jsp" name="buyProducts" method="post">
-                                <input type="hidden" name="product" value="<c:out value='${productID}'/>"/> <%-- should be hash --%>
-                                <a href="buyProducts?id=${product.id}">Comprar</a>
-                            </form>
-<%--</form:form>--%>
+                            <form:form modelAttribute="productForm" action="buyProducts" method="post">
+                                <form:input type="hidden" path="productId" value="${product.id}"/>
+                                <input type="submit" value="Comprar"/>
+                            </form:form>
                         </div>
                     </div>
                 </div>
@@ -50,9 +44,4 @@
         </c:forEach>
 </div>
 </body>
-<script>
-    $(document).ready(function() {
-        //
-    });
-</script>
 </html>
