@@ -1,10 +1,15 @@
 .myheader{
-    background-color:black; height:35px;
+    background-color:black;
     text-align: left;
     color: white;
     font-family: Arial;
     font-weight: bold;
     font-size: 25px;
+}
+
+.vertical-align {
+    display: flex;
+    align-items: center;
 }
 
 .cont{
