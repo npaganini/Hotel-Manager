@@ -33,16 +33,16 @@ public class RoomController {
         return mav;
     }
 
-    @GetMapping("/rooms/checkin")
-    public ModelAndView checkIn(@ModelAttribute("reservationForm") final ReservationForm form) {
-        final ModelAndView mav = new ModelAndView("checkin");
+    @GetMapping("/rooms/reservation")
+    public ModelAndView reservation(@ModelAttribute("reservationForm") final ReservationForm form) {
+        final ModelAndView mav = new ModelAndView("reservation");
         mav.addObject("allRooms", roomService.getRoomsList());
         return mav;
     }
 
-    @PostMapping("/rooms/checkinPost")
-    public ModelAndView checkInPost(@ModelAttribute("reservationForm") final ReservationForm form) {
-        final ModelAndView mav = new ModelAndView("checkinPost");
+    @PostMapping("/rooms/reservationPost")
+    public ModelAndView reservationPost(@ModelAttribute("reservationForm") final ReservationForm form) {
+        final ModelAndView mav = new ModelAndView("reservationPost");
         Reservation reserva = new Reservation(form.getRoomId(),
                 form.getUserEmail(), Date.valueOf(form.getStartDate()).toLocalDate(),
                 Date.valueOf(form.getEndDate()).toLocalDate(), 0L);
@@ -54,6 +54,12 @@ public class RoomController {
     @PostMapping("/rooms/checkout")
     public void checkOut(long roomID) {
         // do mark room as in-use
+    }
+
+    @GetMapping("/rooms/reservations")
+    public ModelAndView reservations() {
+        final ModelAndView mav = new ModelAndView("reservations");
+        return mav;
     }
 
 }
