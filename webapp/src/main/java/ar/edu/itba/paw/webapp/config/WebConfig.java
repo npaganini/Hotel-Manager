@@ -33,8 +33,21 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
-                .addResourceHandler("/resources/**")
-                .addResourceLocations("/WEB-INF/");
+                .addResourceHandler("/**")
+                .addResourceLocations("/resources/bootstrap/");
+        registry
+                .addResourceHandler("/**")
+                .addResourceLocations("/resources/js/");
+        registry
+                .addResourceHandler("/**")
+                .addResourceLocations("/resources/CSS/");
+        registry
+                .addResourceHandler("/**")
+                .addResourceLocations("/resources/utilities/");
+        registry
+                .addResourceHandler("/**")
+                .addResourceLocations("/WEB-INF/jsp/");
+
     }
 
     @Bean
@@ -44,6 +57,10 @@ public class WebConfig implements WebMvcConfigurer {
         ds.setUrl("jdbc:postgresql://localhost/postgres");
         ds.setUsername("postgres");
         ds.setPassword("postgres");
+        // credenciales para deploy
+        //ds.setUrl("jdbc:postgresql://localhost/paw-2019b-2");
+        //ds.setUsername("paw-2019b-2");
+        //ds.setPassword("R79Jrbbfz");
         return ds;
     }
 
