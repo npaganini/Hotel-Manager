@@ -65,11 +65,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public long getProductID(String productHash) {
-        return 1;
-    }
-
-    @Override
     public long getReservationID(String reservationHash) {
         return reservationDao.findReservationByHash(reservationHash).getId();
     }
