@@ -17,31 +17,26 @@
     <link href="/resources/CSS/my_style.css" rel="stylesheet">
 </head>
 <body>
+<div class="container">
 <div class="form-group" style="grid-auto-columns: auto">
-    <h3>Products Ofrecidos:</h3>
-    <c:set var="colCounter" value="0" scope="page"/>
+    <div class="panel-title"><h1>Products Ofrecidos:</h1></div>
+    <div class="card-deck">
         <c:forEach var="product" items="${ProductsList}">
-            <c:if test="${colCounter%3 == 0}">
-                <div class="row text-center">
-            </c:if>
-                <div class="col-sm-3">
-                    <div class="card text-center">
-                        <img src="https://via.placeholder.com/150" class="card-img-top">
-                        <div class="card-body text-center">
-                            <h5 class="card-title text-center">${product.description}</h5>
-                            <p class="card-text price text-center">$${product.price}</p>
-                            <form:form modelAttribute="productForm" action="buyProducts" method="post">
-                                <form:input type="hidden" path="productId" value="${product.id}"/>
-                                <input type="submit" value="Comprar"/>
-                            </form:form>
-                        </div>
-                    </div>
-                </div>
-                <c:set var="colCounter" value="${colCounter + 1}" scope="page"/>
-            <c:if test="${colCounter%4 == 0}">
-                </div>
-            </c:if>
+        <div class="card">
+            <img class="card-img-top img-responsive" src="https://via.placeholder.com/150" alt="Card product image">
+            <div class="card-body container text-xs-center">
+                <h5 class="card-title text-xs-center">${product.description}</h5>
+                <p class="card-text price text-xs-center">$<fmt:formatNumber type="number" maxFractionDigits="2" minFractionDigits="2" value="${product.price}"/></p>
+                <form:form modelAttribute="productForm" action="buyProducts" method="post">
+                    <form:input type="hidden" path="productId" value="${product.id}"/>
+                    <input class="btn btn-primary" type="submit" value="Comprar"/>
+                </form:form>
+            </div>
+        </div>
         </c:forEach>
+    </div>
+    </div>
+</div>
 </div>
 </body>
 </html>
