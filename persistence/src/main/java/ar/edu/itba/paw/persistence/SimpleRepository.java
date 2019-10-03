@@ -32,7 +32,7 @@ public abstract class SimpleRepository<T extends SqlObject> implements SimpleDao
                         "id SERIAL PRIMARY KEY, " +
                         "description VARCHAR(150), " +
                         "price DOUBLE PRECISION," +
-                        "filePath VARCHAR(150)," +
+                        "file_path VARCHAR(150)," +
                         "enable boolean);");
         jdbcTemplateWithNamedParameter.getJdbcTemplate()
                 .execute("CREATE TABLE IF NOT EXISTS " + User.TABLE_NAME + " (" +

@@ -3,9 +3,11 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.daos.ProductDao;
 import ar.edu.itba.paw.interfaces.services.ProductService;
 import ar.edu.itba.paw.models.product.Product;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 
+@Component
 public class ProductServiceImpl implements ProductService {
 
     private final ProductDao productDao;
@@ -15,8 +17,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product saveProduct(String description, double price, String filePath) {
-        return productDao.save(new Product(description, price, filePath));
+    public Product saveProduct(Product product) {
+        return productDao.save(product);
     }
 
     @Override

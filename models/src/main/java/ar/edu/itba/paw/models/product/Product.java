@@ -38,12 +38,14 @@ public class Product implements SqlObject {
     public Product(String description, double price) {
         this.description = description;
         this.price = price;
+        this.enable = true;
     }
 
     public Product(String description, double price, String filePath) {
         this.description = description;
         this.price = price;
         this.filePath = filePath;
+        this.enable = true;
     }
 
     @Override
