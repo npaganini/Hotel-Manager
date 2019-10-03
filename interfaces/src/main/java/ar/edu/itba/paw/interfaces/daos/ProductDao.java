@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ProductDao extends SimpleDao<Product> {
     List<Product> getAllProducts();
+
+    int updateProductEnable(long productId, boolean enable);
 }

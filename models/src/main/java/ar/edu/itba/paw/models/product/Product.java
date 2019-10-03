@@ -40,6 +40,12 @@ public class Product implements SqlObject {
         this.price = price;
     }
 
+    public Product(String description, double price, String filePath) {
+        this.description = description;
+        this.price = price;
+        this.filePath = filePath;
+    }
+
     @Override
     public Map<String, Object> toMap() {
         Map<String, Object> productToMap = new HashMap<>();
