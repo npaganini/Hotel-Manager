@@ -2,19 +2,14 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.charge.Charge;
-import ar.edu.itba.paw.webapp.form.ProductsForm;
+import form.ProductForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Controller
-@RequestMapping("/user/{userId}")
+@RequestMapping("/user/{reservationID}")
 public class UserController {
     private final UserService userService;
 
@@ -24,7 +19,7 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public ModelAndView getAllExpenses(@PathVariable String userId) {
+    public ModelAndView getAllExpenses(@PathVariable String reservationID) {
         final ModelAndView mav = new ModelAndView("expenses");
         mav.addObject("ExpensesList", userService.checkAllExpenses());
         return mav;
@@ -38,25 +33,28 @@ public class UserController {
 //    }
 
     @GetMapping("/products")
-    public ModelAndView getAllProducts(@PathVariable String userId) {
+    public ModelAndView getAllProducts(@PathVariable String reservationID, @ModelAttribute("productForm") ProductForm productForm) {
         final ModelAndView mav = new ModelAndView("browseProducts");
         mav.addObject("ProductsList", userService.getProducts());
         return mav;
     }
 
     @GetMapping("/expenses")
-    public ModelAndView boughtProducts(@PathVariable String userId) {
+    public ModelAndView boughtProducts(@PathVariable String reservationID) {
         final ModelAndView mav = new ModelAndView("expenses");
         mav.addObject("ProductsList", userService.checkProductsPurchased());
         return mav;
     }
 
     @PostMapping("/buyProducts")
-    public ModelAndView buyProducts(@ModelAttribute("reservationForm") final ProductsForm form, @PathVariable String userId) {
-        final ModelAndView mav = new ModelAndView("buyProducts");
-        Charge charge = new Charge(form.getProductId(), userService.getReservation(Long.parseLong(userId)));
-        mav.addObject("charge", userService.addCharge(charge));
-        return mav;
+    public ModelAndView buyProduct(@ModelAttribute("productForm") ProductForm productForm, @PathVariable String reservationID){
+        if(productForm != null) {
+            final ModelAndView mav = new ModelAndView("buyProducts");
+            Charge charge = new Charge(productForm.getProductId(), userService.getReservationID(reservationID));
+            mav.addObject("charge", userService.addCharge(charge));
+            return mav;
+        }
+        return new ModelAndView("redirect:/products");
     }
 
 }
