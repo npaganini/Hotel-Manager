@@ -43,10 +43,7 @@ public class ChargeRepository extends SimpleRepository<Charge> implements Charge
     @Override
     public boolean addCharge(Charge product) {
         try {
-            jdbcTemplateWithNamedParameter.getJdbcTemplate().execute("INSERT INTO " + getTableName()
-                    + " (productid, reservationid) "
-                    + "VALUES (" + product.getProductId() + ", " + product.getReservationId() + ");"
-            );
+            this.save(product);
         } catch (Exception sqlE) {
             return false;
         }
