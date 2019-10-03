@@ -7,6 +7,15 @@
     font-size: 25px;
 }
 
+.confirTable{
+    background-color: white;
+    margin-left: 25px;
+    font-size: x-large;
+    border-radius: 5px;
+    border-collapse: collapse;
+    width: 75%;
+}
+
 .vertical-align {
     display: flex;
     align-items: center;

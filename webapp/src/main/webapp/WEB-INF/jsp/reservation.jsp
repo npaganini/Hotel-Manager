@@ -7,14 +7,15 @@
 
 <head>
 
+    <title>e-lobby</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="/resources/js/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="/resources/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/resources/js/slideBar.js"></script>
-    <link href="http://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
-    <script type="text/javascript" src="/resources/js/jquery.dataTables.min.js"></script>
     <link href="/resources/CSS/my_style.css" rel="stylesheet">
     <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+    <script src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js'></script>
 
 </head>
 <body>
@@ -38,21 +39,9 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="#">Chrck-In</a></li>
+                            <li><a href="#">Check-In</a></li>
                             <li><a href="#">Check-Out</a></li>
-                            <%--                <li class="dropdown">--%>
-                            <%--                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reservas<span class="caret"></span></a>--%>
-                            <%--                    <ul class="dropdown-menu forAnimate" role="menu">--%>
-                            <%--                        <li><a href="#">Action</a></li>--%>
-                            <%--                        <li><a href="#">Another action</a></li>--%>
-                            <%--                        <li><a href="#">Something else here</a></li>--%>
-                            <%--                        <li class="divider"></li>--%>
-                            <%--                        <li><a href="#">Separated link</a></li>--%>
-                            <%--                        <li class="divider"></li>--%>
-                            <%--                        <li><a href="#">One more separated link</a></li>--%>
-                            <%--                    </ul>--%>
-                            <%--                </li>--%>
-                            <li><a href="#">Reservas</a></li>
+                            <li><a href="/rooms/reservations">Reservas</a></li>
                             <li><a href="/">Productos</a></li>
                         </ul>
                     </div>

@@ -4,7 +4,7 @@
 <html>
 
 <head>
-
+    <title>e-lobby</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="/resources/js/bootstrap.min.js"></script>
@@ -36,20 +36,8 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="#">Chrck-In</a></li>
+                            <li><a href="#">Check-In</a></li>
                             <li><a href="#">Check-Out</a></li>
-                            <%--                <li class="dropdown">--%>
-                            <%--                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reservas<span class="caret"></span></a>--%>
-                            <%--                    <ul class="dropdown-menu forAnimate" role="menu">--%>
-                            <%--                        <li><a href="#">Action</a></li>--%>
-                            <%--                        <li><a href="#">Another action</a></li>--%>
-                            <%--                        <li><a href="#">Something else here</a></li>--%>
-                            <%--                        <li class="divider"></li>--%>
-                            <%--                        <li><a href="#">Separated link</a></li>--%>
-                            <%--                        <li class="divider"></li>--%>
-                            <%--                        <li><a href="#">One more separated link</a></li>--%>
-                            <%--                    </ul>--%>
-                            <%--                </li>--%>
                             <li><a href="/rooms/reservations">Reservas</a></li>
                             <li><a href="/">Productos</a></li>
                         </ul>
@@ -59,9 +47,11 @@
         </div>
     </div>
     <div class="row myheader vertical-align">
-        <div class="col-xs-6" style="text-align: left"><div>Habitaciones Ocupadas</div></div>
+        <div class="col-xs-6" style="text-align: left">
+            <div>Habitaciones Ocupadas</div>
+        </div>
         <div class="col-xs-6 " style="text-align: right">
-            <button type="button" class="btn btn-danger btn-lg"><a
+            <button type="button" class="btn btn-success btn-lg"><a
                     href="/rooms/reservation" style="color: white">Nueva Reserva</a></button>
 
         </div>
