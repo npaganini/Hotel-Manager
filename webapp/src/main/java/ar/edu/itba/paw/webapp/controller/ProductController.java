@@ -27,7 +27,7 @@ public class ProductController {
     @PostMapping("/addProduct")
     public String addProduct(@ModelAttribute ProductForm productForm,
                              RedirectAttributes redirectAttributes) {
-        String filePath = storageService.store(productForm.getImg());
+        String filePath = storageService.saveProductImg(productForm.getImg());
         productService.saveProduct(new Product(productForm.getDescription(),
                 productForm.getPrice(), filePath));
         redirectAttributes.addFlashAttribute("message",

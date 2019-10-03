@@ -1,1 +1,0 @@
-- [  ]  conectivos adecuados
