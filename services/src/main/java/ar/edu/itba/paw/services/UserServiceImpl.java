@@ -6,6 +6,7 @@ import ar.edu.itba.paw.interfaces.daos.ReservationDao;
 import ar.edu.itba.paw.interfaces.daos.UserDao;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.charge.Charge;
+import ar.edu.itba.paw.models.entities.ProductChargeDto;
 import ar.edu.itba.paw.models.product.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -46,17 +47,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Product> checkProductsPurchased() {
-        return new LinkedList<>(productDao.getAllProducts());
-    }
-
-    @Override
-    public Map<String, List<?>> checkAllExpenses() {
-        List<?> minibar = checkProductsPurchased();
-        List<?> services = checkServicesUsed();
-        //        expenses.put("Minibar", minibar);
-//        expenses.put("Other services", services);
-        return new HashMap<>();
+    public List<ProductChargeDto> checkProductsPurchasedByUser(long userID) {
+        return new LinkedList<>(chargeDao.getAllChargesByUser(userID));
     }
 
     @Override

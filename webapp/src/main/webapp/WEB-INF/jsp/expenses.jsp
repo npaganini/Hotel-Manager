@@ -12,19 +12,20 @@
         <tr>
             <th>Product</th>
             <th>Price</th>
+            <th>Amount</th>
         </tr>
         <c:forEach var="products" items="${ProductsList}">
             <tr>
                 <td>${products.description}</td>
-<%--                <td>${products.amount}</td>--%>
-                <td>${products.price}</td>
-                <c:set var="total" value="${total + products.price}" scope="page"/>
+                <td>$<fmt:formatNumber type="number" maxFractionDigits="2" minFractionDigits="2" value="${product.price}"/></td>
+                <td>${products.amount}</td>
+                <c:set var="total" value="${total + products.price * products.amount}" scope="page"/>
             </tr>
         </c:forEach>
         <tr>
             <td>Total:</td>
             <td>
-                <fmt:formatNumber var="total" type="currency" value="${total}" />${total}
+                $<fmt:formatNumber type="number" maxFractionDigits="2" minFractionDigits="2" value="${total}"/>
             </td>
         </tr>
     </table>

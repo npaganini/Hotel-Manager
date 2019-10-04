@@ -8,11 +8,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @AllArgsConstructor
-public class RoomReservationDao {
+public class RoomReservationDto {
     private Room room;
     private Reservation reservation;
 
-    public RoomReservationDao(ResultSet resultSet) throws SQLException {
+    public RoomReservationDto(ResultSet resultSet) throws SQLException {
         this.room = new Room(resultSet);
         this.reservation = new Reservation(resultSet);
     }

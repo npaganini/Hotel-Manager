@@ -14,6 +14,7 @@
         <div>There was an unexpected error! Please try again.</div>
     </c:otherwise>
 </c:choose>
-<a href="./products">Return to list of products</a>
+<span><a href="./products">Return to list of products</a></span>
+<span><a href="">Look at all your expenses.</a></span>
 </body>
 </html>
