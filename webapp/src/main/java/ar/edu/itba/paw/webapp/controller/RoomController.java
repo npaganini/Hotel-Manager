@@ -1,7 +1,9 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.services.ReservationService;
 import ar.edu.itba.paw.interfaces.services.RoomService;
 import ar.edu.itba.paw.models.reservation.Reservation;
+import form.CheckinForm;
 import form.ReservationForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,10 +15,12 @@ import java.sql.Date;
 @Controller
 public class RoomController {
     private final RoomService roomService;
+    private final ReservationService reservationService;
 
     @Autowired
-    public RoomController(RoomService roomService) {
+    public RoomController(RoomService roomService,ReservationService reservationService) {
         this.roomService = roomService;
+        this.reservationService = reservationService;
     }
 
     @GetMapping("/")
@@ -48,6 +52,20 @@ public class RoomController {
                 Date.valueOf(form.getEndDate()).toLocalDate(), 0L);
         roomService.doReservation(reserva);
         mav.addObject("reserva", reserva);
+        return mav;
+    }
+
+    @GetMapping("/rooms/checkin")
+    public ModelAndView chackin(@ModelAttribute("checkinForm") final CheckinForm form){
+        final ModelAndView mav = new ModelAndView("checkin");
+        return  mav;
+    }
+
+    @PostMapping("/rooms/checkinPost")
+    public ModelAndView checkinPost(@ModelAttribute("checkinForm") final CheckinForm form){
+        final ModelAndView mav = new ModelAndView("checkinPost");
+        Reservation reser = reservationService.getReservationByHash(form.getId_reservation());
+        roomService.reservateRoom(reser.getRoomId());
         return mav;
     }
 

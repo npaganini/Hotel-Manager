@@ -54,6 +54,9 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
                 parameterSource, getRowMapper());
     }
 
+
+
+
     @Override
     public void reservateRoom(long roomId) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();

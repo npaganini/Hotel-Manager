@@ -46,39 +46,26 @@
         </div>
     </div>
 
-<div class="row myheader vertical-align">
-    <div class="col-xs-12" style="text-align: left">
-        <div>Reserva exitosa!</div>
+    <div class="row myheader vertical-align">
+        <div class="col-xs-12" style="text-align: left">
+            <div>Check-In exitoso!</div>
+        </div>
     </div>
-</div>
-<br>
-<br>
-<div class="row">
-    <table class="confirTable">
-        <tr>
-            <th>ID de reserva:</th>
-            <th>${reserva.hash}</th>
-        </tr>
-        <tr>
-            <th>Titular:</th>
-            <th>${reserva.userEmail}</th>
-        </tr>
-        <tr>
-            <th>Desde:</th>
-            <th>${reserva.startDate}</th>
-        </tr>
-        <tr>
-            <th>Hasta:</th>
-            <th>${reserva.endDate}</th>
-        </tr>
-    </table>
-</div>
+    <br>
+    <br>
+    <div class="row" style="font-size:x-large ">
+        <div class="col" style="margin-left: 25px">
+            La accion se realizo exitosamente.
+        </div>
+    </div>
     <br>
     <div class="row">
         <div class="col" style="margin-left: 25px">
             <button type="button" class="btn btn-success btn-lg"><a href="/" style="color: white">Volver</a></button>
         </div>
     </div>
+
+
 </div>
 </body>
 </html>

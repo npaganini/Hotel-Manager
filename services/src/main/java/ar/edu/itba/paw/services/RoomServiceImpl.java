@@ -54,4 +54,8 @@ public class RoomServiceImpl implements RoomService {
                 "Su reserva ha sido confirmada! " +
                         "Hash de la reserva: " + reserva.getHash());
     }
+
+    public void reservateRoom(long roomID){
+        roomDao.reservateRoom(roomID);
+    }
 }

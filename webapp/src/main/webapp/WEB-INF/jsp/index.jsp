@@ -36,7 +36,7 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="#">Check-In</a></li>
+                            <li><a href="/rooms/checkin">Check-In</a></li>
                             <li><a href="#">Check-Out</a></li>
                             <li><a href="/rooms/reservations">Reservas</a></li>
                             <li><a href="/">Productos</a></li>

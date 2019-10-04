@@ -1,7 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
-<html>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
+
+<html>
 <head>
 
     <title>e-lobby</title>
@@ -16,7 +18,8 @@
 
 </head>
 <body>
-<div class="container cont" style="height: 100vh !important; width: 100vw !important;margin-left: 0 !important; margin-right: 0 !important">
+<div class="container cont"
+     style="height: 100vh !important; width: 100vw !important;margin-left: 0 !important; margin-right: 0 !important">
     <div class="row">
         <div class="col">
             <nav class="navbar navbar-inverse sidebar" style="z-index: initial !important;" role="navigation">
@@ -46,39 +49,49 @@
         </div>
     </div>
 
-<div class="row myheader vertical-align">
-    <div class="col-xs-12" style="text-align: left">
-        <div>Reserva exitosa!</div>
-    </div>
-</div>
-<br>
-<br>
-<div class="row">
-    <table class="confirTable">
-        <tr>
-            <th>ID de reserva:</th>
-            <th>${reserva.hash}</th>
-        </tr>
-        <tr>
-            <th>Titular:</th>
-            <th>${reserva.userEmail}</th>
-        </tr>
-        <tr>
-            <th>Desde:</th>
-            <th>${reserva.startDate}</th>
-        </tr>
-        <tr>
-            <th>Hasta:</th>
-            <th>${reserva.endDate}</th>
-        </tr>
-    </table>
-</div>
-    <br>
-    <div class="row">
-        <div class="col" style="margin-left: 25px">
-            <button type="button" class="btn btn-success btn-lg"><a href="/" style="color: white">Volver</a></button>
+    <c:url value="/rooms/checkinPost" var="postPath"/>
+    <form:form modelAttribute="checkinForm" action="${postPath}" method="post">
+
+    <div class="row myheader vertical-align">
+        <div class="col-xs-12" style="text-align: left">
+            <div>Check-In</div>
         </div>
     </div>
+    <br>
+
+    <div class="row">
+        <div class="col-xs-6">
+            <form:label class="items" path="userEmail">Email del titular: </form:label>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                <form:input id="email" path="userEmail" type="text" class="form-control" name="email"
+                            placeholder="Email"></form:input>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <form:label class="items" path="id_reservation">ID de reserva: </form:label>
+            <div class="input-group">
+                <span class="input-group-addon"></span>
+                <form:input id="IDres" path="id_reservation" type="text" class="form-control" name="IDres"
+                            placeholder="ID de reserva"></form:input>
+            </div>
+        </div>
+    </div>
+
+
+<div class="row" style="height: 45px">
+    <br><br>
+    <div class="col-xs-2">
+        <input type="submit" class="btn btn-default btn-lg" value="Aceptar"/>
+    </div>
+    <div class="col-xs-2">
+        <button type="button" class="btn btn-danger btn-lg"><a href="/" style="color: white">Cancelar</a>
+        </button>
+    </div>
+
 </div>
+
+</div>
+</form:form>
 </body>
 </html>
