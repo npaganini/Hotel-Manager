@@ -6,4 +6,5 @@ import java.time.ZoneId;
 
 public interface UserDao extends SimpleDao<User>{
     User findByEmail(String userEmail);
+    User findByUsername(String username);
 }

@@ -6,9 +6,11 @@ import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.models.room.Room;
 import ar.edu.itba.paw.models.room.RoomType;
 import ar.edu.itba.paw.models.user.User;
+import ar.edu.itba.paw.models.user.UserRole;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -37,7 +39,10 @@ public abstract class SimpleRepository<T extends SqlObject> implements SimpleDao
         jdbcTemplateWithNamedParameter.getJdbcTemplate()
                 .execute("CREATE TABLE IF NOT EXISTS " + User.TABLE_NAME + " (" +
                         "id SERIAL PRIMARY KEY ," +
-                        "email varchar(100));");
+                        "email varchar(100)," +
+                        "username varchar(100)," +
+                        "password varchar(100)," +
+                        "role varchar(15));");
         jdbcTemplateWithNamedParameter.getJdbcTemplate()
                 .execute("CREATE TABLE IF NOT EXISTS " + Room.TABLE_NAME + " (" +
                         "id SERIAL PRIMARY KEY, " +
@@ -61,6 +66,17 @@ public abstract class SimpleRepository<T extends SqlObject> implements SimpleDao
         Product product2 = new Product(3L, "Papitas", 12d, "filePath", true);
         Product product3 = new Product(4L, "Chocolates", 19d, "filePath", true);
         return Arrays.asList(product, product1, product2, product3);
+    }
+
+    List<User> getHardcodedUsers() {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        return Arrays.asList(
+                new User(1L, "mail@mail.com",
+                        bCryptPasswordEncoder.encode("password"),
+                        "manager", UserRole.ROLE_MANAGER),
+                new User(2L, "mail@mail.com",
+                        bCryptPasswordEncoder.encode("password"), "employee",
+                        UserRole.ROLE_EMPLOYEE));
     }
 
     @Override
