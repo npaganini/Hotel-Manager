@@ -24,10 +24,11 @@ public class Reservation implements SqlObject {
     public final static String KEY_USER_EMAIL = "user_email";
     public final static String KEY_ROOM_ID = "room_id";
     public final static String KEY_HASH = "hash";
+    public final static String KEY_IS_ACTIVE = "is_active";
+    public final static String KEY_USER_ID = "user_id";
 
     public final static String TABLE_NAME = "reservation";
 
-    private final static String KEY_USER_ID = "user_id";
 
     private long id;
     private LocalDate startDate;
@@ -36,6 +37,7 @@ public class Reservation implements SqlObject {
     private String userEmail;
     private long roomId;
     private long userId;
+    private boolean isActive;
     private String hash = UUID.randomUUID().toString();
 
     public Reservation(ResultSet resultSet) throws SQLException {
@@ -46,6 +48,7 @@ public class Reservation implements SqlObject {
         this.roomId = resultSet.getLong(KEY_ROOM_ID);
         this.userId = resultSet.getLong(KEY_USER_ID);
         this.hash = resultSet.getString(KEY_HASH);
+        this.isActive = resultSet.getBoolean(KEY_IS_ACTIVE);
     }
 
     public Reservation(long roomId, String userEmail, LocalDate startDate, LocalDate endDate, long userId) {
@@ -66,6 +69,7 @@ public class Reservation implements SqlObject {
         reservationToMap.put(KEY_ROOM_ID, getRoomId());
         reservationToMap.put(KEY_USER_ID, getUserId());
         reservationToMap.put(KEY_HASH, getHash());
+        reservationToMap.put(KEY_IS_ACTIVE, isActive());
         return reservationToMap;
     }
 

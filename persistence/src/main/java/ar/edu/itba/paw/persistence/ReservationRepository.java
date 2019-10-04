@@ -28,7 +28,9 @@ public class ReservationRepository extends SimpleRepository<Reservation> impleme
                         "id SERIAL PRIMARY KEY," +
                         "start_date TIMESTAMP," +
                         "end_date TIMESTAMP," +
-                        "user_email VARCHAR(100), hash VARCHAR(1000), " +
+                        "user_email VARCHAR(100), " +
+                        "hash VARCHAR(1000), " +
+                        "is_active BOOLEAN," +
                         "room_id INTEGER REFERENCES " + Room.TABLE_NAME + "(id)," +
                         "user_id INTEGER REFERENCES " + User.TABLE_NAME + "(id) )");
     }
@@ -49,6 +51,15 @@ public class ReservationRepository extends SimpleRepository<Reservation> impleme
     }
 
     @Override
+    public Reservation findLastReservationByUserId(long userID) {
+        List<Reservation> reservations = jdbcTemplateWithNamedParameter.getJdbcTemplate()
+                .query("SELECT * FROM " + getTableName() +
+                                " r JOIN " + User.TABLE_NAME + " u where u.id = ? ORDER BY r." + Reservation.KEY_END_DATE + " DESC",
+                        new Object[]{userID}, getRowMapper());
+        return reservations.get(0);
+    }
+
+    @Override
     public Reservation findReservationByHash(String hash) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
         parameterSource.addValue("hash", hash);
@@ -57,10 +68,21 @@ public class ReservationRepository extends SimpleRepository<Reservation> impleme
     }
 
     @Override
+    public int updateActive(long reservationId, boolean isActive) {
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("reservationId", reservationId);
+        parameters.addValue("isActive", isActive);
+        return jdbcTemplateWithNamedParameter.update("UPDATE " + Reservation.TABLE_NAME + " SET "
+                + Reservation.KEY_IS_ACTIVE + " = :isActive WHERE " + Reservation.KEY_ID + " = :reservationId", parameters);
+    }
+
+@Override
     public List<Reservation> findAllReservationsByUserId(long userID) {
         return jdbcTemplateWithNamedParameter.query("SELECT * FROM " + getTableName()
                         + " WHERE user_id = " + userID
                         + " ORDER BY start_date desc"
                 , getRowMapper());
     }
+
+
 }

@@ -92,6 +92,11 @@ public abstract class SimpleRepository<T extends SqlObject> implements SimpleDao
         return resultSet.size() > 0 ? Optional.of(resultSet.get(0)) : Optional.empty();
     }
 
+    @Override
+    public List<T> findAll() {
+        return jdbcTemplateWithNamedParameter.query("SELECT * FROM " + getTableName(), getRowMapper());
+    }
+
     abstract RowMapper<T> getRowMapper();
 
     abstract String getTableName();

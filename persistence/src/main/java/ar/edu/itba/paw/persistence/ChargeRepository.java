@@ -2,11 +2,10 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.daos.ChargeDao;
 import ar.edu.itba.paw.models.charge.Charge;
-import ar.edu.itba.paw.models.entities.ProductChargeDto;
+import ar.edu.itba.paw.models.dtos.ChargeDTO;
 import ar.edu.itba.paw.models.product.Product;
+import ar.edu.itba.paw.models.reservation.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -14,10 +13,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @Repository
 public class ChargeRepository extends SimpleRepository<Charge> implements ChargeDao {
@@ -29,9 +25,10 @@ public class ChargeRepository extends SimpleRepository<Charge> implements Charge
         super(new NamedParameterJdbcTemplate(dataSource));
         jdbcTemplateWithNamedParameter.getJdbcTemplate()
                 .execute("CREATE TABLE IF NOT EXISTS " + getTableName() + " (" +
-                "id SERIAL PRIMARY KEY, " +
-                "product_id INTEGER REFERENCES product (id), " +
-                "reservation_id INTEGER REFERENCES reservation (id))");
+                        "id SERIAL PRIMARY KEY, " +
+                        "product_id INTEGER REFERENCES product (id), " +
+                        "reservation_id INTEGER REFERENCES reservation (id)," +
+                        "delivered BOOLEAN)");
     }
 
     @Override
