@@ -15,4 +15,8 @@ public interface RoomDao extends SimpleDao<Room> {
     void reservateRoom(long roomId);
 
     List<Room> findAllFree();
+
+    void freeRoom(long roomId);
+
+
 }

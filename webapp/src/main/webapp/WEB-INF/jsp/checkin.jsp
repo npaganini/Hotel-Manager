@@ -1,4 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
+
 <html>
 <head>
 
@@ -44,54 +48,50 @@
             </nav>
         </div>
     </div>
-    <div class="row myheader">
-        <div class="col-xs-12 " style="text-align: left">Reservas</div>
-    </div>
-    <br>
-    <br>
-    <div class="row" style="height: 45px">
-        <div class="col-xs-12">
-            <table>
-                <tr>
-                    <th>Company</th>
-                    <th>Contact</th>
-                    <th>Country</th>
-                </tr>
-                <tr>
-                    <td>Alfreds Futterkiste</td>
-                    <td>Maria Anders</td>
-                    <td>Germany</td>
-                </tr>
-                <tr>
-                    <td>Centro comercial Moctezuma</td>
-                    <td>Francisco Chang</td>
-                    <td>Mexico</td>
-                </tr>
-                <tr>
-                    <td>Ernst Handel</td>
-                    <td>Roland Mendel</td>
-                    <td>Austria</td>
-                </tr>
-                <tr>
-                    <td>Island Trading</td>
-                    <td>Helen Bennett</td>
-                    <td>UK</td>
-                </tr>
-                <tr>
-                    <td>Laughing Bacchus Winecellars</td>
-                    <td>Yoshi Tannamuri</td>
-                    <td>Canada</td>
-                </tr>
-                <tr>
-                    <td>Magazzini Alimentari Riuniti</td>
-                    <td>Giovanni Rovelli</td>
-                    <td>Italy</td>
-                </tr>
-            </table>
 
+    <c:url value="/rooms/checkinPost" var="postPath"/>
+    <form:form modelAttribute="checkinForm" action="${postPath}" method="post">
+
+    <div class="row myheader vertical-align">
+        <div class="col-xs-12" style="text-align: left">
+            <div>Check-In</div>
         </div>
-
     </div>
+    <br>
+
+    <div class="row">
+        <div class="col-xs-6">
+            <form:label class="items" path="userEmail">Email del titular: </form:label>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                <form:input id="email" path="userEmail" type="text" class="form-control" name="email"
+                            placeholder="Email"></form:input>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <form:label class="items" path="id_reservation">ID de reserva: </form:label>
+            <div class="input-group">
+                <span class="input-group-addon"></span>
+                <form:input id="IDres" path="id_reservation" type="text" class="form-control" name="IDres"
+                            placeholder="ID de reserva"></form:input>
+            </div>
+        </div>
+    </div>
+
+
+<div class="row" style="height: 45px">
+    <br><br>
+    <div class="col-xs-2">
+        <input type="submit" class="btn btn-default btn-lg" value="Aceptar"/>
+    </div>
+    <div class="col-xs-2">
+        <button type="button" class="btn btn-danger btn-lg"><a href="/" style="color: white">Cancelar</a>
+        </button>
+    </div>
+
 </div>
+
+</div>
+</form:form>
 </body>
 </html>
