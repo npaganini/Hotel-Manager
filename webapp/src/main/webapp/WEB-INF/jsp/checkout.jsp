@@ -1,9 +1,11 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<html>
 
+<html>
 <head>
+
     <title>e-lobby</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
@@ -36,8 +38,8 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="/rooms/checkin">Check-In</a></li>
-                            <li><a href="/rooms/checkout">Check-Out</a></li>
+                            <li><a href="#">Check-In</a></li>
+                            <li><a href="#">Check-Out</a></li>
                             <li><a href="/rooms/reservations">Reservas</a></li>
                             <li><a href="/">Productos</a></li>
                         </ul>
@@ -46,62 +48,40 @@
             </nav>
         </div>
     </div>
+
+    <c:url value="/rooms/checkoutPost" var="postPath"/>
+    <form:form modelAttribute="checkoutForm" action="${postPath}" method="post">
+
     <div class="row myheader vertical-align">
-        <div class="col-xs-6" style="text-align: left">
-            <div>Habitaciones Ocupadas</div>
-        </div>
-        <div class="col-xs-6 " style="text-align: right">
-            <button type="button" class="btn btn-success btn-lg"><a
-                    href="/rooms/reservation" style="color: white">Nueva Reserva</a></button>
-
+        <div class="col-xs-12" style="text-align: left">
+            <div>Check-In</div>
         </div>
     </div>
     <br>
-    <br>
+
     <div class="row">
-        <div class="col-xs-12 form-group" style="z-index:9999;grid-auto-columns: auto">
-            <table id="myTable" class="display" style="width:100%;  border: 1px solid black !important;">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Numero</th>
-                    <th>Tipo</th>
-                    <th>Hasta</th>
-                    <th>Saldo</th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach var="room" items="${RoomList}">
-                    <tr>
-
-                        <c:if test="${room.freeNow == true}">
-
-                            <td style="text-align: left">${room.id}</td>
-                            <td style="text-align: left">${room.number}</td>
-                            <td>${room.roomType}</td>
-                            <td style="text-align: left">-</td>
-                            <td style="text-align: left">-</td>
-
-                        </c:if>
-
-
-                    </tr>
-                </c:forEach>
-                </tbody>
-            </table>
+        <div class="col-xs-6">
+            <form:label class="items" path="id_reservation">ID de reserva: </form:label>
+            <div class="input-group">
+                <span class="input-group-addon"></span>
+                <form:input id="IDres" path="id_reservation" type="text" class="form-control" name="IDres"
+                            placeholder="ID de reserva"></form:input>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="row" style="height: 45px">
+                <br><br>
+                <div class="col-xs-2">
+                    <input type="submit" class="btn btn-default btn-lg" value="Aceptar"/>
+                </div>
+                <div class="col-xs-2">
+                    <button type="button" class="btn btn-danger btn-lg"><a href="/" style="color: white">Cancelar</a>
+                    </button>
+                </div>
         </div>
     </div>
 
 </div>
-</div>
+</form:form>
 </body>
 </html>
-
-<script>
-    $(document).ready(function () {
-        $('#myTable').DataTable({
-            "order": [[1, "asc"]],
-            filter: false,
-        });
-    });
-</script>

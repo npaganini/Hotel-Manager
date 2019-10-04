@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfaces.services.ReservationService;
 import ar.edu.itba.paw.interfaces.services.RoomService;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import form.CheckinForm;
+import form.CheckoutForm;
 import form.ReservationForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -69,10 +70,20 @@ public class RoomController {
         return mav;
     }
 
-    @PostMapping("/rooms/checkout")
-    public void checkOut(long roomID) {
-        // do mark room as in-use
+    @GetMapping("/rooms/checkout")
+    public ModelAndView checkout(@ModelAttribute("checkoutForm") final CheckoutForm form) {
+        final ModelAndView mav = new ModelAndView("checkout");
+        return mav;
     }
+
+    @PostMapping("/rooms/checkoutPost")
+    public ModelAndView checkoutPost(@ModelAttribute("checkoutForm") final CheckoutForm form){
+        final ModelAndView mav = new ModelAndView("checkoutPost");
+        mav.addObject("charges",roomService.getRoomsList());
+        roomService.freeRoom(reservationService.getReservationByHash(form.getId_reservation()).getRoomId());
+        return mav;
+    }
+
 
     @GetMapping("/rooms/reservations")
     public ModelAndView reservations() {
