@@ -40,8 +40,11 @@ public class User implements SqlObject {
         this.username = resultSet.getString(KEY_USERNAME);
     }
 
-    public User(String email) {
+    public User(String email, String username, String password) {
         this.email = email;
+        this.username = username;
+        this.password = password;
+        this.role = UserRole.ROLE_CLIENT;
     }
 
     @Override
