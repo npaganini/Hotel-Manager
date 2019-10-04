@@ -58,4 +58,8 @@ public class RoomServiceImpl implements RoomService {
     public void reservateRoom(long roomID){
         roomDao.reservateRoom(roomID);
     }
+
+    public void freeRoom(long roomId){
+        roomDao.freeRoom(roomId);
+    }
 }

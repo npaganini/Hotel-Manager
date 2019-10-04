@@ -65,6 +65,13 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
                 "= false WHERE id = :roomId ", parameterSource);
     }
 
+    public void freeRoom(long roomId){
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+        parameterSource.addValue("roomId", roomId);
+        jdbcTemplateWithNamedParameter.update("UPDATE " + Room.TABLE_NAME + " SET " + Room.KEY_FREE_NOW + " " +
+                "= true WHERE id = :roomId ", parameterSource);
+    }
+
     @Override
     public List<Room> findAllFree() {
         return jdbcTemplateWithNamedParameter.getJdbcTemplate().query("SELECT * FROM " + getTableName() +
