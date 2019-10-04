@@ -20,7 +20,6 @@ public class UserServiceImpl implements UserService {
 
     private final ProductDao productDao;
     private final ChargeDao chargeDao;
-
     private final ReservationDao reservationDao;
 
     @Autowired
@@ -44,7 +43,10 @@ public class UserServiceImpl implements UserService {
     public Map<Product, Integer> checkProductsPurchasedByUser(long userID) {
         return new HashMap<>(chargeDao.getAllChargesByUser(userID));
     }
-
+ @Override
+    public long getReservation(long userID) {
+        return reservationDao.findLastReservationByUserId(userID).getId();
+    }
     @Override
     public long getReservationID(String reservationHash) {
         return reservationDao.findReservationByHash(reservationHash).getId();

@@ -2,6 +2,7 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.daos.ChargeDao;
 import ar.edu.itba.paw.models.charge.Charge;
+import ar.edu.itba.paw.models.entities.ProductChargeDto;
 import ar.edu.itba.paw.models.dtos.ChargeDTO;
 import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.models.reservation.Reservation;
@@ -95,5 +96,21 @@ public class ChargeRepository extends SimpleRepository<Charge> implements Charge
 
     private RowMapper<ChargeDTO> getRowMapperOfChargeDTO() {
         return ((resultSet, i) -> new ChargeDTO(resultSet));
+    }
+
+@Override
+    public List<ProductChargeDto> getAllChargesByUser(long userID) {
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+        parameterSource.addValue("reservation_id", userID);
+        return jdbcTemplateWithNamedParameter.query(
+                "SELECT p.description as description, p.price as price, count(c.product_id) as amount FROM "
+                        + getTableName() + " c NATURAL JOIN " + Product.TABLE_NAME + " p"
+                        + "WHERE c.reservation_id = :reservation_id "
+                        + "GROUP BY c.product_id"
+                , getRowMapperWithJoin());
+    }
+
+    private RowMapper<ProductChargeDto> getRowMapperWithJoin() {
+        return ((resultSet, i) -> new ProductChargeDto(resultSet));
     }
 }

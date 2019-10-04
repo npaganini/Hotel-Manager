@@ -18,14 +18,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("")
-    public ModelAndView getLandingPage(@PathVariable String reservationID) {
-        final ModelAndView mav = new ModelAndView("userLanding");
-        long userID = userService.getReservationID(reservationID);
-        mav.addObject("ReservationsList", userService.getAllReservations(userID));
-        return mav;
-    }
-
     @GetMapping("/products")
     public ModelAndView getAllProducts(@PathVariable String reservationID, @ModelAttribute("productForm") ProductForm productForm) {
         final ModelAndView mav = new ModelAndView("browseProducts");
@@ -36,13 +28,13 @@ public class UserController {
     @GetMapping("/expenses")
     public ModelAndView boughtProducts(@PathVariable String reservationID) {
         final ModelAndView mav = new ModelAndView("expenses");
-        mav.addObject("ProductsList", userService.checkProductsPurchasedByUser(userService.getReservationID(reservationID)));
+        mav.addObject("ProductsList", userService.checkProductsPurchased());
         return mav;
     }
 
     @PostMapping("/buyProducts")
-    public ModelAndView buyProduct(@ModelAttribute("productForm") ProductForm productForm, @PathVariable String reservationID) {
-        if (productForm != null) {
+    public ModelAndView buyProduct(@ModelAttribute("productForm") ProductForm productForm, @PathVariable String reservationID){
+        if(productForm != null) {
             final ModelAndView mav = new ModelAndView("buyProducts");
             Charge charge = new Charge(productForm.getProductId(), userService.getReservationID(reservationID));
             mav.addObject("charge", userService.addCharge(charge));
