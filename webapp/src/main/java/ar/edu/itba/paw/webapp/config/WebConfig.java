@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -33,8 +34,21 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
-                .addResourceHandler("/resources/**")
-                .addResourceLocations("/WEB-INF/");
+                .addResourceHandler("/**")
+                .addResourceLocations("/resources/bootstrap/");
+        registry
+                .addResourceHandler("/**")
+                .addResourceLocations("/resources/js/");
+        registry
+                .addResourceHandler("/**")
+                .addResourceLocations("/resources/CSS/");
+        registry
+                .addResourceHandler("/**")
+                .addResourceLocations("/resources/utilities/");
+        registry
+                .addResourceHandler("/**")
+                .addResourceLocations("/WEB-INF/jsp/");
+
     }
 
     @Bean
@@ -44,6 +58,10 @@ public class WebConfig implements WebMvcConfigurer {
         ds.setUrl("jdbc:postgresql://localhost/postgres");
         ds.setUsername("postgres");
         ds.setPassword("postgres");
+        // credenciales para deploy
+        //ds.setUrl("jdbc:postgresql://localhost/paw-2019b-2");
+        //ds.setUsername("paw-2019b-2");
+        //ds.setPassword("R79Jrbbfz");
         return ds;
     }
 
@@ -63,6 +81,14 @@ public class WebConfig implements WebMvcConfigurer {
         props.put("mail.debug", "true");
 
         return mailSender;
+    }
+
+    @Bean(name = "multipartResolver")
+    public CommonsMultipartResolver multipartResolver()
+    {
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+        multipartResolver.setMaxUploadSize(20848820);
+        return multipartResolver;
     }
 
 }

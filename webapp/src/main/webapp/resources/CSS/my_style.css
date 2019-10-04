@@ -2,7 +2,7 @@
     background-color:black;
     text-align: left;
     color: white;
-    font-family: Arial;
+    font-family: Arial, serif;
     font-weight: bold;
     font-size: 25px;
 }
@@ -71,7 +71,7 @@
 /* end calendar*/
 
 .items{
-    font-family: Arial;
+    font-family: Arial, serif;
     font-size: 20px;
     color: black;
 

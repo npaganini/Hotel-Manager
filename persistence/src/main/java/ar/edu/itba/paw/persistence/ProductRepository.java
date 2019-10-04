@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfaces.daos.ProductDao;
 import ar.edu.itba.paw.models.product.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
@@ -41,7 +42,15 @@ public class ProductRepository extends SimpleRepository<Product> implements Prod
 
     @Override
     public List<Product> getAllProducts() {
-        List<Product> resultSet = jdbcTemplateWithNamedParameter.query("SELECT * FROM " + getTableName(), getRowMapper());
-        return resultSet;
+        return jdbcTemplateWithNamedParameter.query("SELECT * FROM " + getTableName(), getRowMapper());
+    }
+
+    @Override
+    public int updateProductEnable(long productId, boolean enable) {
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("productId", productId);
+        parameters.addValue("enable", enable);
+        return jdbcTemplateWithNamedParameter.update("UPDATE " + Product.TABLE_NAME + " SET " +
+                Product.KEY_ENABLE + "= :enable WHERE " + Product.KEY_ID + "=:productId", parameters);
     }
 }

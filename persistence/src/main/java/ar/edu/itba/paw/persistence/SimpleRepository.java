@@ -31,7 +31,9 @@ public abstract class SimpleRepository<T extends SqlObject> implements SimpleDao
                 .execute("CREATE TABLE IF NOT EXISTS " + Product.TABLE_NAME + " (" +
                         "id SERIAL PRIMARY KEY, " +
                         "description VARCHAR(150), " +
-                        "price DOUBLE PRECISION);");
+                        "price DOUBLE PRECISION," +
+                        "file_path VARCHAR(150)," +
+                        "enable boolean);");
         jdbcTemplateWithNamedParameter.getJdbcTemplate()
                 .execute("CREATE TABLE IF NOT EXISTS " + User.TABLE_NAME + " (" +
                         "id SERIAL PRIMARY KEY ," +
@@ -54,10 +56,10 @@ public abstract class SimpleRepository<T extends SqlObject> implements SimpleDao
     }
 
     List<Product> getHardcodedProducts() {
-        Product product = new Product(1, "Coca-Cola", 45.3d);
-        Product product1 = new Product(2, "Whisky", 150d);
-        Product product2 = new Product(3, "Papitas", 12d);
-        Product product3 = new Product(4, "Chocolates", 19d);
+        Product product = new Product(1L, "Coca-Cola", 45.3d, "filePath", true);
+        Product product1 = new Product(2L, "Whisky", 150d, "filePath", true);
+        Product product2 = new Product(3L, "Papitas", 12d, "filePath", true);
+        Product product3 = new Product(4L, "Chocolates", 19d, "filePath", true);
         return Arrays.asList(product, product1, product2, product3);
     }
 
