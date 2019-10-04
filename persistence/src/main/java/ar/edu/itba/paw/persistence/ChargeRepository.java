@@ -85,4 +85,18 @@ public class ChargeRepository extends SimpleRepository<Charge> implements Charge
     private RowMapper<ProductChargeDto> getRowMapperWithJoin() {
         return ((resultSet, i) -> new ProductChargeDto(resultSet));
     }
+
+ @Override
+    public List<ChargeDTO> findChargeByReservationHash(long reservationId) {
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("reservationId", reservationId);
+        return jdbcTemplateWithNamedParameter
+                .query("SELECT * FROM " + Charge.TABLE_NAME + " NATURAL JOIN " +
+                        Product.TABLE_NAME + " NATURAL JOIN " + Reservation.TABLE_NAME +
+                        " r WHERE r.id = :reservationId", parameters, getRowMapperOfChargeDTO());
+    }
+
+    private RowMapper<ChargeDTO> getRowMapperOfChargeDTO() {
+        return ((resultSet, i) -> new ChargeDTO(resultSet));
+    }
 }
