@@ -34,20 +34,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
-                .addResourceHandler("/**")
-                .addResourceLocations("/resources/bootstrap/");
-        registry
-                .addResourceHandler("/**")
-                .addResourceLocations("/resources/js/");
-        registry
-                .addResourceHandler("/**")
-                .addResourceLocations("/resources/CSS/");
-        registry
-                .addResourceHandler("/**")
-                .addResourceLocations("/resources/utilities/");
-        registry
-                .addResourceHandler("/**")
-                .addResourceLocations("/WEB-INF/jsp/");
+                .addResourceHandler("/resources/**")
+                .addResourceLocations("/resources/");
 
     }
 
@@ -55,13 +43,13 @@ public class WebConfig implements WebMvcConfigurer {
     public DataSource dataSource() {
         final SimpleDriverDataSource ds = new SimpleDriverDataSource();
         ds.setDriverClass(org.postgresql.Driver.class);
-        ds.setUrl("jdbc:postgresql://localhost/postgres");
-        ds.setUsername("postgres");
-        ds.setPassword("postgres");
+       // ds.setUrl("jdbc:postgresql://localhost/postgres");
+        //ds.setUsername("postgres");
+        //ds.setPassword("postgres");
         // credenciales para deploy
-        //ds.setUrl("jdbc:postgresql://localhost/paw-2019b-2");
-        //ds.setUsername("paw-2019b-2");
-        //ds.setPassword("R79Jrbbfz");
+        ds.setUrl("jdbc:postgresql://localhost/paw-2019b-2");
+        ds.setUsername("paw-2019b-2");
+        ds.setPassword("R79Jrbbfz");
         return ds;
     }
 

@@ -24,7 +24,7 @@ public class RoomController {
         this.reservationService = reservationService;
     }
 
-    @GetMapping("/")
+    @GetMapping("/home")
     public ModelAndView getAllRooms() {
         final ModelAndView mav = new ModelAndView("index");
         mav.addObject("RoomList", roomService.getRoomsList());
