@@ -65,4 +65,11 @@ public class ReservationRepository extends SimpleRepository<Reservation> impleme
                 parameterSource, getRowMapper()).get(0);
     }
 
+    @Override
+    public List<Reservation> findAllReservationsByUserId(long userID) {
+        return jdbcTemplateWithNamedParameter.query("SELECT * FROM " + getTableName()
+                        + " WHERE user_id = " + userID
+                        + " ORDER BY start_date desc"
+                , getRowMapper());
+    }
 }
