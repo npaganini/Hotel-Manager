@@ -67,7 +67,7 @@ public class RoomController {
         final ModelAndView mav = new ModelAndView("checkinPost");
         Reservation reser = reservationService.getReservationByHash(form.getId_reservation());
         roomService.reservateRoom(reser.getRoomId());
-        reservationService.activeReservation(form.getId_reservation());
+        //reservationService.activeReservation(form.getId_reservation());
         return mav;
     }
 
