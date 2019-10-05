@@ -19,7 +19,6 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -133,16 +132,13 @@ public class ChargeRepository extends SimpleRepository<Charge> implements Charge
                         + " GROUP BY " + getTableName() + ".product_id) as chargedProducts "
                         + " JOIN " + Product.TABLE_NAME + " ON "
                         + "(chargedProducts.product_id = " + Product.TABLE_NAME + ".id)) as ans "
-                , new ResultSetExtractor<Map<Product, Integer>>() {
-                    @Override
-                    public Map<Product, Integer> extractData(ResultSet rs) throws SQLException, DataAccessException {
-                        Map<Product, Integer> ans = new HashMap<>();
-                        while (rs.next()) {
-                            Product p = new Product(rs.getString(1), rs.getFloat(2));
-                            ans.put(p, rs.getInt(3));
-                        }
-                        return ans;
+                , rs -> {
+                    Map<Product, Integer> ans = new HashMap<>();
+                    while (rs.next()) {
+                        Product p = new Product(rs.getString(1), rs.getFloat(2));
+                        ans.put(p, rs.getInt(3));
                     }
+                    return ans;
                 });
     }
 }

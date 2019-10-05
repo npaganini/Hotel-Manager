@@ -51,15 +51,6 @@ public class ReservationRepository extends SimpleRepository<Reservation> impleme
     }
 
     @Override
-    public Reservation findLastReservationByUserId(long userID) {
-        List<Reservation> reservations = jdbcTemplateWithNamedParameter.getJdbcTemplate()
-                .query("SELECT * FROM " + getTableName() +
-                                " r JOIN " + User.TABLE_NAME + " u where u.id = ? ORDER BY r." + Reservation.KEY_END_DATE + " DESC",
-                        new Object[]{userID}, getRowMapper());
-        return reservations.get(0);
-    }
-
-    @Override
     public Reservation findReservationByHash(String hash) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
         parameterSource.addValue("hash", hash);
