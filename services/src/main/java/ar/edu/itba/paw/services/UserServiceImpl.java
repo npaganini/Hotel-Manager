@@ -47,8 +47,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<ProductChargeDto> checkProductsPurchasedByUser(long userID) {
-        return new LinkedList<>(chargeDao.getAllChargesByUser(userID));
+    public Map<Product, Integer> checkProductsPurchasedByUser(long userID) {
+        return new HashMap<>(chargeDao.getAllChargesByUser(userID));
     }
 
     @Override
