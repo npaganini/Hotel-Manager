@@ -18,12 +18,12 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/all")
-    public ModelAndView getAllExpenses(@PathVariable String reservationID) {
-        final ModelAndView mav = new ModelAndView("expenses");
-        mav.addObject("ExpensesList", userService.checkAllExpenses());
-        return mav;
-    }
+//    @GetMapping("/all")
+//    public ModelAndView getAllExpenses(@PathVariable String reservationID) {
+//        final ModelAndView mav = new ModelAndView("expenses");
+//        mav.addObject("ExpensesList", userService.checkAllExpenses());
+//        return mav;
+//    }
 
 //    @GetMapping("/tours")
 //    public ModelAndView getAllTours() {
@@ -42,7 +42,7 @@ public class UserController {
     @GetMapping("/expenses")
     public ModelAndView boughtProducts(@PathVariable String reservationID) {
         final ModelAndView mav = new ModelAndView("expenses");
-        mav.addObject("ProductsList", userService.checkProductsPurchased());
+        mav.addObject("ProductsList", userService.checkProductsPurchasedByUser(userService.getReservationID(reservationID)));
         return mav;
     }
 
