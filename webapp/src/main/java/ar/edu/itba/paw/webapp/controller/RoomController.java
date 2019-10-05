@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.sql.Date;
 
 @Controller
+@RequestMapping("rooms")
 public class RoomController {
     private final RoomService roomService;
     private final ReservationService reservationService;
@@ -24,28 +25,28 @@ public class RoomController {
         this.reservationService = reservationService;
     }
 
-    @GetMapping("/")
+    @GetMapping("/home")
     public ModelAndView getAllRooms() {
         final ModelAndView mav = new ModelAndView("index");
         mav.addObject("RoomList", roomService.getRoomsList());
         return mav;
     }
 
-    @GetMapping("/rooms/room/{id}")
+    @GetMapping("/room/{id}")
     public ModelAndView getRoom(@PathVariable long id) {
         final ModelAndView mav = new ModelAndView("room");
         mav.addObject("RoomSelected", roomService.getRoom(id));
         return mav;
     }
 
-    @GetMapping("/rooms/reservation")
+    @GetMapping("/reservation")
     public ModelAndView reservation(@ModelAttribute("reservationForm") final ReservationForm form) {
         final ModelAndView mav = new ModelAndView("reservation");
         mav.addObject("allRooms", roomService.getRoomsList());
         return mav;
     }
 
-    @PostMapping("/rooms/reservationPost")
+    @PostMapping("/reservationPost")
     public ModelAndView reservationPost(@ModelAttribute("reservationForm") final ReservationForm form) {
         final ModelAndView mav = new ModelAndView("reservationPost");
         Reservation reserva = new Reservation(form.getRoomId(),
@@ -56,27 +57,28 @@ public class RoomController {
         return mav;
     }
 
-    @GetMapping("/rooms/checkin")
+    @GetMapping("/checkin")
     public ModelAndView chackin(@ModelAttribute("checkinForm") final CheckinForm form){
         final ModelAndView mav = new ModelAndView("checkin");
         return  mav;
     }
 
-    @PostMapping("/rooms/checkinPost")
+    @PostMapping("/checkinPost")
     public ModelAndView checkinPost(@ModelAttribute("checkinForm") final CheckinForm form){
         final ModelAndView mav = new ModelAndView("checkinPost");
         Reservation reser = reservationService.getReservationByHash(form.getId_reservation());
         roomService.reservateRoom(reser.getRoomId());
+        //reservationService.activeReservation(form.getId_reservation());
         return mav;
     }
 
-    @GetMapping("/rooms/checkout")
+    @GetMapping("/checkout")
     public ModelAndView checkout(@ModelAttribute("checkoutForm") final CheckoutForm form) {
         final ModelAndView mav = new ModelAndView("checkout");
         return mav;
     }
 
-    @PostMapping("/rooms/checkoutPost")
+    @PostMapping("/checkoutPost")
     public ModelAndView checkoutPost(@ModelAttribute("checkoutForm") final CheckoutForm form){
         final ModelAndView mav = new ModelAndView("checkoutPost");
         mav.addObject("charges",roomService.getRoomsList());
@@ -85,10 +87,9 @@ public class RoomController {
     }
 
 
-    @GetMapping("/rooms/reservations")
+    @GetMapping("/reservations")
     public ModelAndView reservations() {
-        final ModelAndView mav = new ModelAndView("reservations");
-        return mav;
+        return new ModelAndView("reservations");
     }
 
 }

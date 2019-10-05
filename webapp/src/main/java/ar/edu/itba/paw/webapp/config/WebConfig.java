@@ -37,20 +37,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
-                .addResourceHandler("/**")
-                .addResourceLocations("/resources/bootstrap/");
-        registry
-                .addResourceHandler("/**")
-                .addResourceLocations("/resources/js/");
-        registry
-                .addResourceHandler("/**")
-                .addResourceLocations("/resources/CSS/");
-        registry
-                .addResourceHandler("/**")
-                .addResourceLocations("/resources/utilities/");
-        registry
-                .addResourceHandler("/**")
-                .addResourceLocations("/WEB-INF/jsp/");
+                .addResourceHandler("/resources/**")
+                .addResourceLocations("/resources/");
 
     }
 
@@ -96,8 +84,7 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     @Bean(name = "multipartResolver")
-    public CommonsMultipartResolver multipartResolver()
-    {
+    public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
         multipartResolver.setMaxUploadSize(20848820);
         return multipartResolver;

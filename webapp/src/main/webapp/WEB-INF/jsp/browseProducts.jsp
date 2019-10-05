@@ -32,7 +32,7 @@
                 <div class="card-body container text-xs-center">
                     <h5 class="card-title text-xs-center">${product.description}</h5>
                     <p class="card-text price text-xs-center">$<fmt:formatNumber type="number" maxFractionDigits="2" minFractionDigits="2" value="${product.price}"/></p>
-                    <form:form modelAttribute="productForm" action="buyProducts" method="post">
+                    <form:form modelAttribute="productForm" action='buyProducts?reservationId=${pageContext.request.getParameter("reservationId")}' method="post">
                         <form:input type="hidden" path="productId" value="${product.id}"/>
                         <input class="btn btn-primary" type="submit" value="<spring:message code="user.product.buy"/>"/>
                     </form:form>
@@ -43,12 +43,12 @@
     </div>
     <div class="container text-center row">
         <span class="col" style="padding-right: 25px;">
-            <a href="./" class="btn btn-primary">
+            <a href="./user/home" class="btn btn-primary">
                 <spring:message code="user.home"/>
             </a>
         </span>
         <span class="col">
-            <a href="./expenses" class="btn btn-primary">
+            <a href="./expenses?reservationId=${pageContext.request.getParameter("reservationId")}" class="btn btn-primary">
                 <spring:message code="user.product.list.expenses"/>
             </a>
         </span>

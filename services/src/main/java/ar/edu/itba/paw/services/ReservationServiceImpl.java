@@ -21,4 +21,9 @@ public class ReservationServiceImpl implements ReservationService {
     public Reservation getReservationByHash(String hash) {
         return reservationDao.findReservationByHash(hash);
     }
+
+    @Override
+    public void activeReservation(long reservationId) {
+        reservationDao.updateActive(reservationId, true);
+    }
 }

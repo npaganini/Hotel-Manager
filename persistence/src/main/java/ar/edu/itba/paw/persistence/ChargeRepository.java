@@ -2,11 +2,10 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.daos.ChargeDao;
 import ar.edu.itba.paw.models.charge.Charge;
-import ar.edu.itba.paw.models.entities.ProductChargeDto;
+import ar.edu.itba.paw.models.dtos.ChargeDTO;
 import ar.edu.itba.paw.models.product.Product;
+import ar.edu.itba.paw.models.reservation.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -14,9 +13,8 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -29,9 +27,10 @@ public class ChargeRepository extends SimpleRepository<Charge> implements Charge
         super(new NamedParameterJdbcTemplate(dataSource));
         jdbcTemplateWithNamedParameter.getJdbcTemplate()
                 .execute("CREATE TABLE IF NOT EXISTS " + getTableName() + " (" +
-                "id SERIAL PRIMARY KEY, " +
-                "product_id INTEGER REFERENCES product (id), " +
-                "reservation_id INTEGER REFERENCES reservation (id))");
+                        "id SERIAL PRIMARY KEY, " +
+                        "product_id INTEGER REFERENCES product (id), " +
+                        "reservation_id INTEGER REFERENCES reservation (id)," +
+                        "delivered BOOLEAN)");
     }
 
     @Override
@@ -60,19 +59,13 @@ public class ChargeRepository extends SimpleRepository<Charge> implements Charge
     }
 
     @Override
-    public Map<Product, Integer> getAllChargesByUser(long userID) {
+    public Map<Product, Integer> getAllChargesByUser(String userEmail, long reservationId) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-        parameterSource.addValue("reservation_id", userID);
+        parameterSource.addValue("email", userEmail);
+        parameterSource.addValue("reservationId", reservationId);
         return jdbcTemplateWithNamedParameter.query(
-                "SELECT ans.description, ans.price, ans.count as amount "
-                        + " FROM (( SELECT "
-                        + getTableName() + ".product_id, count(" + getTableName() + ".product_id) "
-                        + " FROM " + getTableName()
-                        + " WHERE " + getTableName() + ".reservation_id = " + userID
-                        + " GROUP BY " + getTableName() + ".product_id) as chargedProducts "
-                        + " JOIN " + Product.TABLE_NAME + " ON "
-                        + "(chargedProducts.product_id = " + Product.TABLE_NAME + ".id)) as ans "
-                , rs -> {
+                "SELECT description, price, count(p) FROM charge c JOIN product p ON c.product_id = p.id JOIN reservation r ON r.id = c.reservation_id WHERE r.user_email = :email AND r.id = :reservationId group by p.id",
+                parameterSource, rs -> {
                     Map<Product, Integer> ans = new HashMap<>();
                     while (rs.next()) {
                         Product p = new Product(rs.getString(1), rs.getFloat(2));
@@ -82,7 +75,19 @@ public class ChargeRepository extends SimpleRepository<Charge> implements Charge
                 });
     }
 
-    private RowMapper<ProductChargeDto> getRowMapperWithJoin() {
-        return ((resultSet, i) -> new ProductChargeDto(resultSet));
+    @Override
+    public List<ChargeDTO> findChargeByReservationHash(long reservationId) {
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("reservationId", reservationId);
+        return jdbcTemplateWithNamedParameter
+                .query("SELECT * FROM " + Charge.TABLE_NAME + " NATURAL JOIN " +
+                        Product.TABLE_NAME + " NATURAL JOIN " + Reservation.TABLE_NAME +
+                        " r WHERE r.id = :reservationId", parameters, getRowMapperOfChargeDTO());
     }
+
+    private RowMapper<ChargeDTO> getRowMapperOfChargeDTO() {
+        return ((resultSet, i) -> new ChargeDTO(resultSet));
+    }
+
+
 }

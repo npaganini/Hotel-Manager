@@ -39,12 +39,12 @@
 </c:choose>
             <div class="row">
                 <span class="col" style="padding-right: 25px;">
-                    <a href="./products" class="btn btn-primary">
+                    <a href="./products?reservationId=${pageContext.request.getParameter("reservationId")}" class="btn btn-primary">
                         <spring:message code="user.product.list.browse"/>
                     </a>
                 </span>
                 <span class="col">
-                    <a href="./expenses" class="btn btn-primary">
+                    <a href="./expenses?reservationId=${pageContext.request.getParameter("reservationId")}" class="btn btn-primary">
                         <spring:message code="user.product.list.expenses"/>
                     </a>
                 </span>

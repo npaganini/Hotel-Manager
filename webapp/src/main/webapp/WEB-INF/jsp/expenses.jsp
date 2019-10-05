@@ -57,7 +57,7 @@
         </tfoot>
     </table>
     <div class="container row">
-        <a href="./" class="btn btn-primary"><spring:message code="user.home"/></a>
+        <a href="${pageContext.request.contextPath}/user/home" class="btn btn-primary"><spring:message code="user.home"/></a>
     </div>
 </div>
 </body>
