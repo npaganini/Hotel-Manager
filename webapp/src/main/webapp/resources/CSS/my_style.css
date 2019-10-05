@@ -1,11 +1,26 @@
 .myheader{
-    background-color:black; height:35px;
+    background-color:black;
     text-align: left;
     color: white;
     font-family: Arial, serif;
     font-weight: bold;
     font-size: 25px;
 }
+
+.confirTable{
+    background-color: white;
+    margin-left: 25px;
+    font-size: x-large;
+    border-radius: 5px;
+    border-collapse: collapse;
+    width: 75%;
+}
+
+.vertical-align {
+    display: flex;
+    align-items: center;
+}
+
 .cont{
     background-image: url("../utilities/cork-wallet.png");
 }
@@ -67,3 +82,4 @@
     padding-top: 1.5rem;
     border: #0c0c0c;
 }
+

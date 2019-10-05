@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <html>
+
 <head>
 
     <title>e-lobby</title>
@@ -14,8 +16,7 @@
 
 </head>
 <body>
-<div class="container cont"
-     style="height: 100vh !important; width: 100vw !important;margin-left: 0 !important; margin-right: 0 !important">
+<div class="container cont" style="height: 100vh !important; width: 100vw !important;margin-left: 0 !important; margin-right: 0 !important">
     <div class="row">
         <div class="col">
             <nav class="navbar navbar-inverse sidebar" style="z-index: initial !important;" role="navigation">
@@ -44,54 +45,70 @@
             </nav>
         </div>
     </div>
-    <div class="row myheader">
-        <div class="col-xs-12 " style="text-align: left">Reservas</div>
+
+    <div class="row myheader vertical-align">
+        <div class="col-xs-12" style="text-align: left">
+            <div>Check-Out exitoso!</div>
+        </div>
     </div>
     <br>
     <br>
-    <div class="row" style="height: 45px">
-        <div class="col-xs-12">
-            <table>
-                <tr>
-                    <th>Company</th>
-                    <th>Contact</th>
-                    <th>Country</th>
-                </tr>
-                <tr>
-                    <td>Alfreds Futterkiste</td>
-                    <td>Maria Anders</td>
-                    <td>Germany</td>
-                </tr>
-                <tr>
-                    <td>Centro comercial Moctezuma</td>
-                    <td>Francisco Chang</td>
-                    <td>Mexico</td>
-                </tr>
-                <tr>
-                    <td>Ernst Handel</td>
-                    <td>Roland Mendel</td>
-                    <td>Austria</td>
-                </tr>
-                <tr>
-                    <td>Island Trading</td>
-                    <td>Helen Bennett</td>
-                    <td>UK</td>
-                </tr>
-                <tr>
-                    <td>Laughing Bacchus Winecellars</td>
-                    <td>Yoshi Tannamuri</td>
-                    <td>Canada</td>
-                </tr>
-                <tr>
-                    <td>Magazzini Alimentari Riuniti</td>
-                    <td>Giovanni Rovelli</td>
-                    <td>Italy</td>
-                </tr>
-            </table>
+    <div class="row" style="font-size:x-large ">
+        <div class="col" style="margin-left: 25px">
+            La accion se realizo exitosamente.
+        </div>
+    </div>
 
+    <div class="row">
+        <div class="col-xs-6 form-group" style="z-index:9999;grid-auto-columns: auto">
+            <table id="myTable" class="display" style="width:100%;  border: 1px solid black !important;">
+                <thead>
+                <tr>
+                    <th>Servicios</th>
+                    <th>Valor</th>
+                </tr>
+                </thead>
+                <tbody>
+<%--                <c:forEach var="room" items="${RoomList}">--%>
+<%--                    <tr>--%>
+
+<%--                        <c:if test="${room.freeNow == true}">--%>
+
+<%--                            <td style="text-align: left">${room.id}</td>--%>
+<%--                            <td style="text-align: left">${room.number}</td>--%>
+<%--                            <td>${room.roomType}</td>--%>
+<%--                            <td style="text-align: left">-</td>--%>
+<%--                            <td style="text-align: left">-</td>--%>
+
+<%--                        </c:if>--%>
+
+
+<%--                    </tr>--%>
+<%--                </c:forEach>--%>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th>Total</th>
+                    <th>Mucho</th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+        <div class="col-xs-6" style="margin-left: 25px">
+            <button type="button" class="btn btn-success btn-lg"><a href="/" style="color: white">Volver</a></button>
         </div>
 
-    </div>
+
 </div>
 </body>
 </html>
+
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable({
+            filter: false,
+        });
+    });
+</script>

@@ -1,7 +1,10 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.services.ReservationService;
 import ar.edu.itba.paw.interfaces.services.RoomService;
 import ar.edu.itba.paw.models.reservation.Reservation;
+import form.CheckinForm;
+import form.CheckoutForm;
 import form.ReservationForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,10 +16,12 @@ import java.sql.Date;
 @Controller
 public class RoomController {
     private final RoomService roomService;
+    private final ReservationService reservationService;
 
     @Autowired
-    public RoomController(RoomService roomService) {
+    public RoomController(RoomService roomService,ReservationService reservationService) {
         this.roomService = roomService;
+        this.reservationService = reservationService;
     }
 
     @GetMapping("/")
@@ -51,10 +56,34 @@ public class RoomController {
         return mav;
     }
 
-    @PostMapping("/rooms/checkout")
-    public void checkOut(long roomID) {
-        // do mark room as in-use
+    @GetMapping("/rooms/checkin")
+    public ModelAndView chackin(@ModelAttribute("checkinForm") final CheckinForm form){
+        final ModelAndView mav = new ModelAndView("checkin");
+        return  mav;
     }
+
+    @PostMapping("/rooms/checkinPost")
+    public ModelAndView checkinPost(@ModelAttribute("checkinForm") final CheckinForm form){
+        final ModelAndView mav = new ModelAndView("checkinPost");
+        Reservation reser = reservationService.getReservationByHash(form.getId_reservation());
+        roomService.reservateRoom(reser.getRoomId());
+        return mav;
+    }
+
+    @GetMapping("/rooms/checkout")
+    public ModelAndView checkout(@ModelAttribute("checkoutForm") final CheckoutForm form) {
+        final ModelAndView mav = new ModelAndView("checkout");
+        return mav;
+    }
+
+    @PostMapping("/rooms/checkoutPost")
+    public ModelAndView checkoutPost(@ModelAttribute("checkoutForm") final CheckoutForm form){
+        final ModelAndView mav = new ModelAndView("checkoutPost");
+        mav.addObject("charges",roomService.getRoomsList());
+        roomService.freeRoom(reservationService.getReservationByHash(form.getId_reservation()).getRoomId());
+        return mav;
+    }
+
 
     @GetMapping("/rooms/reservations")
     public ModelAndView reservations() {

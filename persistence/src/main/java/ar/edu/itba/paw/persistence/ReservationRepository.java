@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
+import ar.edu.itba.paw.models.charge.Charge;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
 import ar.edu.itba.paw.models.user.User;
@@ -63,4 +64,5 @@ public class ReservationRepository extends SimpleRepository<Reservation> impleme
         return jdbcTemplateWithNamedParameter.query("SELECT * FROM " + getTableName() + " r WHERE r.hash = :hash",
                 parameterSource, getRowMapper()).get(0);
     }
+
 }
