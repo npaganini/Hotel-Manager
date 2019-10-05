@@ -4,8 +4,9 @@ import ar.edu.itba.paw.interfaces.services.EmailService;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender javaMailSender;

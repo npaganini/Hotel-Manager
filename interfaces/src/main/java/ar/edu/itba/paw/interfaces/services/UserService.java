@@ -10,15 +10,11 @@ import java.util.Map;
 
 public interface UserService {
 
-    List<?> checkServicesUsed();
-
     Map<Product, Integer> checkProductsPurchasedByUser(long userID);
 
     List<Reservation> getAllReservations(long userID);
 
     List<Product> getProducts();
-
-    long getReservation(long userID);
 
     long getReservationID(String reservationHash);
 

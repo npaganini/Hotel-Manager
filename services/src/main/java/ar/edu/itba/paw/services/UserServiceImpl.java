@@ -20,31 +20,19 @@ public class UserServiceImpl implements UserService {
 
     private final ProductDao productDao;
     private final ChargeDao chargeDao;
-    private final UserDao userDao;
 
-    private String[] toursList = {"City Tour"};
-    private String[] classesList = {"Clase de Tango"};
     private final ReservationDao reservationDao;
 
     @Autowired
-    public UserServiceImpl(ProductDao productDao, UserDao userDao, ChargeDao chargeDao, ReservationDao reservationDao) {
+    public UserServiceImpl(ProductDao productDao, ChargeDao chargeDao, ReservationDao reservationDao) {
         this.productDao = productDao;
         this.chargeDao = chargeDao;
-        this.userDao = userDao;
         this.reservationDao = reservationDao;
     }
 
     @Override
     public List<Product> getProducts() {
         return  new LinkedList<>(productDao.getAllProducts());
-    }
-
-    @Override
-    public List<?> checkServicesUsed() {
-        List<String> services = new LinkedList<>();
-        services.addAll(Arrays.asList(toursList));
-        services.addAll(Arrays.asList(classesList));
-        return services;
     }
 
     @Override
@@ -55,11 +43,6 @@ public class UserServiceImpl implements UserService {
      @Override
     public Map<Product, Integer> checkProductsPurchasedByUser(long userID) {
         return new HashMap<>(chargeDao.getAllChargesByUser(userID));
-    }
-
-    @Override
-    public long getReservation(long userID) {
-        return reservationDao.findLastReservationByUserId(userID).getId();
     }
 
     @Override
