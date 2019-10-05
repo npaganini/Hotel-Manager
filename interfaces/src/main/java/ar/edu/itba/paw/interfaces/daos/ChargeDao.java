@@ -10,7 +10,7 @@ import java.util.Map;
 public interface ChargeDao extends SimpleDao<Charge> {
     boolean addCharge(Charge product);
 
-    Map<Product, Integer> getAllChargesByUser(long userID);
+    Map<Product, Integer> getAllChargesByUser(String userEmail, long reservationId);
 
     List<ChargeDTO> findChargeByReservationHash(long reservationId);
 }

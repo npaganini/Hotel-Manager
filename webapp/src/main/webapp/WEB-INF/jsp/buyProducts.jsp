@@ -35,8 +35,8 @@
     </c:otherwise>
 </c:choose>
             <div class="row">
-                <span class="col" style="padding-right: 25px;"><a href="./products" class="btn btn-primary">Return to list of products</a></span>
-                <span class="col"><a href="./expenses" class="btn btn-primary">Look at all your expenses.</a></span>
+                <span class="col" style="padding-right: 25px;"><a href="./products?reservationId=${pageContext.request.getParameter("reservationId")}" class="btn btn-primary">Return to list of products</a></span>
+                <span class="col"><a href="./expenses?reservationId=${pageContext.request.getParameter("reservationId")}" class="btn btn-primary">Look at all your expenses.</a></span>
             </div>
         </div>
 </body>

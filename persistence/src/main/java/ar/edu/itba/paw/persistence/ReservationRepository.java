@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
-import ar.edu.itba.paw.models.charge.Charge;
+import ar.edu.itba.paw.models.dtos.RoomReservationDTO;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
 import ar.edu.itba.paw.models.user.User;
@@ -67,13 +67,23 @@ public class ReservationRepository extends SimpleRepository<Reservation> impleme
                 + Reservation.KEY_IS_ACTIVE + " = :isActive WHERE " + Reservation.KEY_ID + " = :reservationId", parameters);
     }
 
-@Override
-    public List<Reservation> findAllReservationsByUserId(long userID) {
-        return jdbcTemplateWithNamedParameter.query("SELECT * FROM " + getTableName()
-                        + " WHERE user_id = " + userID
-                        + " ORDER BY start_date desc"
-                , getRowMapper());
+    @Override
+    public List<RoomReservationDTO> findActiveReservation(String userEmail) {
+        return findAllReservationsByUserEmail(userEmail);
     }
 
+    @Override
+    public List<RoomReservationDTO> findAllReservationsByUserEmail(String userEmail) {
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("userEmail", userEmail);
+        return jdbcTemplateWithNamedParameter.query("SELECT * FROM " + getTableName() + " JOIN " + Room.TABLE_NAME + " room ON room.id = "
+                + Reservation.KEY_ROOM_ID + " WHERE " + Reservation.KEY_USER_EMAIL + "  = :userEmail AND " + Reservation.KEY_IS_ACTIVE + " = TRUE ORDER BY "
+                        + Reservation.KEY_START_DATE + " desc"
+                , parameters, getRowMapperWithJoin());
+    }
+
+    private RowMapper<RoomReservationDTO> getRowMapperWithJoin() {
+        return (resultSet, i) -> new RoomReservationDTO(resultSet);
+    }
 
 }

@@ -44,7 +44,7 @@ public class User implements SqlObject {
         this.email = email;
         this.username = username;
         this.password = password;
-        this.role = UserRole.ROLE_CLIENT;
+        this.role = UserRole.CLIENT;
     }
 
     @Override

@@ -3,7 +3,6 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.interfaces.daos.ChargeDao;
 import ar.edu.itba.paw.models.charge.Charge;
 import ar.edu.itba.paw.models.dtos.ChargeDTO;
-import ar.edu.itba.paw.models.entities.ProductChargeDto;
 import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,19 +59,13 @@ public class ChargeRepository extends SimpleRepository<Charge> implements Charge
     }
 
     @Override
-    public Map<Product, Integer> getAllChargesByUser(long userID) {
+    public Map<Product, Integer> getAllChargesByUser(String userEmail, long reservationId) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-        parameterSource.addValue("reservation_id", userID);
+        parameterSource.addValue("email", userEmail);
+        parameterSource.addValue("reservationId", reservationId);
         return jdbcTemplateWithNamedParameter.query(
-                "SELECT ans.description, ans.price, ans.count as amount "
-                        + " FROM (( SELECT "
-                        + getTableName() + ".product_id, count(" + getTableName() + ".product_id) "
-                        + " FROM " + getTableName()
-                        + " WHERE " + getTableName() + ".reservation_id = " + userID
-                        + " GROUP BY " + getTableName() + ".product_id) as chargedProducts "
-                        + " JOIN " + Product.TABLE_NAME + " ON "
-                        + "(chargedProducts.product_id = " + Product.TABLE_NAME + ".id)) as ans "
-                , rs -> {
+                "SELECT description, price, count(p) FROM charge c JOIN product p ON c.product_id = p.id JOIN reservation r ON r.id = c.reservation_id WHERE r.user_email = :email AND r.id = :reservationId group by p.id",
+                parameterSource, rs -> {
                     Map<Product, Integer> ans = new HashMap<>();
                     while (rs.next()) {
                         Product p = new Product(rs.getString(1), rs.getFloat(2));
@@ -82,11 +75,7 @@ public class ChargeRepository extends SimpleRepository<Charge> implements Charge
                 });
     }
 
-    private RowMapper<ProductChargeDto> getRowMapperWithJoin() {
-        return ((resultSet, i) -> new ProductChargeDto(resultSet));
-    }
-
- @Override
+    @Override
     public List<ChargeDTO> findChargeByReservationHash(long reservationId) {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("reservationId", reservationId);
@@ -101,30 +90,4 @@ public class ChargeRepository extends SimpleRepository<Charge> implements Charge
     }
 
 
-    private RowMapper<ProductChargeDto> getRowMapperWithJoin() {
-        return ((resultSet, i) -> new ProductChargeDto(resultSet));
-    }
-
-    @Override
-    public Map<Product, Integer> getAllChargesByUser(long userID) {
-        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-        parameterSource.addValue("reservation_id", userID);
-        return jdbcTemplateWithNamedParameter.query(
-                "SELECT ans.description, ans.price, ans.count as amount "
-                        + " FROM (( SELECT "
-                        + getTableName() + ".product_id, count(" + getTableName() + ".product_id) "
-                        + " FROM " + getTableName()
-                        + " WHERE " + getTableName() + ".reservation_id = " + userID
-                        + " GROUP BY " + getTableName() + ".product_id) as chargedProducts "
-                        + " JOIN " + Product.TABLE_NAME + " ON "
-                        + "(chargedProducts.product_id = " + Product.TABLE_NAME + ".id)) as ans "
-                , rs -> {
-                    Map<Product, Integer> ans = new HashMap<>();
-                    while (rs.next()) {
-                        Product p = new Product(rs.getString(1), rs.getFloat(2));
-                        ans.put(p, rs.getInt(3));
-                    }
-                    return ans;
-                });
-    }
 }

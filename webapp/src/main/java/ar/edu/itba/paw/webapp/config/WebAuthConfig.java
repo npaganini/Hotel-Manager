@@ -1,7 +1,9 @@
 package ar.edu.itba.paw.webapp.config;
 
+import ar.edu.itba.paw.models.user.UserRole;
 import ar.edu.itba.paw.webapp.auth.CustomUserDetailsService;
 
+import ar.edu.itba.paw.webapp.auth.MyUserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -14,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
@@ -32,15 +35,27 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     protected void configure(final HttpSecurity http) throws Exception {
         http.userDetailsService(customUserDetailsService)
                 .sessionManagement()
-                .invalidSessionUrl("/")
+                .invalidSessionUrl("/login")
                 .and()
                 .authorizeRequests()
                 .antMatchers("/login").anonymous()
-                .antMatchers("/**").authenticated()
+                .antMatchers("/user/**").hasAuthority(UserRole.CLIENT.toString())
+                .antMatchers("/rooms/**", "/reservation/**").hasAnyAuthority(UserRole.EMPLOYEE.toString(), UserRole.MANAGER.toString())
                 .and().formLogin()
                 .usernameParameter("username")
                 .passwordParameter("password")
-                .defaultSuccessUrl("/", false)
+                .successHandler((httpServletRequest, httpServletResponse, authentication)
+                        -> ((MyUserPrincipal) authentication.getPrincipal()).getAuthorities().parallelStream().forEach(authority -> {
+                    try {
+                        if (authority.getAuthority().equals(UserRole.CLIENT.toString())) {
+                            httpServletResponse.sendRedirect("/user/home");
+                        } else {
+                            httpServletResponse.sendRedirect("/rooms/home");
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }))
                 .loginPage("/login")
                 .and().rememberMe()
                 .rememberMeParameter("rememberMe")

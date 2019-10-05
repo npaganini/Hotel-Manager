@@ -73,10 +73,10 @@ public abstract class SimpleRepository<T extends SqlObject> implements SimpleDao
         return Arrays.asList(
                 new User(1L, "mail@mail.com",
                         bCryptPasswordEncoder.encode("password"),
-                        "manager", UserRole.ROLE_MANAGER),
+                        "manager", UserRole.MANAGER),
                 new User(2L, "mail@mail.com",
                         bCryptPasswordEncoder.encode("password"), "employee",
-                        UserRole.ROLE_EMPLOYEE));
+                        UserRole.EMPLOYEE));
     }
 
     @Override

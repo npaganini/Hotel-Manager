@@ -56,7 +56,7 @@
         </tfoot>
     </table>
     <div class="container row">
-        <a href="./" class="btn btn-primary">Back To Home</a>
+        <a href="${pageContext.request.contextPath}/user/home" class="btn btn-primary">Back To Home</a>
     </div>
 </div>
 </body>
