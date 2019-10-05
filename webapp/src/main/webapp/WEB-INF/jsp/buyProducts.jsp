@@ -15,6 +15,6 @@
     </c:otherwise>
 </c:choose>
 <span><a href="./products">Return to list of products</a></span>
-<span><a href="">Look at all your expenses.</a></span>
+<span><a href="./expenses">Look at all your expenses.</a></span>
 </body>
 </html>
