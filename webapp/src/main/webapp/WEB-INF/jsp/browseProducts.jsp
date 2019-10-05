@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
     <title>Browse Our Products</title>
@@ -19,7 +20,11 @@
 <body>
 <div class="container">
     <div class="form-group" style="grid-auto-columns: auto">
-        <div class="modal-title row navbar-default"><h1>Products Ofrecidos:</h1></div>
+        <div class="modal-title row navbar-default">
+            <h1>
+                <spring:message code="user.product.offered"/>
+            </h1>
+        </div>
         <div class="card-deck">
             <c:forEach var="product" items="${ProductsList}">
             <div class="card">
@@ -29,7 +34,7 @@
                     <p class="card-text price text-xs-center">$<fmt:formatNumber type="number" maxFractionDigits="2" minFractionDigits="2" value="${product.price}"/></p>
                     <form:form modelAttribute="productForm" action="buyProducts" method="post">
                         <form:input type="hidden" path="productId" value="${product.id}"/>
-                        <input class="btn btn-primary" type="submit" value="Comprar"/>
+                        <input class="btn btn-primary" type="submit" value="<spring:message code="user.product.buy"/>"/>
                     </form:form>
                 </div>
             </div>
@@ -37,8 +42,16 @@
         </div>
     </div>
     <div class="container text-center row">
-        <span class="col" style="padding-right: 25px;"><a href="./" class="btn btn-primary">Back To Home</a></span>
-        <span class="col"><a href="./expenses" class="btn btn-primary">Check My Expenses</a></span>
+        <span class="col" style="padding-right: 25px;">
+            <a href="./" class="btn btn-primary">
+                <spring:message code="user.home"/>
+            </a>
+        </span>
+        <span class="col">
+            <a href="./expenses" class="btn btn-primary">
+                <spring:message code="user.product.list.expenses"/>
+            </a>
+        </span>
     </div>
 </div>
 </body>

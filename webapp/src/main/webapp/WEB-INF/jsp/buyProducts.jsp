@@ -1,8 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <html>
 <head>
-    <title>Product Successfully Bought</title>
+    <title><spring:message code="user.product.bought"/></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
     <script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
@@ -26,17 +27,27 @@
 <body>
 <c:choose>
     <c:when test="${charge}">
-        <h1 class="modal-title row navbar-default">&nbsp Product Bought!</h1>
+        <h1 class="modal-title row navbar-default">
+            &nbsp;<spring:message code="user.product.bought"/>
+        </h1>
         <div class="container">
-            <div class="message row">Items will be delivered to your room soon!</div>
+            <div class="message row"><spring:message code="user.product.itemsDelivered"/></div>
     </c:when>
     <c:otherwise>
-            <div class="message row">There was an unexpected error! Please try again.</div>
+            <div class="message row"><spring:message code="user.product.error"/></div>
     </c:otherwise>
 </c:choose>
             <div class="row">
-                <span class="col" style="padding-right: 25px;"><a href="./products" class="btn btn-primary">Return to list of products</a></span>
-                <span class="col"><a href="./expenses" class="btn btn-primary">Look at all your expenses.</a></span>
+                <span class="col" style="padding-right: 25px;">
+                    <a href="./products" class="btn btn-primary">
+                        <spring:message code="user.product.list.browse"/>
+                    </a>
+                </span>
+                <span class="col">
+                    <a href="./expenses" class="btn btn-primary">
+                        <spring:message code="user.product.list.expenses"/>
+                    </a>
+                </span>
             </div>
         </div>
 </body>

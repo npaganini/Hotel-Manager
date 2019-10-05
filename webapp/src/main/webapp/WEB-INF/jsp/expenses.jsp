@@ -1,8 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-    <title>Check Your Expenses</title>
+    <title><spring:message code="user.product.expenses"/></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
     <script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
@@ -24,15 +25,15 @@
     <script src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js'></script>
 </head>
 <body>
-<h1 class="modal-title row navbar-default">&nbsp All Expenses List:</h1>
+<h1 class="modal-title row navbar-default">&nbsp<spring:message code="user.product.expensesList"/></h1>
 <div class="main container-fluid">
     <table class="table table-striped cont">
         <c:set var="total" value="0" scope="page"/>
         <thead class="thead-dark">
             <tr>
-                <th scope="col">Product</th>
-                <th scope="col">Amount</th>
-                <th scope="col">Price</th>
+                <th scope="col"><spring:message code="user.product.product"/></th>
+                <th scope="col"><spring:message code="user.product.amount"/></th>
+                <th scope="col"><spring:message code="user.product.price"/></th>
             </tr>
         </thead>
         <tbody>
@@ -47,7 +48,7 @@
         </tbody>
         <tfoot class="thead-light cont modal-footer">
         <tr>
-            <td scope="col" class="text-left">Total:</td>
+            <td scope="col" class="text-left"><spring:message code="user.product.total"/></td>
             <td scope="col"></td>
             <td scope="col" class="text-left">
                 <fmt:formatNumber type="currency" maxFractionDigits="2" minFractionDigits="2" value="${total}"/>
@@ -56,7 +57,7 @@
         </tfoot>
     </table>
     <div class="container row">
-        <a href="./" class="btn btn-primary">Back To Home</a>
+        <a href="./" class="btn btn-primary"><spring:message code="user.home"/></a>
     </div>
 </div>
 </body>

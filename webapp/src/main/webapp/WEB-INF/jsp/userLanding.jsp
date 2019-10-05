@@ -1,9 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-    <title>Welcome</title>
+    <title><spring:message code="user.landing"/></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
     <script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
@@ -18,30 +19,38 @@
 <body>
 <div class="container">
     <div class="panel-title">
-        <h1 class="text-xs-center modal-title row navbar-default">Welcome!</h1>
+        <h1 class="text-xs-center modal-title row navbar-default"><spring:message code="user.greeting"/></h1>
     </div>
         <table class="table text-xs-center">
             <thead class="thead-dark">
                 <tr>
-                    <th class="col-2 text-xs-center">Other Actions</th>
-                    <th class="text-xs-center">History</th>
+                    <th class="col-2 text-xs-center"><spring:message code="user.landing.other"/></th>
+                    <th class="text-xs-center"><spring:message code="user.landing.history"/></th>
                 </tr>
             </thead>
             <tbody class="container">
                 <tr>
                     <td rowspan="${fn:length(ReservationsList) + 1}" class="col-2 text-xs-center">
                         <div class="container text-xs-center col-2 card-deck">
-                            <div class="row"><a href="./products" class="btn btn-primary">Buy Products</a></div>
+                            <div class="row">
+                                <a href="./products" class="btn btn-primary">
+                                    <spring:message code="user.product.list.buy"/>
+                                </a>
+                            </div>
                             <div class="w-100" style="padding-bottom: 15px"></div>
-                            <div class="row"><a href="./expenses" class="btn btn-primary">Check My Expenses</a></div>
+                            <div class="row">
+                                <a href="./expenses" class="btn btn-primary">
+                                    <spring:message code="user.product.expenses"/>
+                                </a>
+                            </div>
                         </div>
                     </td>
                     <td class="text-xs-center">
                         <table class="container">
                             <thead class="thead-light modal-footer">
-                                <th>Reservation</th>
-                                <th>Start Date</th>
-                                <th>End Date</th>
+                                <th><spring:message code="reservation.singular"/></th>
+                                <th><spring:message code="reservation.date.start"/></th>
+                                <th><spring:message code="reservation.date.end"/></th>
                             </thead>
                             <tbody>
                                 <c:forEach var="reservation" items="${ReservationsList}">
