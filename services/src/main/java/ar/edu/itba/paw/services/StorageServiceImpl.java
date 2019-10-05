@@ -3,13 +3,14 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.services.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
 
-@Component
+@Service
 public class StorageServiceImpl implements StorageService {
 
     private final ServletContext servletContext;

@@ -5,8 +5,9 @@ import ar.edu.itba.paw.interfaces.services.ReservationService;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class ReservationServiceImpl implements ReservationService {
 
     private final ReservationDao reservationDao;

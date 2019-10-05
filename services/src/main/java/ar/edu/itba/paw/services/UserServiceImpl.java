@@ -8,6 +8,7 @@ import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.charge.Charge;
 import ar.edu.itba.paw.models.entities.ProductChargeDto;
 import ar.edu.itba.paw.models.product.Product;
+import ar.edu.itba.paw.models.reservation.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,17 +20,13 @@ public class UserServiceImpl implements UserService {
 
     private final ProductDao productDao;
     private final ChargeDao chargeDao;
-    private final UserDao userDao;
 
-    private String[] toursList = {"City Tour"};
-    private String[] classesList = {"Clase de Tango"};
     private final ReservationDao reservationDao;
 
     @Autowired
-    public UserServiceImpl(ProductDao productDao, UserDao userDao, ChargeDao chargeDao, ReservationDao reservationDao) {
+    public UserServiceImpl(ProductDao productDao, ChargeDao chargeDao, ReservationDao reservationDao) {
         this.productDao = productDao;
         this.chargeDao = chargeDao;
-        this.userDao = userDao;
         this.reservationDao = reservationDao;
     }
 
@@ -39,21 +36,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<?> checkServicesUsed() {
-        List<String> services = new LinkedList<>();
-        services.addAll(Arrays.asList(toursList));
-        services.addAll(Arrays.asList(classesList));
-        return services;
+    public List<Reservation> getAllReservations(long userID) {
+        return new LinkedList<>(reservationDao.findAllReservationsByUserId(userID));
     }
 
-    @Override
+     @Override
     public Map<Product, Integer> checkProductsPurchasedByUser(long userID) {
         return new HashMap<>(chargeDao.getAllChargesByUser(userID));
-    }
-
-    @Override
-    public long getReservation(long userID) {
-        return reservationDao.findLastReservationByUserId(userID).getId();
     }
 
     @Override

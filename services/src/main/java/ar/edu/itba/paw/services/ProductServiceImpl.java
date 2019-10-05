@@ -4,10 +4,11 @@ import ar.edu.itba.paw.interfaces.daos.ProductDao;
 import ar.edu.itba.paw.interfaces.services.ProductService;
 import ar.edu.itba.paw.models.product.Product;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 
-@Component
+@Service
 public class ProductServiceImpl implements ProductService {
 
     private final ProductDao productDao;
