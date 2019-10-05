@@ -21,7 +21,7 @@
 <body>
 <div class="container">
     <div class="panel-title">
-        <h1 class="text-xs-center modal-title row navbar-default">Your current reservation</h1>
+        <h1 class="text-xs-center modal-title row navbar-default"><spring:message code="user.reservation.current"/></h1>
     </div>
     <table class="table text-xs-center">
         <thead class="thead-dark">
@@ -32,7 +32,7 @@
             <td class="text-xs-center">
                 <table class="container">
                     <thead class="thead-light modal-footer">
-                    <th>Room Type</th>
+                    <th><spring:message code="reservation.room.type"/></th>
                     <th><spring:message code="reservation.date.start"/></th>
                     <th><spring:message code="reservation.date.end"/></th>
                     <th><spring:message code="user.landing.other"/></th>
