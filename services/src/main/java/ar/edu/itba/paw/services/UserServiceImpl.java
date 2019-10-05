@@ -8,7 +8,6 @@ import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.charge.Charge;
 import ar.edu.itba.paw.models.entities.ProductChargeDto;
 import ar.edu.itba.paw.models.product.Product;
-import ar.edu.itba.paw.models.reservation.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +19,7 @@ public class UserServiceImpl implements UserService {
 
     private final ProductDao productDao;
     private final ChargeDao chargeDao;
-    private final ReservationDao reservationDao;
+   private final ReservationDao reservationDao;
 
     @Autowired
     public UserServiceImpl(ProductDao productDao, ChargeDao chargeDao, ReservationDao reservationDao) {
@@ -47,6 +46,7 @@ public class UserServiceImpl implements UserService {
     public long getReservation(long userID) {
         return reservationDao.findLastReservationByUserId(userID).getId();
     }
+
     @Override
     public long getReservationID(String reservationHash) {
         return reservationDao.findReservationByHash(reservationHash).getId();
