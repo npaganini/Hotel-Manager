@@ -36,10 +36,10 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="/rooms/checkin">Check-In</a></li>
-                            <li><a href="/rooms/checkout">Check-Out</a></li>
-                            <li><a href="/rooms/reservations">Reservas</a></li>
-                            <li><a href="/">Productos</a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/checkin">Check-In</a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/checkout">Check-Out</a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/reservations">Reservas</a></li>
+                            <li><a href="${pageContext.request.contextPath}/home">Productos</a></li>
                         </ul>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
         </div>
         <div class="col-xs-6 " style="text-align: right">
             <button type="button" class="btn btn-success btn-lg"><a
-                    href="/rooms/reservation" style="color: white">Nueva Reserva</a></button>
+                    href="${pageContext.request.contextPath}/rooms/reservation" style="color: white">Nueva Reserva</a></button>
 
         </div>
     </div>
@@ -93,14 +93,13 @@
     </div>
 
 </div>
-</div>
 </body>
 
 <script>
     $(document).ready(function () {
         $('#myTable').DataTable({
             "order": [[1, "asc"]],
-            filter: false,
+            filter: false
         });
     });
 </script>
