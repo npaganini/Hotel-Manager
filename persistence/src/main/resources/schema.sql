@@ -50,7 +50,6 @@ CREATE TABLE IF NOT EXISTS charge
     product_id     INTEGER REFERENCES product (id),
     reservation_id INTEGER REFERENCES reservation (id),
     delivered      BOOLEAN
-)
-;
+);
 
 

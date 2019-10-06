@@ -27,128 +27,46 @@ public class UserServiceImplTest {
     private static final String PASSWORD = "passwordpassword";
     private static final String USERNAME = "username";
 
-    @InjectMocks
-    private UserServiceImpl userService = new UserServiceImpl(
-            new ProductDao() {
-                @Override
-                public List<Product> getAllProducts() {
-                    List<Product> listOfProducts = new LinkedList<>();
-                    listOfProducts.add(new Product("Coca-Cola", 12.50));
-                    return listOfProducts;
-                }
-
-                @Override
-                public int updateProductEnable(long productId, boolean enable) {
-                    return 0;
-                }
-
-                @Override
-                public Product save(Product product) {
-                    return null;
-                }
-
-                @Override
-                public Optional<Product> findById(long id) {
-                    return Optional.empty();
-                }
-
-                @Override
-                public List<Product> findAll() {
-                    return null;
-                }
-            },
-            new ChargeDao() {
-                @Override
-                public boolean addCharge(Charge product) {
-                    return false;
-                }
-
-                @Override
-                public Map<Product, Integer> getAllChargesByUser(String userEmail, long reservationId) {
-                    return null;
-                }
-
-                @Override
-                public List<ChargeDTO> findChargeByReservationHash(long reservationId) {
-                    return null;
-                }
-
-                @Override
-                public Charge save(Charge charge) {
-                    return null;
-                }
-
-                @Override
-                public Optional<Charge> findById(long id) {
-                    return Optional.empty();
-                }
-
-                @Override
-                public List<Charge> findAll() {
-                    return null;
-                }
-            },
-            new ReservationDao() {
-                @Override
-                public List<RoomReservationDTO> findAllReservationsByUserEmail(String userEmail) {
-                    return null;
-                }
-
-                @Override
-                public Reservation findReservationByHash(String hash) {
-                    return null;
-                }
-
-                @Override
-                public int updateActive(long reservationId, boolean b) {
-                    return 0;
-                }
-
-                @Override
-                public List<RoomReservationDTO> findActiveReservation(String userEmail) {
-                    return null;
-                }
-
-                @Override
-                public Reservation save(Reservation reservation) {
-                    return null;
-                }
-
-                @Override
-                public Optional<Reservation> findById(long id) {
-                    return Optional.empty();
-                }
-
-                @Override
-                public List<Reservation> findAll() {
-                    return null;
-                }
-            }
-    );
-
     @Mock
     private UserDao mockDao;
+    @Mock
+    private ProductDao productDao;
+    @Mock
+    private ChargeDao chargeDao;
+    @Mock
+    private ReservationDao reservationDao;
 
-    // public List<Product> getProducts()
+    @InjectMocks
+    private UserServiceImpl userService = new UserServiceImpl(productDao, chargeDao, reservationDao);
+
+    /*
+     * function to test: public List<Product> getProducts()
+     */
     @Test
     public void testGetProducts() {
 //        1. Setup!
 //        Mockito.when(mockDao.)
     }
 
-    // public List<RoomReservationDTO> findActiveReservation(String userEmail)
+    /*
+     * function to test: public List<RoomReservationDTO> findActiveReservation(String userEmail)
+     */
     @Test
     public void testFindActiveReservation() {
         //
     }
 
-    // public Map<Product, Integer> checkProductsPurchasedByUserByReservationId(String userEmail, long reservationId)
+    /*
+     * function to test: public Map<Product, Integer> checkProductsPurchasedByUserByReservationId(String userEmail, long reservationId)
+     */
     @Test
     public void testCheckProductsPurchasedByUserByReservationId(String userEmail, long reservationId) {
         //
     }
 
-    // public boolean addCharge(Charge product)
+    /*
+    * function to test: public boolean addCharge(Charge product)
+     */
     @Test
     public void testAddCharge(Charge product) {
         //
