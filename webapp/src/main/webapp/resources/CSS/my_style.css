@@ -21,6 +21,10 @@
     align-items: center;
 }
 
+.login{
+    background-image: url("../utilities/cork-wallet.png");
+}
+
 .cont{
     background-image: url("../utilities/cork-wallet.png");
 }

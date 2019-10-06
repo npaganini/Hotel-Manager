@@ -6,13 +6,15 @@
           id="bootstrap-css">
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="${pageContext.request.contextPath}/resources/CSS/my_style.css" rel="stylesheet">
+
 </head>
-<main class="login-form">
+<main class="login-form login">
     <div class="cotainer">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">Register</div>
+                    <div class="card-header" style="font-family: Arial, serif;font-weight: bold;font-size: 25px;">Register</div>
                     <div class="card-body">
                         <form action="${pageContext.request.contextPath}/login" method="post">
                             <div class="form-group row">
@@ -54,5 +56,6 @@
     </div>
 
 </main>
+<body class="login"></body>
 </html>
 
