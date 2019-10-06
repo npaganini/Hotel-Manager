@@ -23,16 +23,6 @@ public class ReservationRepository extends SimpleRepository<Reservation> impleme
     @Autowired
     public ReservationRepository(DataSource dataSource) {
         super(new NamedParameterJdbcTemplate(dataSource));
-        jdbcTemplateWithNamedParameter.getJdbcTemplate()
-                .execute("CREATE TABLE IF NOT EXISTS " + getTableName() + " (" +
-                        "id SERIAL PRIMARY KEY," +
-                        "start_date TIMESTAMP," +
-                        "end_date TIMESTAMP," +
-                        "user_email VARCHAR(100), " +
-                        "hash VARCHAR(1000), " +
-                        "is_active BOOLEAN," +
-                        "room_id INTEGER REFERENCES " + Room.TABLE_NAME + "(id)," +
-                        "user_id INTEGER REFERENCES " + User.TABLE_NAME + "(id) )");
     }
 
     @Override

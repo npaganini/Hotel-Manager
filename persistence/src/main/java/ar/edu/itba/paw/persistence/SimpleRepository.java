@@ -29,45 +29,9 @@ public abstract class SimpleRepository<T extends SqlObject> implements SimpleDao
                 new SimpleJdbcInsert(jdbcTemplateWithNamedParameter.getJdbcTemplate())
                         .withTableName(getTableName())
                         .usingGeneratedKeyColumns(KEY_ID);
-        jdbcTemplateWithNamedParameter.getJdbcTemplate()
-                .execute("CREATE TABLE IF NOT EXISTS " + Product.TABLE_NAME + " (" +
-                        "id SERIAL PRIMARY KEY, " +
-                        "description VARCHAR(150), " +
-                        "price DOUBLE PRECISION," +
-                        "file_path VARCHAR(150)," +
-                        "enable boolean);");
-        jdbcTemplateWithNamedParameter.getJdbcTemplate()
-                .execute("CREATE TABLE IF NOT EXISTS " + User.TABLE_NAME + " (" +
-                        "id SERIAL PRIMARY KEY ," +
-                        "email varchar(100)," +
-                        "username varchar(100)," +
-                        "password varchar(100)," +
-                        "role varchar(15));");
-        jdbcTemplateWithNamedParameter.getJdbcTemplate()
-                .execute("CREATE TABLE IF NOT EXISTS " + Room.TABLE_NAME + " (" +
-                        "id SERIAL PRIMARY KEY, " +
-                        "room_type VARCHAR(15), " +
-                        "is_free_now BOOLEAN, " +
-                        "number INTEGER);");
     }
 
-    List<Room> getHardcodedRooms() {
-        Room room1 = new Room(1, RoomType.DOUBLE, true, 102);
-        Room room2 = new Room(2, RoomType.TRIPLE, true, 103);
-        Room room3 = new Room(3, RoomType.SIMPLE, true, 104);
-        Room room4 = new Room(4, RoomType.DOUBLE, true, 105);
-        Room room5 = new Room(5, RoomType.DOUBLE, true, 106);
-        return Arrays.asList(room1, room2, room3, room4, room5);
-    }
-
-    List<Product> getHardcodedProducts() {
-        Product product = new Product(1L, "Coca-Cola", 45.3d, "filePath", true);
-        Product product1 = new Product(2L, "Whisky", 150d, "filePath", true);
-        Product product2 = new Product(3L, "Papitas", 12d, "filePath", true);
-        Product product3 = new Product(4L, "Chocolates", 19d, "filePath", true);
-        return Arrays.asList(product, product1, product2, product3);
-    }
-
+    // Leave this one for encoder purposes
     List<User> getHardcodedUsers() {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         return Arrays.asList(
