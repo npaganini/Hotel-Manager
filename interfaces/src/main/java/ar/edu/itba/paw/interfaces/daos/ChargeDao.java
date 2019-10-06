@@ -13,4 +13,6 @@ public interface ChargeDao extends SimpleDao<Charge> {
     Map<Product, Integer> getAllChargesByUser(String userEmail, long reservationId);
 
     List<ChargeDTO> findChargeByReservationHash(long reservationId);
+
+    double sumCharge(long reservationId);
 }
