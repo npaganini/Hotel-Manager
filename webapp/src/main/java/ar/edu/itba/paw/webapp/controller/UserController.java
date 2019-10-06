@@ -27,6 +27,7 @@ public class UserController extends SimpleController {
     @GetMapping("/home")
     public ModelAndView getLandingPage(Authentication authentication) {
         final ModelAndView mav = new ModelAndView("userLanding");
+        LOGGER.debug("Request received to user's landing page");
         mav.addObject("ReservationsList",
                 userService.findActiveReservation(getUsername(authentication)));
         return mav;
@@ -36,6 +37,7 @@ public class UserController extends SimpleController {
     public ModelAndView getAllProducts(@ModelAttribute("productForm") ProductForm productForm,
                                        @RequestParam(value = "reservationId") long reservationId) {
         final ModelAndView mav = new ModelAndView("browseProducts");
+        LOGGER.debug("Request received to retrieve all products list");
         mav.addObject("ProductsList", userService.getProducts());
         return mav;
     }
@@ -43,6 +45,7 @@ public class UserController extends SimpleController {
     @GetMapping("/expenses")
     public ModelAndView boughtProducts(Authentication authentication, @RequestParam(value = "reservationId") long reservationId) {
         final ModelAndView mav = new ModelAndView("expenses");
+        LOGGER.debug("Request received to retrieve all expenses on reservation with id" + reservationId);
         mav.addObject("ProductsList",
                 userService.checkProductsPurchasedByUserByReservationId(getUsername(authentication), reservationId));
         return mav;
@@ -50,6 +53,7 @@ public class UserController extends SimpleController {
 
     @PostMapping("/buyProducts")
     public ModelAndView buyProduct(@ModelAttribute("productForm") ProductForm productForm, @RequestParam(value = "reservationId") long reservationId) {
+        LOGGER.debug("Request received to buy products on reservation with id" + reservationId);
         if (productForm != null) {
             final ModelAndView mav = new ModelAndView("buyProducts");
             Charge charge = new Charge(productForm.getProductId(), reservationId);
