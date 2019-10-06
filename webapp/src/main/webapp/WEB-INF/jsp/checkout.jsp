@@ -75,7 +75,7 @@
                     <input type="submit" class="btn btn-default btn-lg" value="Aceptar"/>
                 </div>
                 <div class="col-xs-2">
-                    <button type="button" class="btn btn-danger btn-lg"><a href="/" style="color: white">Cancelar</a>
+                    <button type="button" class="btn btn-danger btn-lg"><a href="/rooms/home" style="color: white">Cancelar</a>
                     </button>
                 </div>
         </div>
