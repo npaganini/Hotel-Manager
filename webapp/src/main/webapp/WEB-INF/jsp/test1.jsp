@@ -47,16 +47,16 @@
         </div>
     </div>
 
-    <div class="row myheader vertical-align">
-        <div class="col-xs-6" style="text-align: left">
-            <div>Reservas</div>
+        <div class="row myheader vertical-align">
+            <div class="col-xs-6" style="text-align: left">
+                <div>Reservas</div>
+            </div>
+
         </div>
 
-    </div>
-
-    <br>
-    <br>
-    <form id="filter"   action="<c:url value="/rooms/reservations?startDate=${startDate}&endDate=${endDate}&userMail=${userMail}"/>" method="get">
+        <br>
+        <br>
+        <form id="filter"   action="<c:url value="/rooms/reservations?startDate=${startDate}&endDate=${endDate}&userMail=${userMail}"/>" method="get">
         <div class="row">
             <div class="col-xs-6">
                 <div class="form-question">
@@ -67,7 +67,7 @@
 
                     <div class="input-container">
                         <input id="from_date" path="startDate" type="date" name="effective-date" minlength="1"
-                               maxlength="64" placeholder=" " autocomplete="nope" required="required">
+                                    maxlength="64" placeholder=" " autocomplete="nope" required="required">
                         <span class="bar"></span>
                     </div>
                 </div>
@@ -79,7 +79,7 @@
                     </div>
                     <div class="input-container">
                         <input id="to_date" path="endDate" type="date" name="effective-date" minlength="1"
-                               maxlength="64" placeholder=" " autocomplete="nope" required="required">
+                                    maxlength="64" placeholder=" " autocomplete="nope" required="required">
                         <span class="bar"></span>
                     </div>
                 </div>
@@ -91,7 +91,7 @@
                 <div class="input-group">
                     <span class="input-group-addon"></span>
                     <input id="IDres" path="userEmail" type="text" class="form-control" name="IDres"
-                           placeholder="Email del titular">
+                                placeholder="Email del titular">
                 </div>
             </div>
             <div class="col-xs-6">
@@ -109,7 +109,7 @@
         </div>
         <br>
         <br>
-    </form>
+        </form>
     <c:url value="/rooms/reservation" var="postPath"/>
     <div class="row">
         <div class="col-xs-12 form-group" style="z-index:9999;grid-auto-columns: auto">

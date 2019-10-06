@@ -95,15 +95,15 @@ public class RoomController {
     }
 
 
-    @GetMapping("/reservations?offset=10&limit=10&order=asc&")
-    public ModelAndView reservations(@RequestParam("startDate") Optional<LocalDate> startDate, @RequestParam("endDate") Optional<LocalDate> endDate, @RequestParam("userEmail") Optional<String> userEmail) {
+    @GetMapping("/reservations")
+    public ModelAndView reservations(@RequestParam("startDate") Optional<String> startDate, @RequestParam("endDate") Optional<String> endDate, @RequestParam("userEmail") Optional<String> userEmail) {
         final ModelAndView mav = new ModelAndView("reservations");
         if(!startDate.isPresent() && !endDate.isPresent() && !userEmail.isPresent())
             mav.addObject("reservations", reservationService.getAll());
         else {
-            mav.addObject("reservations",roomService.findAllFreeBetweenDatesAndEmail();
+            mav.addObject("reservations",roomService.findAllFreeBetweenDatesAndEmail(LocalDate.parse(startDate.get()),LocalDate.parse(endDate.get()),userEmail.get()));
         }
-        return mav;
+         return mav;
     }
 
 //    @PostMapping("/reservations")
