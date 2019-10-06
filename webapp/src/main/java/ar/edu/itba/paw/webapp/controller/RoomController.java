@@ -8,6 +8,8 @@ import form.CheckinForm;
 import form.CheckoutForm;
 import form.ReservationFilter;
 import form.ReservationForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,9 @@ import java.sql.Date;
 @Controller
 @RequestMapping("rooms")
 public class RoomController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RoomController.class);
+
     private final RoomService roomService;
     private final ReservationService reservationService;
     private final ChargeService chargeService;
@@ -32,14 +37,8 @@ public class RoomController {
     @GetMapping("/home")
     public ModelAndView getAllRooms() {
         final ModelAndView mav = new ModelAndView("index");
+        LOGGER.debug("Request received to retrieve whole roomsList");
         mav.addObject("RoomList", roomService.getRoomsList());
-        return mav;
-    }
-
-    @GetMapping("/room/{id}")
-    public ModelAndView getRoom(@PathVariable long id) {
-        final ModelAndView mav = new ModelAndView("room");
-        mav.addObject("RoomSelected", roomService.getRoom(id));
         return mav;
     }
 
@@ -53,23 +52,25 @@ public class RoomController {
     @PostMapping("/reservationPost")
     public ModelAndView reservationPost(@ModelAttribute("reservationForm") final ReservationForm form) {
         final ModelAndView mav = new ModelAndView("reservationPost");
+        LOGGER.debug("Request received to do a reservation on room with id: " + form.getRoomId());
         Reservation reserva = new Reservation(form.getRoomId(),
                 form.getUserEmail(), Date.valueOf(form.getStartDate()).toLocalDate(),
                 Date.valueOf(form.getEndDate()).toLocalDate(), 0L);
         roomService.doReservation(reserva);
+        LOGGER.debug("Response about to be sent, reservation made, with hash: " + reserva.getHash());
         mav.addObject("reserva", reserva);
         return mav;
     }
 
     @GetMapping("/checkin")
-    public ModelAndView chackin(@ModelAttribute("checkinForm") final CheckinForm form){
-        final ModelAndView mav = new ModelAndView("checkin");
-        return  mav;
+    public ModelAndView checkin(@ModelAttribute("checkinForm") final CheckinForm form){
+        return new ModelAndView("checkin");
     }
 
     @PostMapping("/checkinPost")
     public ModelAndView checkinPost(@ModelAttribute("checkinForm") final CheckinForm form){
         final ModelAndView mav = new ModelAndView("checkinPost");
+        LOGGER.debug("Request received to do the check-in on reservation with hash: " + form.getId_reservation());
         Reservation reser = reservationService.getReservationByHash(form.getId_reservation());
         roomService.reservateRoom(reser.getRoomId());
         reservationService.activeReservation(reservationService.getReservationByHash(form.getId_reservation()).getId());
@@ -78,13 +79,13 @@ public class RoomController {
 
     @GetMapping("/checkout")
     public ModelAndView checkout(@ModelAttribute("checkoutForm") final CheckoutForm form) {
-        final ModelAndView mav = new ModelAndView("checkout");
-        return mav;
+        return new ModelAndView("checkout");
     }
 
     @PostMapping("/checkoutPost")
     public ModelAndView checkoutPost(@ModelAttribute("checkoutForm") final CheckoutForm form){
         final ModelAndView mav = new ModelAndView("checkoutPost");
+        LOGGER.debug("Request received to do the check-out on reservation with hash: " + form.getId_reservation());
         mav.addObject("charges",chargeService.getAllChargesByReservationId(reservationService.getReservationByHash(form.getId_reservation()).getId()));
         roomService.freeRoom(reservationService.getReservationByHash(form.getId_reservation()).getRoomId());
         reservationService.inactiveReservation(reservationService.getReservationByHash(form.getId_reservation()).getId());
@@ -95,13 +96,14 @@ public class RoomController {
     @GetMapping("/reservations")
     public ModelAndView reservations(@ModelAttribute("reservationFilter") final ReservationFilter form) {
         final ModelAndView mav = new ModelAndView("reservations");
+        LOGGER.debug("Request received to retrieve all reservation");
         mav.addObject("reservations",reservationService.getAll());
         return mav;
     }
 
     @PostMapping("/reservations")
     public ModelAndView reservationsPost(@ModelAttribute("reservationFilter") final ReservationFilter form) {
-        final ModelAndView mav = new ModelAndView("reservations");
-        return mav;
+        LOGGER.debug("Request received to retrieve all reservation with filters");
+        return new ModelAndView("reservations");
     }
 }

@@ -3,6 +3,8 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.charge.Charge;
 import form.ProductForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/user")
 public class UserController extends SimpleController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RoomController.class);
 
     private final UserService userService;
 
@@ -23,6 +27,7 @@ public class UserController extends SimpleController {
     @GetMapping("/home")
     public ModelAndView getLandingPage(Authentication authentication) {
         final ModelAndView mav = new ModelAndView("userLanding");
+        LOGGER.debug("Request received to user's landing page");
         mav.addObject("ReservationsList",
                 userService.findActiveReservation(getUsername(authentication)));
         return mav;
@@ -32,6 +37,7 @@ public class UserController extends SimpleController {
     public ModelAndView getAllProducts(@ModelAttribute("productForm") ProductForm productForm,
                                        @RequestParam(value = "reservationId") long reservationId) {
         final ModelAndView mav = new ModelAndView("browseProducts");
+        LOGGER.debug("Request received to retrieve all products list");
         mav.addObject("ProductsList", userService.getProducts());
         return mav;
     }
@@ -39,6 +45,7 @@ public class UserController extends SimpleController {
     @GetMapping("/expenses")
     public ModelAndView boughtProducts(Authentication authentication, @RequestParam(value = "reservationId") long reservationId) {
         final ModelAndView mav = new ModelAndView("expenses");
+        LOGGER.debug("Request received to retrieve all expenses on reservation with id" + reservationId);
         mav.addObject("ProductsList",
                 userService.checkProductsPurchasedByUserByReservationId(getUsername(authentication), reservationId));
         return mav;
@@ -46,6 +53,7 @@ public class UserController extends SimpleController {
 
     @PostMapping("/buyProducts")
     public ModelAndView buyProduct(@ModelAttribute("productForm") ProductForm productForm, @RequestParam(value = "reservationId") long reservationId) {
+        LOGGER.debug("Request received to buy products on reservation with id" + reservationId);
         if (productForm != null) {
             final ModelAndView mav = new ModelAndView("buyProducts");
             Charge charge = new Charge(productForm.getProductId(), reservationId);

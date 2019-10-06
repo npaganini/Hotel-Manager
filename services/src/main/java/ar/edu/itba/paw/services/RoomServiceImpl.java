@@ -8,6 +8,8 @@ import ar.edu.itba.paw.interfaces.services.RoomService;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
 import ar.edu.itba.paw.models.user.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,8 @@ import java.util.List;
 
 @Service
 public class RoomServiceImpl implements RoomService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RoomServiceImpl.class);
 
     private final ReservationDao reservationDao;
     private final RoomDao roomDao;
@@ -34,6 +38,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     public List<Room> getRoomsList() {
+        LOGGER.debug("About to get all free rooms");
         return roomDao.findAllFree();
     }
 
@@ -44,31 +49,40 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void doReservation(Reservation reserva) {
+        LOGGER.debug("About to do reservation with hash " + reserva.getHash());
+        LOGGER.debug("Looking if there is already a user created with email " + reserva.getUserEmail());
         User user = userDao.findByEmail(reserva.getUserEmail());
         if (user != null) {
+            LOGGER.debug("There is already an user created with email " + reserva.getUserEmail());
             reserva.setUserId(user.getId());
         } else {
+            LOGGER.debug("There is not an user created with email " + reserva.getUserEmail() + ". So we create one");
             reserva.setUserId(userDao.save(new User(reserva.getUserEmail(),
                     reserva.getUserEmail(),
                     new BCryptPasswordEncoder().encode(reserva.getUserEmail()))).getId());
         }
+        LOGGER.debug("Saving reservation with hash " + reserva.getHash());
         reservationDao.save(reserva);
+        LOGGER.debug("Sending email with confirmation of reservation to user");
         emailService.sendConfirmationOfReservation(reserva.getUserEmail(), "Reserva confirmada",
                 "Su reserva ha sido confirmada! " +
                         "Hash de la reserva: " + reserva.getHash() + "\n Credenciales: \n username: "
                         + reserva.getUserEmail() + "\n password: " + reserva.getUserEmail());
     }
 
-    public void reservateRoom(long roomID){
+    public void reservateRoom(long roomID) {
+        LOGGER.debug("About to reserve room with id " + roomID);
         roomDao.reservateRoom(roomID);
     }
 
-    public void freeRoom(long roomId){
+    public void freeRoom(long roomId) {
+        LOGGER.debug("About to free room with id " + roomId);
         roomDao.freeRoom(roomId);
     }
 
     @Override
     public List<Room> findAllRoomsFreeBetweenDates(LocalDate startDate, LocalDate endDate) {
+        LOGGER.debug("About to get all free rooms between dates " + startDate + " and " + endDate);
         return roomDao.findAllRoomsFreeBetweenDates(startDate, endDate);
     }
 
