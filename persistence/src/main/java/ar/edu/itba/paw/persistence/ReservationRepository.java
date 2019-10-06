@@ -86,4 +86,9 @@ public class ReservationRepository extends SimpleRepository<Reservation> impleme
         return (resultSet, i) -> new RoomReservationDTO(resultSet);
     }
 
+    @Override
+    public List<Reservation> getAll(){
+       return findAll();
+    }
+
 }

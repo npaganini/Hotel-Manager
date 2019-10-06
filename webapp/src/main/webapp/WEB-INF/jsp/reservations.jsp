@@ -6,7 +6,7 @@
 <head>
     <title>e-lobby</title>
 
-    <link  rel="stylesheet" href="${pageContext.request.contextPath}/resources/CSS/my_style.css" >
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/CSS/my_style.css">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
@@ -34,7 +34,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="/">e-lobby</a>
+                        <a class="navbar-brand" href="/rooms/home">e-lobby</a>
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
@@ -49,16 +49,17 @@
             </nav>
         </div>
     </div>
-<c:url value="/rooms/reservationPost" var="postPath"/>
-<form:form modelAttribute="reservationFilter" action="${postPath}" method="post">
+    <c:url value="/rooms/reservations" var="postPath"/>
+    <form:form modelAttribute="reservationFilter" action="${postPath}" method="post">
     <div class="row myheader vertical-align">
         <div class="col-xs-6" style="text-align: left">
             <div>Reservas</div>
+        </div>
+        <br>
+        <br>
     </div>
-    <br>
-    <br>
 
-    <div class="row" >
+    <div class="row">
         <div class="col-xs-6">
             <div class="form-question">
                 <div class="form-question__title">
@@ -68,69 +69,74 @@
 
                 <div class="input-container">
                     <form:input id="from_date" path="startDate" type="date" name="effective-date" minlength="1"
-                maxlength="64" placeholder=" " autocomplete="nope" required="required"></form:input>
+                                maxlength="64" placeholder=" " autocomplete="nope" required="required"></form:input>
                     <span class="bar"></span>
                 </div>
             </div>
         </div>
-    <div class="col-xs-6">
-        <div class="form-question">
-            <div class="form-question__title">
-                <form:label class="items" path="endDate">Hasta: </form:label>
-            </div>
-        <div class="input-container">
-                <form:input id="to_date" path="endDate" type="date" name="effective-date" minlength="1"
-                maxlength="64" placeholder=" " autocomplete="nope" required="required"></form:input>
-                <span class="bar"></span>
-        </div>
-        </div>
-    </div>
-    </div>
-    <div class="row">
-         <div class="col-xs-6">
-            <form:label class="items" path="userEmail">Titular: </form:label>
-                 <div class="input-group">
-                        <span class="input-group-addon"></span>
-                      <form:input id="IDres" path="userEmail" type="text" class="form-control" name="IDres"
-                placeholder="Email del titular"></form:input>
-                 </div>
-          </div>
         <div class="col-xs-6">
-            <input type="submit" class="btn btn-success btn-lg" value="Buscar"/>
-
+            <div class="form-question">
+                <div class="form-question__title">
+                    <form:label class="items" path="endDate">Hasta: </form:label>
+                </div>
+                <div class="input-container">
+                    <form:input id="to_date" path="endDate" type="date" name="effective-date" minlength="1"
+                                maxlength="64" placeholder=" " autocomplete="nope" required="required"></form:input>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </div>
     </div>
-    </div>
-    <br>
-
-
     <div class="row">
-        <div class="col-xs-12 form-group" style="z-index:9999;grid-auto-columns: auto">
-            <table id="myTable" class="display" style="width:100%;  border: 1px solid black !important;">
-                <thead>
-                <tr>
-                    <th>Habitacion</th>
-                    <th>Titular</th>
-                    <th>Desde</th>
-                    <th>Hasta</th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach var="reservation" items="${reservations}">
+        <div class="col-xs-6">
+            <form:label class="items" path="userEmail">Titular: </form:label>
+            <div class="input-group">
+                <span class="input-group-addon"></span>
+                <form:input id="IDres" path="userEmail" type="text" class="form-control" name="IDres"
+                            placeholder="Email del titular"></form:input>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div>
+                <div class="col-xs-2"><input type="submit" class="btn btn-success btn-lg" value="Buscar"/></div>
+                <div class="col-xs-2">
+                    <button type="button" class="btn btn-default btn-lg"><a href="/rooms/home" style="color: black">Cancelar</a>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+        <br>
+
+
+        <div class="row">
+            <div class="col-xs-12 form-group" style="z-index:9999;grid-auto-columns: auto">
+                <table id="myTable" class="display" style="width:100%;  border: 1px solid black !important;">
+                    <thead>
                     <tr>
+                        <th>Habitacion</th>
+                        <th>Titular</th>
+                        <th>Desde</th>
+                        <th>Hasta</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach var="reservation" items="${reservations}">
+                        <tr>
 
                             <td style="text-align: left">${reservation.roomId}</td>
                             <td style="text-align: left">${reservation.userEmail}</td>
                             <td style="text-align: left">${reservation.startDate}</td>
                             <td style="text-align: left">${reservation.endDate}</td>
 
-                    </tr>
-                </c:forEach>
-                </tbody>
-            </table>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
 
-</div>
+    </div>
 
 </div>
 </form:form>
@@ -138,11 +144,10 @@
 </html>
 
 
-
-    <script>
+<script>
     $(document).ready(function () {
-    $('#myTable').DataTable({
-    filter: false,
+        $('#myTable').DataTable({
+            filter: false,
+        });
     });
-    });
-    </script>
+</script>
