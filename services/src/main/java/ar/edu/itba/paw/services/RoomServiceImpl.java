@@ -8,15 +8,18 @@ import ar.edu.itba.paw.interfaces.services.RoomService;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
 import ar.edu.itba.paw.models.user.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class RoomServiceImpl implements RoomService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RoomServiceImpl.class);
 
     private final ReservationDao reservationDao;
     private final RoomDao roomDao;

@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.services.StorageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,8 @@ import java.io.IOException;
 
 @Service
 public class StorageServiceImpl implements StorageService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(StorageServiceImpl.class);
 
     private final ServletContext servletContext;
 

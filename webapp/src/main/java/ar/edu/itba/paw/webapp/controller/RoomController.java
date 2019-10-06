@@ -8,6 +8,8 @@ import form.CheckinForm;
 import form.CheckoutForm;
 import form.ReservationFilter;
 import form.ReservationForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,9 @@ import java.sql.Date;
 @Controller
 @RequestMapping("rooms")
 public class RoomController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RoomController.class);
+
     private final RoomService roomService;
     private final ReservationService reservationService;
     private final ChargeService chargeService;
