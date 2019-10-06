@@ -24,6 +24,9 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
     @Autowired
     public RoomRepository(DataSource dataSource) {
         super(new NamedParameterJdbcTemplate(dataSource));
+        if (jdbcTemplateWithNamedParameter.getJdbcTemplate()
+                .query("SELECT * FROM " + Room.TABLE_NAME, getRowMapper()).size() == 0)
+            getHardcodedRooms().parallelStream().forEach(this::save);
     }
 
     @Override
