@@ -68,22 +68,14 @@
                 </tr>
                 </thead>
                 <tbody>
-<%--                <c:forEach var="room" items="${RoomList}">--%>
-<%--                    <tr>--%>
+                <c:forEach var="charge" items="${charges}">
+                    <tr>
 
-<%--                        <c:if test="${room.freeNow == true}">--%>
+                            <td style="text-align: left">${charge.product.description}</td>
+                            <td style="text-align: left">${charge.product.price}</td>
 
-<%--                            <td style="text-align: left">${room.id}</td>--%>
-<%--                            <td style="text-align: left">${room.number}</td>--%>
-<%--                            <td>${room.roomType}</td>--%>
-<%--                            <td style="text-align: left">-</td>--%>
-<%--                            <td style="text-align: left">-</td>--%>
-
-<%--                        </c:if>--%>
-
-
-<%--                    </tr>--%>
-<%--                </c:forEach>--%>
+                    </tr>
+                </c:forEach>
                 </tbody>
                 <tfoot>
                 <tr>

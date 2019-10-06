@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.models.entities;
+package ar.edu.itba.paw.models.dtos;
 
 import ar.edu.itba.paw.models.charge.Charge;
 import ar.edu.itba.paw.models.product.Product;
