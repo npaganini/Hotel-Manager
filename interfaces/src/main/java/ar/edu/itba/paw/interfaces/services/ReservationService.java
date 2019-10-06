@@ -6,4 +6,6 @@ public interface ReservationService {
     Reservation getReservationByHash(String hash);
 
     void activeReservation(long reservationId);
+
+    void inactiveReservation(long reservationId);
 }

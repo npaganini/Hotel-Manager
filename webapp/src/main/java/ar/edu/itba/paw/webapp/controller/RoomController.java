@@ -68,7 +68,7 @@ public class RoomController {
         final ModelAndView mav = new ModelAndView("checkinPost");
         Reservation reser = reservationService.getReservationByHash(form.getId_reservation());
         roomService.reservateRoom(reser.getRoomId());
-        //reservationService.activeReservation(form.getId_reservation());
+        reservationService.activeReservation(reservationService.getReservationByHash(form.getId_reservation()).getId());
         return mav;
     }
 
@@ -87,9 +87,16 @@ public class RoomController {
     }
 
 
-    @GetMapping("/reservations")
-    public ModelAndView reservations() {
-        return new ModelAndView("reservations");
-    }
-
+//    @GetMapping("/rooms/reservations")
+//    public ModelAndView reservations(@ModelAttribute("reservationFilter") final ReservationFilter form) {
+//        final ModelAndView mav = new ModelAndView("reservations");
+//        mav.addObject("reservations",reservationService.getAll());
+//        return mav;
+//    }
+//
+//    @PostMapping("/rooms/reservations")
+//    public ModelAndView reservationsPost(@ModelAttribute("reservationFilter") final ReservationFilter form) {
+//        final ModelAndView mav = new ModelAndView("reservations");
+//        return mav;
+//    }
 }
