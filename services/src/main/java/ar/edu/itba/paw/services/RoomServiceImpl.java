@@ -5,6 +5,8 @@ import ar.edu.itba.paw.interfaces.daos.RoomDao;
 import ar.edu.itba.paw.interfaces.daos.UserDao;
 import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.RoomService;
+import ar.edu.itba.paw.models.charge.Charge;
+import ar.edu.itba.paw.models.dtos.RoomReservationDTO;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
 import ar.edu.itba.paw.models.user.User;
@@ -38,7 +40,6 @@ public class RoomServiceImpl implements RoomService {
     }
 
     public List<Room> getRoomsList() {
-        LOGGER.debug("About to get all free rooms");
         return roomDao.findAllFree();
     }
 
@@ -70,20 +71,20 @@ public class RoomServiceImpl implements RoomService {
                         + reserva.getUserEmail() + "\n password: " + reserva.getUserEmail());
     }
 
-    public void reservateRoom(long roomID) {
-        LOGGER.debug("About to reserve room with id " + roomID);
+    public void reservateRoom(long roomID){
         roomDao.reservateRoom(roomID);
     }
 
-    public void freeRoom(long roomId) {
-        LOGGER.debug("About to free room with id " + roomId);
+    public void freeRoom(long roomId){
         roomDao.freeRoom(roomId);
     }
 
-    @Override
-    public List<Room> findAllRoomsFreeBetweenDates(LocalDate startDate, LocalDate endDate) {
-        LOGGER.debug("About to get all free rooms between dates " + startDate + " and " + endDate);
-        return roomDao.findAllRoomsFreeBetweenDates(startDate, endDate);
+    public  List<RoomReservationDTO> findAllFreeBetweenDatesAndEmail(LocalDate startDate, LocalDate endDate, String email){
+       return roomDao.findAllFreeBetweenDatesAndEmail(startDate,endDate,email);
+    }
+
+    public List<RoomReservationDTO> getAllRoomsReserved(){
+        return roomDao.getAllRoomsReserved();
     }
 
 }

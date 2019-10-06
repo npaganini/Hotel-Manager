@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("rooms")
@@ -42,6 +45,13 @@ public class RoomController {
         return mav;
     }
 
+    @GetMapping("/room/{id}")
+    public ModelAndView getRoom(@PathVariable long id) {
+        final ModelAndView mav = new ModelAndView("room");
+        mav.addObject("RoomSelected", roomService.getRoom(id));
+        return mav;
+    }
+
     @GetMapping("/reservation")
     public ModelAndView reservation(@ModelAttribute("reservationForm") final ReservationForm form) {
         final ModelAndView mav = new ModelAndView("reservation");
@@ -63,8 +73,9 @@ public class RoomController {
     }
 
     @GetMapping("/checkin")
-    public ModelAndView checkin(@ModelAttribute("checkinForm") final CheckinForm form){
-        return new ModelAndView("checkin");
+    public ModelAndView chackin(@ModelAttribute("checkinForm") final CheckinForm form){
+        final ModelAndView mav = new ModelAndView("checkin");
+        return  mav;
     }
 
     @PostMapping("/checkinPost")
@@ -79,7 +90,8 @@ public class RoomController {
 
     @GetMapping("/checkout")
     public ModelAndView checkout(@ModelAttribute("checkoutForm") final CheckoutForm form) {
-        return new ModelAndView("checkout");
+        final ModelAndView mav = new ModelAndView("checkout");
+        return mav;
     }
 
     @PostMapping("/checkoutPost")
@@ -94,16 +106,19 @@ public class RoomController {
 
 
     @GetMapping("/reservations")
-    public ModelAndView reservations(@ModelAttribute("reservationFilter") final ReservationFilter form) {
+    public ModelAndView reservations(@RequestParam("startDate") Optional<String> startDate, @RequestParam("endDate") Optional<String> endDate, @RequestParam("userEmail") Optional<String> userEmail) {
         final ModelAndView mav = new ModelAndView("reservations");
-        LOGGER.debug("Request received to retrieve all reservation");
-        mav.addObject("reservations",reservationService.getAll());
-        return mav;
+        if((!startDate.isPresent()  || startDate.get().isEmpty())&& (!endDate.isPresent() || endDate.get().isEmpty() ) && (!userEmail.isPresent() || userEmail.get().isEmpty()))
+            mav.addObject("reservations", roomService.getAllRoomsReserved());
+        else {
+            mav.addObject("reservations",roomService.findAllFreeBetweenDatesAndEmail(LocalDate.parse(startDate.get()),LocalDate.parse(endDate.get()),userEmail.get()));
+        }
+         return mav;
     }
 
     @PostMapping("/reservations")
     public ModelAndView reservationsPost(@ModelAttribute("reservationFilter") final ReservationFilter form) {
-        LOGGER.debug("Request received to retrieve all reservation with filters");
-        return new ModelAndView("reservations");
+        final ModelAndView mav = new ModelAndView("reservations");
+        return mav;
     }
 }

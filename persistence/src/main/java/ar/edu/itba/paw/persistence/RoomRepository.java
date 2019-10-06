@@ -39,6 +39,19 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
                 parameterSource, getRowMapper());
     }
 
+    @Override
+    public List<RoomReservationDTO> findAllFreeBetweenDatesAndEmail(LocalDate startDate, LocalDate endDate, String email) {
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+        parameterSource.addValue("startDate", startDate);
+        parameterSource.addValue("endDate", endDate);
+        parameterSource.addValue("email", email);
+        return jdbcTemplateWithNamedParameter.query("SELECT * FROM " + getTableName() + " r JOIN " +
+                        Reservation.TABLE_NAME + " res ON r.id = res.room_id" +
+                        " WHERE res.start_date >= :startDate AND res.end_date <= :endDate AND " + Reservation.KEY_USER_EMAIL
+                        + " = :email GROUP BY r.id, res.id",
+                parameterSource, getRowMapperWithJoin());
+    }
+
     private RowMapper<RoomReservationDTO> getRowMapperWithJoin() {
         return ((resultSet, i) -> new RoomReservationDTO(resultSet));
     }
@@ -50,6 +63,8 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
         return jdbcTemplateWithNamedParameter.query("SELECT * FROM " + getTableName() + " r WHERE r.room_type = :roomType",
                 parameterSource, getRowMapper());
     }
+
+
 
 
     @Override
@@ -71,6 +86,12 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
     public List<Room> findAllFree() {
         return jdbcTemplateWithNamedParameter.getJdbcTemplate().query("SELECT * FROM " + getTableName() +
                 " r WHERE " + Room.KEY_FREE_NOW + " = true", getRowMapper());
+    }
+
+    @Override
+    public List<RoomReservationDTO> getAllRoomsReserved(){
+        return jdbcTemplateWithNamedParameter.query("SELECT * FROM " + getTableName() + " r JOIN " +
+                        Reservation.TABLE_NAME + " res ON r.id = res.room_id" , getRowMapperWithJoin());
     }
 
     @Override

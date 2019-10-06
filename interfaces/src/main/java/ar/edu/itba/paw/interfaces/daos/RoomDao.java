@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.interfaces.daos;
 
+import ar.edu.itba.paw.models.dtos.RoomReservationDTO;
 import ar.edu.itba.paw.models.room.Room;
 import ar.edu.itba.paw.models.room.RoomType;
 
@@ -8,6 +9,10 @@ import java.util.List;
 
 public interface RoomDao extends SimpleDao<Room> {
     List<Room> findAllRoomsFreeBetweenDates(LocalDate startDate, LocalDate endDate);
+
+    List<RoomReservationDTO> getAllRoomsReserved();
+
+    List<RoomReservationDTO> findAllFreeBetweenDatesAndEmail(LocalDate startDate, LocalDate endDate, String email);
 
     List<Room> findByRoomType(RoomType roomType);
 
