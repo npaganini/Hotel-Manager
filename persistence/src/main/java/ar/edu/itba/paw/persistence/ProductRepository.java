@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class ProductRepository extends SimpleRepository<Product> implements ProductDao {
@@ -52,5 +53,12 @@ public class ProductRepository extends SimpleRepository<Product> implements Prod
         parameters.addValue("enable", enable);
         return jdbcTemplateWithNamedParameter.update("UPDATE " + Product.TABLE_NAME + " SET " +
                 Product.KEY_ENABLE + "= :enable WHERE " + Product.KEY_ID + "=:productId", parameters);
+    }
+
+    @Override
+    public List<Product> findAllProductsByDescription(String description) {
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("description", description);
+        return jdbcTemplateWithNamedParameter.query("SELECT * FROM product WHERE description=:description", parameters, getRowMapper());
     }
 }
