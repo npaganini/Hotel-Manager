@@ -46,15 +46,17 @@
             </nav>
         </div>
     </div>
-    <c:url value="/rooms/reservations" var="postPath"/>
+    <c:url value="/rooms/reservation" var="postPath"/>
     <form:form modelAttribute="reservationFilter" action="${postPath}" method="post">
     <div class="row myheader vertical-align">
         <div class="col-xs-6" style="text-align: left">
             <div>Reservas</div>
         </div>
-        <br>
-        <br>
+
     </div>
+
+    <br>
+    <br>
 
     <div class="row">
         <div class="col-xs-6">
@@ -97,46 +99,48 @@
             <div>
                 <div class="col-xs-2"><input type="submit" class="btn btn-success btn-lg" value="Buscar"/></div>
                 <div class="col-xs-2">
-                    <button type="button" class="btn btn-default btn-lg"><a href="${pageContext.request.contextPath}/rooms/home" style="color: black">Cancelar</a>
+                    <button type="button" class="btn btn-default btn-lg"><a
+                            href="${pageContext.request.contextPath}/rooms/home" style="color: black">Cancelar</a>
                     </button>
                 </div>
 
             </div>
         </div>
-        <br>
+    </div>
+    <br>
+    <br>
+    </form:form>
 
-
-        <div class="row">
-            <div class="col-xs-12 form-group" style="z-index:9999;grid-auto-columns: auto">
-                <table id="myTable" class="display" style="width:100%;  border: 1px solid black !important;">
-                    <thead>
+    <div class="row">
+        <div class="col-xs-12 form-group" style="z-index:9999;grid-auto-columns: auto">
+            <table id="myTable" class="display" style="width:100%;  border: 1px solid black !important;">
+                <thead>
+                <tr>
+                    <th>Habitacion</th>
+                    <th>Titular</th>
+                    <th>Desde</th>
+                    <th>Hasta</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach var="reservation" items="${reservations}">
                     <tr>
-                        <th>Habitacion</th>
-                        <th>Titular</th>
-                        <th>Desde</th>
-                        <th>Hasta</th>
+
+                        <td style="text-align: left">${reservation.roomId}</td>
+                        <td style="text-align: left">${reservation.userEmail}</td>
+                        <td style="text-align: left">${reservation.startDate}</td>
+                        <td style="text-align: left">${reservation.endDate}</td>
+
                     </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach var="reservation" items="${reservations}">
-                        <tr>
-
-                            <td style="text-align: left">${reservation.roomId}</td>
-                            <td style="text-align: left">${reservation.userEmail}</td>
-                            <td style="text-align: left">${reservation.startDate}</td>
-                            <td style="text-align: left">${reservation.endDate}</td>
-
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
-            </div>
+                </c:forEach>
+                </tbody>
+            </table>
         </div>
-
     </div>
 
 </div>
-</form:form>
+
+</div>
 </body>
 </html>
 

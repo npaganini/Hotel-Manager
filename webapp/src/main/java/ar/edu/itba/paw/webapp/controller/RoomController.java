@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("rooms")
@@ -92,16 +95,21 @@ public class RoomController {
     }
 
 
-    @GetMapping("/reservations")
-    public ModelAndView reservations(@ModelAttribute("reservationFilter") final ReservationFilter form) {
+    @GetMapping("/reservations?offset=10&limit=10&order=asc&")
+    public ModelAndView reservations(@RequestParam("startDate") Optional<LocalDate> startDate, @RequestParam("endDate") Optional<LocalDate> endDate, @RequestParam("userEmail") Optional<String> userEmail) {
         final ModelAndView mav = new ModelAndView("reservations");
-        mav.addObject("reservations",reservationService.getAll());
+        if(!startDate.isPresent() && !endDate.isPresent() && !userEmail.isPresent())
+            mav.addObject("reservations", reservationService.getAll());
+        else {
+            mav.addObject("reservations",roomService.findAllFreeBetweenDatesAndEmail();
+        }
         return mav;
     }
 
-    @PostMapping("/reservations")
-    public ModelAndView reservationsPost(@ModelAttribute("reservationFilter") final ReservationFilter form) {
-        final ModelAndView mav = new ModelAndView("reservations");
-        return mav;
-    }
+//    @PostMapping("/reservations")
+//    public ModelAndView reservationsPost(@ModelAttribute("reservationFilter") final ReservationFilter form) {
+//        final ModelAndView mav = new ModelAndView("reservations");
+//        mav.addObject("reservations",roomService.findAllFreeBetweenDatesAndEmail(LocalDate.parse(form.getStartDate()),LocalDate.parse(form.getEndDate()),form.getUserEmail()));
+//        return mav;
+//    }
 }

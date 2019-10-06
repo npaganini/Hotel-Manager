@@ -21,8 +21,8 @@ public class ChargeServiceImpl implements ChargeService {
         return chargeDao.findChargeByReservationHash(reservationId);
     }
 
-    @Override
-    public int sumCharge(long reservationId){
-        return chargeDao.sumCharge(reservationId);
-    }
+//    @Override
+//    public int sumCharge(long reservationId){
+//        return chargeDao.sumCharge(reservationId);
+//    }
 }
