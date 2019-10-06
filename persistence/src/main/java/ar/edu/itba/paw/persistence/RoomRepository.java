@@ -35,8 +35,8 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
         parameterSource.addValue("startDate", startDate);
         parameterSource.addValue("endDate", endDate);
         parameterSource.addValue("email", email);
-        return jdbcTemplateWithNamedParameter.query("SELECT r FROM " + getTableName() + " r NATURAL JOIN " +
-                        Reservation.TABLE_NAME + " res" +
+        return jdbcTemplateWithNamedParameter.query("SELECT r FROM " + getTableName() + " r JOIN " +
+                        Reservation.TABLE_NAME + " res ON r.id = res.room_id" +
                         " WHERE res.start_date <= :startDate AND res.end_date >= :endDate AND " + Reservation.KEY_USER_EMAIL
                         + " = :email GROUP BY r.id",
                 parameterSource, getRowMapperWithJoin());
