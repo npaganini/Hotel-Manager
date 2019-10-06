@@ -35,10 +35,10 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
         parameterSource.addValue("startDate", startDate);
         parameterSource.addValue("endDate", endDate);
         parameterSource.addValue("email", email);
-        return jdbcTemplateWithNamedParameter.query("SELECT r FROM " + getTableName() + " r JOIN " +
+        return jdbcTemplateWithNamedParameter.query("SELECT * FROM " + getTableName() + " r JOIN " +
                         Reservation.TABLE_NAME + " res ON r.id = res.room_id" +
-                        " WHERE res.start_date <= :startDate AND res.end_date >= :endDate AND " + Reservation.KEY_USER_EMAIL
-                        + " = :email GROUP BY r.id",
+                        " WHERE res.start_date >= :startDate AND res.end_date <= :endDate AND " + Reservation.KEY_USER_EMAIL
+                        + " = :email GROUP BY r.id, res.id",
                 parameterSource, getRowMapperWithJoin());
     }
 
@@ -76,6 +76,12 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
     public List<Room> findAllFree() {
         return jdbcTemplateWithNamedParameter.getJdbcTemplate().query("SELECT * FROM " + getTableName() +
                 " r WHERE " + Room.KEY_FREE_NOW + " = true", getRowMapper());
+    }
+
+    @Override
+    public List<RoomReservationDTO> getAllRoomsReserved(){
+        return jdbcTemplateWithNamedParameter.query("SELECT * FROM " + getTableName() + " r JOIN " +
+                        Reservation.TABLE_NAME + " res ON r.id = res.room_id" , getRowMapperWithJoin());
     }
 
     @Override

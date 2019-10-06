@@ -98,18 +98,12 @@ public class RoomController {
     @GetMapping("/reservations")
     public ModelAndView reservations(@RequestParam("startDate") Optional<String> startDate, @RequestParam("endDate") Optional<String> endDate, @RequestParam("userEmail") Optional<String> userEmail) {
         final ModelAndView mav = new ModelAndView("reservations");
-        if(!startDate.isPresent() && !endDate.isPresent() && !userEmail.isPresent())
-            mav.addObject("reservations", reservationService.getAll());
+        if((!startDate.isPresent()  || startDate.get().isEmpty())&& (!endDate.isPresent() || endDate.get().isEmpty() ) && (!userEmail.isPresent() || userEmail.get().isEmpty()))
+            mav.addObject("reservations", roomService.getAllRoomsReserved());
         else {
             mav.addObject("reservations",roomService.findAllFreeBetweenDatesAndEmail(LocalDate.parse(startDate.get()),LocalDate.parse(endDate.get()),userEmail.get()));
         }
          return mav;
     }
 
-//    @PostMapping("/reservations")
-//    public ModelAndView reservationsPost(@ModelAttribute("reservationFilter") final ReservationFilter form) {
-//        final ModelAndView mav = new ModelAndView("reservations");
-//        mav.addObject("reservations",roomService.findAllFreeBetweenDatesAndEmail(LocalDate.parse(form.getStartDate()),LocalDate.parse(form.getEndDate()),form.getUserEmail()));
-//        return mav;
-//    }
 }

@@ -73,4 +73,8 @@ public class RoomServiceImpl implements RoomService {
        return roomDao.findAllFreeBetweenDatesAndEmail(startDate,endDate,email);
     }
 
+    public List<RoomReservationDTO> getAllRoomsReserved(){
+        return roomDao.getAllRoomsReserved();
+    }
+
 }
