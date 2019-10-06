@@ -26,6 +26,7 @@ public class ReservationController {
 
     @GetMapping("/reservation")
     public ResponseEntity<?> getReservation(@RequestParam("hash") String hash) {
+        LOGGER.debug("Reservation with hash " + hash + " was requested");
         return new ResponseEntity<>(reservationService.getReservationByHash(hash).toString(), HttpStatus.OK);
     }
 }

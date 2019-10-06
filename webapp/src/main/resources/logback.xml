@@ -1,27 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <property name="defaultPattern" value="%d{HH:mm:s
-s.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
-    <appender name="root-appender" class="ch.qos.logb
-ack.core.rolling.RollingFileAppender">
-        <rollingPolicy class="ch.qos.logback.core
-.rolling.TimeBasedRollingPolicy">
+    <property name="defaultPattern" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+    <appender name="root-appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <maxHistory>5</maxHistory>
-            <fileNamePattern>logs/warnings.%d
-                {yyyy-MM-dd}.log
+            <fileNamePattern>logs/warning/hotelManager.%d{yyyy-MM-dd}.log
             </fileNamePattern>
         </rollingPolicy>
         <encoder>
             <pattern>${defaultPattern:-}</pattern>
         </encoder>
     </appender>
-    <appender name="paw-appender" class="ch.qos.logba
-ck.core.rolling.RollingFileAppender">
-        <rollingPolicy class="ch.qos.logback.core
-.rolling.TimeBasedRollingPolicy">
+    <appender name="paw-appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <maxHistory>5</maxHistory>
-            <fileNamePattern>logs/paw.%d{yyyy
-                -MM-dd}.log
+            <fileNamePattern>logs/debug/hotelManager.%d{yyyy-MM-dd}.log
             </fileNamePattern>
         </rollingPolicy>
         <encoder>
@@ -31,8 +24,7 @@ ck.core.rolling.RollingFileAppender">
     <root level="WARN">
         <appender-ref ref="root-appender"/>
     </root>
-    <logger name="ar.edu.itba" level="DEBUG" additivi
-            ty="false">
+    <logger name="ar.edu.itba" level="DEBUG" additivity="false">
         <appender-ref ref="paw-appender"/>
     </logger>
 </configuration>

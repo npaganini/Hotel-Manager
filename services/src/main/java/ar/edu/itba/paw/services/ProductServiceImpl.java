@@ -23,6 +23,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product saveProduct(Product product) {
+        LOGGER.debug("About to save product with description " + product.getDescription() + " and price " + product.getPrice());
         return productDao.save(product);
     }
 

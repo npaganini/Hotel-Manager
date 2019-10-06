@@ -31,9 +31,11 @@ public class ProductController {
     @PostMapping("/addProduct")
     public String addProduct(@ModelAttribute ProductForm productForm,
                              RedirectAttributes redirectAttributes) {
+        LOGGER.debug("Request to add product to DB received");
         String filePath = storageService.saveProductImg(productForm.getImg());
         productService.saveProduct(new Product(productForm.getDescription(),
                 productForm.getPrice(), filePath));
+        LOGGER.debug("Product was saved succesfully");
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + filePath + "!");
         return "redirect:/";

@@ -26,12 +26,14 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public String saveProductImg(MultipartFile multipartFile) {
+        LOGGER.debug("About to save product's img inside server storage " + multipartFile.getOriginalFilename());
         String imgsPath = servletContext.getRealPath("resources/productImgs");
         File file = new File(imgsPath + "/" + multipartFile.getOriginalFilename());
         try {
             multipartFile.transferTo(file);
             return file.getAbsolutePath();
         } catch (IOException e) {
+            LOGGER.error("There was an error saving product's img inside server storage", e);
             e.printStackTrace();
         }
         return null;
