@@ -5,14 +5,11 @@
 
 <head>
     <title>e-lobby</title>
-
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/CSS/my_style.css">
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/slideBar.js"></script>
-
+    <link href="${pageContext.request.contextPath}/resources/CSS/my_style.css" rel="stylesheet">
     <script src='https://kit.fontawesome.com/a076d05399.js'></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
     <script src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js'></script>
@@ -34,15 +31,15 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="/rooms/home">e-lobby</a>
+                        <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home">e-lobby</a>
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="/rooms/checkin">Check-In</a></li>
-                            <li><a href="/rooms/checkout">Check-Out</a></li>
-                            <li><a href="/rooms/reservations">Reservas</a></li>
-                            <li><a href="/">Productos</a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/checkin">Check-In</a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/checkout">Check-Out</a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/reservations">Reservas</a></li>
+                            <li><a href="${pageContext.request.contextPath}/home">Productos</a></li>
                         </ul>
                     </div>
                 </div>
@@ -100,7 +97,7 @@
             <div>
                 <div class="col-xs-2"><input type="submit" class="btn btn-success btn-lg" value="Buscar"/></div>
                 <div class="col-xs-2">
-                    <button type="button" class="btn btn-default btn-lg"><a href="/rooms/home" style="color: black">Cancelar</a>
+                    <button type="button" class="btn btn-default btn-lg"><a href="${pageContext.request.contextPath}/rooms/home" style="color: black">Cancelar</a>
                     </button>
                 </div>
 
