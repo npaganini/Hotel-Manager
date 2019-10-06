@@ -73,7 +73,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(final WebSecurity web) {
         web.ignoring()
-                .antMatchers("/css/**", "/js/**", "/img/**", "/favicon.ico", "/403");
+                .antMatchers("/css/**", "/js/**", "/img/**", "/bootstrap/**", "/utilities/**", "/favicon.ico", "/403");
     }
 
     @Bean
