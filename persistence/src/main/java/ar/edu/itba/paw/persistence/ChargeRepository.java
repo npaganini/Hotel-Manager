@@ -89,5 +89,15 @@ public class ChargeRepository extends SimpleRepository<Charge> implements Charge
         return ((resultSet, i) -> new ChargeDTO(resultSet));
     }
 
+//    @Override
+//    public int sumCharge(long reservationId){
+//        MapSqlParameterSource parameters = new MapSqlParameterSource();
+//        parameters.addValue("reservationId", reservationId);
+//        return jdbcTemplateWithNamedParameter
+//                .query("SELECT SUM(Product.TABLE_NAME.price) FROM " + Charge.TABLE_NAME + " NATURAL JOIN " +
+//                        Product.TABLE_NAME + " NATURAL JOIN " + Reservation.TABLE_NAME +
+//                        " r WHERE r.id = :reservationId" + "GROUPBY :reservatioId", parameters, getRowMapperOfChargeDTO());
+//    }
+
 
 }
