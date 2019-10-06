@@ -5,7 +5,6 @@ import ar.edu.itba.paw.interfaces.daos.RoomDao;
 import ar.edu.itba.paw.interfaces.daos.UserDao;
 import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.RoomService;
-import ar.edu.itba.paw.models.charge.Charge;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
 import ar.edu.itba.paw.models.user.User;
@@ -66,6 +65,11 @@ public class RoomServiceImpl implements RoomService {
 
     public void freeRoom(long roomId){
         roomDao.freeRoom(roomId);
+    }
+
+    @Override
+    public List<Room> findAllRoomsFreeBetweenDates(LocalDate startDate, LocalDate endDate) {
+        return roomDao.findAllRoomsFreeBetweenDates(startDate, endDate);
     }
 
 }

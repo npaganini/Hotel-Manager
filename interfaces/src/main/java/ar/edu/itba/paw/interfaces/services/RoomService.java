@@ -2,7 +2,9 @@ package ar.edu.itba.paw.interfaces.services;
 
 import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
+import org.springframework.cglib.core.Local;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface RoomService {
@@ -16,4 +18,6 @@ public interface RoomService {
     void reservateRoom(long roomId);
 
     void freeRoom(long roomId);
+
+    List<Room> findAllRoomsFreeBetweenDates(LocalDate startDate, LocalDate endDate);
 }
