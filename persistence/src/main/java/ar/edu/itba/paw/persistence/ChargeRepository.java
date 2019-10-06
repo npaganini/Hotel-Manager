@@ -6,6 +6,7 @@ import ar.edu.itba.paw.models.dtos.ChargeDTO;
 import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -13,6 +14,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +66,9 @@ public class ChargeRepository extends SimpleRepository<Charge> implements Charge
         parameterSource.addValue("email", userEmail);
         parameterSource.addValue("reservationId", reservationId);
         return jdbcTemplateWithNamedParameter.query(
-                "SELECT description, price, count(p) FROM charge c JOIN product p ON c.product_id = p.id JOIN reservation r ON r.id = c.reservation_id WHERE r.user_email = :email AND r.id = :reservationId group by p.id",
+                "SELECT description, price, count(p) FROM charge c JOIN product p " +
+                        "ON c.product_id = p.id JOIN reservation r ON r.id = c.reservation_id " +
+                        "WHERE r.user_email = :email AND r.id = :reservationId group by p.id",
                 parameterSource, rs -> {
                     Map<Product, Integer> ans = new HashMap<>();
                     while (rs.next()) {
@@ -83,6 +87,19 @@ public class ChargeRepository extends SimpleRepository<Charge> implements Charge
                 .query("SELECT * FROM " + Charge.TABLE_NAME + " NATURAL JOIN " +
                         Product.TABLE_NAME + " NATURAL JOIN " + Reservation.TABLE_NAME +
                         " r WHERE r.id = :reservationId", parameters, getRowMapperOfChargeDTO());
+    }
+
+    @Override
+    public double sumCharge(long reservationId) {
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+        parameterSource.addValue("reservationId", reservationId);
+        return jdbcTemplateWithNamedParameter.query("SELECT sum(p.price) FROM charge c JOIN product p " +
+                "ON p.id = c.product_id JOIN reservation r ON c.reservation_id = r.id WHERE r.id = :reservationId GROUP BY r.id",
+                parameterSource, getSumRowMapper()).get(0);
+    }
+
+    private RowMapper<Double> getSumRowMapper() {
+        return (resultSet, i) -> resultSet.getDouble(1);
     }
 
     private RowMapper<ChargeDTO> getRowMapperOfChargeDTO() {

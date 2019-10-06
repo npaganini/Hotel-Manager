@@ -14,5 +14,5 @@ public interface ChargeDao extends SimpleDao<Charge> {
 
     List<ChargeDTO> findChargeByReservationHash(long reservationId);
 
-//    int sumCharge(long reservationId);
+    double sumCharge(long reservationId);
 }

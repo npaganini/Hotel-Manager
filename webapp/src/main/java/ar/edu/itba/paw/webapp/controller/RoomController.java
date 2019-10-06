@@ -8,6 +8,8 @@ import form.CheckinForm;
 import form.CheckoutForm;
 import form.ReservationFilter;
 import form.ReservationForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,9 @@ import java.util.Optional;
 @Controller
 @RequestMapping("rooms")
 public class RoomController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RoomController.class);
+
     private final RoomService roomService;
     private final ReservationService reservationService;
     private final ChargeService chargeService;
@@ -35,6 +40,7 @@ public class RoomController {
     @GetMapping("/home")
     public ModelAndView getAllRooms() {
         final ModelAndView mav = new ModelAndView("index");
+        LOGGER.debug("Request received to retrieve whole roomsList");
         mav.addObject("RoomList", roomService.getRoomsList());
         return mav;
     }
@@ -56,10 +62,12 @@ public class RoomController {
     @PostMapping("/reservationPost")
     public ModelAndView reservationPost(@ModelAttribute("reservationForm") final ReservationForm form) {
         final ModelAndView mav = new ModelAndView("reservationPost");
+        LOGGER.debug("Request received to do a reservation on room with id: " + form.getRoomId());
         Reservation reserva = new Reservation(form.getRoomId(),
                 form.getUserEmail(), Date.valueOf(form.getStartDate()).toLocalDate(),
                 Date.valueOf(form.getEndDate()).toLocalDate(), 0L);
         roomService.doReservation(reserva);
+        LOGGER.debug("Response about to be sent, reservation made, with hash: " + reserva.getHash());
         mav.addObject("reserva", reserva);
         return mav;
     }
@@ -73,6 +81,7 @@ public class RoomController {
     @PostMapping("/checkinPost")
     public ModelAndView checkinPost(@ModelAttribute("checkinForm") final CheckinForm form){
         final ModelAndView mav = new ModelAndView("checkinPost");
+        LOGGER.debug("Request received to do the check-in on reservation with hash: " + form.getId_reservation());
         Reservation reser = reservationService.getReservationByHash(form.getId_reservation());
         roomService.reservateRoom(reser.getRoomId());
         reservationService.activeReservation(reservationService.getReservationByHash(form.getId_reservation()).getId());
@@ -88,6 +97,7 @@ public class RoomController {
     @PostMapping("/checkoutPost")
     public ModelAndView checkoutPost(@ModelAttribute("checkoutForm") final CheckoutForm form){
         final ModelAndView mav = new ModelAndView("checkoutPost");
+        LOGGER.debug("Request received to do the check-out on reservation with hash: " + form.getId_reservation());
         mav.addObject("charges",chargeService.getAllChargesByReservationId(reservationService.getReservationByHash(form.getId_reservation()).getId()));
         roomService.freeRoom(reservationService.getReservationByHash(form.getId_reservation()).getRoomId());
         reservationService.inactiveReservation(reservationService.getReservationByHash(form.getId_reservation()).getId());
@@ -106,4 +116,9 @@ public class RoomController {
          return mav;
     }
 
+    @PostMapping("/reservations")
+    public ModelAndView reservationsPost(@ModelAttribute("reservationFilter") final ReservationFilter form) {
+        final ModelAndView mav = new ModelAndView("reservations");
+        return mav;
+    }
 }

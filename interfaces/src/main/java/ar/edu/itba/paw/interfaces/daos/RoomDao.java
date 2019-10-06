@@ -8,9 +8,11 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface RoomDao extends SimpleDao<Room> {
-    List<RoomReservationDTO> findAllFreeBetweenDatesAndEmail(LocalDate startDate, LocalDate endDate, String email);
+    List<Room> findAllRoomsFreeBetweenDates(LocalDate startDate, LocalDate endDate);
 
     List<RoomReservationDTO> getAllRoomsReserved();
+
+    List<RoomReservationDTO> findAllFreeBetweenDatesAndEmail(LocalDate startDate, LocalDate endDate, String email);
 
     List<Room> findByRoomType(RoomType roomType);
 

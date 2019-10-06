@@ -92,23 +92,23 @@
                     <span class="input-group-addon"></span>
                     <input id="IDres" path="userEmail" type="text" class="form-control" name="IDres"
                            placeholder="Email del titular">
-                </div>
-            </div>
-            <div class="col-xs-6">
-                <div>
-                    <div class="col-xs-2"><button id="search" type="button" class="btn btn-success btn-lg">
-                        <div style="color: black">Buscar</div></button></div>
-                    <div class="col-xs-2">
-                        <button type="button" class="btn btn-default btn-lg"><a
-                                href="${pageContext.request.contextPath}/rooms/home" style="color: black">Cancelar</a>
-                        </button>
+                        </div>
                     </div>
+                        <div class="col-xs-6">
+                            <div>
+                                <div class="col-xs-2"><button id="search" type="button" class="btn btn-success btn-lg">
+                                    <div style="color: black">Buscar</div></button></div>
+                                <div class="col-xs-2">
+                                    <button type="button" class="btn btn-default btn-lg"><a
+                                            href="${pageContext.request.contextPath}/rooms/home" style="color: black">Cancelar</a>
+                                    </button>
+                                </div>
 
-                </div>
-            </div>
+                            </div>
+                        </div>
         </div>
-        <br>
-        <br>
+                    <br>
+                    <br>
     </form>
     <c:url value="/rooms/reservation" var="postPath"/>
     <div class="row">
