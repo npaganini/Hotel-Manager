@@ -14,4 +14,6 @@ public interface ReservationDao extends SimpleDao<Reservation> {
     int updateActive(long reservationId, boolean b);
 
     List<RoomReservationDTO> findActiveReservation(String userEmail);
+
+
 }

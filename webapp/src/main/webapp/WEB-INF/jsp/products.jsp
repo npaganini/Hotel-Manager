@@ -6,7 +6,7 @@
 <head>
     <title>e-lobby</title>
 
-    <link  rel="stylesheet" href="${pageContext.request.contextPath}/resources/CSS/my_style.css" >
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/CSS/my_style.css">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
@@ -49,100 +49,71 @@
             </nav>
         </div>
     </div>
-<c:url value="/rooms/reservationPost" var="postPath"/>
-<form:form modelAttribute="reservationFilter" action="${postPath}" method="post">
     <div class="row myheader vertical-align">
         <div class="col-xs-6" style="text-align: left">
-            <div>Reservas</div>
+            <div>Productos</div>
+        </div>
+        <div class="col-xs-6 " style="text-align: right">
+            <button type="button" class="btn btn-success btn-lg"><a
+                    href="/rooms/addProduct" style="color: white">Agregar</a></button>
+
+        </div>
     </div>
     <br>
     <br>
-
-    <div class="row" >
-        <div class="col-xs-6">
-            <div class="form-question">
-                <div class="form-question__title">
-                    <form:label class="items" path="startDate">Desde: </form:label>
-
-                </div>
-
-                <div class="input-container">
-                    <form:input id="from_date" path="startDate" type="date" name="effective-date" minlength="1"
-                maxlength="64" placeholder=" " autocomplete="nope" required="required"></form:input>
-                    <span class="bar"></span>
-                </div>
-            </div>
-        </div>
-    <div class="col-xs-6">
-        <div class="form-question">
-            <div class="form-question__title">
-                <form:label class="items" path="endDate">Hasta: </form:label>
-            </div>
-        <div class="input-container">
-                <form:input id="to_date" path="endDate" type="date" name="effective-date" minlength="1"
-                maxlength="64" placeholder=" " autocomplete="nope" required="required"></form:input>
-                <span class="bar"></span>
-        </div>
-        </div>
-    </div>
-    </div>
     <div class="row">
-         <div class="col-xs-6">
-            <form:label class="items" path="userEmail">Titular: </form:label>
-                 <div class="input-group">
-                        <span class="input-group-addon"></span>
-                      <form:input id="IDres" path="userEmail" type="text" class="form-control" name="IDres"
-                placeholder="Email del titular"></form:input>
-                 </div>
-          </div>
-        <div class="col-xs-6">
-            <input type="submit" class="btn btn-success btn-lg" value="Buscar"/>
-
-    </div>
-    </div>
-    <br>
-
-
-    <div class="row">
-        <div class="col-xs-12 form-group" style="z-index:9999;grid-auto-columns: auto">
+        <div class="col-xs-8 form-group" style="z-index:9999;grid-auto-columns: auto">
             <table id="myTable" class="display" style="width:100%;  border: 1px solid black !important;">
                 <thead>
                 <tr>
-                    <th>Habitacion</th>
-                    <th>Titular</th>
-                    <th>Desde</th>
-                    <th>Hasta</th>
+                    <th>Producto</th>
+                    <th>Descripcion</th>
+                    <th>Precio</th>
+                    <th>Estado</th>
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="reservation" items="${reservations}">
+                <c:forEach var="prod" items="${products}">
                     <tr>
 
-                            <td style="text-align: left">${reservation.roomId}</td>
-                            <td style="text-align: left">${reservation.userEmail}</td>
-                            <td style="text-align: left">${reservation.startDate}</td>
-                            <td style="text-align: left">${reservation.endDate}</td>
+                            <td style="text-align: left">${room.id}</td>
+                            <td style="text-align: left">${room.number}</td>
+                            <td>${room.roomType}</td>
+                            <td style="text-align: left">-</td>
+                            <td style="text-align: left">-</td>
 
                     </tr>
                 </c:forEach>
                 </tbody>
             </table>
         </div>
+        <div class="col-xs-4">
+            <div class="row" style="height: 45px">
+                <br><br>
+                <div class="col-xs-4">
+                    <input type="submit" class="btn btn-default btn-lg" value="Guardar"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2">
+                    <button type="button" class="btn btn-danger btn-lg"><a href="/" style="color: white">Cancelar</a>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
 </div>
-
 </div>
-</form:form>
 </body>
 </html>
-
-
-
-    <script>
+<script>
     $(document).ready(function () {
-    $('#myTable').DataTable({
-    filter: false,
+        $('#myTable').DataTable({
+            "order": [[1, "asc"]],
+            filter: false,
+        });
     });
-    });
-    </script>
+</script>
+
+

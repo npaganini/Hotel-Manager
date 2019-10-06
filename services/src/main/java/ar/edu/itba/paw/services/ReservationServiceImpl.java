@@ -26,4 +26,9 @@ public class ReservationServiceImpl implements ReservationService {
     public void activeReservation(long reservationId) {
         reservationDao.updateActive(reservationId, true);
     }
+
+    @Override
+    public void inactiveReservation(long reservationId) {
+        reservationDao.updateActive(reservationId, false);
+    }
 }
