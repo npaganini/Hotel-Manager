@@ -83,6 +83,7 @@ public class RoomController {
         final ModelAndView mav = new ModelAndView("checkoutPost");
         mav.addObject("charges",roomService.getRoomsList());
         roomService.freeRoom(reservationService.getReservationByHash(form.getId_reservation()).getRoomId());
+        reservationService.inactiveReservation(reservationService.getReservationByHash(form.getId_reservation()).getId());
         return mav;
     }
 

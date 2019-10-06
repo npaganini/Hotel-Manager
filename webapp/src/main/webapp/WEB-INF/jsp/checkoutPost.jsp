@@ -97,7 +97,7 @@
     </div>
 
         <div class="col-xs-6" style="margin-left: 25px">
-            <button type="button" class="btn btn-success btn-lg"><a href="/" style="color: white">Volver</a></button>
+            <button type="button" class="btn btn-success btn-lg"><a href="/rooms/home" style="color: white">Volver</a></button>
         </div>
 
 
