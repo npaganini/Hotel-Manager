@@ -8,12 +8,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
 import javax.sql.DataSource;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -23,7 +27,7 @@ import static org.junit.Assert.assertNotNull;
 @ContextConfiguration(classes = TestConfig.class)
 public class UserRepositoryTest {
     private static final String USER_EMAIL = "email@email.com";
-    private static final String USER_NAME = "username";
+    private static final String USER_NAME = USER_EMAIL;
     private static final String USER_ROLE = "CLIENT";
 
     @Autowired
@@ -33,14 +37,22 @@ public class UserRepositoryTest {
     private UserRepository userDao;
 
     private JdbcTemplate jdbcTemplate;
+    private SimpleJdbcInsert simpleJdbcInsert;
 
     @Before
     public void setUp() {
         jdbcTemplate = new JdbcTemplate(ds);
+        simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
+                .withTableName("users")
+                .usingGeneratedKeyColumns("id");
         JdbcTestUtils.deleteFromTables(jdbcTemplate, "users");
-        jdbcTemplate.execute(
-                "INSERT INTO users (id, email, username, password, role)" +
-                        "VALUES (1, " + USER_EMAIL + ", " + USER_NAME + ", 'password', " + USER_ROLE + ")");
+        Map<String, Object> args = new HashMap<>();
+        args.put("id", 1);
+        args.put("email", USER_EMAIL);
+        args.put("username", USER_NAME);
+        args.put("password", "password");
+        args.put("role", USER_ROLE);
+        simpleJdbcInsert.execute(args);
     }
 
     // public User findByEmail(String userEmail)
