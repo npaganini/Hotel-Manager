@@ -31,34 +31,6 @@ public abstract class SimpleRepository<T extends SqlObject> implements SimpleDao
                         .usingGeneratedKeyColumns(KEY_ID);
     }
 
-    List<Room> getHardcodedRooms() {
-        Room room1 = new Room(1, RoomType.DOUBLE, true, 102);
-        Room room2 = new Room(2, RoomType.TRIPLE, true, 103);
-        Room room3 = new Room(3, RoomType.SIMPLE, true, 104);
-        Room room4 = new Room(4, RoomType.DOUBLE, true, 105);
-        Room room5 = new Room(5, RoomType.DOUBLE, true, 106);
-        return Arrays.asList(room1, room2, room3, room4, room5);
-    }
-
-    List<Product> getHardcodedProducts() {
-        Product product = new Product(1L, "Coca-Cola", 45.3d, "filePath", true);
-        Product product1 = new Product(2L, "Whisky", 150d, "filePath", true);
-        Product product2 = new Product(3L, "Papitas", 12d, "filePath", true);
-        Product product3 = new Product(4L, "Chocolates", 19d, "filePath", true);
-        return Arrays.asList(product, product1, product2, product3);
-    }
-
-    List<User> getHardcodedUsers() {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        return Arrays.asList(
-                new User(1L, "mail@mail.com",
-                        bCryptPasswordEncoder.encode("password"),
-                        "manager", UserRole.MANAGER),
-                new User(2L, "mail@mail.com",
-                        bCryptPasswordEncoder.encode("password"), "employee",
-                        UserRole.EMPLOYEE));
-    }
-
     @Override
     public T save(T t) {
         t.setId(getJdbcInsert().executeAndReturnKey(t.toMap()).longValue());
