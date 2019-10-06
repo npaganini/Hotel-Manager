@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ChargeService {
     List<ChargeDTO> getAllChargesByReservationId(long reservationId);
-//    int sumCharge(long reservationId);
+    double sumCharge(long reservationId);
 }

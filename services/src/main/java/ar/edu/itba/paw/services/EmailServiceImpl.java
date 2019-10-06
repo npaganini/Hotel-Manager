@@ -20,6 +20,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     public void sendConfirmationOfReservation(String to, String subject, String text) {
+        LOGGER.debug("About to send email notifying the confirmation of reservation to " + to);
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
         message.setSubject(subject);

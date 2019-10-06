@@ -22,11 +22,13 @@ public class ChargeServiceImpl implements ChargeService {
 
     @Override
     public List<ChargeDTO> getAllChargesByReservationId(long reservationId) {
+        LOGGER.debug("Getting all current charges for reservation with id " + reservationId);
         return chargeDao.findChargeByReservationHash(reservationId);
     }
 
     @Override
-    public int sumCharge(long reservationId){
+    public double sumCharge(long reservationId) {
+        LOGGER.debug("Getting the balance of reservation with id" + reservationId);
         return chargeDao.sumCharge(reservationId);
     }
 }

@@ -29,11 +29,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean unableProduct(long productId) {
+        LOGGER.debug("About to unable product for visibility with id " + productId);
         return productDao.updateProductEnable(productId, false) > 0;
     }
 
     @Override
     public boolean enableProduct(long productId) {
+        LOGGER.debug("About to enable product for visibility with id " + productId);
         return productDao.updateProductEnable(productId, true) > 0;
     }
 
