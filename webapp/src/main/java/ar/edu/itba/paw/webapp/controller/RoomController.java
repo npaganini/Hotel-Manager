@@ -5,6 +5,7 @@ import ar.edu.itba.paw.interfaces.services.RoomService;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import form.CheckinForm;
 import form.CheckoutForm;
+import form.ReservationFilter;
 import form.ReservationForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -88,16 +89,16 @@ public class RoomController {
     }
 
 
-//    @GetMapping("/rooms/reservations")
-//    public ModelAndView reservations(@ModelAttribute("reservationFilter") final ReservationFilter form) {
-//        final ModelAndView mav = new ModelAndView("reservations");
-//        mav.addObject("reservations",reservationService.getAll());
-//        return mav;
-//    }
-//
-//    @PostMapping("/rooms/reservations")
-//    public ModelAndView reservationsPost(@ModelAttribute("reservationFilter") final ReservationFilter form) {
-//        final ModelAndView mav = new ModelAndView("reservations");
-//        return mav;
-//    }
+    @GetMapping("/reservations")
+    public ModelAndView reservations(@ModelAttribute("reservationFilter") final ReservationFilter form) {
+        final ModelAndView mav = new ModelAndView("reservations");
+        mav.addObject("reservations",reservationService.getAll());
+        return mav;
+    }
+
+    @PostMapping("/reservations")
+    public ModelAndView reservationsPost(@ModelAttribute("reservationFilter") final ReservationFilter form) {
+        final ModelAndView mav = new ModelAndView("reservations");
+        return mav;
+    }
 }

@@ -15,5 +15,7 @@ public interface ReservationDao extends SimpleDao<Reservation> {
 
     List<RoomReservationDTO> findActiveReservation(String userEmail);
 
+    List<Reservation> getAll();
+
 
 }

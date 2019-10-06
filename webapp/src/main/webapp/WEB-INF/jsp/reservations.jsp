@@ -34,7 +34,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="/">e-lobby</a>
+                        <a class="navbar-brand" href="/rooms/home">e-lobby</a>
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
@@ -57,6 +57,7 @@
     </div>
     <br>
     <br>
+        </div>
 
     <div class="row" >
         <div class="col-xs-6">
