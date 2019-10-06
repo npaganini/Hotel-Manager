@@ -116,9 +116,4 @@ public class RoomController {
          return mav;
     }
 
-    @PostMapping("/reservations")
-    public ModelAndView reservationsPost(@ModelAttribute("reservationFilter") final ReservationFilter form) {
-        final ModelAndView mav = new ModelAndView("reservations");
-        return mav;
-    }
 }

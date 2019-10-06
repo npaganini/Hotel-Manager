@@ -56,7 +56,9 @@
 
     <br>
     <br>
-    <form id="filter"   action="<c:url value="/rooms/reservations?startDate=${startDate}&endDate=${endDate}&userMail=${userMail}"/>" method="get">
+    <form id="filter"
+          action="<c:url value="/rooms/reservations?startDate=${startDate}&endDate=${endDate}&userMail=${userMail}"/>"
+          method="get">
         <div class="row">
             <div class="col-xs-6">
                 <div class="form-question">
@@ -92,23 +94,26 @@
                     <span class="input-group-addon"></span>
                     <input id="IDres" path="userEmail" type="text" class="form-control" name="IDres"
                            placeholder="Email del titular">
-                        </div>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div>
+                    <div class="col-xs-2">
+                        <button id="search" type="button" class="btn btn-success btn-lg">
+                            <div style="color: black">Buscar</div>
+                        </button>
                     </div>
-                        <div class="col-xs-6">
-                            <div>
-                                <div class="col-xs-2"><button id="search" type="button" class="btn btn-success btn-lg">
-                                    <div style="color: black">Buscar</div></button></div>
-                                <div class="col-xs-2">
-                                    <button type="button" class="btn btn-default btn-lg"><a
-                                            href="${pageContext.request.contextPath}/rooms/home" style="color: black">Cancelar</a>
-                                    </button>
-                                </div>
+                    <div class="col-xs-2">
+                        <button type="button" class="btn btn-default btn-lg"><a
+                                href="${pageContext.request.contextPath}/rooms/home" style="color: black">Cancelar</a>
+                        </button>
+                    </div>
 
-                            </div>
-                        </div>
+                </div>
+            </div>
         </div>
-                    <br>
-                    <br>
+        <br>
+        <br>
     </form>
     <c:url value="/rooms/reservation" var="postPath"/>
     <div class="row">
@@ -154,16 +159,16 @@
 
     $(document).ready(function () {
 
-        $('#search').off().on('click',function (event) {
+        $('#search').off().on('click', function (event) {
             var basePath = $('#filter').attr('action');
 
             var startDate = $('#from_date').val();
             var endDate = $('#to_date').val();
             var userEmail = $('#IDres').val();
 
-            basePath = "/rooms/reservations?startDate=" + startDate + "&endDate=" + endDate + "&userEmail=" + userEmail ;
+            basePath = "/rooms/reservations?startDate=" + startDate + "&endDate=" + endDate + "&userEmail=" + userEmail;
             event.preventDefault();
-            location.href=basePath;
+            location.href = basePath;
             return false;
 
         })
