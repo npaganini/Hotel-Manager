@@ -10,13 +10,11 @@ import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
 import ar.edu.itba.paw.models.room.RoomType;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.time.LocalDate;
@@ -51,12 +49,7 @@ public class UserServiceImplTest {
     private ReservationDao reservationDao;
 
     @InjectMocks
-    private UserServiceImpl userService = new UserServiceImpl(productDao, chargeDao, reservationDao);
-
-    @Before
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-    }
+    private UserServiceImpl userService;
 
     /*
      * function to test: public List<Product> getProducts()
