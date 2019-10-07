@@ -6,17 +6,14 @@ import ar.edu.itba.paw.models.dtos.ChargeDTO;
 import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import sun.awt.image.ImageWatched;
 
 import java.sql.Date;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
@@ -31,14 +28,9 @@ public class ChargeServiceImplTest {
     private static final float PRODUCT_PRICE_1 = 15.99f;
     private static final String START_DATE = "2019-09-30";
     private static final String END_DATE = "2019-10-10";
-    private static final int ROOM_NUMBER = 105;
-    private static final boolean FALSE = false;
-    private static final boolean TRUE = true;
 
     @Mock
     private ChargeDao chargeDao;
-    @Mock
-    private ResultSet resultSet;
 
     @InjectMocks
     private ChargeServiceImpl chargeService;
@@ -47,7 +39,7 @@ public class ChargeServiceImplTest {
     /**
      * @function_to_test List<ChargeDTO> getAllChargesByReservationId(long reservationId)
      * uses chargeDao.findChargeByReservationHash(reservationId)
-     **/    // TODO: add a test for ResultSet
+     **/
     @Test
     public void testGetAllChargesByReservationId() throws SQLException {
         // 1. Setup!
@@ -85,12 +77,4 @@ public class ChargeServiceImplTest {
         // 3. Asserts
         Assert.assertEquals(TOTAL, total, DELTA_DIFFERENCE);
     }
-
-//    // 1. Setup!
-//    Charge charge = new Charge(ID_1, ID_1);
-//        Mockito.when(chargeDao.addCharge(charge)).thenReturn(TRUE);
-//    // 2. SUT
-//    boolean chargeAdded = userService.addCharge(charge);
-//    // 3. Asserts
-//        Assert.assertTrue(chargeAdded);
 }
