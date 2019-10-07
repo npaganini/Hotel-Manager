@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.interfaces.daos;
 
 import ar.edu.itba.paw.models.charge.Charge;
-import ar.edu.itba.paw.models.dtos.ChargeDTO;
+import ar.edu.itba.paw.models.dtos.ChargeRoomReservationDTO;
 import ar.edu.itba.paw.models.product.Product;
 
 import java.util.List;
@@ -12,11 +12,11 @@ public interface ChargeDao extends SimpleDao<Charge> {
 
     Map<Product, Integer> getAllChargesByUser(String userEmail, long reservationId);
 
-    List<ChargeDTO> findChargeByReservationHash(long reservationId);
+    List<ChargeRoomReservationDTO> findChargeByReservationHash(long reservationId);
 
     double sumCharge(long reservationId);
 
-    List<Charge> findAllChargesNotDelivered();
+    List<ChargeRoomReservationDTO> findAllChargesNotDelivered();
 
     int updateChargeToDelivered(long chargeId);
 }
