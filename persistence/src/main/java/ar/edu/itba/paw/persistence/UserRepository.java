@@ -22,9 +22,6 @@ public class UserRepository extends SimpleRepository<User> implements UserDao {
     @Autowired
     public UserRepository(DataSource dataSource) {
         super(new NamedParameterJdbcTemplate(dataSource));
-        if (jdbcTemplateWithNamedParameter.getJdbcTemplate()
-                .query("SELECT * FROM " + User.TABLE_NAME, getRowMapper()).size() == 0)
-            getHardcodedUsers().parallelStream().forEach(this::save);
     }
 
     @Override
