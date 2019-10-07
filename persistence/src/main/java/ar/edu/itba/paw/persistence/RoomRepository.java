@@ -30,7 +30,7 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
     }
 
     @Override
-    public List<RoomReservationDTO> findAllBetweenDatesAndEmail(Date startDate, Date endDate, String email) {
+    public List<RoomReservationDTO> findAllBetweenDatesAndEmail(String startDate, String endDate, String email) {
         String andCriterias = getAndCriteriasToFindRooms(startDate, endDate, email);
         return jdbcTemplateWithNamedParameter.query("SELECT * FROM " + Reservation.TABLE_NAME + " res JOIN "
                         + Room.TABLE_NAME + " r ON res.room_id = r.id " + andCriterias,
@@ -38,13 +38,13 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
     }
 
     @Override
-    public List<Room> findAllFreeBetweenDates(LocalDate startDate, LocalDate endDate) {
+    public List<RoomReservationDTO> findAllFreeBetweenDates(LocalDate startDate, LocalDate endDate) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
         parameterSource.addValue("startDate", startDate);
         parameterSource.addValue("endDate", endDate);
-        return jdbcTemplateWithNamedParameter.query("select * from room r where not exists (select res.room_id " +
+        return jdbcTemplateWithNamedParameter.query("select * from room r join reservation on r.id = room_id where not exists (select res.room_id " +
                         "from reservation res WHERE res.room_id = r.id AND (res.start_date >= :startDate OR res.end_date <= :endDate))",
-                parameterSource, getRowMapper());
+                parameterSource, getRowMapperWithJoin());
     }
 
     @Override
@@ -53,19 +53,20 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
                 " r WHERE " + Room.KEY_FREE_NOW + " = true", getRowMapper());
     }
 
-    private String getAndCriteriasToFindRooms(Date startDate, Date endDate, String email) {
+    private String getAndCriteriasToFindRooms(String startDate, String endDate, String email) {
         StringBuilder andSentendeBuilder = new StringBuilder();
-        if (startDate != null) andSentendeBuilder.append("WHERE res.start_date >= :startDate ");
-        if (endDate != null) andSentendeBuilder.append("AND res.end_date <= :endDate ");
-        if (email != null) andSentendeBuilder.append("AND res.user_email = :email");
+        if (startDate != null && startDate.length() > 0)
+            andSentendeBuilder.append("WHERE res.start_date >= :startDate ");
+        if (endDate != null && endDate.length() > 0) andSentendeBuilder.append("AND res.end_date <= :endDate ");
+        if (email != null && email.length() > 0) andSentendeBuilder.append("AND res.user_email = :email");
         return andSentendeBuilder.toString();
     }
 
-    private MapSqlParameterSource getParametersToUse(Date startDate, Date endDate, String email) {
+    private MapSqlParameterSource getParametersToUse(String startDate, String endDate, String email) {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
-        if (startDate != null) parameters.addValue("startDate", startDate);
-        if (endDate != null) parameters.addValue("endDate", endDate);
-        if (email != null) parameters.addValue("email", email);
+        if (startDate != null && startDate.length() > 0) parameters.addValue("startDate", LocalDate.parse(startDate));
+        if (endDate != null && endDate.length() > 0) parameters.addValue("endDate", LocalDate.parse(endDate));
+        if (email != null && email.length() > 0) parameters.addValue("email", email);
         return parameters;
     }
 
@@ -82,7 +83,7 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
                 "= false WHERE id = :roomId ", parameterSource);
     }
 
-    public void freeRoom(long roomId){
+    public void freeRoom(long roomId) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
         parameterSource.addValue("roomId", roomId);
         jdbcTemplateWithNamedParameter.update("UPDATE " + Room.TABLE_NAME + " SET " + Room.KEY_FREE_NOW + " " +
