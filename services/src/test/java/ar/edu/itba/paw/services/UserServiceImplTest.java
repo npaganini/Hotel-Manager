@@ -3,9 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.daos.ChargeDao;
 import ar.edu.itba.paw.interfaces.daos.ProductDao;
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
-import ar.edu.itba.paw.interfaces.daos.UserDao;
 import ar.edu.itba.paw.models.charge.Charge;
-import ar.edu.itba.paw.models.dtos.ChargeDTO;
 import ar.edu.itba.paw.models.dtos.RoomReservationDTO;
 import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.models.reservation.Reservation;
@@ -45,8 +43,6 @@ public class UserServiceImplTest {
     private static final boolean FALSE = false;
     private static final boolean TRUE = true;
 
-    @Mock
-    private UserDao userDao;
     @Mock
     private ProductDao productDao;
     @Mock
@@ -105,7 +101,7 @@ public class UserServiceImplTest {
      * uses chargeDao.getAllChargesByUser()
      */
     @Test
-    public void testCheckProductsPurchasedByUserByReservationId(String userEmail, long reservationId) {
+    public void testCheckProductsPurchasedByUserByReservationId() {
         // 1. Setup!
         Product product1 = new Product(PRODUCT_NAME_1, PRODUCT_PRICE_1);
         Product product2 = new Product(PRODUCT_NAME_2, PRODUCT_PRICE_2);
