@@ -59,8 +59,7 @@
                 <thead>
                 <tr>
                     <th>Producto</th>
-                    <th>Descripcion</th>
-                    <th>Precio</th>
+                    <th>Habitacion</th>
                     <th>Estado</th>
                 </tr>
                 </thead>
@@ -68,23 +67,20 @@
                 <c:forEach var="order" items="${orders}">
                     <tr>
 
-                        <td style="text-align: left">foto</td>
-                        <td style="text-align: left">${prod.description}</td>
-                        <td style="text-align: left">${prod.price}</td>
+                        <td style="text-align: left">${order.product.description}</td>
+                        <td style="text-align: left">-</td>
 
-                        <c:if test = "${prod.enable == true}">
+                        <c:if test = "${order.charge.delivered == false}">
                             <td style="text-align: left">
-                                <button id="disable" value="${prod.id}"  type="button" class="btn btn-default btn-lg">
-                                    <div style="color: black"><a href="${pageContext.request.contextPath}/products/disable" style="color: black" >Desabilitar</a></div>
+                                <button id="finished" value="${order.charge.id}"  type="button" class="btn btn-default btn-lg">
+                                    <div style="color: black"><a href="${pageContext.request.contextPath}/rooms/sendOrder" style="color: black" >Enviar</a></div>
                                 </button>
                             </td>
                         </c:if>
 
-                        <c:if test = "${prod.enable == false}">
+                        <c:if test = "${order.charge.delivered == true}">
                             <td style="text-align: left">
-                                <button id="available" value="${prod.id}" type="button" class="btn btn-primary btn-lg">
-                                    <div style="color: black"><a href="${pageContext.request.contextPath}/products/available" style="color: white" >Habilitar</a></div>
-                                </button>
+                                <div>TERMINADO</div>
                             </td>
                         </c:if>
 
@@ -98,7 +94,7 @@
             <div class="row" style="height: 45px;text-align: center">
                 <div class="col-xs-2">
                     <button type="button" class="btn btn-success btn-lg"><a
-                            href="${pageContext.request.contextPath}/products/addProduct" style="color: white">Agregar</a>
+                            href="${pageContext.request.contextPath}/rooms/orders" style="color: white">Actualizar</a>
                     </button>
                 </div>
             </div>
@@ -127,12 +123,12 @@
 
     $(document).ready(function () {
 
-        $('#available').off().on('click', function (event) {
+        $('#finished').off().on('click', function (event) {
             var basePath;
 
-            var prodId = $('#available').val();
+            var chargeId = $('#finished').val();
 
-            basePath = "/products/available?productId=" + prodId;
+            basePath = "/rooms/sendOrder?chargeId=" + chargeId;
             event.preventDefault();
             location.href = basePath;
             return false;

@@ -117,4 +117,11 @@ public class RoomController {
         return mav;
     }
 
+    @GetMapping("/orders/sendOrder")
+    public ModelAndView sendOrder(@RequestParam(value = "chargeId", required = false) long chargeId){
+        final ModelAndView mav = new ModelAndView("orderFinished");
+        chargeService.setChargeToDelivered(chargeId);
+        return mav;
+    }
+
 }
