@@ -28,14 +28,14 @@ public class ProductController {
     }
 
     @GetMapping("/products")
-    public ModelAndView products(){
-        final ModelAndView mav= new ModelAndView("products");
-        mav.addObject("product",productService.getAll());
+    public ModelAndView products() {
+        final ModelAndView mav = new ModelAndView("products");
+        mav.addObject("product", productService.getAll());
         return mav;
     }
 
     @GetMapping("/products/disable")
-    public ModelAndView hideProduct(@RequestParam(value = "productId", required = false) long productId){
+    public ModelAndView hideProduct(@RequestParam(value = "productId", required = false) long productId) {
         final ModelAndView mav = new ModelAndView("productDisable");
         productService.unableProduct(productId);
         return mav;
@@ -43,7 +43,7 @@ public class ProductController {
 
 
     @GetMapping("/products/available")
-    public ModelAndView showProduct(@RequestParam(value = "productId", required = false) long productId){
+    public ModelAndView showProduct(@RequestParam(value = "productId", required = false) long productId) {
         final ModelAndView mav = new ModelAndView("productAvailable");
         productService.enableProduct(productId);
         return mav;
@@ -59,12 +59,12 @@ public class ProductController {
         LOGGER.debug("Product was saved succesfully");
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + filePath + "!");
-        return "redirect:/";
+        return "redirect:/products";
     }
 
-    @RequestMapping(value = "/product-input-form")
+    @GetMapping(value = "/products/addProduct")
     public String inputProduct(Model model) {
         model.addAttribute("productForm", new ProductForm());
-        return "upload";
+        return "addProduct";
     }
 }

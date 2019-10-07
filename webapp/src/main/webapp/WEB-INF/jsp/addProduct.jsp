@@ -55,7 +55,7 @@
     </div>
     <br>
     <br>
-    <form:form modelAttribute="productForm" action="addProduct" method="post" enctype="multipart/form-data">
+    <form:form modelAttribute="productForm" action="/products/addProduct" method="post" enctype="multipart/form-data">
     <div class="row">
         <div class="col-xs-6">
             <label for="description">Description: </label>
