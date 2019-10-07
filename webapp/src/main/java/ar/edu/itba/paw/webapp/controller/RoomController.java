@@ -110,4 +110,11 @@ public class RoomController {
         return mav;
     }
 
+    @GetMapping("/orders")
+    public ModelAndView orders(){
+        final ModelAndView mav = new ModelAndView("orders");
+        mav.addObject("orders",chargeService.getAllChargesNotDelivered());
+        return mav;
+    }
+
 }

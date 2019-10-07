@@ -15,9 +15,9 @@
     <script src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js'></script>
 
 </head>
-<body class="container cont"
-      style="height: 100vh !important; width: 100vw !important;margin-left: 0 !important; margin-right: 0 !important">
-<div >
+<body>
+<div class="container cont"
+     style="height: 100vh !important; width: 100vw !important;margin-left: 0 !important; margin-right: 0 !important">
     <div class="row">
         <div class="col">
             <nav class="navbar navbar-inverse sidebar" style="z-index: initial !important;" role="navigation">
@@ -40,7 +40,6 @@
                             <li><a href="${pageContext.request.contextPath}/rooms/checkout">Check-Out</a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/reservations">Reservas</a></li>
                             <li><a href="${pageContext.request.contextPath}/products">Productos</a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/orders">Pedidos</a></li>
                         </ul>
                     </div>
                 </div>
@@ -49,62 +48,114 @@
     </div>
     <div class="row myheader vertical-align">
         <div class="col-xs-6" style="text-align: left">
-            <div>Habitaciones Ocupadas</div>
-        </div>
-        <div class="col-xs-6 " style="text-align: right">
-            <button type="button" class="btn btn-success btn-lg"><a
-                    href="${pageContext.request.contextPath}/rooms/reservation" style="color: white">Nueva Reserva</a>
-            </button>
-
+            <div>Productos</div>
         </div>
     </div>
     <br>
     <br>
     <div class="row">
-        <div class="col-xs-12 form-group" style="z-index:9999;grid-auto-columns: auto">
+        <div class="col-xs-8 form-group" style="z-index:9999;grid-auto-columns: auto">
             <table id="myTable" class="display" style="width:100%;  border: 1px solid black !important;">
                 <thead>
                 <tr>
-                    <th>Habitacion</th>
-                    <th>Tipo</th>
-                    <th>Desde</th>
-                    <th>Hasta</th>
-                    <th>Titular</th>
+                    <th>Producto</th>
+                    <th>Descripcion</th>
+                    <th>Precio</th>
+                    <th>Estado</th>
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="room" items="${RoomList}">
+                <c:forEach var="order" items="${orders}">
                     <tr>
 
-                        <c:if test="${room.reservation.active == true}">
+                        <td style="text-align: left">foto</td>
+                        <td style="text-align: left">${prod.description}</td>
+                        <td style="text-align: left">${prod.price}</td>
 
-                            <td style="text-align: left">${room.room.number}</td>
-                            <td style="text-align: left">${room.room.roomType}</td>
-                            <td style="text-align: left">${room.reservation.startDate}</td>
-                            <td style="text-align: left">${room.reservation.endDate}</td>
-                            <td style="text-align: left">${room.reservation.userEmail}</td>
-
+                        <c:if test = "${prod.enable == true}">
+                            <td style="text-align: left">
+                                <button id="disable" value="${prod.id}"  type="button" class="btn btn-default btn-lg">
+                                    <div style="color: black"><a href="${pageContext.request.contextPath}/products/disable" style="color: black" >Desabilitar</a></div>
+                                </button>
+                            </td>
                         </c:if>
 
+                        <c:if test = "${prod.enable == false}">
+                            <td style="text-align: left">
+                                <button id="available" value="${prod.id}" type="button" class="btn btn-primary btn-lg">
+                                    <div style="color: black"><a href="${pageContext.request.contextPath}/products/available" style="color: white" >Habilitar</a></div>
+                                </button>
+                            </td>
+                        </c:if>
 
                     </tr>
                 </c:forEach>
                 </tbody>
             </table>
         </div>
+        <br><br>
+        <div class="col-xs-4">
+            <div class="row" style="height: 45px;text-align: center">
+                <div class="col-xs-2">
+                    <button type="button" class="btn btn-success btn-lg"><a
+                            href="${pageContext.request.contextPath}/products/addProduct" style="color: white">Agregar</a>
+                    </button>
+                </div>
+            </div>
+            <br><br>
+            <div class="row">
+                <div class="col-xs-2">
+                    <button type="button" class="btn btn-danger btn-lg"><a
+                            href="${pageContext.request.contextPath}/rooms/home" style="color: white">Volver</a>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
 </div>
+</div>
 </body>
-
 </html>
-
-
 <script>
     $(document).ready(function () {
         $('#myTable').DataTable({
             "order": [[1, "asc"]],
-            filter: false
+            filter: false,
         });
     });
+
+    $(document).ready(function () {
+
+        $('#available').off().on('click', function (event) {
+            var basePath;
+
+            var prodId = $('#available').val();
+
+            basePath = "/products/available?productId=" + prodId;
+            event.preventDefault();
+            location.href = basePath;
+            return false;
+
+        })
+
+    })
+
+    $(document).ready(function () {
+
+        $('#disable').off().on('click', function (event) {
+            var basePath;
+
+            var prodId = $('#disable').val();
+
+            basePath = "/products/disable?productId=" + prodId;
+            event.preventDefault();
+            location.href = basePath;
+            return false;
+
+        })
+
+    })
 </script>
+
+
