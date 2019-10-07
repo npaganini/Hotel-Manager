@@ -17,5 +17,4 @@ public interface ReservationDao extends SimpleDao<Reservation> {
 
     List<Reservation> getAll();
 
-
 }

@@ -73,20 +73,24 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void reservateRoom(long roomID, Reservation reservation){
+    public void reservateRoom(long roomID, Reservation reservation) {
         roomDao.reservateRoom(roomID);
         emailService.sendCheckinEmail(reservation);
     }
 
     @Override
-    public void freeRoom(long roomId){
+    public void freeRoom(long roomId) {
         roomDao.freeRoom(roomId);
     }
 
     @Override
-    public  List<RoomReservationDTO> findAllFreeBetweenDatesAndEmail(LocalDate startDate, LocalDate endDate, String email){
-       return roomDao.findAllFreeBetweenDatesAndEmail(startDate,endDate,email);
+    public List<RoomReservationDTO> findAllBetweenDatesAndEmail(LocalDate startDate, LocalDate endDate, String email) {
+        return roomDao.findAllBetweenDatesAndEmail(startDate, endDate, email);
     }
 
+    @Override
+    public List<Room> findAllFreeBetweenDates(LocalDate startDate, LocalDate endDate) {
+        return roomDao.findAllFreeBetweenDates(startDate, endDate);
+    }
 
 }

@@ -38,6 +38,16 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
     }
 
     @Override
+    public List<Room> findAllFreeBetweenDates(LocalDate startDate, LocalDate endDate) {
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+        parameterSource.addValue("startDate", startDate);
+        parameterSource.addValue("endDate", endDate);
+        return jdbcTemplateWithNamedParameter.query("select * from room r where not exists (select res.room_id " +
+                        "from reservation res WHERE res.room_id = r.id AND (res.start_date >= :startDate OR res.end_date <= :endDate))",
+                parameterSource, getRowMapper());
+    }
+
+    @Override
     public List<Room> findAllFree() {
         return jdbcTemplateWithNamedParameter.getJdbcTemplate().query("SELECT * FROM " + getTableName() +
                 " r WHERE " + Room.KEY_FREE_NOW + " = true", getRowMapper());
@@ -65,10 +75,10 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
 
 
     @Override
-    public void reservateRoom(long roomId) {
+    public int reservateRoom(long roomId) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
         parameterSource.addValue("roomId", roomId);
-        jdbcTemplateWithNamedParameter.update("UPDATE " + Room.TABLE_NAME + " SET " + Room.KEY_FREE_NOW + " " +
+        return jdbcTemplateWithNamedParameter.update("UPDATE " + Room.TABLE_NAME + " SET " + Room.KEY_FREE_NOW + " " +
                 "= false WHERE id = :roomId ", parameterSource);
     }
 
