@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.List;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -37,6 +38,11 @@ public class ProductServiceImpl implements ProductService {
     public boolean enableProduct(long productId) {
         LOGGER.debug("About to enable product for visibility with id " + productId);
         return productDao.updateProductEnable(productId, true) > 0;
+    }
+
+    @Override
+    public List<Product> getAll(){
+        return productDao.getAllProducts();
     }
 
 }

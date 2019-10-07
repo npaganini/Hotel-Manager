@@ -15,9 +15,9 @@
     <script src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js'></script>
 
 </head>
-<body>
-<div class="container cont"
-     style="height: 100vh !important; width: 100vw !important;margin-left: 0 !important; margin-right: 0 !important">
+<body class="container cont"
+      style="height: 100vh !important; width: 100vw !important;margin-left: 0 !important; margin-right: 0 !important">
+<div >
     <div class="row">
         <div class="col">
             <nav class="navbar navbar-inverse sidebar" style="z-index: initial !important;" role="navigation">

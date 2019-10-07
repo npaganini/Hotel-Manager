@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 
 
@@ -50,42 +49,21 @@
 
     <div class="row myheader vertical-align">
         <div class="col-xs-12" style="text-align: left">
-            <div>Agregar producto!</div>
+            <div>Producto habilitado!</div>
         </div>
     </div>
     <br>
     <br>
-    <form:form modelAttribute="productForm" action="addProduct" method="post" enctype="multipart/form-data">
+    <div class="row" style="font-size:x-large ">
+        <div class="col" style="margin-left: 25px">
+            El producto se habilito exitosamente.
+        </div>
+    </div>
+    <br>
     <div class="row">
-        <div class="col-xs-6">
-            <label for="description">Description: </label>
-            <form:input id="description" path="description" />
+        <div class="col" style="margin-left: 25px">
+            <button type="button" class="btn btn-success btn-lg"><a href="${pageContext.request.contextPath}/products" style="color: white">Volver</a></button>
         </div>
-        <div class="col-xs-6">
-            <label for="price">Price: </label>
-            <form:input id="price" path="price" type="number" />
-        </div>
-    </div>
-        <br><br>
-        <div class="row">
-            <div class="col-xs-6">
-                <label for="img">Product Image: </label>
-                <input type="file" name="img" />
-            </div>
-            <div class="col-xs-6">
-                <div class="col-xs-2">
-                    <input id="reset" type="reset" tabindex="4">
-                </div>
-                <div class="col-xs-2">
-                    <input id="submit" class="btn btn-success btn-lg" type="submit" tabindex="5" value="Add Product">
-                </div>
-                <div class="col-xs-2" style="margin-left: 25px">
-                    <button type="button" class="btn btn-danger btn-lg"><a href="${pageContext.request.contextPath}/rooms/home" style="color: white">Volver</a></button>
-                </div>
-            </div>
-        </div>
-    </form:form>
-    <br>
     </div>
 
 

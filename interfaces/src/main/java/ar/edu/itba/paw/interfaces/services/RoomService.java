@@ -24,4 +24,6 @@ public interface RoomService {
 
     List<RoomReservationDTO> findAllBetweenDatesAndEmail(String startDate, String endDate, String email);
 
+    List<RoomReservationDTO> getRoomsReservedActive();
+
 }

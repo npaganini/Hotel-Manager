@@ -15,9 +15,9 @@
     <script src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js'></script>
 
 </head>
-<body>
-<div class="container cont"
-     style="height: 100vh !important; width: 100vw !important;margin-left: 0 !important; margin-right: 0 !important">
+<body class="container cont"
+      style="height: 100vh !important; width: 100vw !important;margin-left: 0 !important; margin-right: 0 !important">
+<div >
     <div class="row">
         <div class="col">
             <nav class="navbar navbar-inverse sidebar" style="z-index: initial !important;" role="navigation">
@@ -39,8 +39,7 @@
                             <li><a href="${pageContext.request.contextPath}/rooms/checkin">Check-In</a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/checkout">Check-Out</a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/reservations">Reservas</a></li>
-                            <li><a href="${pageContext.request.contextPath}/home">Productos</a></li>
-                        </ul>
+                            <li><a href="${pageContext.request.contextPath}/products">Productos</a></li>                        </ul>
                     </div>
                 </div>
             </nav>
@@ -52,7 +51,8 @@
         </div>
         <div class="col-xs-6 " style="text-align: right">
             <button type="button" class="btn btn-success btn-lg"><a
-                    href="${pageContext.request.contextPath}/rooms/reservation" style="color: white">Nueva Reserva</a></button>
+                    href="${pageContext.request.contextPath}/rooms/reservation" style="color: white">Nueva Reserva</a>
+            </button>
 
         </div>
     </div>
@@ -63,24 +63,24 @@
             <table id="myTable" class="display" style="width:100%;  border: 1px solid black !important;">
                 <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Numero</th>
+                    <th>Habitacion</th>
                     <th>Tipo</th>
+                    <th>Desde</th>
                     <th>Hasta</th>
-                    <th>Saldo</th>
+                    <th>Titular</th>
                 </tr>
                 </thead>
                 <tbody>
                 <c:forEach var="room" items="${RoomList}">
                     <tr>
 
-                        <c:if test="${room.freeNow == true}">
+                        <c:if test="${room.reservation.active == true}">
 
-                            <td style="text-align: left">${room.id}</td>
-                            <td style="text-align: left">${room.number}</td>
-                            <td>${room.roomType}</td>
-                            <td style="text-align: left">-</td>
-                            <td style="text-align: left">-</td>
+                            <td style="text-align: left">${room.room.number}</td>
+                            <td style="text-align: left">${room.room.roomType}</td>
+                            <td style="text-align: left">${room.reservation.startDate}</td>
+                            <td style="text-align: left">${room.reservation.endDate}</td>
+                            <td style="text-align: left">${room.reservation.userEmail}</td>
 
                         </c:if>
 
@@ -95,6 +95,9 @@
 </div>
 </body>
 
+</html>
+
+
 <script>
     $(document).ready(function () {
         $('#myTable').DataTable({
@@ -103,5 +106,3 @@
         });
     });
 </script>
-
-</html>
