@@ -88,13 +88,5 @@ public class RoomServiceImpl implements RoomService {
        return roomDao.findAllFreeBetweenDatesAndEmail(startDate,endDate,email);
     }
 
-    @Override
-    public List<RoomReservationDTO> getAllRoomsReserved(){
-        return roomDao.getAllRoomsReserved();
-    }
-
-    public List<RoomReservationDTO> findAllFreeBetweenDates(LocalDate startDate, LocalDate endDate){return roomDao.findAllFreeBetweenDates(startDate,endDate);}
-
-    public List<RoomReservationDTO> findAllByEmail(String email){return roomDao.findAllByEmail(email);}
 
 }
