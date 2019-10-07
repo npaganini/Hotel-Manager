@@ -6,6 +6,7 @@ import ar.edu.itba.paw.models.room.Room;
 import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 public interface RoomService {
@@ -22,6 +23,6 @@ public interface RoomService {
 
     List<Room> findAllFreeBetweenDates(LocalDate startDate, LocalDate endDate);
 
-    List<RoomReservationDTO> findAllBetweenDatesAndEmail(LocalDate startDate, LocalDate endDate, String email);
+    List<RoomReservationDTO> findAllBetweenDatesAndEmail(Date startDate, Date endDate, String email);
 
 }

@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class ExceptionHandlerController {
 
-    @ExceptionHandler(Exception.class)
+    //@ExceptionHandler(Exception.class)
     public ModelAndView handlerError(HttpServletRequest req, Exception ex) {
         return new ModelAndView("403");
     }

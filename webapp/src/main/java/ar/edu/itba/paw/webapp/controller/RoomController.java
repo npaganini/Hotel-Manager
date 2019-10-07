@@ -101,12 +101,12 @@ public class RoomController {
 
 
     @GetMapping("/reservations")
-    public ModelAndView reservations(@RequestParam("startDate") Date startDate,
-                                     @RequestParam("endDate") Date endDate,
-                                     @RequestParam("userEmail") String userEmail) {
+    public ModelAndView reservations(@RequestParam(value = "startDate", required = false) Date startDate,
+                                     @RequestParam(value = "endDate", required = false) Date endDate,
+                                     @RequestParam(value = "userEmail", required = false) String userEmail) {
         final ModelAndView mav = new ModelAndView("reservations");
-        mav.addObject("reservations", roomService.findAllBetweenDatesAndEmail(startDate.toLocalDate(),
-                endDate.toLocalDate(), userEmail));
+        mav.addObject("reservations", roomService.findAllBetweenDatesAndEmail(startDate,
+                endDate, userEmail));
         return mav;
     }
 

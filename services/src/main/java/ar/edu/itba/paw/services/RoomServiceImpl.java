@@ -5,7 +5,6 @@ import ar.edu.itba.paw.interfaces.daos.RoomDao;
 import ar.edu.itba.paw.interfaces.daos.UserDao;
 import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.RoomService;
-import ar.edu.itba.paw.models.charge.Charge;
 import ar.edu.itba.paw.models.dtos.RoomReservationDTO;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
@@ -17,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -84,7 +84,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<RoomReservationDTO> findAllBetweenDatesAndEmail(LocalDate startDate, LocalDate endDate, String email) {
+    public List<RoomReservationDTO> findAllBetweenDatesAndEmail(Date startDate, Date endDate, String email) {
         return roomDao.findAllBetweenDatesAndEmail(startDate, endDate, email);
     }
 

@@ -1,10 +1,9 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.daos.RoomDao;
+import ar.edu.itba.paw.models.dtos.RoomReservationDTO;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
-import ar.edu.itba.paw.models.room.RoomType;
-import ar.edu.itba.paw.models.dtos.RoomReservationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -30,7 +30,7 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
     }
 
     @Override
-    public List<RoomReservationDTO> findAllBetweenDatesAndEmail(LocalDate startDate, LocalDate endDate, String email) {
+    public List<RoomReservationDTO> findAllBetweenDatesAndEmail(Date startDate, Date endDate, String email) {
         String andCriterias = getAndCriteriasToFindRooms(startDate, endDate, email);
         return jdbcTemplateWithNamedParameter.query("SELECT * FROM " + Reservation.TABLE_NAME + " res JOIN "
                         + Room.TABLE_NAME + " r ON res.room_id = r.id " + andCriterias,
@@ -53,7 +53,7 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
                 " r WHERE " + Room.KEY_FREE_NOW + " = true", getRowMapper());
     }
 
-    private String getAndCriteriasToFindRooms(LocalDate startDate, LocalDate endDate, String email) {
+    private String getAndCriteriasToFindRooms(Date startDate, Date endDate, String email) {
         StringBuilder andSentendeBuilder = new StringBuilder();
         if (startDate != null) andSentendeBuilder.append("WHERE res.start_date >= :startDate ");
         if (endDate != null) andSentendeBuilder.append("AND res.end_date <= :endDate ");
@@ -61,7 +61,7 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
         return andSentendeBuilder.toString();
     }
 
-    private MapSqlParameterSource getParametersToUse(LocalDate startDate, LocalDate endDate, String email) {
+    private MapSqlParameterSource getParametersToUse(Date startDate, Date endDate, String email) {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         if (startDate != null) parameters.addValue("startDate", startDate);
         if (endDate != null) parameters.addValue("endDate", endDate);
