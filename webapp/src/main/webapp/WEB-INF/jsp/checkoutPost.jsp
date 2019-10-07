@@ -80,7 +80,7 @@
                 <tfoot>
                 <tr>
                     <th>Total</th>
-                    <th>Mucho</th>
+                    <th>${totalCharge}</th>
                 </tr>
                 </tfoot>
             </table>

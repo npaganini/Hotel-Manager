@@ -99,6 +99,7 @@ public class RoomController {
         final ModelAndView mav = new ModelAndView("checkoutPost");
         LOGGER.debug("Request received to do the check-out on reservation with hash: " + form.getId_reservation());
         mav.addObject("charges",chargeService.getAllChargesByReservationId(reservationService.getReservationByHash(form.getId_reservation()).getId()));
+        mav.addObject("totalCharge",chargeService.sumCharge(reservationService.getReservationByHash(form.getId_reservation()).getId()));
         roomService.freeRoom(reservationService.getReservationByHash(form.getId_reservation()).getRoomId());
         reservationService.inactiveReservation(reservationService.getReservationByHash(form.getId_reservation()).getId());
         return mav;
