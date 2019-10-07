@@ -16,7 +16,7 @@ public interface RoomService {
 
     void doReservation(Reservation reserva);
 
-    void reservateRoom(long roomId);
+    void reservateRoom(long roomId, Reservation reservation);
 
     void freeRoom(long roomId);
 

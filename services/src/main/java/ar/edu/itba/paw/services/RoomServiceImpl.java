@@ -39,6 +39,7 @@ public class RoomServiceImpl implements RoomService {
         this.emailService = emailService;
     }
 
+    @Override
     public List<Room> getRoomsList() {
         return roomDao.findAllFree();
     }
@@ -71,18 +72,23 @@ public class RoomServiceImpl implements RoomService {
                         + reserva.getUserEmail() + "\n password: " + reserva.getUserEmail());
     }
 
-    public void reservateRoom(long roomID){
+    @Override
+    public void reservateRoom(long roomID, Reservation reservation){
         roomDao.reservateRoom(roomID);
+        emailService.sendCheckinEmail(reservation);
     }
 
+    @Override
     public void freeRoom(long roomId){
         roomDao.freeRoom(roomId);
     }
 
+    @Override
     public  List<RoomReservationDTO> findAllFreeBetweenDatesAndEmail(LocalDate startDate, LocalDate endDate, String email){
        return roomDao.findAllFreeBetweenDatesAndEmail(startDate,endDate,email);
     }
 
+    @Override
     public List<RoomReservationDTO> getAllRoomsReserved(){
         return roomDao.getAllRoomsReserved();
     }

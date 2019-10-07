@@ -68,10 +68,10 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
 
 
     @Override
-    public void reservateRoom(long roomId) {
+    public int reservateRoom(long roomId) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
         parameterSource.addValue("roomId", roomId);
-        jdbcTemplateWithNamedParameter.update("UPDATE " + Room.TABLE_NAME + " SET " + Room.KEY_FREE_NOW + " " +
+        return jdbcTemplateWithNamedParameter.update("UPDATE " + Room.TABLE_NAME + " SET " + Room.KEY_FREE_NOW + " " +
                 "= false WHERE id = :roomId ", parameterSource);
     }
 
