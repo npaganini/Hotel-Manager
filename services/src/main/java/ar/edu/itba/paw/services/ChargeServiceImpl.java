@@ -2,6 +2,7 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.daos.ChargeDao;
 import ar.edu.itba.paw.interfaces.services.ChargeService;
+import ar.edu.itba.paw.models.charge.Charge;
 import ar.edu.itba.paw.models.dtos.ChargeDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,5 +31,15 @@ public class ChargeServiceImpl implements ChargeService {
     public double sumCharge(long reservationId) {
         LOGGER.debug("Getting the balance of reservation with id" + reservationId);
         return chargeDao.sumCharge(reservationId);
+    }
+
+    @Override
+    public List<Charge> getAllChargesNotDelivered() {
+        return chargeDao.findAllChargesNotDelivered();
+    }
+
+    @Override
+    public void setChargeToDelivered(long chargeId) {
+        chargeDao.updateChargeToDelivered(chargeId);
     }
 }

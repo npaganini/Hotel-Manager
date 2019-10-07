@@ -88,8 +88,23 @@ public class ChargeRepository extends SimpleRepository<Charge> implements Charge
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
         parameterSource.addValue("reservationId", reservationId);
         return jdbcTemplateWithNamedParameter.query("SELECT sum(p.price) FROM charge c JOIN product p " +
-                "ON p.id = c.product_id JOIN reservation r ON c.reservation_id = r.id WHERE r.id = :reservationId GROUP BY r.id",
+                        "ON p.id = c.product_id JOIN reservation r ON c.reservation_id = r.id WHERE r.id = :reservationId GROUP BY r.id",
                 parameterSource, getSumRowMapper()).get(0);
+    }
+
+    @Override
+    public List<Charge> findAllChargesNotDelivered() {
+        return jdbcTemplateWithNamedParameter.query("SELECT * FROM " + getTableName()
+                + " WHERE " + Charge.KEY_DELIVERED + " = FALSE ", getRowMapper());
+    }
+
+    @Override
+    public int updateChargeToDelivered(long chargeId) {
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("chargeId", chargeId);
+        return jdbcTemplateWithNamedParameter
+                .update("UPDATE " + getTableName() + " SET " +
+                        Charge.KEY_DELIVERED + " = TRUE WHERE id = :chargeId", parameters);
     }
 
     private RowMapper<Double> getSumRowMapper() {
@@ -99,16 +114,6 @@ public class ChargeRepository extends SimpleRepository<Charge> implements Charge
     private RowMapper<ChargeDTO> getRowMapperOfChargeDTO() {
         return ((resultSet, i) -> new ChargeDTO(resultSet));
     }
-
-//    @Override
-//    public int sumCharge(long reservationId){
-//        MapSqlParameterSource parameters = new MapSqlParameterSource();
-//        parameters.addValue("reservationId", reservationId);
-//        return jdbcTemplateWithNamedParameter
-//                .query("SELECT SUM(Product.TABLE_NAME.price) FROM " + Charge.TABLE_NAME + " NATURAL JOIN " +
-//                        Product.TABLE_NAME + " NATURAL JOIN " + Reservation.TABLE_NAME +
-//                        " r WHERE r.id = :reservationId" + "GROUPBY :reservatioId", parameters, getRowMapperOfChargeDTO());
-//    }
 
 
 }
