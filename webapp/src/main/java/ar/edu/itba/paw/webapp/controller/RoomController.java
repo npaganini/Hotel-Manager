@@ -110,6 +110,12 @@ public class RoomController {
         final ModelAndView mav = new ModelAndView("reservations");
         if((!startDate.isPresent()  || startDate.get().isEmpty())&& (!endDate.isPresent() || endDate.get().isEmpty() ) && (!userEmail.isPresent() || userEmail.get().isEmpty()))
             mav.addObject("reservations", roomService.getAllRoomsReserved());
+        else if ((!startDate.isPresent()  || startDate.get().isEmpty())&& (!endDate.isPresent() || endDate.get().isEmpty() ) && !(!userEmail.isPresent() || userEmail.get().isEmpty())){
+            mav.addObject("reservations",roomService.findAllByEmail(userEmail.get()));
+        }
+        else if(!(!startDate.isPresent()  || startDate.get().isEmpty())&& !(!endDate.isPresent() || endDate.get().isEmpty() ) && (!userEmail.isPresent() || userEmail.get().isEmpty())){
+            mav.addObject("reservations",roomService.findAllFreeBetweenDates(LocalDate.parse(startDate.get()),LocalDate.parse(endDate.get())));
+        }
         else {
             mav.addObject("reservations",roomService.findAllFreeBetweenDatesAndEmail(LocalDate.parse(startDate.get()),LocalDate.parse(endDate.get()),userEmail.get()));
         }

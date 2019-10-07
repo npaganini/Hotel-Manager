@@ -23,4 +23,8 @@ public interface RoomService {
     List<RoomReservationDTO> findAllFreeBetweenDatesAndEmail(LocalDate startDate, LocalDate endDate, String email);
 
     List<RoomReservationDTO> getAllRoomsReserved();
+
+    List<RoomReservationDTO> findAllFreeBetweenDates(LocalDate startDate, LocalDate endDate);
+
+    List<RoomReservationDTO> findAllByEmail(String email);
 }
