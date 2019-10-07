@@ -90,6 +90,11 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
                 "= true WHERE id = :roomId ", parameterSource);
     }
 
+    public List<RoomReservationDTO> getRoomsReservedActive(){
+        return jdbcTemplateWithNamedParameter.query("SELECT * FROM " + Reservation.TABLE_NAME + " res JOIN "
+                        + Room.TABLE_NAME + " r ON res.room_id = r.id " , getRowMapperWithJoin());
+    }
+
     @Override
     RowMapper<Room> getRowMapper() {
         return ROW_MAPPER;

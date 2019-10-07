@@ -37,7 +37,7 @@ public class RoomController {
     public ModelAndView getAllRooms() {
         final ModelAndView mav = new ModelAndView("index");
         LOGGER.debug("Request received to retrieve whole roomsList");
-        mav.addObject("RoomList", roomService.getRoomsList());
+        mav.addObject("RoomList", roomService.getRoomsReservedActive());
         return mav;
     }
 

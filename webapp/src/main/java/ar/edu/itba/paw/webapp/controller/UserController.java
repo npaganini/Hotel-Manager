@@ -51,16 +51,16 @@ public class UserController extends SimpleController {
         return mav;
     }
 
-    @PostMapping("/buyProducts")
-    public ModelAndView buyProduct(@ModelAttribute("productForm") ProductForm productForm, @RequestParam(value = "reservationId") long reservationId) {
-        LOGGER.debug("Request received to buy products on reservation with id" + reservationId);
-        if (productForm != null) {
-            final ModelAndView mav = new ModelAndView("buyProducts");
-            Charge charge = new Charge(productForm.getProductId(), reservationId);
-            mav.addObject("charge", userService.addCharge(charge));
-            return mav;
-        }
-        return new ModelAndView("redirect:/products");
-    }
+//    @PostMapping("/buyProducts")
+//    public ModelAndView buyProduct(@ModelAttribute("productForm") ProductForm productForm, @RequestParam(value = "reservationId") long reservationId) {
+//        LOGGER.debug("Request received to buy products on reservation with id" + reservationId);
+//        if (productForm != null) {
+//            final ModelAndView mav = new ModelAndView("buyProducts");
+//            Charge charge = new Charge(productForm.getProductId(), reservationId);
+//            mav.addObject("charge", userService.addCharge(charge));
+//            return mav;
+//        }
+//        return new ModelAndView("redirect:/products");
+//    }
 
 }
