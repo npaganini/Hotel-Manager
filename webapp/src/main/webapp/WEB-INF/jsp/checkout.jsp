@@ -52,7 +52,7 @@
 
     <div class="row myheader vertical-align">
         <div class="col-xs-12" style="text-align: left">
-            <div>Check-In</div>
+            <div>Check-Out</div>
         </div>
     </div>
     <br>

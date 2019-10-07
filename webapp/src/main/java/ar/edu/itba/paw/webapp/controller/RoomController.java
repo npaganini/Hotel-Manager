@@ -6,7 +6,6 @@ import ar.edu.itba.paw.interfaces.services.RoomService;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import form.CheckinForm;
 import form.CheckoutForm;
-import form.ReservationFilter;
 import form.ReservationForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,9 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Date;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("rooms")
@@ -31,7 +27,7 @@ public class RoomController {
     private final ChargeService chargeService;
 
     @Autowired
-    public RoomController(RoomService roomService,ReservationService reservationService,ChargeService chargeService) {
+    public RoomController(RoomService roomService, ReservationService reservationService, ChargeService chargeService) {
         this.roomService = roomService;
         this.reservationService = reservationService;
         this.chargeService = chargeService;
@@ -73,13 +69,12 @@ public class RoomController {
     }
 
     @GetMapping("/checkin")
-    public ModelAndView chackin(@ModelAttribute("checkinForm") final CheckinForm form){
-        final ModelAndView mav = new ModelAndView("checkin");
-        return  mav;
+    public ModelAndView chackin(@ModelAttribute("checkinForm") final CheckinForm form) {
+        return new ModelAndView("checkin");
     }
 
     @PostMapping("/checkinPost")
-    public ModelAndView checkinPost(@ModelAttribute("checkinForm") final CheckinForm form){
+    public ModelAndView checkinPost(@ModelAttribute("checkinForm") final CheckinForm form) {
         final ModelAndView mav = new ModelAndView("checkinPost");
         LOGGER.debug("Request received to do the check-in on reservation with hash: " + form.getId_reservation());
         Reservation reservation = reservationService.getReservationByHash(form.getId_reservation());
@@ -90,15 +85,15 @@ public class RoomController {
 
     @GetMapping("/checkout")
     public ModelAndView checkout(@ModelAttribute("checkoutForm") final CheckoutForm form) {
-        final ModelAndView mav = new ModelAndView("checkout");
-        return mav;
+        return new ModelAndView("checkout");
     }
 
     @PostMapping("/checkoutPost")
-    public ModelAndView checkoutPost(@ModelAttribute("checkoutForm") final CheckoutForm form){
+    public ModelAndView checkoutPost(@ModelAttribute("checkoutForm") final CheckoutForm form) {
         final ModelAndView mav = new ModelAndView("checkoutPost");
         LOGGER.debug("Request received to do the check-out on reservation with hash: " + form.getId_reservation());
-        mav.addObject("charges",chargeService.getAllChargesByReservationId(reservationService.getReservationByHash(form.getId_reservation()).getId()));
+        mav.addObject("charges", chargeService.getAllChargesByReservationId(reservationService.getReservationByHash(form.getId_reservation()).getId()));
+        mav.addObject("totalCharge", chargeService.sumCharge(reservationService.getReservationByHash(form.getId_reservation()).getId()));
         roomService.freeRoom(reservationService.getReservationByHash(form.getId_reservation()).getRoomId());
         reservationService.inactiveReservation(reservationService.getReservationByHash(form.getId_reservation()).getId());
         return mav;
@@ -106,19 +101,13 @@ public class RoomController {
 
 
     @GetMapping("/reservations")
-    public ModelAndView reservations(@RequestParam("startDate") Optional<String> startDate, @RequestParam("endDate") Optional<String> endDate, @RequestParam("userEmail") Optional<String> userEmail) {
+    public ModelAndView reservations(@RequestParam("startDate") Date startDate,
+                                     @RequestParam("endDate") Date endDate,
+                                     @RequestParam("userEmail") String userEmail) {
         final ModelAndView mav = new ModelAndView("reservations");
-        if((!startDate.isPresent()  || startDate.get().isEmpty())&& (!endDate.isPresent() || endDate.get().isEmpty() ) && (!userEmail.isPresent() || userEmail.get().isEmpty()))
-            mav.addObject("reservations", roomService.getAllRoomsReserved());
-        else {
-            mav.addObject("reservations",roomService.findAllFreeBetweenDatesAndEmail(LocalDate.parse(startDate.get()),LocalDate.parse(endDate.get()),userEmail.get()));
-        }
-         return mav;
-    }
-
-    @PostMapping("/reservations")
-    public ModelAndView reservationsPost(@ModelAttribute("reservationFilter") final ReservationFilter form) {
-        final ModelAndView mav = new ModelAndView("reservations");
+        mav.addObject("reservations", roomService.findAllBetweenDatesAndEmail(startDate.toLocalDate(),
+                endDate.toLocalDate(), userEmail));
         return mav;
     }
+
 }

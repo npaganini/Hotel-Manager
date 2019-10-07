@@ -20,7 +20,8 @@ public interface RoomService {
 
     void freeRoom(long roomId);
 
-    List<RoomReservationDTO> findAllFreeBetweenDatesAndEmail(LocalDate startDate, LocalDate endDate, String email);
+    List<Room> findAllFreeBetweenDates(LocalDate startDate, LocalDate endDate);
 
-    List<RoomReservationDTO> getAllRoomsReserved();
+    List<RoomReservationDTO> findAllBetweenDatesAndEmail(LocalDate startDate, LocalDate endDate, String email);
+
 }

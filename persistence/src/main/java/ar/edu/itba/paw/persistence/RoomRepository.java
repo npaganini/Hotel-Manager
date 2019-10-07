@@ -30,7 +30,15 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
     }
 
     @Override
-    public List<Room> findAllRoomsFreeBetweenDates(LocalDate startDate, LocalDate endDate) {
+    public List<RoomReservationDTO> findAllBetweenDatesAndEmail(LocalDate startDate, LocalDate endDate, String email) {
+        String andCriterias = getAndCriteriasToFindRooms(startDate, endDate, email);
+        return jdbcTemplateWithNamedParameter.query("SELECT * FROM " + Reservation.TABLE_NAME + " res JOIN "
+                        + Room.TABLE_NAME + " r ON res.room_id = r.id " + andCriterias,
+                getParametersToUse(startDate, endDate, email), getRowMapperWithJoin());
+    }
+
+    @Override
+    public List<Room> findAllFreeBetweenDates(LocalDate startDate, LocalDate endDate) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
         parameterSource.addValue("startDate", startDate);
         parameterSource.addValue("endDate", endDate);
@@ -40,31 +48,30 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
     }
 
     @Override
-    public List<RoomReservationDTO> findAllFreeBetweenDatesAndEmail(LocalDate startDate, LocalDate endDate, String email) {
-        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-        parameterSource.addValue("startDate", startDate);
-        parameterSource.addValue("endDate", endDate);
-        parameterSource.addValue("email", email);
-        return jdbcTemplateWithNamedParameter.query("SELECT * FROM " + getTableName() + " r JOIN " +
-                        Reservation.TABLE_NAME + " res ON r.id = res.room_id" +
-                        " WHERE res.start_date >= :startDate AND res.end_date <= :endDate AND " + Reservation.KEY_USER_EMAIL
-                        + " = :email GROUP BY r.id, res.id",
-                parameterSource, getRowMapperWithJoin());
+    public List<Room> findAllFree() {
+        return jdbcTemplateWithNamedParameter.getJdbcTemplate().query("SELECT * FROM " + getTableName() +
+                " r WHERE " + Room.KEY_FREE_NOW + " = true", getRowMapper());
+    }
+
+    private String getAndCriteriasToFindRooms(LocalDate startDate, LocalDate endDate, String email) {
+        StringBuilder andSentendeBuilder = new StringBuilder();
+        if (startDate != null) andSentendeBuilder.append("WHERE res.start_date >= :startDate ");
+        if (endDate != null) andSentendeBuilder.append("AND res.end_date <= :endDate ");
+        if (email != null) andSentendeBuilder.append("AND res.user_email = :email");
+        return andSentendeBuilder.toString();
+    }
+
+    private MapSqlParameterSource getParametersToUse(LocalDate startDate, LocalDate endDate, String email) {
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        if (startDate != null) parameters.addValue("startDate", startDate);
+        if (endDate != null) parameters.addValue("endDate", endDate);
+        if (email != null) parameters.addValue("email", email);
+        return parameters;
     }
 
     private RowMapper<RoomReservationDTO> getRowMapperWithJoin() {
         return ((resultSet, i) -> new RoomReservationDTO(resultSet));
     }
-
-    @Override
-    public List<Room> findByRoomType(RoomType roomType) {
-        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-        parameterSource.addValue("roomType", roomType);
-        return jdbcTemplateWithNamedParameter.query("SELECT * FROM " + getTableName() + " r WHERE r.room_type = :roomType",
-                parameterSource, getRowMapper());
-    }
-
-
 
 
     @Override
@@ -80,18 +87,6 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
         parameterSource.addValue("roomId", roomId);
         jdbcTemplateWithNamedParameter.update("UPDATE " + Room.TABLE_NAME + " SET " + Room.KEY_FREE_NOW + " " +
                 "= true WHERE id = :roomId ", parameterSource);
-    }
-
-    @Override
-    public List<Room> findAllFree() {
-        return jdbcTemplateWithNamedParameter.getJdbcTemplate().query("SELECT * FROM " + getTableName() +
-                " r WHERE " + Room.KEY_FREE_NOW + " = true", getRowMapper());
-    }
-
-    @Override
-    public List<RoomReservationDTO> getAllRoomsReserved(){
-        return jdbcTemplateWithNamedParameter.query("SELECT * FROM " + getTableName() + " r JOIN " +
-                        Reservation.TABLE_NAME + " res ON r.id = res.room_id" , getRowMapperWithJoin());
     }
 
     @Override
