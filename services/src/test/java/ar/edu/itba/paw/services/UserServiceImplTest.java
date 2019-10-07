@@ -89,8 +89,8 @@ public class UserServiceImplTest {
         Assert.assertFalse(reservationList.get(0).getRoom().isFreeNow());
     }
 
-    /*
-     * function to test: public Map<Product, Integer> checkProductsPurchasedByUserByReservationId(String userEmail, long reservationId)
+    /**
+     * @function_to_test public Map<Product, Integer> checkProductsPurchasedByUserByReservationId(String userEmail, long reservationId)
      * uses chargeDao.getAllChargesByUser()
      */
     @Test
@@ -112,8 +112,8 @@ public class UserServiceImplTest {
         Assert.assertTrue(expenses.containsValue(AMOUNT_TWO));
     }
 
-    /*
-    * function to test: public boolean addCharge(Charge product)
+    /**
+    * @function_to_test public boolean addCharge(Charge product)
     * uses chargeDao.addCharge()
     */
     @Test
