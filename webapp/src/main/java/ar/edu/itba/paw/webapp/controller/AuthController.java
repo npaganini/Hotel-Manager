@@ -16,4 +16,9 @@ public class AuthController {
     public ModelAndView forbidden() {
         return new ModelAndView("403");
     }
+
+    @RequestMapping("/")
+    public String redirect() {
+        return "redirect:/login";
+    }
 }

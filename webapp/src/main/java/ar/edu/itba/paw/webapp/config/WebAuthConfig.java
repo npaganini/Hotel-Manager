@@ -40,7 +40,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/login").anonymous()
                 .antMatchers("/user/**").hasAuthority(UserRole.CLIENT.toString())
-                .antMatchers("/rooms/**", "/reservation/**").hasAnyAuthority(UserRole.EMPLOYEE.toString(), UserRole.MANAGER.toString())
+                .antMatchers("/rooms/**", "/reservation/**", "/product/**", "/products/**").hasAnyAuthority(UserRole.EMPLOYEE.toString(), UserRole.MANAGER.toString())
                 .and().formLogin()
                 .usernameParameter("username")
                 .passwordParameter("password")
