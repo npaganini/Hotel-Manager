@@ -15,17 +15,17 @@ public class ExceptionHandlerController {
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ModelAndView handlerDBError(HttpServletRequest req, Exception ex) {
-        return new ModelAndView("403"); // TODO change to 5xx
+        return new ModelAndView("500"); // TODO change to 5xx
     }
 
     @ExceptionHandler(RequestInvalidException.class)
     public ModelAndView handlerRequestParamsError(HttpServletRequest req, Exception ex) {
-        return new ModelAndView("403"); // TODO change to 4xx
+        return new ModelAndView("400"); // TODO change to 4xx
     }
 
     @ExceptionHandler(Exception.class)
     public ModelAndView handlerGenericError(HttpServletRequest req, Exception ex) {
-        return new ModelAndView("403"); // TODO change to 5xx
+        return new ModelAndView("500"); // TODO change to 5xx
     }
 
 }

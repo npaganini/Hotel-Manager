@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.interfaces.services;
 
+import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.models.product.Product;
 
 import java.io.File;
@@ -16,6 +17,6 @@ public interface ProductService {
 
     List<Product> getAllProductsForTable();
 
-    Product findProductById(long productId)throws EntityNotFoundException;
+    Product findProductById(long productId) throws EntityNotFoundException;
 
 }
