@@ -52,7 +52,7 @@ public class UserServiceImplTest {
     private UserServiceImpl userService;
 
     /**
-     * function to test: public List<Product> getProducts()
+     * @function_to_test List<Product> getProducts()
      * uses productDao.getAllProducts()
      */
     @Test
@@ -71,7 +71,7 @@ public class UserServiceImplTest {
     }
 
     /**
-     * @function_to_test public List<RoomReservationDTO> findActiveReservation(String userEmail)
+     * @function_to_test List<RoomReservationDTO> findActiveReservation(String userEmail)
      * uses reservationDao.findActiveReservation(String email)
      */
     @Test
@@ -92,7 +92,7 @@ public class UserServiceImplTest {
     }
 
     /**
-     * @function_to_test public Map<Product, Integer> checkProductsPurchasedByUserByReservationId(String userEmail, long reservationId)
+     * @function_to_test Map<Product, Integer> checkProductsPurchasedByUserByReservationId(String userEmail, long reservationId)
      * uses chargeDao.getAllChargesByUser(String email, long reservationId)
      */
     @Test
@@ -115,7 +115,7 @@ public class UserServiceImplTest {
     }
 
     /**
-    * @function_to_test public boolean addCharge(Charge product)
+    * @function_to_test boolean addCharge(Charge product)
     * uses chargeDao.addCharge()
     */
     @Test

@@ -68,14 +68,4 @@ public class ProductServiceImplTest {
         // 3. Asserts
         Assert.assertTrue(productEnabled);
     }
-
-
-
-//    // 1. Setup!
-//    Charge charge = new Charge(ID_1, ID_1);
-//        Mockito.when(chargeDao.addCharge(charge)).thenReturn(TRUE);
-//    // 2. SUT
-//    boolean chargeAdded = userService.addCharge(charge);
-//    // 3. Asserts
-//        Assert.assertTrue(chargeAdded);
 }
