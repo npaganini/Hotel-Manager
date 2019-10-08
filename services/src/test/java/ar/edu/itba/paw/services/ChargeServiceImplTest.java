@@ -41,7 +41,7 @@ public class ChargeServiceImplTest {
      * uses chargeDao.findChargeByReservationHash(long reservationId)
      **/
     @Test
-    public void testGetAllChargesByReservationId() throws SQLException {
+    public void testGetAllChargesByReservationId() throws Exception {
         // 1. Setup!
         Product product1 = new Product(PRODUCT_NAME_1, PRODUCT_PRICE_1);
         Reservation reservationValid = new Reservation(ID_1, FAKE_VALID_EMAIL, Date.valueOf(START_DATE).toLocalDate(), Date.valueOf(END_DATE).toLocalDate(), ID_1);
@@ -69,7 +69,7 @@ public class ChargeServiceImplTest {
      * uses chargeDao.sumCharge(long reservationId)
      **/
     @Test
-    public void testSumCharge() {
+    public void testSumCharge() throws Exception {
         // 1. Setup!
         Mockito.when(chargeDao.sumCharge(ID_1)).thenReturn(TOTAL);
         // 2. SUT

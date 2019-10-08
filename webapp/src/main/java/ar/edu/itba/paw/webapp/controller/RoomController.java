@@ -96,7 +96,6 @@ public class RoomController {
         LOGGER.debug("Request received to do the check-out on reservation with hash: " + form.getId_reservation());
         mav.addObject("charges", chargeService.getAllChargesByReservationId(reservationService.getReservationByHash(form.getId_reservation()).getId()));
         mav.addObject("totalCharge", chargeService.sumCharge(reservationService.getReservationByHash(form.getId_reservation()).getId()));
-        Reservation reservation = reservationService.getReservationByHash(form.getId_reservation());
         roomService.freeRoom(reservation.getRoomId());
         reservationService.inactiveReservation(reservation.getId());
         return mav;
@@ -131,7 +130,7 @@ public class RoomController {
     }
 
     @GetMapping("/orders/sendOrder")
-    public ModelAndView sendOrder(@RequestParam(value = "chargeId", required = false) long chargeId) {
+    public ModelAndView sendOrder(@RequestParam(value = "chargeId", required = false) long chargeId) throws Exception {
         final ModelAndView mav = new ModelAndView("orderFinished");
         chargeService.setChargeToDelivered(chargeId);
         return mav;

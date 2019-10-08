@@ -44,7 +44,7 @@ public class ProductController {
     }
 
     @GetMapping("/products/disable")
-    public ModelAndView hideProduct(@RequestParam(value = "productId", required = false) long productId) {
+    public ModelAndView hideProduct(@RequestParam(value = "productId", required = false) long productId) throws Exception {
         final ModelAndView mav = new ModelAndView("productDisable");
         productService.unableProduct(productId);
         return mav;
@@ -52,7 +52,7 @@ public class ProductController {
 
 
     @GetMapping("/products/available")
-    public ModelAndView showProduct(@RequestParam(value = "productId", required = false) long productId) {
+    public ModelAndView showProduct(@RequestParam(value = "productId", required = false) long productId) throws Exception {
         final ModelAndView mav = new ModelAndView("productAvailable");
         productService.enableProduct(productId);
         return mav;
