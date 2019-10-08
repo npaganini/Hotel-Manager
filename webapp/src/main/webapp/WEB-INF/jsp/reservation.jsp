@@ -48,7 +48,8 @@
             </nav>
         </div>
     </div>
-}
+    <c:url value="/rooms/reservationPost" var="postPath"/>
+    <form:form modelAttribute="reservationForm" action="${postPath}" method="post">
     <div class="row myheader">
         <div class="col-xs-12 " style="text-align: left">Reservacion</div>
     </div>
