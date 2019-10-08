@@ -24,8 +24,8 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
     <script src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js'></script>
 </head>
-<body>
-<h1 class="modal-title row navbar-default">&nbsp<spring:message code="user.product.expensesList"/></h1>
+<body class="cont">
+<h1 class="modal-title row message">&nbsp<spring:message code="user.product.expensesList"/></h1>
 <div class="main container-fluid">
     <table class="table table-striped cont">
         <c:set var="total" value="0" scope="page"/>
@@ -56,7 +56,7 @@
         </tr>
         </tfoot>
     </table>
-    <div class="container row">
+    <div class="container row message">
         <a href="${pageContext.request.contextPath}/user/home" class="btn btn-primary"><spring:message code="user.home"/></a>
     </div>
 </div>

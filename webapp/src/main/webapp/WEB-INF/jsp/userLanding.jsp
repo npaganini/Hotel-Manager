@@ -18,48 +18,69 @@
 
     <link href="${pageContext.request.contextPath}/resources/CSS/my_style.css" rel="stylesheet">
 </head>
-<body>
-<div class="container">
+<body class="cont">
+<div class="container-fluid">
     <div class="panel-title">
-        <h1 class="text-xs-center modal-title row navbar-default"><spring:message code="user.reservation.current"/></h1>
+        <h1 class="text-xs-center modal-title row navbar-default"><spring:message code="user.reservation.currents"/></h1>
     </div>
     <table class="table text-xs-center">
         <thead class="thead-dark">
         </thead>
-        <tbody class="container">
+        <tbody class="container-fluid text-xs-center">
         <tr>
             </td>
             <td class="text-xs-center">
-                <table class="container">
+                <table class="container few-items-table">
                     <thead class="thead-light modal-footer">
-                    <th><spring:message code="reservation.room.type"/></th>
-                    <th><spring:message code="reservation.date.start"/></th>
-                    <th><spring:message code="reservation.date.end"/></th>
-                    <th><spring:message code="user.landing.other"/></th>
+                        <tr>
+                            <th class="text-xs-center align-middle">
+                                <spring:message code="reservation.room.type"/>
+                            </th>
+                            <th class="text-xs-center align-middle">
+                                <spring:message code="reservation.date.start"/>
+                            </th>
+                            <th class="text-xs-center align-middle">
+                                <spring:message code="reservation.date.end"/>
+                            </th>
+                            <th class="text-xs-center align-middle">
+                                <spring:message code="reservation.room.number"/>
+                            </th>
+                            <th class="col-alone text-xs-center align-middle">
+                                <spring:message code="user.landing.other"/>
+                            </th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <c:forEach var="resRoomDTO" items="${ReservationsList}">
-                        <td class="text-xs-left">${resRoomDTO.room.roomType} ROOM</td>
-                        <td class="text-xs-left">${resRoomDTO.reservation.startDate}</td>
-                        <td class="text-xs-left">${resRoomDTO.reservation.endDate}</td>
-                        <td style="inline-size: auto">
-                            <div class="container text-xs-center col-2 card-deck">
-                                <div class="row">
-                                  <a href="./products?reservationId=${resRoomDTO.reservation.id}" class="btn btn-primary">
-                                    <spring:message code="user.product.list.buy"/>
-                                  </a>
-                              </div>
-                                <div class="w-100" style="padding-bottom: 15px"></div>
-                                <div class="row" onclick="">
-                                  <a href="./expenses?reservationId=${resRoomDTO.reservation.id}" class="btn btn-primary">
-                                    <spring:message code="user.product.expenses"/>
-                                  </a>
-                              </div>
-                            </div>
-                        </td>
-                    </c:forEach>
+                        <c:if test="${fn:length(ReservationsList) != 0}">
+                            <c:forEach var="resRoomDTO" items="${ReservationsList}">
+                                <td class="text-xs-center align-middle">${resRoomDTO.room.roomType}</td>
+                                <td class="text-xs-center align-middle">${resRoomDTO.reservation.startDate}</td>
+                                <td class="text-xs-center align-middle">${resRoomDTO.reservation.endDate}</td>
+                                <td class="text-xs-center align-middle">${resRoomDTO.room.number}</td>
+                                <td class="col-alone align-middle" style="inline-size: auto">
+                                    <div class="container text-xs-center col-2 card-deck">
+                                        <div class="row">
+                                          <a href="./products?reservationId=${resRoomDTO.reservation.id}" class="btn btn-primary btn-block action-btn">
+                                            <spring:message code="user.product.list.buy"/>
+                                          </a>
+                                      </div>
+                                        <div class="w-100" style="padding-bottom: 15px"></div>
+                                        <div class="row" onclick="">
+                                          <a href="./expenses?reservationId=${resRoomDTO.reservation.id}" class="btn btn-primary btn-block action-btn">
+                                            <spring:message code="user.product.expenses"/>
+                                          </a>
+                                      </div>
+                                    </div>
+                                </td>
+                            </c:forEach>
+                        </c:if>
                     </tbody>
                 </table>
+                <c:if test="${fn:length(ReservationsList) == 0}">
+                    <div class="message no-reservs text-xs-center">
+                        <p><spring:message code="user.reservation.currents.none"/></p>
+                    </div>
+                </c:if>
             </td>
         </tr>
         </tbody>
