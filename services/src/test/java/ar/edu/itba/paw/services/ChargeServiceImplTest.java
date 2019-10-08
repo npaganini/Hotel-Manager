@@ -38,7 +38,7 @@ public class ChargeServiceImplTest {
 
     /**
      * @function_to_test List<ChargeDTO> getAllChargesByReservationId(long reservationId)
-     * uses chargeDao.findChargeByReservationHash(reservationId)
+     * uses chargeDao.findChargeByReservationHash(long reservationId)
      **/
     @Test
     public void testGetAllChargesByReservationId() throws SQLException {
@@ -66,7 +66,7 @@ public class ChargeServiceImplTest {
 
     /**
      * @function_to_test double sumCharge(long reservationId)
-     * uses chargeDao.sumCharge(reservationId)
+     * uses chargeDao.sumCharge(long reservationId)
      **/
     @Test
     public void testSumCharge() {

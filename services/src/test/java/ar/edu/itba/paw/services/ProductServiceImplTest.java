@@ -26,8 +26,8 @@ public class ProductServiceImplTest {
     private ProductServiceImpl productService;
 
     /**
-     * @function_to_test boolean unableProduct(long productId)
-     * uses productDao.updateProductEnable
+     * @function_to_test boolean save(Product product)
+     * uses productDao.save(Product)
      **/
     @Test
     public void testSave() {
@@ -43,7 +43,7 @@ public class ProductServiceImplTest {
 
     /**
      * @function_to_test boolean unableProduct(long productId)
-     * uses productDao.updateProductEnable
+     * uses productDao.updateProductEnable(long productId)
      **/
     @Test
     public void testUnableProduct() {
@@ -56,8 +56,8 @@ public class ProductServiceImplTest {
     }
 
     /**
-     * @function_to_test boolean unableProduct(long productId)
-     * uses productDao.updateProductEnable
+     * @function_to_test boolean enableProduct(long productId)
+     * uses productDao.updateProductEnable(long productID)
      **/
     @Test
     public void testEnableProduct() {

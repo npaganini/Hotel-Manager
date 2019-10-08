@@ -51,8 +51,9 @@ public class UserServiceImplTest {
     @InjectMocks
     private UserServiceImpl userService;
 
-    /*
+    /**
      * function to test: public List<Product> getProducts()
+     * uses productDao.getAllProducts()
      */
     @Test
     public void testGetProducts() {
@@ -69,8 +70,9 @@ public class UserServiceImplTest {
         Assert.assertEquals(PRODUCT_PRICE_2, list.get(1).getPrice(), DELTA_DIFFERENCE);
     }
 
-    /*
-     * function to test: public List<RoomReservationDTO> findActiveReservation(String userEmail)
+    /**
+     * @function_to_test public List<RoomReservationDTO> findActiveReservation(String userEmail)
+     * uses reservationDao.findActiveReservation(String email)
      */
     @Test
     public void testFindActiveReservation() {
@@ -91,7 +93,7 @@ public class UserServiceImplTest {
 
     /**
      * @function_to_test public Map<Product, Integer> checkProductsPurchasedByUserByReservationId(String userEmail, long reservationId)
-     * uses chargeDao.getAllChargesByUser()
+     * uses chargeDao.getAllChargesByUser(String email, long reservationId)
      */
     @Test
     public void testCheckProductsPurchasedByUserByReservationId() {
