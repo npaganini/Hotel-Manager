@@ -29,19 +29,25 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean unableProduct(long productId) {
+    public boolean unableProduct(long productId) throws Exception {
         LOGGER.debug("About to unable product for visibility with id " + productId);
+        if (!productDao.findById(productId).orElseThrow(Exception::new).isEnable()) {
+            throw new Exception(); // TODO
+        }
         return productDao.updateProductEnable(productId, false) > 0;
     }
 
     @Override
-    public boolean enableProduct(long productId) {
+    public boolean enableProduct(long productId) throws Exception {
         LOGGER.debug("About to enable product for visibility with id " + productId);
+        if (productDao.findById(productId).orElseThrow(Exception::new).isEnable()) {
+            throw new Exception(); // TODO
+        }
         return productDao.updateProductEnable(productId, true) > 0;
     }
 
     @Override
-    public List<Product> getAll(){
+    public List<Product> getAll() {
         return productDao.getAllProducts();
     }
 

@@ -8,9 +8,9 @@ import java.util.List;
 public interface ProductService {
     Product saveProduct(Product product);
 
-    boolean unableProduct(long productId);
+    boolean unableProduct(long productId) throws Exception;
 
-    boolean enableProduct(long productId);
+    boolean enableProduct(long productId) throws Exception;
 
     List<Product> getAll();
 

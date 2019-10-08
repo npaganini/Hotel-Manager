@@ -3,6 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.services.ReservationService;
+import ar.edu.itba.paw.models.dtos.RoomReservationDTO;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,14 +32,20 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public void activeReservation(long reservationId) {
+    public void activeReservation(long reservationId) throws Exception {
         LOGGER.debug("About to set reservation with id " + reservationId + " to active");
+        if (reservationDao.findById(reservationId).orElseThrow(Exception::new).isActive()) {
+            throw new Exception(); // TODO
+        }
         reservationDao.updateActive(reservationId, true);
     }
 
     @Override
-    public void inactiveReservation(long reservationId) {
+    public void inactiveReservation(long reservationId) throws Exception {
         LOGGER.debug("About to set reservation with id " + reservationId + " to unactivated");
+        if (!reservationDao.findById(reservationId).orElseThrow(Exception::new).isActive()) {
+            throw new Exception(); // TODO
+        }
         reservationDao.updateActive(reservationId, false);
     }
 

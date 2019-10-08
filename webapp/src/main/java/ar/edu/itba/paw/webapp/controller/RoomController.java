@@ -50,8 +50,6 @@ public class RoomController {
         return mav;
     }
 
-
-
     @PostMapping("/reservationPost")
     public ModelAndView reservationPost(@ModelAttribute("reservationForm") final ReservationForm form) throws EntityNotFoundException {
         final ModelAndView mav = new ModelAndView("reservationPost");
@@ -75,6 +73,9 @@ public class RoomController {
         final ModelAndView mav = new ModelAndView("checkinPost");
         LOGGER.debug("Request received to do the check-in on reservation with hash: " + form.getId_reservation());
         Reservation reservation = reservationService.getReservationByHash(form.getId_reservation());
+        if (reservation.isActive()) {
+            throw new Exception(); // TODO
+        }
         roomService.reservateRoom(reservation.getRoomId(), reservation);
         reservationService.activeReservation(reservation.getId());
         return mav;
@@ -88,6 +89,10 @@ public class RoomController {
     @PostMapping("/checkoutPost")
     public ModelAndView checkoutPost(@ModelAttribute("checkoutForm") final CheckoutForm form) throws EntityNotFoundException {
         final ModelAndView mav = new ModelAndView("checkoutPost");
+        Reservation reservation = reservationService.getReservationByHash(form.getId_reservation());
+        if (!reservation.isActive()) {
+            throw new Exception(); // TODO
+        }
         LOGGER.debug("Request received to do the check-out on reservation with hash: " + form.getId_reservation());
         mav.addObject("charges", chargeService.getAllChargesByReservationId(reservationService.getReservationByHash(form.getId_reservation()).getId()));
         mav.addObject("totalCharge", chargeService.sumCharge(reservationService.getReservationByHash(form.getId_reservation()).getId()));
