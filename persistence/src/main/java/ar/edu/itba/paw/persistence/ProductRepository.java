@@ -44,6 +44,11 @@ public class ProductRepository extends SimpleRepository<Product> implements Prod
     }
 
     @Override
+    public List<Product> getAllProductsForTable() {
+        return jdbcTemplateWithNamedParameter.query("SELECT * FROM " + getTableName() , getRowMapper());
+    }
+
+    @Override
     public int updateProductEnable(long productId, boolean enable) {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("productId", productId);

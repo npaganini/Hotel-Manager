@@ -10,4 +10,6 @@ public interface ProductDao extends SimpleDao<Product> {
     int updateProductEnable(long productId, boolean enable);
 
     List<Product> findAllProductsByDescription(String description);
+
+    List<Product> getAllProductsForTable();
 }
