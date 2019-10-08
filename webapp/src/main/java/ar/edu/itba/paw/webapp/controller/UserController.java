@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.charge.Charge;
+import form.BuyProductForm;
 import form.ProductForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,15 +34,6 @@ public class UserController extends SimpleController {
         return mav;
     }
 
-    @GetMapping("/products")
-    public ModelAndView getAllProducts(@ModelAttribute("productForm") ProductForm productForm,
-                                       @RequestParam(value = "reservationId") long reservationId) {
-        final ModelAndView mav = new ModelAndView("browseProducts");
-        LOGGER.debug("Request received to retrieve all products list");
-        mav.addObject("ProductsList", userService.getProducts());
-        return mav;
-    }
-
     @GetMapping("/expenses")
     public ModelAndView boughtProducts(Authentication authentication, @RequestParam(value = "reservationId") long reservationId) {
         final ModelAndView mav = new ModelAndView("expenses");
@@ -51,16 +43,25 @@ public class UserController extends SimpleController {
         return mav;
     }
 
-//    @PostMapping("/buyProducts")
-//    public ModelAndView buyProduct(@ModelAttribute("productForm") ProductForm productForm, @RequestParam(value = "reservationId") long reservationId) {
-//        LOGGER.debug("Request received to buy products on reservation with id" + reservationId);
-//        if (productForm != null) {
-//            final ModelAndView mav = new ModelAndView("buyProducts");
-//            Charge charge = new Charge(productForm.getProductId(), reservationId);
-//            mav.addObject("charge", userService.addCharge(charge));
-//            return mav;
-//        }
-//        return new ModelAndView("redirect:/products");
-//    }
+    @GetMapping("/products")
+    public ModelAndView getAllProducts(@ModelAttribute("buyProductForm") BuyProductForm productForm,
+                                       @RequestParam(value = "reservationId") long reservationId) {
+        final ModelAndView mav = new ModelAndView("browseProducts");
+        LOGGER.debug("Request received to retrieve all products list");
+        mav.addObject("ProductsList", userService.getProducts());
+        return mav;
+    }
+
+    @PostMapping("/buyProducts")
+    public ModelAndView buyProduct(@ModelAttribute("buyProductForm") BuyProductForm buyProductForm, @RequestParam(value = "reservationId") long reservationId) {
+        LOGGER.debug("Request received to buy products on reservation with id" + reservationId);
+        if (buyProductForm != null) {
+            final ModelAndView mav = new ModelAndView("buyProducts");
+            Charge charge = new Charge(buyProductForm.getProductId(), reservationId);
+            mav.addObject("charge", userService.addCharge(charge));
+            return mav;
+        }
+        return new ModelAndView("redirect:/products");
+    }
 
 }
