@@ -81,9 +81,38 @@
 
 }
 
+.few-items-table {
+    background-color: white;
+    font-size: large;
+    border-collapse: collapse;
+    width: 75%;
+}
+
+.col-alone {
+    padding-left: 20px;
+    margin-left: 5px;
+}
+
+.no-reservs {
+    font-size: large;
+}
+
 .message{
     padding-bottom: 1.5rem;
     padding-top: 1.5rem;
     border: #0c0c0c;
+}
+
+.action-btn {
+    white-space:normal
+}
+
+.my-card-title {
+    margin-top: 5px;
+}
+
+.product-card {
+    width: 256px !important;
+    height: 256px !important;
 }
 

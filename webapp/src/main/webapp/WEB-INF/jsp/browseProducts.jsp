@@ -17,21 +17,21 @@
 
     <link href="${pageContext.request.contextPath}/resources/CSS/my_style.css" rel="stylesheet">
 </head>
-<body>
-<div class="container">
+<body class="cont">
+<div class="container-fluid">
     <div class="form-group" style="grid-auto-columns: auto">
-        <div class="modal-title row navbar-default">
+        <div class="modal-title row navbar-default my-card-title message">
             <h1>
                 <spring:message code="user.product.offered"/>
             </h1>
         </div>
-        <div class="card-deck">
+        <div class="card-deck my-card-title">
             <c:forEach var="product" items="${ProductsList}">
-            <div class="card">
+            <div class="card product-card">
                 <img class="card-img-top img-responsive" src='${pageContext.request.contextPath}/resources/utilities/images/${product.filePath}' alt="Card product image">
                 <div class="card-body container text-xs-center">
-                    <h5 class="card-title text-xs-center">${product.description}</h5>
-                    <p class="card-text price text-xs-center">$<fmt:formatNumber type="number" maxFractionDigits="2" minFractionDigits="2" value="${product.price}"/></p>
+                    <h5 class="card-title text-xs-center message">${product.description}</h5>
+                    <p class="card-text price text-xs-center"><fmt:formatNumber type="currency" maxFractionDigits="2" minFractionDigits="2" value="${product.price}"/></p>
                     <form:form modelAttribute="buyProductForm" action='/user/buyProducts?reservationId=${pageContext.request.getParameter("reservationId")}' method="post">
                         <form:input type="hidden" name="productId" path="productId" value="${product.id}"/>
                         <input class="btn btn-primary" type="submit" value="<spring:message code="user.product.buy"/>">
@@ -41,7 +41,7 @@
             </c:forEach>
         </div>
     </div>
-    <div class="container text-center row">
+    <div class="container text-center row message">
         <span class="col" style="padding-right: 25px;">
             <a href="./user/home" class="btn btn-primary">
                 <spring:message code="user.home"/>
