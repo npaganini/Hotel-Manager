@@ -28,7 +28,7 @@
         <div class="card-deck">
             <c:forEach var="product" items="${ProductsList}">
             <div class="card">
-                <img class="card-img-top img-responsive" src="https://via.placeholder.com/150" alt="Card product image">
+                <img class="card-img-top img-responsive" src="${product.filePath}" alt="Card product image">
                 <div class="card-body container text-xs-center">
                     <h5 class="card-title text-xs-center">${product.description}</h5>
                     <p class="card-text price text-xs-center">$<fmt:formatNumber type="number" maxFractionDigits="2" minFractionDigits="2" value="${product.price}"/></p>
