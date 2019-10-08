@@ -24,20 +24,21 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
     <script src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js'></script>
 </head>
-<body>
+<body class="cont">
+<div class="container-fluid">
 <c:choose>
     <c:when test="${charge}">
-        <h1 class="modal-title row navbar-default">
+        <h1 class="modal-title row navbar-default message confirTable">
             &nbsp;<spring:message code="user.product.bought"/>
         </h1>
         <div class="container">
             <div class="message row"><spring:message code="user.product.itemsDelivered"/></div>
     </c:when>
     <c:otherwise>
-            <div class="message row"><spring:message code="user.product.error"/></div>
+            <div class="message row confirTable"><spring:message code="user.product.error"/></div>
     </c:otherwise>
 </c:choose>
-            <div class="row">
+            <div class="row message my-card-title">
                 <span class="col" style="padding-right: 25px;">
                     <a href="./products?reservationId=${pageContext.request.getParameter("reservationId")}" class="btn btn-primary">
                         <spring:message code="user.product.list.browse"/>
@@ -50,5 +51,6 @@
                 </span>
             </div>
         </div>
+</div>
 </body>
 </html>
