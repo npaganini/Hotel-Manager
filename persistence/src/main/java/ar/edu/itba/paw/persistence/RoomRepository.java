@@ -37,8 +37,8 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
     @Override
     public List<RoomReservationDTO> findAllFreeBetweenDates(String startDate, String endDate) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-        parameterSource.addValue("startDate", startDate);
-        parameterSource.addValue("endDate", endDate);
+        parameterSource.addValue("startDate", LocalDate.parse(startDate));
+        parameterSource.addValue("endDate", LocalDate.parse(endDate));
         return jdbcTemplateWithNamedParameter.query("select * from room r join reservation on r.id = room_id where not exists (select res.room_id " +
                         "from reservation res WHERE res.room_id = r.id AND (res.start_date >= :startDate OR res.end_date <= :endDate))",
                 parameterSource, getRowMapperWithJoin());
