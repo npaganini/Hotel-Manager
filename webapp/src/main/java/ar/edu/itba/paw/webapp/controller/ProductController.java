@@ -76,10 +76,8 @@ public class ProductController {
         return "addProduct";
     }
 
-    @GetMapping(value = "/product/img")
-    public ResponseEntity<?> getImg(@RequestParam("productId") long productId) {
-        byte[] file = productService.findProductById(productId).getFile();
-        ByteArrayOutputStream buffer = new ByteArrayOutputStream(file.length);
-        return ResponseEntity.ok().contentLength(file.length).contentType(MediaType.IMAGE_PNG).body(buffer);
+    @GetMapping(value = "/product/img", produces = MediaType.IMAGE_PNG_VALUE)
+    public @ResponseBody byte[] getImg(@RequestParam("productId") long productId) {
+        return productService.findProductById(productId).getFile();
     }
 }
