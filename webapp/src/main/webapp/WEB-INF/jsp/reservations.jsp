@@ -39,7 +39,8 @@
                             <li><a href="${pageContext.request.contextPath}/rooms/checkin">Check-In</a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/checkout">Check-Out</a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/reservations">Reservas</a></li>
-                            <li><a href="${pageContext.request.contextPath}/home">Productos</a></li>
+                            <li><a href="${pageContext.request.contextPath}/products">Productos</a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/orders">Pedidos</a></li>
                         </ul>
                     </div>
                 </div>

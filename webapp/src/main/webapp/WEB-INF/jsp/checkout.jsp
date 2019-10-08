@@ -40,7 +40,8 @@
                             <li><a href="${pageContext.request.contextPath}/rooms/checkin">Check-In</a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/checkout">Check-Out</a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/reservations">Reservas</a></li>
-                            <li><a href="${pageContext.request.contextPath}/home">Productos</a></li>
+                            <li><a href="${pageContext.request.contextPath}/products">Productos</a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/orders">Pedidos</a></li>
                         </ul>
                     </div>
                 </div>
@@ -70,7 +71,7 @@
             <div class="row" style="height: 45px">
                 <br><br>
                 <div class="col-xs-2">
-                    <input type="submit" class="btn btn-default btn-lg" value="Aceptar"/>
+                    <input type="submit" class="btn btn-success btn-lg" value="Aceptar"/>
                 </div>
                 <div class="col-xs-2">
                     <button type="button" class="btn btn-danger btn-lg"><a href="${pageContext.request.contextPath}/rooms/home" style="color: white">Cancelar</a>
