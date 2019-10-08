@@ -32,9 +32,9 @@
                 <div class="card-body container text-xs-center">
                     <h5 class="card-title text-xs-center">${product.description}</h5>
                     <p class="card-text price text-xs-center">$<fmt:formatNumber type="number" maxFractionDigits="2" minFractionDigits="2" value="${product.price}"/></p>
-                    <form:form modelAttribute="productForm" action='buyProducts?reservationId=${pageContext.request.getParameter("reservationId")}' method="post">
-                        <form:input type="hidden" path="productId" value="${product.id}"/>
-                        <input class="btn btn-primary" type="submit" value="<spring:message code="user.product.buy"/>"/>
+                    <form:form modelAttribute="buyProductForm" action='/user/buyProducts?reservationId=${pageContext.request.getParameter("reservationId")}' method="post">
+                        <form:input type="hidden" name="productId" path="productId" value="${product.id}"/>
+                        <input class="btn btn-primary" type="submit" value="<spring:message code="user.product.buy"/>">
                     </form:form>
                 </div>
             </div>
