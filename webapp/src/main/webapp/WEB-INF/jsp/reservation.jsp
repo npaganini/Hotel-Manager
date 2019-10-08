@@ -105,7 +105,7 @@
                 <form:select path="roomId">
                     <form:option value="0">-</form:option>
                     <c:forEach var="room" items="${allRooms}">
-                        <form:option value="${room.room.id}"> ${room.room.number}</form:option>
+                        <form:option value="Reservacion${room.room.id}"> ${room.room.number}</form:option>
                     </c:forEach>
                 </form:select>
             </div>

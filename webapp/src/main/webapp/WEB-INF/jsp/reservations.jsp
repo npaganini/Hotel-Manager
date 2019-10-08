@@ -103,7 +103,7 @@
                 <div>
                     <div class="col-xs-2">
                         <button id="search" type="button" class="btn btn-success btn-lg">
-                            <div style="color: black">Buscar</div>
+                            <div style="color: white">Buscar</div>
                         </button>
                     </div>
                     <div class="col-xs-2">
