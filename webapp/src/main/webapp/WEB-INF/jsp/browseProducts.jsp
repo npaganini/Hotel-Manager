@@ -43,12 +43,12 @@
     </div>
     <div class="container text-center row message">
         <span class="col" style="padding-right: 25px;">
-            <a href="./user/home" class="btn btn-primary">
+            <a href="${pageContext.request.contextPath}/user/home" class="btn btn-primary">
                 <spring:message code="user.home"/>
             </a>
         </span>
         <span class="col">
-            <a href="./expenses?reservationId=${pageContext.request.getParameter("reservationId")}" class="btn btn-primary">
+            <a href="${pageContext.request.contextPath}/user/expenses?reservationId=${pageContext.request.getParameter("reservationId")}" class="btn btn-primary">
                 <spring:message code="user.product.list.expenses"/>
             </a>
         </span>

@@ -3,7 +3,6 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
 import ar.edu.itba.paw.interfaces.daos.RoomDao;
 import ar.edu.itba.paw.interfaces.daos.UserDao;
-import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.RoomService;
 import ar.edu.itba.paw.models.dtos.RoomReservationDTO;
@@ -15,8 +14,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RoomServiceImpl implements RoomService {
@@ -48,15 +49,15 @@ public class RoomServiceImpl implements RoomService {
         return roomDao.findById(roomID).orElse(null);
     }
 
+    @Transactional
     @Override
-    public void doReservation(Reservation reserva) throws EntityNotFoundException {
+    public void doReservation(Reservation reserva) {
         LOGGER.debug("About to do reservation with hash " + reserva.getHash());
         LOGGER.debug("Looking if there is already a user created with email " + reserva.getUserEmail());
-        User user = userDao.findByEmail(reserva.getUserEmail()).orElseThrow(() ->
-                new EntityNotFoundException("Cant find user with email " + reserva.getUserEmail()));
-        if (user != null) {
+        Optional<User> user = userDao.findByEmail(reserva.getUserEmail());
+        if (user.isPresent()) {
             LOGGER.debug("There is already an user created with email " + reserva.getUserEmail());
-            reserva.setUserId(user.getId());
+            reserva.setUserId(user.get().getId());
         } else {
             LOGGER.debug("There is not an user created with email " + reserva.getUserEmail() + ". So we create one");
             reserva.setUserId(userDao.save(new User(reserva.getUserEmail(),
@@ -67,9 +68,7 @@ public class RoomServiceImpl implements RoomService {
         reservationDao.save(reserva);
         LOGGER.debug("Sending email with confirmation of reservation to user");
         emailService.sendConfirmationOfReservation(reserva.getUserEmail(), "Reserva confirmada",
-                "Su reserva ha sido confirmada! " +
-                        "Hash de la reserva: " + reserva.getHash() + "\n Credenciales: \n username: "
-                        + reserva.getUserEmail() + "\n password: " + reserva.getUserEmail());
+                reserva.getHash());
     }
 
     @Override

@@ -69,17 +69,19 @@
                     <tr>
 
                         <td style="text-align: left">${order.description}</td>
-                        <td style="text-align: left">-</td>
+                        <td style="text-align: left">${order.roomNumber}</td>
 
-                        <c:if test = "${order.delivered == false}">
+                        <c:if test="${order.delivered == false}">
                             <td style="text-align: left">
-                                <button id="finished" value="${order.chargeId}"  type="button" class="btn btn-default btn-lg">
-                                    <div style="color: black"><a href="${pageContext.request.contextPath}/rooms/sendOrder" style="color: black" >Enviar</a></div>
+                                <button id="finished" value="${order.chargeId}" type="button"
+                                        class="btn btn-default btn-lg">
+                                    <div style="color: black"><a
+                                            style="color: black">Enviar</a></div>
                                 </button>
                             </td>
                         </c:if>
 
-                        <c:if test = "${order.delivered == true}">
+                        <c:if test="${order.delivered == true}">
                             <td style="text-align: left">
                                 <div>TERMINADO</div>
                             </td>
@@ -129,14 +131,14 @@
 
             var chargeId = $('#finished').val();
 
-            basePath = "/rooms/sendOrder?chargeId=" + chargeId;
+            basePath = "/rooms/orders/sendOrder?chargeId=" + chargeId;
             event.preventDefault();
             location.href = basePath;
             return false;
 
         })
 
-    })
+    });
 
     $(document).ready(function () {
 

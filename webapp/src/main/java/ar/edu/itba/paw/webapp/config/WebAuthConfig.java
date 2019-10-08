@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.servlet.ServletContext;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -25,10 +26,12 @@ import java.util.concurrent.TimeUnit;
 public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomUserDetailsService customUserDetailsService;
+    private final ServletContext servletContext;
 
     @Autowired
-    public WebAuthConfig(CustomUserDetailsService customUserDetailsService) {
+    public WebAuthConfig(CustomUserDetailsService customUserDetailsService, ServletContext servletContext) {
         this.customUserDetailsService = customUserDetailsService;
+        this.servletContext = servletContext;
     }
 
     @Override
@@ -39,8 +42,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/login").anonymous()
-                .antMatchers("/user/**").hasAuthority(UserRole.CLIENT.toString())
-                .antMatchers("/rooms/**", "/reservation/**", "/product/**", "/products/**").hasAnyAuthority(UserRole.EMPLOYEE.toString(), UserRole.MANAGER.toString())
+                .antMatchers("/user/**", "/product/**").hasAuthority(UserRole.CLIENT.toString())
+                .antMatchers("/rooms/**", "/reservation/**", "/products/**").hasAnyAuthority(UserRole.EMPLOYEE.toString(), UserRole.MANAGER.toString())
                 .and().formLogin()
                 .usernameParameter("username")
                 .passwordParameter("password")
@@ -48,9 +51,9 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                         -> ((MyUserPrincipal) authentication.getPrincipal()).getAuthorities().parallelStream().forEach(authority -> {
                     try {
                         if (authority.getAuthority().equals(UserRole.CLIENT.toString())) {
-                            httpServletResponse.sendRedirect("/user/home");
+                            httpServletResponse.sendRedirect(servletContext.getContextPath() + "/user/home");
                         } else {
-                            httpServletResponse.sendRedirect("/rooms/home");
+                            httpServletResponse.sendRedirect(servletContext.getContextPath() + "/rooms/home");
                         }
                     } catch (IOException e) {
                         e.printStackTrace();

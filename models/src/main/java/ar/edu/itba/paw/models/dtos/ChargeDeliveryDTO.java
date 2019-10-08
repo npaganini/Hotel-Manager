@@ -13,6 +13,7 @@ import java.sql.SQLException;
 public class ChargeDeliveryDTO {
 
     private long chargeId;
+    private int roomNumber;
     private boolean delivered;
     private String description;
 
@@ -20,5 +21,6 @@ public class ChargeDeliveryDTO {
         this.chargeId = resultSet.getLong("chargeId");
         this.delivered = resultSet.getBoolean("delivered");
         this.description = resultSet.getString("description");
+        this.roomNumber = resultSet.getInt("roomNumber");
     }
 }

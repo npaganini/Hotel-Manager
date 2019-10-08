@@ -84,9 +84,7 @@ public class Reservation implements SqlObject {
     }
 
     private String getRandomString() {
-        byte[] array = new byte[6]; // length is bounded by 6
-        new Random().nextBytes(array);
-        return new String(array, Charset.forName("UTF-8"));
+        return String.format("%06d", new Random().nextInt(999999));
     }
 
 }
