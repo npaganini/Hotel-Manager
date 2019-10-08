@@ -34,21 +34,21 @@ public class UserController extends SimpleController {
         return mav;
     }
 
-    @GetMapping("/products")
-    public ModelAndView getAllProducts(@ModelAttribute("buyProductForm") BuyProductForm productForm,
-                                       @RequestParam(value = "reservationId") long reservationId) {
-        final ModelAndView mav = new ModelAndView("browseProducts");
-        LOGGER.debug("Request received to retrieve all products list");
-        mav.addObject("ProductsList", userService.getProducts());
-        return mav;
-    }
-
     @GetMapping("/expenses")
     public ModelAndView boughtProducts(Authentication authentication, @RequestParam(value = "reservationId") long reservationId) {
         final ModelAndView mav = new ModelAndView("expenses");
         LOGGER.debug("Request received to retrieve all expenses on reservation with id" + reservationId);
         mav.addObject("ProductsList",
                 userService.checkProductsPurchasedByUserByReservationId(getUsername(authentication), reservationId));
+        return mav;
+    }
+
+    @GetMapping("/products")
+    public ModelAndView getAllProducts(@ModelAttribute("buyProductForm") BuyProductForm productForm,
+                                       @RequestParam(value = "reservationId") long reservationId) {
+        final ModelAndView mav = new ModelAndView("browseProducts");
+        LOGGER.debug("Request received to retrieve all products list");
+        mav.addObject("ProductsList", userService.getProducts());
         return mav;
     }
 
