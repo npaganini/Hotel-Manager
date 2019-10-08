@@ -90,7 +90,7 @@
     <div class="row">
         <div class="col" style="text-align: center">
             <button id="search" type="button" class="btn btn-success btn-lg">
-                <div style="color: white">Buscar</div>
+                <div style="color: white">Filtrar habitaciones</div>
             </button>
 
         </div>
