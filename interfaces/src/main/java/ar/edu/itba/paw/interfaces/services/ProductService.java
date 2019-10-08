@@ -16,6 +16,6 @@ public interface ProductService {
 
     List<Product> getAllProductsForTable();
 
-    Product findProductById(long productId);
+    Product findProductById(long productId)throws EntityNotFoundException;
 
 }

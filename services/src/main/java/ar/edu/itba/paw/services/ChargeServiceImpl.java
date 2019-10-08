@@ -2,6 +2,7 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.daos.ChargeDao;
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
+import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.ChargeService;
 import ar.edu.itba.paw.models.dtos.ChargeDeliveryDTO;
 import ar.edu.itba.paw.models.dtos.ChargeRoomReservationDTO;
@@ -27,20 +28,20 @@ public class ChargeServiceImpl implements ChargeService {
     }
 
     @Override
-    public List<ChargeRoomReservationDTO> getAllChargesByReservationId(long reservationId) throws Exception {
+    public List<ChargeRoomReservationDTO> getAllChargesByReservationId(long reservationId) throws RequestInvalidException {
         LOGGER.debug("Getting all current charges for reservation with id " + reservationId);
         Optional<Reservation> reservationOptional = reservationDao.findById(reservationId);
-        if (!reservationOptional.isPresent()) { //TODO quizas haya que agregar tambien si está activa?
-            throw new Exception();
+        if (!reservationOptional.isPresent()) {
+            throw new RequestInvalidException();
         }
         return chargeDao.findChargeByReservationHash(reservationId);
     }
 
     @Override
-    public double sumCharge(long reservationId) throws Exception {
+    public double sumCharge(long reservationId) throws RequestInvalidException {
         LOGGER.debug("Getting the balance of reservation with id" + reservationId);
-        if (!chargeDao.findById(reservationId).isPresent()) {//TODO quizas haya que agregar tambien si está activa?
-            throw new Exception(); // TODO
+        if (!chargeDao.findById(reservationId).isPresent()) {
+            throw new RequestInvalidException();
         }
         return chargeDao.sumCharge(reservationId);
     }
@@ -51,9 +52,9 @@ public class ChargeServiceImpl implements ChargeService {
     }
 
     @Override
-    public void setChargeToDelivered(long chargeId) throws Exception {
-        if (chargeDao.findById(chargeId).orElseThrow(Exception::new).isDelivered()) {
-            throw new Exception();
+    public void setChargeToDelivered(long chargeId) throws RequestInvalidException {
+        if (chargeDao.findById(chargeId).orElseThrow(RequestInvalidException::new).isDelivered()) {
+            throw new RequestInvalidException();
         }
         chargeDao.updateChargeToDelivered(chargeId);
     }

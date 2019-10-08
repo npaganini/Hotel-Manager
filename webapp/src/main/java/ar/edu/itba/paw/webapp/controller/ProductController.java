@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.services.ProductService;
 import ar.edu.itba.paw.interfaces.services.StorageService;
 import ar.edu.itba.paw.models.product.Product;
@@ -77,7 +78,7 @@ public class ProductController {
     }
 
     @GetMapping(value = "/product/img", produces = MediaType.IMAGE_PNG_VALUE)
-    public @ResponseBody byte[] getImg(@RequestParam("productId") long productId) {
+    public @ResponseBody byte[] getImg(@RequestParam("productId") long productId) throws EntityNotFoundException {
         return productService.findProductById(productId).getFile();
     }
 }
