@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS product
     id          SERIAL PRIMARY KEY,
     description VARCHAR(150),
     price       DOUBLE PRECISION,
-    file_path   VARCHAR(150),
+    file        bytea,
     enable      boolean
 );
 

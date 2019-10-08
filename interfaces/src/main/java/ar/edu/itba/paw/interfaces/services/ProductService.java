@@ -13,4 +13,6 @@ public interface ProductService {
     boolean enableProduct(long productId);
 
     List<Product> getAll();
+
+    Product findProductById(long productId);
 }
