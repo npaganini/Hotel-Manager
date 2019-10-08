@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.services.ReservationService;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import org.slf4j.Logger;
@@ -24,8 +25,9 @@ public class ReservationController {
     }
 
     @GetMapping("/reservation")
-    public ResponseEntity<?> getReservation(@RequestParam("hash") String hash) {
+    public ResponseEntity<?> getReservation(@RequestParam("hash") String hash) throws EntityNotFoundException {
         LOGGER.debug("Reservation with hash " + hash + " was requested");
-        return new ResponseEntity<>(reservationService.getReservationByHash(hash).toString(), HttpStatus.OK);
+        return new ResponseEntity<>(reservationService.getReservationByHash(hash).toString()
+                , HttpStatus.OK);
     }
 }

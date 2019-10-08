@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.services.ChargeService;
 import ar.edu.itba.paw.interfaces.services.ReservationService;
 import ar.edu.itba.paw.interfaces.services.RoomService;
@@ -56,7 +57,7 @@ public class RoomController {
     }
 
     @PostMapping("/reservationPost")
-    public ModelAndView reservationPost(@ModelAttribute("reservationForm") final ReservationForm form) {
+    public ModelAndView reservationPost(@ModelAttribute("reservationForm") final ReservationForm form) throws EntityNotFoundException {
         final ModelAndView mav = new ModelAndView("reservationPost");
         LOGGER.debug("Request received to do a reservation on room with id: " + form.getRoomId());
         Reservation reserva = new Reservation(form.getRoomId(),
@@ -74,7 +75,7 @@ public class RoomController {
     }
 
     @PostMapping("/checkinPost")
-    public ModelAndView checkinPost(@ModelAttribute("checkinForm") final CheckinForm form) {
+    public ModelAndView checkinPost(@ModelAttribute("checkinForm") final CheckinForm form) throws EntityNotFoundException {
         final ModelAndView mav = new ModelAndView("checkinPost");
         LOGGER.debug("Request received to do the check-in on reservation with hash: " + form.getId_reservation());
         Reservation reservation = reservationService.getReservationById(form.getId_reservation());
@@ -89,13 +90,14 @@ public class RoomController {
     }
 
     @PostMapping("/checkoutPost")
-    public ModelAndView checkoutPost(@ModelAttribute("checkoutForm") final CheckoutForm form) {
+    public ModelAndView checkoutPost(@ModelAttribute("checkoutForm") final CheckoutForm form) throws EntityNotFoundException {
         final ModelAndView mav = new ModelAndView("checkoutPost");
         LOGGER.debug("Request received to do the check-out on reservation with hash: " + form.getId_reservation());
         mav.addObject("charges", chargeService.getAllChargesByReservationId(reservationService.getReservationByHash(form.getId_reservation()).getId()));
         mav.addObject("totalCharge", chargeService.sumCharge(reservationService.getReservationByHash(form.getId_reservation()).getId()));
-        roomService.freeRoom(reservationService.getReservationByHash(form.getId_reservation()).getRoomId());
-        reservationService.inactiveReservation(reservationService.getReservationByHash(form.getId_reservation()).getId());
+        Reservation reservation = reservationService.getReservationByHash(form.getId_reservation());
+        roomService.freeRoom(reservation.getRoomId());
+        reservationService.inactiveReservation(reservation.getId());
         return mav;
     }
 
@@ -111,14 +113,14 @@ public class RoomController {
     }
 
     @GetMapping("/orders")
-    public ModelAndView orders(){
+    public ModelAndView orders() {
         final ModelAndView mav = new ModelAndView("orders");
-        mav.addObject("orders",chargeService.getAllChargesNotDelivered());
+        mav.addObject("orders", chargeService.getAllChargesNotDelivered());
         return mav;
     }
 
     @GetMapping("/orders/sendOrder")
-    public ModelAndView sendOrder(@RequestParam(value = "chargeId", required = false) long chargeId){
+    public ModelAndView sendOrder(@RequestParam(value = "chargeId", required = false) long chargeId) {
         final ModelAndView mav = new ModelAndView("orderFinished");
         chargeService.setChargeToDelivered(chargeId);
         return mav;

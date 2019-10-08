@@ -45,16 +45,6 @@ public class ChargeRepository extends SimpleRepository<Charge> implements Charge
     }
 
     @Override
-    public boolean addCharge(Charge product) {
-        try {
-            this.save(product);
-        } catch (Exception sqlE) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
     public Map<Product, Integer> getAllChargesByUser(String userEmail, long reservationId) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
         parameterSource.addValue("email", userEmail);
