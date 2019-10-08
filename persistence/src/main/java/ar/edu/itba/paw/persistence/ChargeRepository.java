@@ -96,7 +96,7 @@ public class ChargeRepository extends SimpleRepository<Charge> implements Charge
     public List<ChargeDeliveryDTO> findAllChargesNotDelivered() {
         return jdbcTemplateWithNamedParameter.query("SELECT c.id as chargeId, c.delivered as delivered, " +
                 "p.description as description FROM " + getTableName()
-                + " c JOIN " + Product.TABLE_NAME + " p ON p.d = c.product_id WHERE "
+                + " c JOIN " + Product.TABLE_NAME + " p ON p.id = c.product_id WHERE "
                 + Charge.KEY_DELIVERED + " = FALSE ", getRowMapperOfChargeDeliveryDTO());
     }
 
