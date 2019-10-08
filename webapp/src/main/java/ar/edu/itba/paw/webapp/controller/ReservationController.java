@@ -23,7 +23,6 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
-
     @GetMapping("/reservation")
     public ResponseEntity<?> getReservation(@RequestParam("hash") String hash) {
         LOGGER.debug("Reservation with hash " + hash + " was requested");

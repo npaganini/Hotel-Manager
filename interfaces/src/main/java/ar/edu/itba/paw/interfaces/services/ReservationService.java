@@ -13,4 +13,6 @@ public interface ReservationService {
     void inactiveReservation(long reservationId);
 
     List<Reservation> getAll();
+
+    Reservation getReservationById(long reservationId);
 }
