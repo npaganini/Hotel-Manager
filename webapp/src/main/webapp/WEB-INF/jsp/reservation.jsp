@@ -50,7 +50,7 @@
         </div>
     </div>
     <c:url value="/rooms/reservationPost" var="postPath"/>
-    <form:form modelAttribute="reservationForm" action="${postPath}" method="post">
+    <form:form modelAttribute="reservationForm" name="myForm" action="${postPath}"  onsubmit="return validateForm()" method="post">
     <div class="row myheader">
         <div class="col-xs-12 " style="text-align: left">Reservacion</div>
     </div>
@@ -105,7 +105,7 @@
             <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                 <form:input id="email" path="userEmail" type="text" class="form-control" name="email"
-                            placeholder="Email"></form:input>
+                            placeholder="Email" ></form:input>
             </div>
         </div>
     </div>
@@ -113,7 +113,7 @@
     <div class="row" style="height: 45px">
         <br><br>
         <div class="col-xs-2">
-            <input type="submit" class="btn btn-default btn-lg" value="Reservar"/>
+            <input type="submit" class="btn btn-success btn-lg" value="Reservar"/>
         </div>
         <div class="col-xs-2">
             <button type="button" class="btn btn-danger btn-lg"><a href="${pageContext.request.contextPath}/rooms/home" style="color: white">Cancelar</a>
@@ -127,4 +127,12 @@
 </body>
 </html>
 
-
+<script>
+    function validateForm() {
+        var x = document.forms["myForm"]["email"].value;
+        if (x == "") {
+            alert("El email es obligatorio");
+            return false;
+        }
+    }
+</script>
