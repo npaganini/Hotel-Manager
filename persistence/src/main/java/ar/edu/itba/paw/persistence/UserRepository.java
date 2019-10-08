@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.daos.UserDao;
-import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.models.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class UserRepository extends SimpleRepository<User> implements UserDao {
@@ -40,20 +39,20 @@ public class UserRepository extends SimpleRepository<User> implements UserDao {
     }
 
     @Override
-    public User findByEmail(String userEmail) {
+    public Optional<User> findByEmail(String userEmail) {
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("email", userEmail);
         List<User> result = jdbcTemplateWithNamedParameter
                 .query("SELECT * FROM " + getTableName() + " u WHERE " + User.KEY_EMAIL + " = :email",
                         mapSqlParameterSource, getRowMapper());
-        return result.size() > 0 ? result.get(0) : null;
+        return getFirstResultFromList(result);
     }
 
     @Override
-    public User findByUsername(String username) {
+    public Optional<User> findByUsername(String username) {
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("username", username);
-        return jdbcTemplateWithNamedParameter.query("SELECT * FROM " + User.TABLE_NAME +
-                " WHERE " + User.KEY_USERNAME + " = :username", mapSqlParameterSource, getRowMapper()).get(0);
+        return getFirstResultFromList(jdbcTemplateWithNamedParameter.query("SELECT * FROM " + User.TABLE_NAME +
+                " WHERE " + User.KEY_USERNAME + " = :username", mapSqlParameterSource, getRowMapper()));
     }
 }

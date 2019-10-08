@@ -51,6 +51,10 @@ public abstract class SimpleRepository<T extends SqlObject> implements SimpleDao
 
     abstract RowMapper<T> getRowMapper();
 
+    public Optional<T> getFirstResultFromList(List<T> tList) {
+        return tList.size() > 0 ? Optional.of(tList.get(0)) : Optional.empty();
+    }
+
     abstract String getTableName();
 
     abstract SimpleJdbcInsert getJdbcInsert();

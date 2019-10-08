@@ -7,11 +7,20 @@ import ar.edu.itba.paw.webapp.form.ProductForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import sun.nio.ch.IOUtil;
+
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 @Controller
 public class ProductController {
@@ -51,14 +60,13 @@ public class ProductController {
 
     @PostMapping("/products/addProduct")
     public String addProduct(@ModelAttribute ProductForm productForm,
-                             RedirectAttributes redirectAttributes) {
+                             RedirectAttributes redirectAttributes) throws IOException {
         LOGGER.debug("Request to add product to DB received");
-        String filePath = storageService.saveProductImg(productForm.getImg());
         productService.saveProduct(new Product(productForm.getDescription(),
-                productForm.getPrice(), filePath));
+                productForm.getPrice(), productForm.getImg().getBytes()));
         LOGGER.debug("Product was saved succesfully");
         redirectAttributes.addFlashAttribute("message",
-                "You successfully uploaded " + filePath + "!");
+                "You successfully uploaded " + productForm.getImg().getOriginalFilename() + "!");
         return "redirect:/products";
     }
 
@@ -66,5 +74,10 @@ public class ProductController {
     public String inputProduct(Model model) {
         model.addAttribute("productForm", new ProductForm());
         return "addProduct";
+    }
+
+    @GetMapping(value = "/product/img", produces = MediaType.IMAGE_PNG_VALUE)
+    public @ResponseBody byte[] getImg(@RequestParam("productId") long productId) {
+        return productService.findProductById(productId).getFile();
     }
 }

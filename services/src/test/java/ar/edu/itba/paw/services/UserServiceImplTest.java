@@ -122,10 +122,10 @@ public class UserServiceImplTest {
     public void testAddCharge() {
         // 1. Setup!
         Charge charge = new Charge(ID_1, ID_1);
-        Mockito.when(chargeDao.addCharge(charge)).thenReturn(TRUE);
+        Mockito.when(chargeDao.save(charge)).thenReturn(charge);
         // 2. SUT
-        boolean chargeAdded = userService.addCharge(charge);
+        Charge chargeAdded = userService.addCharge(charge);
         // 3. Asserts
-        Assert.assertTrue(chargeAdded);
+        Assert.assertNotNull(chargeAdded);
     }
 }
