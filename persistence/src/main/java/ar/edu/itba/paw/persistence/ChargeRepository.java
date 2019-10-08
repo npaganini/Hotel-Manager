@@ -2,6 +2,7 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.daos.ChargeDao;
 import ar.edu.itba.paw.models.charge.Charge;
+import ar.edu.itba.paw.models.dtos.ChargeDeliveryDTO;
 import ar.edu.itba.paw.models.dtos.ChargeRoomReservationDTO;
 import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.models.reservation.Reservation;
@@ -92,11 +93,11 @@ public class ChargeRepository extends SimpleRepository<Charge> implements Charge
     }
 
     @Override
-    public List<ChargeRoomReservationDTO> findAllChargesNotDelivered() {
-        return jdbcTemplateWithNamedParameter.query("SELECT * FROM " + getTableName()
-                + " JOIN " + Reservation.TABLE_NAME + " res ON res.id = reservation_id JOIN " + Room.TABLE_NAME +
-                " r ON res.room_id = r.id WHERE "
-                + Charge.KEY_DELIVERED + " = FALSE ", getRowMapperOfChargeRoomReservationDTO());
+    public List<ChargeDeliveryDTO> findAllChargesNotDelivered() {
+        return jdbcTemplateWithNamedParameter.query("SELECT c.id as chargeId, c.delivered as delivered, " +
+                "p.description as description FROM " + getTableName()
+                + " c JOIN " + Product.TABLE_NAME + " p ON p.d = c.product_id WHERE "
+                + Charge.KEY_DELIVERED + " = FALSE ", getRowMapperOfChargeDeliveryDTO());
     }
 
     @Override
@@ -114,6 +115,10 @@ public class ChargeRepository extends SimpleRepository<Charge> implements Charge
 
     private RowMapper<ChargeRoomReservationDTO> getRowMapperOfChargeRoomReservationDTO() {
         return ((resultSet, i) -> new ChargeRoomReservationDTO(resultSet));
+    }
+
+    private RowMapper<ChargeDeliveryDTO> getRowMapperOfChargeDeliveryDTO() {
+        return ((resultSet, i) -> new ChargeDeliveryDTO(resultSet));
     }
 
 

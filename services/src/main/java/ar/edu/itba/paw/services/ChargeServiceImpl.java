@@ -2,6 +2,7 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.daos.ChargeDao;
 import ar.edu.itba.paw.interfaces.services.ChargeService;
+import ar.edu.itba.paw.models.dtos.ChargeDeliveryDTO;
 import ar.edu.itba.paw.models.dtos.ChargeRoomReservationDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +34,7 @@ public class ChargeServiceImpl implements ChargeService {
     }
 
     @Override
-    public List<ChargeRoomReservationDTO> getAllChargesNotDelivered() {
+    public List<ChargeDeliveryDTO> getAllChargesNotDelivered() {
         return chargeDao.findAllChargesNotDelivered();
     }
 

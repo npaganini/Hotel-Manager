@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.interfaces.services;
 
+import ar.edu.itba.paw.models.dtos.ChargeDeliveryDTO;
 import ar.edu.itba.paw.models.dtos.ChargeRoomReservationDTO;
 
 import java.util.List;
@@ -9,7 +10,7 @@ public interface ChargeService {
 
     double sumCharge(long reservationId);
 
-    List<ChargeRoomReservationDTO> getAllChargesNotDelivered();
+    List<ChargeDeliveryDTO> getAllChargesNotDelivered();
 
     void setChargeToDelivered(long chargeId);
 }

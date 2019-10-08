@@ -68,18 +68,18 @@
                 <c:forEach var="order" items="${orders}">
                     <tr>
 
-                        <td style="text-align: left">${order.product.description}</td>
+                        <td style="text-align: left">${order.description}</td>
                         <td style="text-align: left">-</td>
 
-                        <c:if test = "${order.charge.delivered == false}">
+                        <c:if test = "${order.delivered == false}">
                             <td style="text-align: left">
-                                <button id="finished" value="${order.charge.id}"  type="button" class="btn btn-default btn-lg">
+                                <button id="finished" value="${order.chargeId}"  type="button" class="btn btn-default btn-lg">
                                     <div style="color: black"><a href="${pageContext.request.contextPath}/rooms/sendOrder" style="color: black" >Enviar</a></div>
                                 </button>
                             </td>
                         </c:if>
 
-                        <c:if test = "${order.charge.delivered == true}">
+                        <c:if test = "${order.delivered == true}">
                             <td style="text-align: left">
                                 <div>TERMINADO</div>
                             </td>
