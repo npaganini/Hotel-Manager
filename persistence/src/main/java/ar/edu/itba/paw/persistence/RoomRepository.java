@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -35,13 +34,13 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
     }
 
     @Override
-    public List<RoomReservationDTO> findAllFreeBetweenDates(String startDate, String endDate) {
+    public List<Room> findAllFreeBetweenDates(String startDate, String endDate) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
         parameterSource.addValue("startDate", LocalDate.parse(startDate));
         parameterSource.addValue("endDate", LocalDate.parse(endDate));
-        return jdbcTemplateWithNamedParameter.query("select * from room r join reservation on r.id = room_id where not exists (select res.room_id " +
+        return jdbcTemplateWithNamedParameter.query("select * from room r where not exists (select res.room_id " +
                         "from reservation res WHERE res.room_id = r.id AND (res.start_date >= :startDate OR res.end_date <= :endDate))",
-                parameterSource, getRowMapperWithJoin());
+                parameterSource, getRowMapper());
     }
 
     @Override
