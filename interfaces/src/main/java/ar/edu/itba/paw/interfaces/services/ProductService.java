@@ -14,5 +14,8 @@ public interface ProductService {
 
     List<Product> getAll();
 
+    List<Product> getAllProductsForTable();
+
     Product findProductById(long productId);
+
 }

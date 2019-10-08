@@ -16,8 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -91,7 +89,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<RoomReservationDTO> findAllFreeBetweenDates(LocalDate startDate, LocalDate endDate) {
+    public List<Room> findAllFreeBetweenDates(String startDate, String endDate) {
         return roomDao.findAllFreeBetweenDates(startDate, endDate);
     }
 

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Controller
 @RequestMapping("rooms")
@@ -49,12 +50,7 @@ public class RoomController {
         return mav;
     }
 
-    @GetMapping("/reservation")
-    public ModelAndView reservation(@ModelAttribute("reservationForm") final ReservationForm form) {
-        final ModelAndView mav = new ModelAndView("reservation");
-        mav.addObject("allRooms", roomService.getRoomsList());
-        return mav;
-    }
+
 
     @PostMapping("/reservationPost")
     public ModelAndView reservationPost(@ModelAttribute("reservationForm") final ReservationForm form) throws EntityNotFoundException {
@@ -98,6 +94,16 @@ public class RoomController {
         Reservation reservation = reservationService.getReservationByHash(form.getId_reservation());
         roomService.freeRoom(reservation.getRoomId());
         reservationService.inactiveReservation(reservation.getId());
+        return mav;
+    }
+
+    @GetMapping("/reservation")
+    public ModelAndView reservation(@RequestParam(value = "startDate", required = false) String startDate,
+                                    @RequestParam(value = "endDate", required = false) String endDate,
+                                    @ModelAttribute("reservationForm") final ReservationForm form) {
+        final ModelAndView mav = new ModelAndView("reservation");
+        if(!(startDate == null || endDate == null) && !(startDate.isEmpty() || endDate.isEmpty()))
+            mav.addObject("allRooms", roomService.findAllFreeBetweenDates(startDate,endDate));
         return mav;
     }
 

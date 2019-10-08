@@ -50,9 +50,9 @@
         </div>
     </div>
     <c:url value="/rooms/reservationPost" var="postPath"/>
-    <form:form modelAttribute="reservationForm" name="myForm" action="${postPath}"  onsubmit="return validateForm()" method="post">
+    <form:form modelAttribute="reservationForm" name="myForm" action="${postPath}" method="post">
     <div class="row myheader">
-        <div class="col-xs-12 " style="text-align: left">Reservacion</div>
+        <div class="col-xs-12 " style="text-align: left">Nueva reserva</div>
     </div>
     <br>
     <br>
@@ -66,7 +66,7 @@
 
                 <div class="input-container">
                     <form:input id="from_date" path="startDate" type="date" name="effective-date" minlength="1"
-                                maxlength="64" placeholder=" " autocomplete="nope" required="required"></form:input>
+                                maxlength="64" placeholder=" " autocomplete="nope" required="required" ></form:input>
                     <span class="bar"></span>
                 </div>
             </div>
@@ -78,24 +78,34 @@
                 </div>
                 <div class="input-container">
                     <form:input id="to_date" path="endDate" type="date" name="effective-date" minlength="1"
-                                maxlength="64" placeholder=" " autocomplete="nope" required="required"></form:input>
+                                maxlength="64" placeholder=" " autocomplete="nope" required="required" ></form:input>
                     <span class="bar"></span>
                 </div>
             </div>
         </div>
     </div>
     <br>
+    <br>
+
+    <div class="row">
+        <div class="col" style="text-align: center">
+            <button id="search" type="button" class="btn btn-success btn-lg">
+                <div style="color: white">Filtrar habitaciones</div>
+            </button>
+
+        </div>
+    </div>
+    <br>
+    <br>
 
     <div class="row" style="height: 45px">
         <div class="col-xs-6">
-            <form:label class="items" path="roomId">Habitacion: </form:label>
+            <form:label class="items" path="roomId">Habitaciones: </form:label>
             <div id="room_number">
-                <form:select path="roomId">
+                <form:select path="roomId" required="required">
                     <form:option value="0">-</form:option>
                     <c:forEach var="room" items="${allRooms}">
-                        <c:if test="${room.freeNow == true}">
-                            <form:option value="${room.id}"> ${room.number}</form:option>
-                        </c:if>
+                        <form:option value="${room.id}"> ${room.number}</form:option>
                     </c:forEach>
                 </form:select>
             </div>
@@ -105,7 +115,7 @@
             <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                 <form:input id="email" path="userEmail" type="text" class="form-control" name="email"
-                            placeholder="Email" ></form:input>
+                            placeholder="Email" required="required"></form:input>
             </div>
         </div>
     </div>
@@ -116,7 +126,8 @@
             <input type="submit" class="btn btn-success btn-lg" value="Reservar"/>
         </div>
         <div class="col-xs-2">
-            <button type="button" class="btn btn-danger btn-lg"><a href="${pageContext.request.contextPath}/rooms/home" style="color: white">Cancelar</a>
+            <button type="button" class="btn btn-danger btn-lg"><a href="${pageContext.request.contextPath}/rooms/home"
+                                                                   style="color: white">Cancelar</a>
             </button>
         </div>
 
@@ -128,11 +139,23 @@
 </html>
 
 <script>
-    function validateForm() {
-        var x = document.forms["myForm"]["email"].value;
-        if (x == "") {
-            alert("El email es obligatorio");
+
+
+    $(document).ready(function () {
+
+        $('#search').off().on('click', function (event) {
+            var basePath;
+
+            var startDate = $('#from_date').val();
+            var endDate = $('#to_date').val();
+
+
+            basePath = "/rooms/reservation?startDate=" + startDate + "&endDate=" + endDate;
+            event.preventDefault();
+            location.href = basePath;
             return false;
-        }
-    }
+
+        })
+    })
+
 </script>

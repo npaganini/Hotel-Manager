@@ -39,7 +39,7 @@ public class ProductController {
     @GetMapping("/products")
     public ModelAndView products() {
         final ModelAndView mav = new ModelAndView("products");
-        mav.addObject("product", productService.getAll());
+        mav.addObject("product", productService.getAllProductsForTable());
         return mav;
     }
 

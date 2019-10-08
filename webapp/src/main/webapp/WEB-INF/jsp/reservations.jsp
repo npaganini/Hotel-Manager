@@ -17,7 +17,7 @@
 </head>
 <body class="container cont"
       style="height: 100vh !important; width: 100vw !important;margin-left: 0 !important; margin-right: 0 !important">
-<div >
+<div>
     <div class="row">
         <div class="col">
             <nav class="navbar navbar-inverse sidebar" style="z-index: initial !important;" role="navigation">
@@ -58,7 +58,7 @@
     <br>
     <br>
     <form id="filter"
-          action="<c:url value="/rooms/reservations?startDate=${startDate}&endDate=${endDate}&userMail=${userMail}"/>"
+          action="<c:url value="/rooms/reservations?startDate=${pageContext.request.getParameter('startDate')}&endDate=${pageContext.request.getParameter('endDate')}&userMail=${pageContext.request.getParameter('userEmail')}"/>"
           method="get">
         <div class="row">
             <div class="col-xs-6">
@@ -70,7 +70,8 @@
 
                     <div class="input-container">
                         <input id="from_date" path="startDate" type="date" name="effective-date" minlength="1"
-                               maxlength="64" placeholder=" " autocomplete="nope" required="required">
+                               maxlength="64" placeholder=" " autocomplete="nope" required="required"
+                               value='${pageContext.request.getParameter('startDate')}'>
                         <span class="bar"></span>
                     </div>
                 </div>
@@ -82,7 +83,8 @@
                     </div>
                     <div class="input-container">
                         <input id="to_date" path="endDate" type="date" name="effective-date" minlength="1"
-                               maxlength="64" placeholder=" " autocomplete="nope" required="required">
+                               maxlength="64" placeholder=" " autocomplete="nope" required="required"
+                               value='${pageContext.request.getParameter('endDate')}'>
                         <span class="bar"></span>
                     </div>
                 </div>
@@ -94,14 +96,14 @@
                 <div class="input-group">
                     <span class="input-group-addon"></span>
                     <input id="IDres" path="userEmail" type="text" class="form-control" name="IDres"
-                           placeholder="Email del titular">
+                           placeholder="Email del titular" value='${pageContext.request.getParameter('userEmail')}'>
                 </div>
             </div>
             <div class="col-xs-6">
                 <div>
                     <div class="col-xs-2">
                         <button id="search" type="button" class="btn btn-success btn-lg">
-                            <div style="color: black">Buscar</div>
+                            <div style="color: white">Buscar</div>
                         </button>
                     </div>
                     <div class="col-xs-2">

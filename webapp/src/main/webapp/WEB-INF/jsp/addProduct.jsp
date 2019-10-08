@@ -69,18 +69,18 @@
     </div>
         <br><br>
         <div class="row">
-            <div class="col-xs-6">
+            <div class="col-xs-4">
                 <label for="img">Product Image: </label>
                 <input type="file" name="img" />
             </div>
-            <div class="col-xs-6">
+            <div class="col-xs-8">
                 <div class="col-xs-2">
-                    <input id="reset" type="reset" tabindex="4">
+                    <input id="submit" class="btn btn-success btn-lg" type="submit" tabindex="5" value="Add">
                 </div>
                 <div class="col-xs-2">
-                    <input id="submit" class="btn btn-success btn-lg" type="submit" tabindex="5" value="Add Product">
+                    <input id="reset" type="reset" class="btn btn-primary btn-lg" tabindex="4">
                 </div>
-                <div class="col-xs-2" style="margin-left: 25px">
+                <div class="col-xs-2">
                     <button type="button" class="btn btn-danger btn-lg"><a href="${pageContext.request.contextPath}/rooms/home" style="color: white">Volver</a></button>
                 </div>
             </div>
