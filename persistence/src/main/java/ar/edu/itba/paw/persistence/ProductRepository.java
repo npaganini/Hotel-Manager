@@ -40,7 +40,7 @@ public class ProductRepository extends SimpleRepository<Product> implements Prod
 
     @Override
     public List<Product> getAllProducts() {
-        return jdbcTemplateWithNamedParameter.query("SELECT * FROM " + getTableName(), getRowMapper());
+        return jdbcTemplateWithNamedParameter.query("SELECT * FROM " + getTableName() + " WHERE enable = TRUE", getRowMapper());
     }
 
     @Override

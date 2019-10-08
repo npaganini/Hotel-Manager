@@ -2,11 +2,12 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.daos.ChargeDao;
 import ar.edu.itba.paw.models.charge.Charge;
-import ar.edu.itba.paw.models.dtos.ChargeDTO;
+import ar.edu.itba.paw.models.dtos.ChargeDeliveryDTO;
+import ar.edu.itba.paw.models.dtos.ChargeRoomReservationDTO;
 import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.models.reservation.Reservation;
+import ar.edu.itba.paw.models.room.Room;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -14,7 +15,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,13 +74,13 @@ public class ChargeRepository extends SimpleRepository<Charge> implements Charge
     }
 
     @Override
-    public List<ChargeDTO> findChargeByReservationHash(long reservationId) {
+    public List<ChargeRoomReservationDTO> findChargeByReservationHash(long reservationId) {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("reservationId", reservationId);
         return jdbcTemplateWithNamedParameter
                 .query("SELECT * FROM " + Charge.TABLE_NAME + " NATURAL JOIN " +
                         Product.TABLE_NAME + " NATURAL JOIN " + Reservation.TABLE_NAME +
-                        " r WHERE r.id = :reservationId", parameters, getRowMapperOfChargeDTO());
+                        " r WHERE r.id = :reservationId", parameters, getRowMapperOfChargeRoomReservationDTO());
     }
 
     @Override
@@ -88,27 +88,38 @@ public class ChargeRepository extends SimpleRepository<Charge> implements Charge
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
         parameterSource.addValue("reservationId", reservationId);
         return jdbcTemplateWithNamedParameter.query("SELECT sum(p.price) FROM charge c JOIN product p " +
-                "ON p.id = c.product_id JOIN reservation r ON c.reservation_id = r.id WHERE r.id = :reservationId GROUP BY r.id",
+                        "ON p.id = c.product_id JOIN reservation r ON c.reservation_id = r.id WHERE r.id = :reservationId GROUP BY r.id",
                 parameterSource, getSumRowMapper()).get(0);
+    }
+
+    @Override
+    public List<ChargeDeliveryDTO> findAllChargesNotDelivered() {
+        return jdbcTemplateWithNamedParameter.query("SELECT c.id as chargeId, c.delivered as delivered, " +
+                "p.description as description FROM " + getTableName()
+                + " c JOIN " + Product.TABLE_NAME + " p ON p.d = c.product_id WHERE "
+                + Charge.KEY_DELIVERED + " = FALSE ", getRowMapperOfChargeDeliveryDTO());
+    }
+
+    @Override
+    public int updateChargeToDelivered(long chargeId) {
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("chargeId", chargeId);
+        return jdbcTemplateWithNamedParameter
+                .update("UPDATE " + getTableName() + " SET " +
+                        Charge.KEY_DELIVERED + " = TRUE WHERE id = :chargeId", parameters);
     }
 
     private RowMapper<Double> getSumRowMapper() {
         return (resultSet, i) -> resultSet.getDouble(1);
     }
 
-    private RowMapper<ChargeDTO> getRowMapperOfChargeDTO() {
-        return ((resultSet, i) -> new ChargeDTO(resultSet));
+    private RowMapper<ChargeRoomReservationDTO> getRowMapperOfChargeRoomReservationDTO() {
+        return ((resultSet, i) -> new ChargeRoomReservationDTO(resultSet));
     }
 
-//    @Override
-//    public int sumCharge(long reservationId){
-//        MapSqlParameterSource parameters = new MapSqlParameterSource();
-//        parameters.addValue("reservationId", reservationId);
-//        return jdbcTemplateWithNamedParameter
-//                .query("SELECT SUM(Product.TABLE_NAME.price) FROM " + Charge.TABLE_NAME + " NATURAL JOIN " +
-//                        Product.TABLE_NAME + " NATURAL JOIN " + Reservation.TABLE_NAME +
-//                        " r WHERE r.id = :reservationId" + "GROUPBY :reservatioId", parameters, getRowMapperOfChargeDTO());
-//    }
+    private RowMapper<ChargeDeliveryDTO> getRowMapperOfChargeDeliveryDTO() {
+        return ((resultSet, i) -> new ChargeDeliveryDTO(resultSet));
+    }
 
 
 }

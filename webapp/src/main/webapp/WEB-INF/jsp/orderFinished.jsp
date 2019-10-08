@@ -50,14 +50,14 @@
 
     <div class="row myheader vertical-align">
         <div class="col-xs-12" style="text-align: left">
-            <div>Check-In exitoso!</div>
+            <div>Pedido Terminado!</div>
         </div>
     </div>
     <br>
     <br>
     <div class="row" style="font-size:x-large ">
         <div class="col" style="margin-left: 25px">
-            La accion se realizo exitosamente.
+           El pedido ya se puede llevar a la habitacion.
         </div>
     </div>
     <br>

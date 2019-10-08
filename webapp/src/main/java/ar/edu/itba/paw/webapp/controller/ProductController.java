@@ -9,9 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -28,7 +27,29 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @PostMapping("/addProduct")
+    @GetMapping("/products")
+    public ModelAndView products() {
+        final ModelAndView mav = new ModelAndView("products");
+        mav.addObject("product", productService.getAll());
+        return mav;
+    }
+
+    @GetMapping("/products/disable")
+    public ModelAndView hideProduct(@RequestParam(value = "productId", required = false) long productId) {
+        final ModelAndView mav = new ModelAndView("productDisable");
+        productService.unableProduct(productId);
+        return mav;
+    }
+
+
+    @GetMapping("/products/available")
+    public ModelAndView showProduct(@RequestParam(value = "productId", required = false) long productId) {
+        final ModelAndView mav = new ModelAndView("productAvailable");
+        productService.enableProduct(productId);
+        return mav;
+    }
+
+    @PostMapping("/products/addProduct")
     public String addProduct(@ModelAttribute ProductForm productForm,
                              RedirectAttributes redirectAttributes) {
         LOGGER.debug("Request to add product to DB received");
@@ -38,12 +59,12 @@ public class ProductController {
         LOGGER.debug("Product was saved succesfully");
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + filePath + "!");
-        return "redirect:/";
+        return "redirect:/products";
     }
 
-    @RequestMapping(value = "/product-input-form")
+    @GetMapping(value = "/products/addProduct")
     public String inputProduct(Model model) {
         model.addAttribute("productForm", new ProductForm());
-        return "upload";
+        return "addProduct";
     }
 }

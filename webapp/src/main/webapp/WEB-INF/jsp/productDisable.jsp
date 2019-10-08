@@ -50,20 +50,20 @@
 
     <div class="row myheader vertical-align">
         <div class="col-xs-12" style="text-align: left">
-            <div>Check-In exitoso!</div>
+            <div>Producto deshabilitado!</div>
         </div>
     </div>
     <br>
     <br>
     <div class="row" style="font-size:x-large ">
         <div class="col" style="margin-left: 25px">
-            La accion se realizo exitosamente.
+            El producto se deshabilito exitosamente.
         </div>
     </div>
     <br>
     <div class="row">
         <div class="col" style="margin-left: 25px">
-            <button type="button" class="btn btn-success btn-lg"><a href="${pageContext.request.contextPath}/rooms/home" style="color: white">Volver</a></button>
+            <button type="button" class="btn btn-success btn-lg"><a href="${pageContext.request.contextPath}/products" style="color: white">Volver</a></button>
         </div>
     </div>
 

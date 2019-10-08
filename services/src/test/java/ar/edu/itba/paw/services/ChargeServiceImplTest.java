@@ -2,7 +2,7 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.daos.ChargeDao;
 import ar.edu.itba.paw.models.charge.Charge;
-import ar.edu.itba.paw.models.dtos.ChargeDTO;
+import ar.edu.itba.paw.models.dtos.ChargeRoomReservationDTO;
 import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import org.junit.Assert;
@@ -37,7 +37,7 @@ public class ChargeServiceImplTest {
 
 
     /**
-     * @function_to_test List<ChargeDTO> getAllChargesByReservationId(long reservationId)
+     * @function_to_test List<ChargeRoomReservationDTO> getAllChargesByReservationId(long reservationId)
      * uses chargeDao.findChargeByReservationHash(long reservationId)
      **/
     @Test
@@ -46,12 +46,12 @@ public class ChargeServiceImplTest {
         Product product1 = new Product(PRODUCT_NAME_1, PRODUCT_PRICE_1);
         Reservation reservationValid = new Reservation(ID_1, FAKE_VALID_EMAIL, Date.valueOf(START_DATE).toLocalDate(), Date.valueOf(END_DATE).toLocalDate(), ID_1);
         Charge charge1 = new Charge(ID_1, ID_1);
-        ChargeDTO chargeDTO = new ChargeDTO(product1, charge1, reservationValid);
-        List<ChargeDTO> chargeDTOList = new LinkedList<>();
-        chargeDTOList.add(chargeDTO);
-        Mockito.when(chargeDao.findChargeByReservationHash(ID_1)).thenReturn(chargeDTOList);
+        ChargeRoomReservationDTO chargeRoomReservationDTO = new ChargeRoomReservationDTO(product1, charge1, reservationValid);
+        List<ChargeRoomReservationDTO> chargeRoomReservationDTOList = new LinkedList<>();
+        chargeRoomReservationDTOList.add(chargeRoomReservationDTO);
+        Mockito.when(chargeDao.findChargeByReservationHash(ID_1)).thenReturn(chargeRoomReservationDTOList);
         // 2. SUT
-        List<ChargeDTO> userReservations = chargeService.getAllChargesByReservationId(ID_1);
+        List<ChargeRoomReservationDTO> userReservations = chargeService.getAllChargesByReservationId(ID_1);
         // 3. Asserts
         Assert.assertNotNull(userReservations);
         Assert.assertNotNull(userReservations.get(0));

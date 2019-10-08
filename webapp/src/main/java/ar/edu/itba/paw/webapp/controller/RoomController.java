@@ -37,7 +37,7 @@ public class RoomController {
     public ModelAndView getAllRooms() {
         final ModelAndView mav = new ModelAndView("index");
         LOGGER.debug("Request received to retrieve whole roomsList");
-        mav.addObject("RoomList", roomService.getRoomsList());
+        mav.addObject("RoomList", roomService.getRoomsReservedActive());
         return mav;
     }
 
@@ -107,6 +107,20 @@ public class RoomController {
         final ModelAndView mav = new ModelAndView("reservations");
         mav.addObject("reservations", roomService.findAllBetweenDatesAndEmail(startDate,
                 endDate, userEmail));
+        return mav;
+    }
+
+    @GetMapping("/orders")
+    public ModelAndView orders(){
+        final ModelAndView mav = new ModelAndView("orders");
+        mav.addObject("orders",chargeService.getAllChargesNotDelivered());
+        return mav;
+    }
+
+    @GetMapping("/orders/sendOrder")
+    public ModelAndView sendOrder(@RequestParam(value = "chargeId", required = false) long chargeId){
+        final ModelAndView mav = new ModelAndView("orderFinished");
+        chargeService.setChargeToDelivered(chargeId);
         return mav;
     }
 
