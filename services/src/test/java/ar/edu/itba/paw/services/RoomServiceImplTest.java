@@ -9,17 +9,22 @@ import ar.edu.itba.paw.models.room.Room;
 import ar.edu.itba.paw.models.room.RoomType;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.models.user.UserRole;
+import ar.edu.itba.paw.services.helperClasses.VoidMethodsListHelper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
 
 import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
+
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RoomServiceImplTest {
@@ -48,7 +53,7 @@ public class RoomServiceImplTest {
     private UserDao userDao;
     @Mock
     private ReservationDao reservationDao;
-    @Mock
+    @Mock   // este es usado por el roomService, por ende no puede ser null
     private EmailServiceImpl emailService;
 
     @InjectMocks
@@ -96,42 +101,31 @@ public class RoomServiceImplTest {
     }
 
     /**
-     * @function_to_test void doReservation(Reservation reserva)
+     * @function_to_test void doReservation(Reservation reserva)                                        FUNCTION RETURNS VOID
      * uses userDao.findByEmail(String email)
      * uses userDao.save(User newUser)                                                                  UNNECESSARY
      * uses reservationDao.save(Reservation newReservation)
      * uses emailService.sendConfirmationOfReservation(String email, String subject, String message)    RETURNS VOID
      **/
     @Test
-    public void testDoReservation() {
+    public void testDoReservationSendsEmail() {
         // 1. Setup!
         User userToUse = new User(ID_1, FAKE_VALID_EMAIL, PASSWORD, USERNAME, UserRole.CLIENT);
         Reservation reservationToUse = new Reservation(ID_1, FAKE_VALID_EMAIL, Date.valueOf(START_DATE).toLocalDate(), Date.valueOf(END_DATE).toLocalDate(), ID_1);
+        VoidMethodsListHelper listHelper = mock(VoidMethodsListHelper.class);
         Mockito.when(userDao.findByEmail(FAKE_VALID_EMAIL)).thenReturn(userToUse);
-//        Mockito.when(userDao.save(userToUse)).thenReturn(userToUse);      UNNECESSARY
         Mockito.when(reservationDao.save(reservationToUse)).thenReturn(reservationToUse);
-//        Mockito.when(emailService.sendConfirmationOfReservation(FAKE_VALID_EMAIL, SUBJECT, MESSAGE)).thenReturn(void);
         // 2. SUT
         roomService.doReservation(reservationToUse);
         // 3. Asserts
-//        Assert.
+        Mockito.verify(emailService).sendConfirmationOfReservation(eq(FAKE_VALID_EMAIL), anyString(), anyString());
     }
 
     /**
-     * @function_to_test void reservateRoom(long roomID, Reservation reservation)
+     * @function_to_test void reservateRoom(long roomID, Reservation reservation)   FUNCTION RETURNS VOID
      * uses roomDao.reservateRoom(long roomID)
      * uses emailService.sendCheckinEmail(Reservation reservation)                  RETURNS VOID
      **/
-    @Test
-    public void testReservateRoom() {
-        // 1. Setup!
-        Reservation reservationToUse = new Reservation(ID_1, FAKE_VALID_EMAIL, Date.valueOf(START_DATE).toLocalDate(), Date.valueOf(END_DATE).toLocalDate(), ID_1);
-        Mockito.when(roomDao.reservateRoom(ID_1)).thenReturn(BOOLEAN_INT_TRUE);
-        // 2. SUT
-        roomService.reservateRoom(ID_1, reservationToUse);
-        // 3. Asserts
-//        Assert.
-    }
 
     /**
      * @function_to_test void freeRoom(long roomId)
