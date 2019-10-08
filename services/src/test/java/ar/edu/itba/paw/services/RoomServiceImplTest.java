@@ -147,17 +147,13 @@ public class RoomServiceImplTest {
     public void testFindAllFreeBetweenDates() {
         // 1. Setup!
         Room room = new Room(ID_1, RoomType.DOUBLE, TRUE, ROOM_NUMBER_1);
-        Reservation reservationToUse = new Reservation(ID_1, FAKE_VALID_EMAIL, Date.valueOf(START_DATE).toLocalDate(), Date.valueOf(END_DATE).toLocalDate(), ID_1);
-        RoomReservationDTO rrDTO = new RoomReservationDTO(room, reservationToUse);
-        List<RoomReservationDTO> listOfFreeRooms = new LinkedList<>();
-        listOfFreeRooms.add(rrDTO);
-        Mockito.when(roomDao.findAllFreeBetweenDates(Date.valueOf(START_DATE).toLocalDate(), Date.valueOf(END_DATE).toLocalDate())).thenReturn(listOfFreeRooms);
+        List<Room> listOfFreeRooms = new LinkedList<>();
+        listOfFreeRooms.add(room);
+        Mockito.when(roomDao.findAllFreeBetweenDates(START_DATE, END_DATE)).thenReturn(listOfFreeRooms);
         // 2. SUT
-        List<RoomReservationDTO> freeRooms = roomService.findAllFreeBetweenDates(Date.valueOf(START_DATE).toLocalDate(), Date.valueOf(END_DATE).toLocalDate());
+        List<Room> freeRooms = roomService.findAllFreeBetweenDates(START_DATE, END_DATE);
         // 3. Asserts
         Assert.assertNotNull(freeRooms);
         Assert.assertNotNull(freeRooms.get(0));
-        Assert.assertEquals(START_DATE, freeRooms.get(0).getReservation().getStartDate().toString());
-        Assert.assertEquals(END_DATE, freeRooms.get(0).getReservation().getEndDate().toString());
     }
 }

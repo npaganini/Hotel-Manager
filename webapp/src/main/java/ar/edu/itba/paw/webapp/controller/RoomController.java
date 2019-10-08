@@ -94,6 +94,7 @@ public class RoomController {
         reservationService.inactiveReservation(reservationService.getReservationByHash(form.getId_reservation()).getId());
         return mav;
     }
+
     @GetMapping("/reservation")
     public ModelAndView reservation(@RequestParam(value = "startDate", required = false) String startDate,
                                     @RequestParam(value = "endDate", required = false) String endDate,

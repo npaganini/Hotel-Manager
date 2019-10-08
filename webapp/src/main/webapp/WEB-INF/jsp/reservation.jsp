@@ -102,10 +102,10 @@
         <div class="col-xs-6">
             <form:label class="items" path="roomId">Habitaciones: </form:label>
             <div id="room_number">
-                <form:select path="roomId">
+                <form:select path="roomId" required="required">
                     <form:option value="0">-</form:option>
                     <c:forEach var="room" items="${allRooms}">
-                        <form:option value="Reservacion${room.room.id}"> ${room.room.number}</form:option>
+                        <form:option value="${room.id}"> ${room.number}</form:option>
                     </c:forEach>
                 </form:select>
             </div>
