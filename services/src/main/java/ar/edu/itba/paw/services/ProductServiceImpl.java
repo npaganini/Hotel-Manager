@@ -48,4 +48,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getAllProductsForTable(){return productDao.getAllProductsForTable();}
 
+    public Product findProductById(long productId) {
+        return productDao.findById(productId).get();
+    }
+
 }

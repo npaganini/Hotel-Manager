@@ -18,6 +18,7 @@ import javax.sql.DataSource;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -58,18 +59,18 @@ public class UserRepositoryTest {
     // public User findByEmail(String userEmail)
     @Test
     public void testFindByEmail() {
-        final User user = userDao.findByEmail(USER_EMAIL);
+        final Optional<User> user = userDao.findByEmail(USER_EMAIL);
         assertNotNull(user);
-        assertEquals(USER_EMAIL, user.getEmail());
+        assertEquals(USER_EMAIL, user.get().getEmail());
         assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, "users"));
     }
 
     // public User findByUsername(String username)
     @Test
     public void testFindByUsername() {
-        final User user = userDao.findByUsername(USER_NAME);
+        final Optional<User> user = userDao.findByUsername(USER_NAME);
         assertNotNull(user);
-        assertEquals(USER_EMAIL, user.getUsername());
+        assertEquals(USER_EMAIL, user.get().getUsername());
         assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, "users"));
     }
 }

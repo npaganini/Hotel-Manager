@@ -2,6 +2,7 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
 import ar.edu.itba.paw.interfaces.daos.RoomDao;
+import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
 import ar.edu.itba.paw.models.room.RoomType;
@@ -37,10 +38,10 @@ public class ReservationServiceImplTest {
      * uses roomDao.findAllFree()
      **/
     @Test
-    public void testGetReservationByHash() {
+    public void testGetReservationByHash() throws EntityNotFoundException {
         // 1. Setup!
         Reservation reservationToUse = new Reservation(ID_1, Date.valueOf(START_DATE).toLocalDate(), Date.valueOf(END_DATE).toLocalDate(), null, FAKE_VALID_EMAIL, ID_1, ID_1, TRUE, HASH);
-        Mockito.when(reservationDao.findReservationByHash(HASH)).thenReturn(reservationToUse);
+        Mockito.when(reservationDao.findReservationByHash(HASH)).thenReturn(java.util.Optional.of(reservationToUse));
         // 2. SUT
         Reservation myReservation = reservationService.getReservationByHash(HASH);
         // 3. Asserts

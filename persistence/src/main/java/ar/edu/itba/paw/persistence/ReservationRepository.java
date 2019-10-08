@@ -4,7 +4,6 @@ import ar.edu.itba.paw.interfaces.daos.ReservationDao;
 import ar.edu.itba.paw.models.dtos.RoomReservationDTO;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
-import ar.edu.itba.paw.models.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ReservationRepository extends SimpleRepository<Reservation> implements ReservationDao {
@@ -41,11 +41,12 @@ public class ReservationRepository extends SimpleRepository<Reservation> impleme
     }
 
     @Override
-    public Reservation findReservationByHash(String hash) {
+    public Optional<Reservation> findReservationByHash(String hash) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
         parameterSource.addValue("hash", hash);
-        return jdbcTemplateWithNamedParameter.query("SELECT * FROM " + getTableName() + " r WHERE r.hash = :hash",
-                parameterSource, getRowMapper()).get(0);
+        List<Reservation> queryResult = jdbcTemplateWithNamedParameter.query("SELECT * FROM " + getTableName() + " r WHERE r.hash = :hash",
+                parameterSource, getRowMapper());
+        return getFirstResultFromList(queryResult);
     }
 
     @Override

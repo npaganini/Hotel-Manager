@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.nio.charset.Charset;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -38,7 +39,7 @@ public class Reservation implements SqlObject {
     private long roomId;
     private long userId;
     private boolean isActive;
-    private String hash = UUID.randomUUID().toString();
+    private String hash = getRandomString();
 
     public Reservation(ResultSet resultSet) throws SQLException {
         this.id = resultSet.getLong(KEY_ID);
@@ -81,4 +82,11 @@ public class Reservation implements SqlObject {
     public String toString() {
         return "Reservation id: " + id + " for " + startDate + " to " + endDate + ". User: " + userEmail + " and hash " + hash;
     }
+
+    private String getRandomString() {
+        byte[] array = new byte[6]; // length is bounded by 6
+        new Random().nextBytes(array);
+        return new String(array, Charset.forName("UTF-8"));
+    }
+
 }
