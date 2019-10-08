@@ -46,4 +46,10 @@ public class ReservationServiceImpl implements ReservationService {
         LOGGER.debug("About to get all the confirmed reservations");
         return reservationDao.getAll();
     }
+
+    @Override
+    public Reservation getReservationById(long reservationId) {
+        LOGGER.debug("About to get reservation with id " + reservationId);
+        return reservationDao.findById(reservationId).get();
+    }
 }

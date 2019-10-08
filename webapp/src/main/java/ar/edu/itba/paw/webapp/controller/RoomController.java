@@ -77,9 +77,9 @@ public class RoomController {
     public ModelAndView checkinPost(@ModelAttribute("checkinForm") final CheckinForm form) {
         final ModelAndView mav = new ModelAndView("checkinPost");
         LOGGER.debug("Request received to do the check-in on reservation with hash: " + form.getId_reservation());
-        Reservation reservation = reservationService.getReservationByHash(form.getId_reservation());
+        Reservation reservation = reservationService.getReservationById(form.getId_reservation());
         roomService.reservateRoom(reservation.getRoomId(), reservation);
-        reservationService.activeReservation(reservationService.getReservationByHash(form.getId_reservation()).getId());
+        reservationService.activeReservation(reservation.getId());
         return mav;
     }
 

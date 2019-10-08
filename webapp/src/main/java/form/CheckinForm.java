@@ -9,5 +9,5 @@ import lombok.Setter;
 public class CheckinForm {
 
     private String userEmail;
-    private String id_reservation;
+    private long id_reservation;
 }
