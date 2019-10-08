@@ -89,7 +89,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<RoomReservationDTO> findAllFreeBetweenDates(LocalDate startDate, LocalDate endDate) {
+    public List<RoomReservationDTO> findAllFreeBetweenDates(String startDate, String endDate) {
         return roomDao.findAllFreeBetweenDates(startDate, endDate);
     }
 
