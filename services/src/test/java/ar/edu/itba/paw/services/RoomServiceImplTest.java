@@ -7,24 +7,17 @@ import ar.edu.itba.paw.models.dtos.RoomReservationDTO;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
 import ar.edu.itba.paw.models.room.RoomType;
-import ar.edu.itba.paw.models.user.User;
-import ar.edu.itba.paw.models.user.UserRole;
-import ar.edu.itba.paw.services.helperClasses.VoidMethodsListHelper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.stubbing.Answer;
 
 import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
-
-import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RoomServiceImplTest {
@@ -53,8 +46,6 @@ public class RoomServiceImplTest {
     private UserDao userDao;
     @Mock
     private ReservationDao reservationDao;
-    @Mock   // este es usado por el roomService, por ende no puede ser null
-    private EmailServiceImpl emailService;
 
     @InjectMocks
     private RoomServiceImpl roomService;
