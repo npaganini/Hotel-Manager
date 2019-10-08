@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS product (
     id IDENTITY PRIMARY KEY,
     description VARCHAR(150),
     price DOUBLE PRECISION,
-    file bytea,
+    file VARBINARY(1000000),
     enable boolean
 );
 
