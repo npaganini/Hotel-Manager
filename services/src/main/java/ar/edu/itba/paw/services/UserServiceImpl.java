@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public boolean addCharge(Charge product) {
-        return chargeDao.addCharge(product);
+    public Charge addCharge(Charge charge) {
+        return chargeDao.save(charge);
     }
 }

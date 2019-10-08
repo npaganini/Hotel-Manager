@@ -3,6 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
 import ar.edu.itba.paw.interfaces.daos.RoomDao;
 import ar.edu.itba.paw.interfaces.daos.UserDao;
+import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.RoomService;
 import ar.edu.itba.paw.models.dtos.RoomReservationDTO;
@@ -50,10 +51,11 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void doReservation(Reservation reserva) {
+    public void doReservation(Reservation reserva) throws EntityNotFoundException {
         LOGGER.debug("About to do reservation with hash " + reserva.getHash());
         LOGGER.debug("Looking if there is already a user created with email " + reserva.getUserEmail());
-        User user = userDao.findByEmail(reserva.getUserEmail());
+        User user = userDao.findByEmail(reserva.getUserEmail()).orElseThrow(() ->
+                new EntityNotFoundException("Cant find user with email " + reserva.getUserEmail()));
         if (user != null) {
             LOGGER.debug("There is already an user created with email " + reserva.getUserEmail());
             reserva.setUserId(user.getId());
@@ -94,7 +96,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<RoomReservationDTO> getRoomsReservedActive(){
+    public List<RoomReservationDTO> getRoomsReservedActive() {
         return roomDao.getRoomsReservedActive();
     }
 

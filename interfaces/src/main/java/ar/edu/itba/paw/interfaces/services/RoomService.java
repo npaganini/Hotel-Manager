@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.interfaces.services;
 
+import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.models.dtos.RoomReservationDTO;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
@@ -14,7 +15,7 @@ public interface RoomService {
 
     Room getRoom(long roomID);
 
-    void doReservation(Reservation reserva);
+    void doReservation(Reservation reserva) throws EntityNotFoundException;
 
     void reservateRoom(long roomId, Reservation reservation);
 

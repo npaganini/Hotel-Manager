@@ -1,8 +1,8 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
+import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.services.ReservationService;
-import ar.edu.itba.paw.models.dtos.RoomReservationDTO;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,9 +24,10 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public Reservation getReservationByHash(String hash) {
+    public Reservation getReservationByHash(String hash) throws EntityNotFoundException {
         LOGGER.debug("About to get reservation with hash " + hash);
-        return reservationDao.findReservationByHash(hash);
+        return reservationDao.findReservationByHash(hash).orElseThrow(
+                () -> new EntityNotFoundException("Reservation of hash " + hash + " not found"));
     }
 
     @Override
@@ -48,8 +49,10 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public Reservation getReservationById(long reservationId) {
+    public Reservation getReservationById(long reservationId) throws EntityNotFoundException {
         LOGGER.debug("About to get reservation with id " + reservationId);
-        return reservationDao.findById(reservationId).get();
+        return reservationDao.findById(reservationId)
+                .orElseThrow(() -> new EntityNotFoundException
+                        ("Reservation with id " + reservationId+  " not found"));
     }
 }

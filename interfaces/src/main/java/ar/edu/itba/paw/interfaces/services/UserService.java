@@ -15,6 +15,6 @@ public interface UserService {
 
     List<Product> getProducts();
 
-    boolean addCharge(Charge product);
+    Charge addCharge(Charge product);
 
 }
