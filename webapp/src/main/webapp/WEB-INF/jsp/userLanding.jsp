@@ -21,7 +21,16 @@
 <body class="cont">
 <div class="container-fluid">
     <div class="panel-title">
-        <h1 class="text-xs-center modal-title row navbar-default"><spring:message code="user.reservation.currents"/></h1>
+        <div class="modal-title row navbar-default my-card-title message">
+            <span class="user-navbar text-xs-center text-center">
+                &nbsp<spring:message code="user.reservation.currents"/>
+            </span>
+            <span>
+                <a href="${pageContext.request.contextPath}/logout" class="btn btn-primary user-logout align-self-end vertical-center">
+                    <spring:message code="user.logout"/>
+                </a>
+            </span>
+        </div>
     </div>
     <table class="table text-xs-center">
         <thead class="thead-dark">

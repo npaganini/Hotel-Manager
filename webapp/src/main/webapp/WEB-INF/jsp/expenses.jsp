@@ -25,7 +25,16 @@
     <script src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js'></script>
 </head>
 <body class="cont">
-<h1 class="modal-title row message">&nbsp<spring:message code="user.product.expensesList"/></h1>
+<div class="modal-title row navbar-default my-card-title message">
+    <span class="user-navbar text-xs-center text-center">
+        &nbsp<spring:message code="user.product.expensesList"/>
+    </span>
+    <span>
+        <a href="${pageContext.request.contextPath}/logout" class="btn btn-primary user-logout align-self-end">
+            <spring:message code="user.logout"/>
+        </a>
+    </span>
+</div>
 <div class="main container-fluid">
     <table class="table table-striped cont">
         <c:set var="total" value="0" scope="page"/>

@@ -26,23 +26,25 @@
 </head>
 <body class="cont">
 <div class="container-fluid">
-    <div class="jumbotron vertical-center text-xs-center" style="background-color:transparent !important;">
+<c:choose>
+    <c:when test="${!charge.delivered}">
+        <div class="modal-title row navbar-default my-card-title message">
+                <span class="user-navbar">
+                    &nbsp;<spring:message code="user.product.bought"/>
+                </span>
+                <span>
+                    <a href="${pageContext.request.contextPath}/logout" class="btn btn-primary user-logout align-self-end">
+                        <spring:message code="user.logout"/>
+                    </a>
+                </span>
+        </div>
         <div class="container">
-            <c:choose>
-            <c:when test="${!charge.delivered}">
-            <h1 class="modal-title row navbar-default message confirTable">
-                &nbsp;<spring:message code="user.product.bought"/>
-            </h1>
-            <div class="message row">
-                <spring:message code="user.product.itemsDelivered"/>
-            </div>
-            </c:when>
-            <c:otherwise>
-            <div class="message row confirTable">
-                <spring:message code="user.product.error"/>
-            </div>
-            </c:otherwise>
-            </c:choose>
+            <div class="message row"><spring:message code="user.product.itemsDelivered"/></div>
+    </c:when>
+    <c:otherwise>
+            <div class="message row confirTable"><spring:message code="user.product.error"/></div>
+    </c:otherwise>
+</c:choose>
             <div class="row message my-card-title">
                 <span class="col" style="padding-right: 25px;">
                     <a href="./products?reservationId=${pageContext.request.getParameter("reservationId")}" class="btn btn-primary">
@@ -56,7 +58,6 @@
                 </span>
             </div>
         </div>
-    </div>
 </div>
 </body>
 </html>
