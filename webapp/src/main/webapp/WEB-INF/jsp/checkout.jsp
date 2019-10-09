@@ -55,7 +55,7 @@
         </div>
     </div>
     <c:url value="/rooms/checkoutPost" var="postPath"/>
-    <form:form modelAttribute="checkoutForm" action="${postPath}" method="post">
+    <form:form modelAttribute="checkoutForm" id="myForm" action="${postPath}" method="post">
 
     <div class="row myheader vertical-align">
         <div class="col-xs-12" style="text-align: left">
@@ -77,10 +77,10 @@
             <div class="row" style="height: 45px">
                 <br><br>
                 <div class="col-xs-2">
-                    <input type="submit" class="btn btn-success btn-lg" value="Aceptar"/>
+                    <input type="submit" id="submit" class="btn btn-success btn-lg" value="Aceptar"/>
                 </div>
                 <div class="col-xs-2">
-                    <button type="button" class="btn btn-danger btn-lg"><a href="${pageContext.request.contextPath}/rooms/home" style="color: white">Cancelar</a>
+                    <button type="button" id="back" class="btn btn-danger btn-lg"><a href="${pageContext.request.contextPath}/rooms/home" style="color: white">Cancelar</a>
                     </button>
                 </div>
         </div>
@@ -90,3 +90,22 @@
 </form:form>
 </body>
 </html>
+
+
+<script>
+    $(document).ready(function () {
+
+        $('#myForm').submit(function () {
+
+
+            //disable the submit button
+            $("#submit").attr("disabled", true);
+
+
+            $("#back").attr("disabled", true);
+
+            return true;
+
+        });
+    });
+</script>

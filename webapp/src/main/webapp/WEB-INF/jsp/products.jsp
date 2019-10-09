@@ -42,7 +42,8 @@
                             <li><a href="${pageContext.request.contextPath}/products">Productos</a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/orders">Pedidos</a></li>
                             <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Cuenta<span class="caret"></span></a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Cuenta<span
+                                        class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="${pageContext.request.contextPath}/rooms/home">Logout</a></li>
                                 </ul>
@@ -60,67 +61,77 @@
     </div>
     <br>
     <br>
-    <div class="row">
-        <div class="col-xs-8 form-group" style="z-index:9999;grid-auto-columns: auto">
-            <table id="myTable" class="display" style="width:100%;  border: 1px solid black !important;">
-                <thead>
-                <tr>
-                    <th>Producto</th>
-                    <th>Descripcion</th>
-                    <th>Precio</th>
-                    <th>Estado</th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach var="prod" items="${product}">
+    <form id="myForm">
+        <div class="row">
+            <div class="col-xs-8 form-group" style="z-index:9999;grid-auto-columns: auto">
+                <table id="myTable" class="display" style="width:100%;  border: 1px solid black !important;">
+                    <thead>
                     <tr>
-
-                        <td style="text-align: left">
-                            <img class="card-img-top img-responsive" style="height: 75px;width: 75px" src='${pageContext.request.contextPath}/product/img?productId=${prod.id}' alt="Card product image">
-                        </td>
-                        <td style="text-align: left">${prod.description}</td>
-                        <td style="text-align: left">${prod.price}</td>
-
-                        <c:if test = "${prod.enable == true}">
-                            <td style="text-align: left">
-                                <button id="disable" value="${prod.id}"  type="button" class="btn btn-default btn-lg">
-                                    <div style="color: black"><a href="${pageContext.request.contextPath}/products/disable" style="color: black" >Desabilitar</a></div>
-                                </button>
-                            </td>
-                        </c:if>
-
-                        <c:if test = "${prod.enable == false}">
-                            <td style="text-align: left">
-                                <button id="available" value="${prod.id}" type="button" class="btn btn-primary btn-lg">
-                                    <div style="color: black"><a href="${pageContext.request.contextPath}/products/available" style="color: white" >Habilitar</a></div>
-                                </button>
-                            </td>
-                        </c:if>
-
+                        <th>Producto</th>
+                        <th>Descripcion</th>
+                        <th>Precio</th>
+                        <th>Estado</th>
                     </tr>
-                </c:forEach>
-                </tbody>
-            </table>
-        </div>
-        <br><br>
-        <div class="col-xs-4">
-            <div class="row" style="height: 45px;text-align: center">
-                <div class="col-xs-2">
-                    <button type="button" class="btn btn-success btn-lg"><a
-                            href="${pageContext.request.contextPath}/products/addProduct" style="color: white">Agregar</a>
-                    </button>
-                </div>
+                    </thead>
+                    <tbody>
+                    <c:forEach var="prod" items="${product}">
+                        <tr>
+
+                            <td style="text-align: left">
+                                <img class="card-img-top img-responsive" style="height: 75px;width: 75px"
+                                     src='${pageContext.request.contextPath}/product/img?productId=${prod.id}'
+                                     alt="Card product image">
+                            </td>
+                            <td style="text-align: left">${prod.description}</td>
+                            <td style="text-align: left">${prod.price}</td>
+
+                            <c:if test="${prod.enable == true}">
+                                <td style="text-align: left">
+                                    <button onclick="disableButtons()" id="disable" value="${prod.id}" type="button"
+                                            class="btn btn-default btn-lg">
+                                        <div style="color: black"><a
+                                                href="${pageContext.request.contextPath}/products/disable"
+                                                style="color: black">Desabilitar</a></div>
+                                    </button>
+                                </td>
+                            </c:if>
+
+                            <c:if test="${prod.enable == false}">
+                                <td style="text-align: left">
+                                    <button onclick="disableButtons()" id="available" value="${prod.id}" type="button"
+                                            class="btn btn-primary btn-lg">
+                                        <div style="color: black"><a
+                                                href="${pageContext.request.contextPath}/products/available"
+                                                style="color: white">Habilitar</a></div>
+                                    </button>
+                                </td>
+                            </c:if>
+
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
             </div>
             <br><br>
-            <div class="row">
-                <div class="col-xs-2">
-                    <button type="button" class="btn btn-danger btn-lg"><a
-                            href="${pageContext.request.contextPath}/rooms/home" style="color: white">Volver</a>
-                    </button>
+            <div class="col-xs-4">
+                <div class="row" style="height: 45px;text-align: center">
+                    <div class="col-xs-2">
+                        <button onclick="disableButtons()" type="button" id="add" class="btn btn-success btn-lg"><a
+                                href="${pageContext.request.contextPath}/products/addProduct" style="color: white">Agregar</a>
+                        </button>
+                    </div>
+                </div>
+                <br><br>
+                <div class="row">
+                    <div class="col-xs-2">
+                        <button type="button" onclick="disableButtons()" id="back" class="btn btn-danger btn-lg"><a
+                                href="${pageContext.request.contextPath}/rooms/home" style="color: white">Volver</a>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 
 </div>
 </div>
@@ -164,7 +175,18 @@
 
         })
 
-    })
+    });
+
+    function disableButtons() {
+        document.getElementById("available").disabled = true;
+        document.getElementById("add").disabled = true;
+        document.getElementById("back").disabled = true;
+        document.getElementById("disable").disabled = true;
+
+    }
+
+
+
 </script>
 
 

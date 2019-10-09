@@ -43,7 +43,8 @@
                             <li><a href="${pageContext.request.contextPath}/products">Productos</a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/orders">Pedidos</a></li>
                             <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Cuenta<span class="caret"></span></a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Cuenta<span
+                                        class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="${pageContext.request.contextPath}/rooms/home">Logout</a></li>
                                 </ul>
@@ -62,17 +63,18 @@
     </div>
     <br>
     <br>
-    <form:form modelAttribute="productForm" action="/products/addProduct" method="post" enctype="multipart/form-data" id="myForm" onsubmit="return validatePrice()">
-    <div class="row">
-        <div class="col-xs-6">
-            <label for="description">Description: </label>
-            <form:input id="description" path="description" required="required"/>
+    <form:form modelAttribute="productForm" action="/products/addProduct" method="post" enctype="multipart/form-data"
+               id="myForm" >
+        <div class="row">
+            <div class="col-xs-6">
+                <label for="description">Description: </label>
+                <form:input id="description" path="description" required="required"/>
+            </div>
+            <div class="col-xs-6">
+                <label for="price">Price: </label>
+                <form:input id="price" path="price" type="number" required="required"/>
+            </div>
         </div>
-        <div class="col-xs-6">
-            <label for="price">Price: </label>
-            <form:input id="price" path="price" type="number" required="required"/>
-        </div>
-    </div>
         <br><br>
         <div class="row">
             <div class="col-xs-4">
@@ -87,13 +89,14 @@
                     <input id="reset" type="reset" class="btn btn-primary btn-lg" tabindex="4">
                 </div>
                 <div class="col-xs-2">
-                    <button type="button" class="btn btn-danger btn-lg"><a href="${pageContext.request.contextPath}/products" style="color: white">Volver</a></button>
+                    <button type="button" id="back" class="btn btn-danger btn-lg"><a
+                            href="${pageContext.request.contextPath}/products" style="color: white">Volver</a></button>
                 </div>
             </div>
         </div>
     </form:form>
     <br>
-    </div>
+</div>
 
 
 </div>
@@ -101,11 +104,35 @@
 </html>
 
 <script>
-    function validatePrice() {
-        var x = document.forms["myForm"]["price"].value;
-        if (x <= 0) {
-            alert("El precio debe ser mayor que cero");
-            return false;
-        }
-    }
+
+    $(document).ready(function () {
+
+        $('#myForm').submit(function () {
+
+            var x = document.forms["myForm"]["price"].value;
+            if (x <= 0) {
+                alert("El precio debe ser mayor que cero");
+                //disable the submit button
+                $("#submit").attr("disabled", false);
+
+                //disable a normal button
+                $("#reset").attr("disabled", false);
+
+                $("#back").attr("disabled", false);
+                return false;
+            } else {
+
+                //disable the submit button
+                $("#submit").attr("disabled", true);
+
+                //disable a normal button
+                $("#reset").attr("disabled", true);
+
+                $("#back").attr("disabled", true);
+
+                return true;
+            }
+
+        });
+    });
 </script>

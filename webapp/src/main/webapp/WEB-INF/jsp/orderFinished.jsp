@@ -69,7 +69,7 @@
     <br>
     <div class="row">
         <div class="col" style="margin-left: 25px">
-            <button type="button" class="btn btn-success btn-lg"><a href="${pageContext.request.contextPath}/rooms/home" style="color: white">Volver</a></button>
+            <button type="button" class="btn btn-success btn-lg"><a href="${pageContext.request.contextPath}/rooms/orders" style="color: white">Volver</a></button>
         </div>
     </div>
 

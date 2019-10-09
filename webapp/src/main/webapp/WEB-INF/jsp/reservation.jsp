@@ -56,7 +56,7 @@
         </div>
     </div>
     <c:url value="/rooms/reservationPost" var="postPath"/>
-    <form:form modelAttribute="reservationForm" name="myForm" action="${postPath}" method="post">
+    <form:form modelAttribute="reservationForm" id="myForm" name="myForm" action="${postPath}" method="post">
     <div class="row myheader">
         <div class="col-xs-12 " style="text-align: left">Nueva reserva</div>
     </div>
@@ -95,7 +95,7 @@
 
     <div class="row">
         <div class="col" style="text-align: center">
-            <button id="search" type="button" class="btn btn-success btn-lg">
+            <button id="search" type="button" class="btn btn-success btn-lg" >
                 <div style="color: white">Filtrar habitaciones</div>
             </button>
 
@@ -108,7 +108,7 @@
         <div class="col-xs-6">
             <form:label class="items" path="roomId">Habitaciones: </form:label>
             <div id="room_number">
-                <form:select path="roomId" required="required">
+                <form:select path="roomId" id="selec" required="required">
                     <form:option value="0">-</form:option>
                     <c:forEach var="room" items="${allRooms}">
                         <form:option value="${room.id}"> ${room.number}</form:option>
@@ -129,10 +129,10 @@
     <div class="row" style="height: 45px">
         <br><br>
         <div class="col-xs-2">
-            <input type="submit" class="btn btn-success btn-lg" value="Reservar"/>
+            <input type="submit" id="reserv" class="btn btn-success btn-lg" value="Reservar" />
         </div>
         <div class="col-xs-2">
-            <button type="button" class="btn btn-danger btn-lg"><a href="${pageContext.request.contextPath}/rooms/home"
+            <button type="button" id="back" class="btn btn-danger btn-lg"><a href="${pageContext.request.contextPath}/rooms/home"
                                                                    style="color: white">Cancelar</a>
             </button>
         </div>
@@ -145,6 +145,7 @@
 </html>
 
 <script>
+
 
 
     $(document).ready(function () {
@@ -162,6 +163,40 @@
             return false;
 
         })
-    })
+    });
+
+    $(document).ready(function () {
+
+        $('#myForm').submit(function () {
+
+            var x = document.forms["myForm"]["selec"].value;
+            if (x == 0) {
+                alert("Debe elegir una habitacion");
+
+                //disable the submit button
+                $("#reserv").attr("disabled", false);
+
+                //disable a normal button
+                $("#search").attr("disabled", false);
+
+                $("#back").attr("disabled", false);
+                return false;
+            }
+            else {
+
+                //disable the submit button
+                $("#reserv").attr("disabled", true);
+
+                //disable a normal button
+                $("#search").attr("disabled", true);
+
+                $("#back").attr("disabled", true);
+
+                return true;
+            }
+
+        });
+    });
+
 
 </script>

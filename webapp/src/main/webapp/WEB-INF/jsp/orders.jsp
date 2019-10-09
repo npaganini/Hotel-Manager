@@ -79,7 +79,7 @@
 
                         <c:if test="${order.delivered == false}">
                             <td style="text-align: left">
-                                <button id="finished" value="${order.chargeId}" type="button"
+                                <button onclick="disableButtons()" id="finished" value="${order.chargeId}" type="button"
                                         class="btn btn-default btn-lg">
                                     <div style="color: black"><a
                                             style="color: black">Enviar</a></div>
@@ -102,7 +102,7 @@
         <div class="col-xs-4">
             <div class="row" style="height: 45px;text-align: center">
                 <div class="col-xs-2">
-                    <button type="button" class="btn btn-success btn-lg"><a
+                    <button type="button" id="refresh" class="btn btn-success btn-lg"><a
                             href="${pageContext.request.contextPath}/rooms/orders" style="color: white">Actualizar</a>
                     </button>
                 </div>
@@ -110,7 +110,7 @@
             <br><br>
             <div class="row">
                 <div class="col-xs-2">
-                    <button type="button" class="btn btn-danger btn-lg"><a
+                    <button type="button" id="back" class="btn btn-danger btn-lg"><a
                             href="${pageContext.request.contextPath}/rooms/home" style="color: white">Volver</a>
                     </button>
                 </div>
@@ -146,21 +146,13 @@
 
     });
 
-    $(document).ready(function () {
 
-        $('#disable').off().on('click', function (event) {
-            var basePath;
+    function disableButtons() {
+        document.getElementById("finished").disabled = true;
+        document.getElementById("refresh").disabled = true;
+        document.getElementById("back").disabled = true;
 
-            var prodId = $('#disable').val();
-
-            basePath = "/products/disable?productId=" + prodId;
-            event.preventDefault();
-            location.href = basePath;
-            return false;
-
-        })
-
-    })
+    }
 </script>
 
 
