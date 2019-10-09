@@ -168,7 +168,7 @@
 
             var prodId = $('#disable').val();
 
-            basePath = "${pageContext.request.contextPath}"" + "/products/disable?productId=" + prodId;
+            basePath = "${pageContext.request.contextPath}" + "/products/disable?productId=" + prodId;
             event.preventDefault();
             location.href = basePath;
             return false;
