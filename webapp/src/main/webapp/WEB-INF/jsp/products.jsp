@@ -70,7 +70,7 @@
                     <tr>
 
                         <td style="text-align: left">
-                            <img class="card-img-top img-responsive" src='${pageContext.request.contextPath}/product/img?productId=${prod.id}' alt="Card product image">
+                            <img class="card-img-top img-responsive" style="height: 75px;width: 75px" src='${pageContext.request.contextPath}/product/img?productId=${prod.id}' alt="Card product image">
                         </td>
                         <td style="text-align: left">${prod.description}</td>
                         <td style="text-align: left">${prod.price}</td>
