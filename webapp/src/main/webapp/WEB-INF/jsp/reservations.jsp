@@ -134,6 +134,7 @@
                     <th><spring:message code="room.owner"/></th>
                     <th><spring:message code="room.from"/></th>
                     <th><spring:message code="room.until"/></th>
+                    <th><spring:message code="reservation.isActive"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -144,6 +145,8 @@
                         <td style="text-align: left">${reservation.reservation.userEmail}</td>
                         <td style="text-align: left">${reservation.reservation.startDate}</td>
                         <td style="text-align: left">${reservation.reservation.endDate}</td>
+                        <td style="text-align: left">${reservation.reservation.active ? 'TRUE' : 'FALSE'}</td>
+
 
                     </tr>
                 </c:forEach>
