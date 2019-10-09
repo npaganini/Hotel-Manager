@@ -5,7 +5,7 @@
 <html>
 
 <head>
-    <title>e-lobby</title>
+    <title><spring:message code="logo"/></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
@@ -32,7 +32,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home">e-lobby</a>
+                        <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home"><spring:message code="logo"/></a>
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse navbar-right" id="bs-sidebar-navbar-collapse-1">
@@ -56,7 +56,7 @@
     </div>
     <div class="row myheader vertical-align">
         <div class="col-xs-6" style="text-align: left">
-            <div>Habitaciones Ocupadas</div>
+            <div><spring:message code="room.occupied.plural"/></div>
         </div>
         <div class="col-xs-6 " style="text-align: right">
             <button type="button" class="btn btn-success btn-lg"><a
@@ -73,10 +73,10 @@
                 <thead>
                 <tr>
                     <th><spring:message code="room.singular"/></th>
-                    <th><spring:message code="room.type"/>Tipo</th>
-                    <th><spring:message code="room.from"/>Desde</th>
-                    <th><spring:message code="room.until"/>Hasta</th>
-                    <th><spring:message code="room.owner"/>Titular</th>
+                    <th><spring:message code="room.type"/></th>
+                    <th><spring:message code="room.from"/></th>
+                    <th><spring:message code="room.until"/></th>
+                    <th><spring:message code="room.owner"/></th>
                 </tr>
                 </thead>
                 <tbody>

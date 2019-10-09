@@ -14,7 +14,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header" style="font-family: Arial, serif;font-weight: bold;font-size: 25px;">Register</div>
+                    <div class="card-header" style="font-family: Arial, serif;font-weight: bold;font-size: 25px;"><spring:message code="login"/></div>
                     <div class="card-body">
                         <form action="${pageContext.request.contextPath}/login" method="post">
                             <div class="form-group row">

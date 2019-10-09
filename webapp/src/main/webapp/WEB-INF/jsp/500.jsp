@@ -57,7 +57,9 @@
     </div>
     <div class="row myheader vertical-align">
         <div class="col-xs-12" style="text-align: left">
-            <div>Ops!</div>
+            <div>
+                <spring:message code="error"/>
+            </div>
         </div>
     </div>
     <br>

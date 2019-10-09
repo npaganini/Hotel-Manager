@@ -33,7 +33,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home">e-lobby</a>
+                        <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home"><spring:message code="logo"/></a>
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse navbar-right" id="bs-sidebar-navbar-collapse-1">
@@ -72,7 +72,7 @@
             <div class="input-group">
                 <span class="input-group-addon"></span>
                 <form:input id="IDres" path="id_reservation" type="text" class="form-control" name="IDres"
-                            placeholder="ID de reserva" required="required"></form:input>
+                            placeholder="ID de reserva" required="required"/>
             </div>
         </div>
         <div class="col-xs-6">

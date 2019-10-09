@@ -43,7 +43,7 @@
                             <li><a href="${pageContext.request.contextPath}/products"><spring:message code="product.plural"/></a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/orders"><spring:message code="reservation.order.plural"/></a></li>
                             <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> Cuenta<span class="caret"></span></a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> <spring:message code="user.account"/><span class="caret"></span></a>
                                 <ul class="dropdown-menu">
 
                                     <li><a href="${pageContext.request.contextPath}/logout"><span class="glyphicon glyphicon-log-in"></span><spring:message code="user.logout"/></a></li>
@@ -58,20 +58,20 @@
     </div>
     <div class="row myheader vertical-align">
         <div class="col-xs-12" style="text-align: left">
-            <div>Ops!</div>
+            <div><spring:message code="error"/></div>
         </div>
     </div>
     <br>
     <br>
     <div class="row" style="font-size:x-large ">
         <div class="col" style="margin-left: 25px">
-            You don't have access to be here.
+            <spring:message code="error.403"/>
         </div>
     </div>
     <br>
     <div class="row">
         <div class="col" style="margin-left: 25px">
-            <button type="button" class="btn btn-success btn-lg"><a href="${pageContext.request.contextPath}/rooms/home" style="color: white">Volver</a></button>
+            <button type="button" class="btn btn-success btn-lg"><a href="${pageContext.request.contextPath}/rooms/home" style="color: white"><spring:message code="user.home"/></a></button>
         </div>
     </div>
 
