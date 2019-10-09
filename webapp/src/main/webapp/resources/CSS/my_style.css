@@ -116,11 +116,15 @@
     height: 256px !important;
 }
 
-.vertical-center {
-    min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
-    min-height: 100vh; /* These two lines are counted as one :-)       */
-
-    display: flex;
-    align-items: center;
+.user-logout {
+    float:right !important;
+    align-items:center;
 }
 
+.user-navbar {
+    margin-bottom: .5rem;
+    font-family: inherit;
+    font-size: 50px;
+    font-weight: 500;
+    line-height: 1.1;
+}
