@@ -42,6 +42,12 @@
                             <li><a href="${pageContext.request.contextPath}/rooms/reservations">Reservas</a></li>
                             <li><a href="${pageContext.request.contextPath}/products">Productos</a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/orders">Pedidos</a></li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Cuenta<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="${pageContext.request.contextPath}/rooms/home">Logout</a></li>
+                                </ul>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -56,22 +62,22 @@
     </div>
     <br>
     <br>
-    <form:form modelAttribute="productForm" action="/products/addProduct" method="post" enctype="multipart/form-data">
+    <form:form modelAttribute="productForm" action="/products/addProduct" method="post" enctype="multipart/form-data" id="myForm" onsubmit="return validatePrice()">
     <div class="row">
         <div class="col-xs-6">
             <label for="description">Description: </label>
-            <form:input id="description" path="description" />
+            <form:input id="description" path="description" required="required"/>
         </div>
         <div class="col-xs-6">
             <label for="price">Price: </label>
-            <form:input id="price" path="price" type="number" />
+            <form:input id="price" path="price" type="number" required="required"/>
         </div>
     </div>
         <br><br>
         <div class="row">
             <div class="col-xs-4">
                 <label for="img">Product Image: </label>
-                <input type="file" name="img" />
+                <input type="file" name="img" required="required"/>
             </div>
             <div class="col-xs-8">
                 <div class="col-xs-2">
@@ -93,3 +99,13 @@
 </div>
 </body>
 </html>
+
+<script>
+    function validatePrice() {
+        var x = document.forms["myForm"]["price"].value;
+        if (x <= 0) {
+            alert("El precio debe ser mayor que cero");
+            return false;
+        }
+    }
+</script>

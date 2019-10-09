@@ -34,13 +34,19 @@
                         <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home">e-lobby</a>
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
+                    <div class="collapse navbar-collapse navbar-right" id="bs-sidebar-navbar-collapse-1">
                         <ul class="nav navbar-nav">
                             <li><a href="${pageContext.request.contextPath}/rooms/checkin">Check-In</a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/checkout">Check-Out</a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/reservations">Reservas</a></li>
                             <li><a href="${pageContext.request.contextPath}/products">Productos</a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/orders">Pedidos</a></li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Cuenta<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="${pageContext.request.contextPath}/rooms/home">Logout</a></li>
+                                </ul>
+                            </li>
                         </ul>
                     </div>
                 </div>

@@ -42,6 +42,12 @@
                             <li><a href="${pageContext.request.contextPath}/rooms/reservations">Reservas</a></li>
                             <li><a href="${pageContext.request.contextPath}/products">Productos</a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/orders">Pedidos</a></li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Cuenta<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="${pageContext.request.contextPath}/rooms/home">Logout</a></li>
+                                </ul>
+                            </li>
                         </ul>
                     </div>
                 </div>
