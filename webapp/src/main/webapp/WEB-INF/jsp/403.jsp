@@ -64,7 +64,7 @@
     <br>
     <div class="row" style="font-size:x-large ">
         <div class="col" style="margin-left: 25px">
-            la cagaste
+            You don't have access to be here.
         </div>
     </div>
     <br>

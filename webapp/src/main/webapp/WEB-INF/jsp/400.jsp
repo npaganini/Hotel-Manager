@@ -64,7 +64,7 @@
     <br>
     <div class="row" style="font-size:x-large ">
         <div class="col" style="margin-left: 25px">
-           la cagaste
+           Something wrong happen while we were trying to process your request, try again in a few minutes.
         </div>
     </div>
     <br>
