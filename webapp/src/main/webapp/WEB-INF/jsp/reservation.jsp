@@ -158,7 +158,7 @@
             var endDate = $('#to_date').val();
 
 
-            basePath = "/rooms/reservation?startDate=" + startDate + "&endDate=" + endDate;
+            basePath = "${pageContext.request.contextPath}" + "/rooms/reservation?startDate=" + startDate + "&endDate=" + endDate;
             event.preventDefault();
             location.href = basePath;
             return false;
