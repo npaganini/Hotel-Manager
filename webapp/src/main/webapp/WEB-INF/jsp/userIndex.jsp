@@ -37,20 +37,23 @@
                         <a class="navbar-brand" href="${pageContext.request.contextPath}/user/home">e-lobby</a>
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse navbar-right" id="bs-sidebar-navbar-collapse-1">
+                    <nav class="collapse navbar-collapse navbar-right" id="bs-sidebar-navbar-collapse-1">
                         <ul class="nav navbar-nav">
                             <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span
-                                        class="glyphicon glyphicon-user"></span> <spring:message
-                                        code="user.account"/><span class="caret"></span></a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <span class="glyphicon glyphicon-user"></span> <spring:message code="user.account"/>
+                                    <span class="caret"></span>
+                                </a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="${pageContext.request.contextPath}/logout"><span
-                                            class="glyphicon glyphicon-log-in"></span> <spring:message
-                                            code="user.logout"/></a></li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/logout">
+                                            <span class="glyphicon glyphicon-log-in"></span> <spring:message code="user.logout"/>
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>
-                    </div>
+                    </nav>
                 </div>
             </nav>
         </div>
@@ -73,8 +76,9 @@
                     <th><spring:message code="reservation.date.start"/></th>
                     <th><spring:message code="reservation.date.end"/></th>
                     <th><spring:message code="reservation.room.number"/></th>
-                    <th>Actions</th>
-                    <th>Expenses</th>
+                    <th><spring:message code="user.actions"/></th>
+                    <th><spring:message code="user.expenses"/></th>
+                    <th><spring:message code="user.problem"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -85,20 +89,25 @@
                         <td><fmt:formatDate value="${reservation.endDate.time}" pattern="yyyy-MM-dd" /></td>
                         <td>${reservation.room.number}</td>
                         <td style="text-align: left">
-                            <button id="disable" type="button"
-                                    class="btn btn-primary" onclick="location.href='./products?reservationId=${reservation.id}'">
-                                <div style="color: white"><a
-
-                                        style="color: white"><spring:message code="user.product.list.buy"/></a></div>
-                            </button>
+                            <a href="./products?reservationId=${reservation.id}" style="color: white">
+                                <button id="disable" type="button" class="btn btn-primary">
+                                    <spring:message code="user.product.list.buy"/>
+                                </button>
+                            </a>
                         </td>
                         <td style="text-align: left">
-                            <button type="button"
-                                    class="btn btn-primary" onclick="location.href='./expenses?reservationId=${reservation.id}'">
-                                <div style="color: white"><a
-
-                                        style="color: white"><spring:message code="user.product.expenses"/></a></div>
-                            </button>
+                            <a href="./expenses?reservationId=${reservation.id}" style="color: white">
+                                <button type="button" class="btn btn-primary">
+                                    <spring:message code="user.product.expenses"/>
+                                </button>
+                            </a>
+                        </td>
+                        <td style="text-align: left">
+                            <a href="./needHelp?reservationId=${reservation.id}">
+                                <button type="button" class="btn btn-primary">
+                                    <spring:message code="user.help.me"/>
+                                </button>
+                            </a>
                         </td>
                     </tr>
                 </c:forEach>

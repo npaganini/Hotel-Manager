@@ -16,25 +16,36 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.dataTables.min.js"></script>
 
     <link href="${pageContext.request.contextPath}/resources/CSS/my_style.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/slideBar.js"></script>
+    <link href="${pageContext.request.contextPath}/resources/CSS/my_style.css" rel="stylesheet">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+    <script src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js'></script>
 </head>
 <body class="cont">
-<div class="container-fluid">
+<div class="">
+    <nav class="container-fluid message">
+        <span>
+            <a href="${pageContext.request.contextPath}/logout" class="btn btn-primary user-logout align-self-end">
+                <spring:message code="user.logout"/>
+            </a>
+        </span>
+    </nav>
     <div class="form-group" style="grid-auto-columns: auto">
         <div class="modal-title row navbar-default my-card-title message">
             <span class="user-navbar">
                 <spring:message code="user.product.offered"/>
             </span>
-            <span>
-                <a href="${pageContext.request.contextPath}/logout" class="btn btn-primary user-logout align-self-end">
-                    <spring:message code="user.logout"/>
-                </a>
-            </span>
         </div>
         <div class="card-deck my-card-title">
             <c:forEach var="product" items="${ProductsList}">
             <div class="card product-card">
-                <img class="card-img-top img-responsive" style="height: 75px;width: 75px" src='${pageContext.request.contextPath}/product/img?productId=${product.id}' alt="Card product image">
-                <div class="card-body container text-xs-center">
+                <img class="card-img-top img-responsive" src='${pageContext.request.contextPath}/product/img?productId=${product.id}' alt="Card product image">
+                <div class="card-body text-xs-center">
                     <h5 class="card-title text-xs-center message">${product.description}</h5>
                     <p class="card-text price text-xs-center"><fmt:formatNumber type="currency" maxFractionDigits="2" minFractionDigits="2" value="${product.price}"/></p>
                     <form:form modelAttribute="buyProductForm" action='${pageContext.request.contextPath}/user/buyProducts?reservationId=${pageContext.request.getParameter("reservationId")}' method="post">
@@ -46,7 +57,7 @@
             </c:forEach>
         </div>
     </div>
-    <div class="container text-center row message">
+    <div class="container text-xs-left row message">
         <span class="col" style="padding-right: 25px;">
             <a href="${pageContext.request.contextPath}/user/home" class="btn btn-primary">
                 <spring:message code="user.home"/>

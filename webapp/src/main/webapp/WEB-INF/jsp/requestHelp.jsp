@@ -1,9 +1,10 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <html>
 <head>
-    <title><spring:message code="user.product.bought"/></title>
+    <title><spring:message code="user.help.requested"/></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
     <script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
@@ -25,7 +26,7 @@
     <script src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js'></script>
 </head>
 <body class="cont">
-<div class="container-fluid">
+<div class="container-fluid message">
     <nav class="container-fluid message">
         <span>
             <a href="${pageContext.request.contextPath}/logout" class="btn btn-primary user-logout align-self-end">
@@ -33,29 +34,23 @@
             </a>
         </span>
     </nav>
-<c:choose>
-    <c:when test="${!charge.delivered}">
-        <div class="modal-title row navbar-default my-card-title message">
-                <span class="user-navbar">
-                    &nbsp;<spring:message code="user.product.bought"/>
-                </span>
-        </div>
-        <div class="container">
-            <div class="message row"><spring:message code="user.product.itemsDelivered"/></div>
-    </c:when>
-    <c:otherwise>
-            <div class="message row confirTable"><spring:message code="user.product.error"/></div>
-    </c:otherwise>
-</c:choose>
+    <div class="container">
+    <c:choose>
+        <c:when test="${fn:length(helpRequest) eq 0}">
+            <div class="col-alone message row confirTable"><spring:message code="user.help.error"/></div>
+        </c:when>
+        <c:otherwise>
+            <div class="modal-title row navbar-default my-card-title message">
+                <div class="col-alone items text-xs-center"><spring:message code="user.help.requested"/></div>
+                <div class="col-alone form-question__title"><spring:message code="user.help.yourMessage"/></div>
+                <div class="col-alone user-navbar">${helpRequest}</div>
+            </div>
+        </c:otherwise>
+    </c:choose>
         <div class="row message my-card-title">
-            <span class="col" style="padding-right: 25px;">
-                <a href="./products?reservationId=${pageContext.request.getParameter("reservationId")}" class="btn btn-primary">
-                    <spring:message code="user.product.list.browse"/>
-                </a>
-            </span>
             <span class="col">
-                <a href="./expenses?reservationId=${pageContext.request.getParameter("reservationId")}" class="btn btn-primary">
-                    <spring:message code="user.product.list.expenses"/>
+                <a href="./home?reservationId=${pageContext.request.getParameter("reservationId")}" class="btn btn-primary">
+                    <spring:message code="user.home"/>
                 </a>
             </span>
         </div>
