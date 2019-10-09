@@ -152,7 +152,7 @@
 
             var prodId = $('#available').val();
 
-            basePath = "/products/available?productId=" + prodId;
+            basePath = "${pageContext.request.contextPath}" + "/products/available?productId=" + prodId;
             event.preventDefault();
             location.href = basePath;
             return false;
@@ -168,7 +168,7 @@
 
             var prodId = $('#disable').val();
 
-            basePath = "/products/disable?productId=" + prodId;
+            basePath = "${pageContext.request.contextPath}"" + "/products/disable?productId=" + prodId;
             event.preventDefault();
             location.href = basePath;
             return false;

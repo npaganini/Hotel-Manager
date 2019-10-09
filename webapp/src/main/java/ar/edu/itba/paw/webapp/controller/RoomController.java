@@ -12,6 +12,7 @@ import form.ReservationForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -57,7 +58,8 @@ public class RoomController {
     public ModelAndView reservationPost(@ModelAttribute("reservationForm") final ReservationForm form) throws EntityNotFoundException, RequestInvalidException {
         final ModelAndView mav = new ModelAndView("reservationPost");
         LOGGER.debug("Request received to do a reservation on room with id: " + form.getRoomId());
-        if (!roomService.isRoomFreeOnDate(form.getRoomId(), form.getStartDate(), form.getEndDate())) throw new RequestInvalidException();
+        if (!roomService.isRoomFreeOnDate(form.getRoomId(), form.getStartDate(), form.getEndDate()))
+            throw new RequestInvalidException();
         Reservation reserva = new Reservation(form.getRoomId(),
                 form.getUserEmail(), Date.valueOf(form.getStartDate()).toLocalDate(),
                 Date.valueOf(form.getEndDate()).toLocalDate(), 0L);
@@ -112,8 +114,8 @@ public class RoomController {
                                     @RequestParam(value = "endDate", required = false) String endDate,
                                     @ModelAttribute("reservationForm") final ReservationForm form) {
         final ModelAndView mav = new ModelAndView("reservation");
-        if(!(startDate == null || endDate == null) && !(startDate.isEmpty() || endDate.isEmpty()))
-            mav.addObject("allRooms", roomService.findAllFreeBetweenDates(startDate,endDate));
+        if (!(startDate == null || endDate == null) && !(startDate.isEmpty() || endDate.isEmpty()) && LocalDate.parse(startDate).isBefore(LocalDate.parse(endDate)))
+            mav.addObject("allRooms", roomService.findAllFreeBetweenDates(startDate, endDate));
         return mav;
     }
 
@@ -123,8 +125,9 @@ public class RoomController {
                                      @RequestParam(value = "endDate", required = false) String endDate,
                                      @RequestParam(value = "userEmail", required = false) String userEmail) {
         final ModelAndView mav = new ModelAndView("reservations");
-        mav.addObject("reservations", roomService.findAllBetweenDatesAndEmail(startDate,
-                endDate, userEmail));
+        if (!(startDate == null || endDate == null) && !(startDate.isEmpty() || endDate.isEmpty()) && LocalDate.parse(startDate).isBefore(LocalDate.parse(endDate)))
+            mav.addObject("reservations", roomService.findAllBetweenDatesAndEmail(startDate,
+                    endDate, userEmail));
         return mav;
     }
 
