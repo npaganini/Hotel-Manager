@@ -81,7 +81,7 @@
                     <input id="reset" type="reset" class="btn btn-primary btn-lg" tabindex="4">
                 </div>
                 <div class="col-xs-2">
-                    <button type="button" class="btn btn-danger btn-lg"><a href="${pageContext.request.contextPath}/rooms/home" style="color: white">Volver</a></button>
+                    <button type="button" class="btn btn-danger btn-lg"><a href="${pageContext.request.contextPath}/products" style="color: white">Volver</a></button>
                 </div>
             </div>
         </div>
