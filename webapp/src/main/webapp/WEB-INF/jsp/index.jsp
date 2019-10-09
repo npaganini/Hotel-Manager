@@ -42,9 +42,21 @@
                             <li><a href="${pageContext.request.contextPath}/products">Productos</a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/orders">Pedidos</a></li>
                             <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Cuenta<span class="caret"></span></a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-cog"></span> Ajustes<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="${pageContext.request.contextPath}/rooms/home">Logout</a></li>
+                                    <li class="dropdown">
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Idioma<span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#">Es</a></li>
+                                            <li><a href="#">In</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> Cuenta<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="${pageContext.request.contextPath}/rooms/home"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
                                 </ul>
                             </li>
                         </ul>

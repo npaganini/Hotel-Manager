@@ -44,7 +44,7 @@
                             <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Cuenta<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="${pageContext.request.contextPath}/rooms/home">Logout</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/rooms/home"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
                                 </ul>
                             </li>
                         </ul>
