@@ -10,7 +10,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/slideBar.js"></script>
-    <link href="${pageContext.request.contextPath}/resources/CSS/my_style.css" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/CSS/my_style.css">
     <script src='https://kit.fontawesome.com/a076d05399.js'></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
     <script src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js'></script>
@@ -18,7 +18,7 @@
 </head>
 <body class="container cont"
       style="height: 100vh !important; width: 100vw !important;margin-left: 0 !important; margin-right: 0 !important">
-<div >
+<div>
     <div class="row">
         <div class="col">
             <nav class="navbar navbar-inverse sidebar" style="z-index: initial !important;" role="navigation">
@@ -37,15 +37,24 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse navbar-right" id="bs-sidebar-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="${pageContext.request.contextPath}/rooms/checkin"><spring:message code="reservation.checkin"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/checkout"><spring:message code="reservation.checkout"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/reservations"><spring:message code="reservation.plural"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/products"><spring:message code="product.plural"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/orders"><spring:message code="reservation.order.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/checkin"><spring:message
+                                    code="reservation.checkin"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/checkout"><spring:message
+                                    code="reservation.checkout"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/reservations"><spring:message
+                                    code="reservation.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/products"><spring:message
+                                    code="product.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/orders"><spring:message
+                                    code="reservation.order.plural"/></a></li>
                             <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> <spring:message code="user.account"/><span class="caret"></span></a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span
+                                        class="glyphicon glyphicon-user"></span> <spring:message
+                                        code="user.account"/><span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="${pageContext.request.contextPath}/logout"><span class="glyphicon glyphicon-log-in"></span> <spring:message code="user.logout"/></a></li>
+                                    <li><a href="${pageContext.request.contextPath}/logout"><span
+                                            class="glyphicon glyphicon-log-in"></span> <spring:message
+                                            code="user.logout"/></a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -60,7 +69,8 @@
         </div>
         <div class="col-xs-6 " style="text-align: right">
             <button type="button" class="btn btn-success btn-lg"><a
-                    href="${pageContext.request.contextPath}/rooms/reservation" style="color: white"><spring:message code="reservation.new"/></a>
+                    href="${pageContext.request.contextPath}/rooms/reservation" style="color: white"><spring:message
+                    code="reservation.new"/></a>
             </button>
 
         </div>

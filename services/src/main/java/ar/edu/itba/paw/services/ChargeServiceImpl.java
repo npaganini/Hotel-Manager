@@ -40,7 +40,7 @@ public class ChargeServiceImpl implements ChargeService {
     @Override
     public double sumCharge(long reservationId) throws RequestInvalidException {
         LOGGER.debug("Getting the balance of reservation with id" + reservationId);
-        if (!chargeDao.findById(reservationId).isPresent()) {
+        if (!reservationDao.findById(reservationId).isPresent()) {
             throw new RequestInvalidException();
         }
         return chargeDao.sumCharge(reservationId);
