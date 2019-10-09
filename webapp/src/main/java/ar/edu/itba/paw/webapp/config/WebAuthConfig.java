@@ -5,9 +5,11 @@ import ar.edu.itba.paw.webapp.auth.CustomUserDetailsService;
 
 import ar.edu.itba.paw.webapp.auth.MyUserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -22,8 +24,12 @@ import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableWebSecurity
+@PropertySource("classpath:key.properties")
 @ComponentScan("ar.edu.itba.paw.webapp.auth")
 public class WebAuthConfig extends WebSecurityConfigurerAdapter {
+
+    @Value(value = "${key}")
+    private String key;
 
     private final CustomUserDetailsService customUserDetailsService;
     private final ServletContext servletContext;
@@ -42,8 +48,10 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/login").anonymous()
-                .antMatchers("/user/**", "/product/**").hasAuthority(UserRole.CLIENT.toString())
-                .antMatchers("/rooms/**", "/reservation/**", "/products/**", "/product/**").hasAnyAuthority(UserRole.EMPLOYEE.toString(), UserRole.MANAGER.toString()).and().formLogin()
+                .antMatchers("/user/**").hasAuthority(UserRole.CLIENT.toString())
+                .antMatchers("/rooms/**", "/reservation/**", "/products/**").hasAnyAuthority(UserRole.EMPLOYEE.toString(), UserRole.MANAGER.toString())
+                .antMatchers("/product/**").hasAnyAuthority(UserRole.EMPLOYEE.toString(), UserRole.MANAGER.toString(), UserRole.CLIENT.toString())
+                .and().formLogin()
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .successHandler((httpServletRequest, httpServletResponse, authentication)
@@ -62,8 +70,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .and().rememberMe()
                 .rememberMeParameter("rememberMe")
                 .userDetailsService(customUserDetailsService)
-                .key("keyfalopa")
-                .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(60))
+                .key(key)
+                .tokenValiditySeconds((int) TimeUnit.DAYS.toMinutes(60))
                 .and().logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login")

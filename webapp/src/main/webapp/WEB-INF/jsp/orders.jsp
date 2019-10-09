@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <html>
 
@@ -36,15 +37,17 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse navbar-right" id="bs-sidebar-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="${pageContext.request.contextPath}/rooms/checkin">Check-In</a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/checkout">Check-Out</a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/reservations">Reservas</a></li>
-                            <li><a href="${pageContext.request.contextPath}/products">Productos</a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/orders">Pedidos</a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/checkin"><spring:message code="reservation.checkin"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/checkout"><spring:message code="reservation.checkout"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/reservations"><spring:message code="reservation.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/products"><spring:message code="product.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/orders"><spring:message code="reservation.order.plural"/></a></li>
                             <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> Cuenta<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="${pageContext.request.contextPath}/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+
+                                    <li><a href="${pageContext.request.contextPath}/logout"><span class="glyphicon glyphicon-log-in"></span> <spring:message code="user.logout"/></a></li>
+
                                 </ul>
                             </li>
                         </ul>
@@ -55,7 +58,7 @@
     </div>
     <div class="row myheader vertical-align">
         <div class="col-xs-6" style="text-align: left">
-            <div>Productos</div>
+            <div><spring:message code="product.plural"/></div>
         </div>
     </div>
     <br>
@@ -65,9 +68,9 @@
             <table id="myTable" class="display" style="width:100%;  border: 1px solid black !important;">
                 <thead>
                 <tr>
-                    <th>Producto</th>
-                    <th>Habitacion</th>
-                    <th>Estado</th>
+                    <th><spring:message code="product.singular"/></th>
+                    <th><spring:message code="room.singular"/></th>
+                    <th><spring:message code="room.state"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -82,14 +85,14 @@
                                 <button onclick="disableButtons()" id="finished" value="${order.chargeId}" type="button"
                                         class="btn btn-default btn-lg">
                                     <div style="color: black"><a
-                                            style="color: black">Enviar</a></div>
+                                            style="color: black"><spring:message code="send"/></a></div>
                                 </button>
                             </td>
                         </c:if>
 
                         <c:if test="${order.delivered == true}">
                             <td style="text-align: left">
-                                <div>TERMINADO</div>
+                                <div><spring:message code="done"/></div>
                             </td>
                         </c:if>
 
@@ -103,15 +106,17 @@
             <div class="row" style="height: 45px;text-align: center">
                 <div class="col-xs-2">
                     <button type="button" id="refresh" class="btn btn-success btn-lg"><a
-                            href="${pageContext.request.contextPath}/rooms/orders" style="color: white">Actualizar</a>
+                            href="${pageContext.request.contextPath}/rooms/orders" style="color: white"><spring:message code="refresh"/></a>
                     </button>
                 </div>
             </div>
             <br><br>
             <div class="row">
                 <div class="col-xs-2">
+
                     <button type="button" id="back" class="btn btn-danger btn-lg"><a
-                            href="${pageContext.request.contextPath}/rooms/home" style="color: white">Volver</a>
+                            href="${pageContext.request.contextPath}/rooms/home" style="color: white"><spring:message code="user.home"/></a>
+
                     </button>
                 </div>
             </div>

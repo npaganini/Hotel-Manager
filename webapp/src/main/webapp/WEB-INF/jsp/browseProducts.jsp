@@ -21,9 +21,14 @@
 <div class="container-fluid">
     <div class="form-group" style="grid-auto-columns: auto">
         <div class="modal-title row navbar-default my-card-title message">
-            <h1>
+            <span class="user-navbar">
                 <spring:message code="user.product.offered"/>
-            </h1>
+            </span>
+            <span>
+                <a href="${pageContext.request.contextPath}/logout" class="btn btn-primary user-logout align-self-end">
+                    <spring:message code="user.logout"/>
+                </a>
+            </span>
         </div>
         <div class="card-deck my-card-title">
             <c:forEach var="product" items="${ProductsList}">

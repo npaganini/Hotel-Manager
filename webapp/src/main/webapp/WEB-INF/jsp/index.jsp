@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <html>
 
@@ -36,15 +37,15 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse navbar-right" id="bs-sidebar-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="${pageContext.request.contextPath}/rooms/checkin">Check-In</a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/checkout">Check-Out</a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/reservations">Reservas</a></li>
-                            <li><a href="${pageContext.request.contextPath}/products">Productos</a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/orders">Pedidos</a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/checkin"><spring:message code="reservation.checkin"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/checkout"><spring:message code="reservation.checkout"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/reservations"><spring:message code="reservation.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/products"><spring:message code="product.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/orders"><spring:message code="reservation.order.plural"/></a></li>
                             <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> Cuenta<span class="caret"></span></a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> <spring:message code="user.account"/><span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="${pageContext.request.contextPath}/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/logout"><span class="glyphicon glyphicon-log-in"></span> <spring:message code="user.logout"/></a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -59,7 +60,7 @@
         </div>
         <div class="col-xs-6 " style="text-align: right">
             <button type="button" class="btn btn-success btn-lg"><a
-                    href="${pageContext.request.contextPath}/rooms/reservation" style="color: white">Nueva Reserva</a>
+                    href="${pageContext.request.contextPath}/rooms/reservation" style="color: white"><spring:message code="reservation.new"/></a>
             </button>
 
         </div>
@@ -71,11 +72,11 @@
             <table id="myTable" class="display" style="width:100%;  border: 1px solid black !important;">
                 <thead>
                 <tr>
-                    <th>Habitacion</th>
-                    <th>Tipo</th>
-                    <th>Desde</th>
-                    <th>Hasta</th>
-                    <th>Titular</th>
+                    <th><spring:message code="room.singular"/></th>
+                    <th><spring:message code="room.type"/>Tipo</th>
+                    <th><spring:message code="room.from"/>Desde</th>
+                    <th><spring:message code="room.until"/>Hasta</th>
+                    <th><spring:message code="room.owner"/>Titular</th>
                 </tr>
                 </thead>
                 <tbody>

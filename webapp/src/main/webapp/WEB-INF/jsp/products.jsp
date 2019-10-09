@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <html>
 
@@ -36,15 +37,15 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse navbar-right" id="bs-sidebar-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="${pageContext.request.contextPath}/rooms/checkin">Check-In</a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/checkout">Check-Out</a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/reservations">Reservas</a></li>
-                            <li><a href="${pageContext.request.contextPath}/products">Productos</a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/orders">Pedidos</a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/checkin"><spring:message code="reservation.checkin"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/checkout"><spring:message code="reservation.checkout"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/reservations"><spring:message code="reservation.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/products"><spring:message code="product.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/orders"><spring:message code="reservation.order.plural"/></a></li>
                             <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> Cuenta<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="${pageContext.request.contextPath}/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/logout"><span class="glyphicon glyphicon-log-in"></span> <spring:message code="user.logout"/></a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -55,27 +56,28 @@
     </div>
     <div class="row myheader vertical-align">
         <div class="col-xs-6" style="text-align: left">
-            <div>Productos</div>
+            <div><spring:message code="product.plural"/></div>
         </div>
     </div>
     <br>
     <br>
+
     <form id="myForm">
         <div class="row">
             <div class="col-xs-8 form-group" style="z-index:9999;grid-auto-columns: auto">
                 <table id="myTable" class="display" style="width:100%;  border: 1px solid black !important;">
                     <thead>
-                    <tr>
-                        <th>Producto</th>
-                        <th>Descripcion</th>
-                        <th>Precio</th>
-                        <th>Estado</th>
-                    </tr>
+
+                  <tr>  
+                    <th><spring:message code="product.singular"/></th>
+                    <th><spring:message code="product.description"/></th>
+                    <th><spring:message code="user.product.price"/></th>
+                    <th><spring:message code="room.state"/></th>
+                </tr>
                     </thead>
                     <tbody>
                     <c:forEach var="prod" items="${product}">
                         <tr>
-
                             <td style="text-align: left">
                                 <img class="card-img-top img-responsive" style="height: 75px;width: 75px"
                                      src='${pageContext.request.contextPath}/product/img?productId=${prod.id}'
@@ -127,7 +129,6 @@
                                 href="${pageContext.request.contextPath}/rooms/home" style="color: white">Volver</a>
                         </button>
                     </div>
-                </div>
             </div>
         </div>
     </form>
