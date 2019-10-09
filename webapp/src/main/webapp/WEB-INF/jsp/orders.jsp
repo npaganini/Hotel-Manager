@@ -16,9 +16,9 @@
     <script src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js'></script>
 
 </head>
-<body>
-<div class="container cont"
-     style="height: 100vh !important; width: 100vw !important;margin-left: 0 !important; margin-right: 0 !important">
+<body class="container cont"
+      style="height: 100vh !important; width: 100vw !important;margin-left: 0 !important; margin-right: 0 !important">
+<div >
     <div class="row">
         <div class="col">
             <nav class="navbar navbar-inverse sidebar" style="z-index: initial !important;" role="navigation">
@@ -35,7 +35,7 @@
                         <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home">e-lobby</a>
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
+                    <div class="collapse navbar-collapse navbar-right" id="bs-sidebar-navbar-collapse-1">
                         <ul class="nav navbar-nav">
                             <li><a href="${pageContext.request.contextPath}/rooms/checkin"><spring:message code="reservation.checkin"/></a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/checkout"><spring:message code="reservation.checkout"/></a></li>
@@ -43,9 +43,11 @@
                             <li><a href="${pageContext.request.contextPath}/products"><spring:message code="product.plural"/></a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/orders"><spring:message code="reservation.order.plural"/></a></li>
                             <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Cuenta<span class="caret"></span></a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> Cuenta<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="${pageContext.request.contextPath}/rooms/home"><spring:message code="user.logout"/></a></li>
+
+                                    <li><a href="${pageContext.request.contextPath}/logout"><span class="glyphicon glyphicon-log-in"></span> <spring:message code="user.logout"/></a></li>
+
                                 </ul>
                             </li>
                         </ul>
@@ -80,7 +82,7 @@
 
                         <c:if test="${order.delivered == false}">
                             <td style="text-align: left">
-                                <button id="finished" value="${order.chargeId}" type="button"
+                                <button onclick="disableButtons()" id="finished" value="${order.chargeId}" type="button"
                                         class="btn btn-default btn-lg">
                                     <div style="color: black"><a
                                             style="color: black"><spring:message code="send"/></a></div>
@@ -103,7 +105,7 @@
         <div class="col-xs-4">
             <div class="row" style="height: 45px;text-align: center">
                 <div class="col-xs-2">
-                    <button type="button" class="btn btn-success btn-lg"><a
+                    <button type="button" id="refresh" class="btn btn-success btn-lg"><a
                             href="${pageContext.request.contextPath}/rooms/orders" style="color: white"><spring:message code="refresh"/></a>
                     </button>
                 </div>
@@ -111,8 +113,10 @@
             <br><br>
             <div class="row">
                 <div class="col-xs-2">
-                    <button type="button" class="btn btn-danger btn-lg"><a
+
+                    <button type="button" id="back" class="btn btn-danger btn-lg"><a
                             href="${pageContext.request.contextPath}/rooms/home" style="color: white"><spring:message code="user.home"/></a>
+
                     </button>
                 </div>
             </div>
@@ -147,21 +151,13 @@
 
     });
 
-    $(document).ready(function () {
 
-        $('#disable').off().on('click', function (event) {
-            var basePath;
+    function disableButtons() {
+        document.getElementById("finished").disabled = true;
+        document.getElementById("refresh").disabled = true;
+        document.getElementById("back").disabled = true;
 
-            var prodId = $('#disable').val();
-
-            basePath = "/products/disable?productId=" + prodId;
-            event.preventDefault();
-            location.href = basePath;
-            return false;
-
-        })
-
-    })
+    }
 </script>
 
 
