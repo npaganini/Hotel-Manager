@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.daos.ChargeDao;
+import ar.edu.itba.paw.interfaces.daos.ReservationDao;
 import ar.edu.itba.paw.models.charge.Charge;
 import ar.edu.itba.paw.models.dtos.ChargeRoomReservationDTO;
 import ar.edu.itba.paw.models.product.Product;
@@ -17,6 +18,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ChargeServiceImplTest {
@@ -31,6 +33,8 @@ public class ChargeServiceImplTest {
 
     @Mock
     private ChargeDao chargeDao;
+    @Mock
+    private ReservationDao reservationDao;
 
     @InjectMocks
     private ChargeServiceImpl chargeService;
@@ -49,6 +53,7 @@ public class ChargeServiceImplTest {
         ChargeRoomReservationDTO chargeRoomReservationDTO = new ChargeRoomReservationDTO(product1, charge1, reservationValid);
         List<ChargeRoomReservationDTO> chargeRoomReservationDTOList = new LinkedList<>();
         chargeRoomReservationDTOList.add(chargeRoomReservationDTO);
+        Mockito.when(reservationDao.findById(ID_1)).thenReturn(Optional.of(reservationValid));
         Mockito.when(chargeDao.findChargeByReservationHash(ID_1)).thenReturn(chargeRoomReservationDTOList);
         // 2. SUT
         List<ChargeRoomReservationDTO> userReservations = chargeService.getAllChargesByReservationId(ID_1);
@@ -71,6 +76,8 @@ public class ChargeServiceImplTest {
     @Test
     public void testSumCharge() throws Exception {
         // 1. Setup!
+        Charge aCharge = new Charge(ID_1, ID_1);
+        Mockito.when(chargeDao.findById(ID_1)).thenReturn(Optional.of(aCharge));
         Mockito.when(chargeDao.sumCharge(ID_1)).thenReturn(TOTAL);
         // 2. SUT
         double total = chargeService.sumCharge(ID_1);
