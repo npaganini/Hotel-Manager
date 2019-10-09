@@ -38,7 +38,7 @@
                                 <div class="col-md-6 offset-md-4">
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="rememberMe"> <spring:message code="password"/>
+                                            <input type="checkbox" name="rememberMe"> <spring:message code="rememberme"/>
                                         </label>
                                     </div>
                                 </div>
