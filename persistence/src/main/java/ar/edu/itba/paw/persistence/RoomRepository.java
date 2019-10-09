@@ -39,7 +39,8 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
         parameterSource.addValue("startDate", LocalDate.parse(startDate));
         parameterSource.addValue("endDate", LocalDate.parse(endDate));
         return jdbcTemplateWithNamedParameter.query("select * from room r where not exists (select res.room_id " +
-                        "from reservation res WHERE res.room_id = r.id AND (res.start_date >= :startDate OR res.end_date <= :endDate))",
+                        "from reservation res WHERE res.room_id = r.id AND ((:startDate <= res.end_date AND :startDate " +
+                        ">= res.start_date) OR (:endDate >= res.start_date AND :endDate <= res.end_date)))",
                 parameterSource, getRowMapper());
     }
 
@@ -86,9 +87,9 @@ public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
                 "= true WHERE id = :roomId ", parameterSource);
     }
 
-    public List<RoomReservationDTO> getRoomsReservedActive(){
+    public List<RoomReservationDTO> getRoomsReservedActive() {
         return jdbcTemplateWithNamedParameter.query("SELECT * FROM " + Reservation.TABLE_NAME + " res JOIN "
-                        + Room.TABLE_NAME + " r ON res.room_id = r.id " , getRowMapperWithJoin());
+                + Room.TABLE_NAME + " r ON res.room_id = r.id ", getRowMapperWithJoin());
     }
 
     @Override
