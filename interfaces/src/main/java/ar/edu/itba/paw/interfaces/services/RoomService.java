@@ -25,4 +25,5 @@ public interface RoomService {
 
     List<RoomReservationDTO> getRoomsReservedActive();
 
+    boolean isRoomFreeOnDate(long roomId, String startDate, String endDate);
 }

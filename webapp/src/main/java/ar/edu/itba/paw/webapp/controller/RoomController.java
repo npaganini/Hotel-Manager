@@ -53,9 +53,10 @@ public class RoomController {
 
 
     @PostMapping("/reservationPost")
-    public ModelAndView reservationPost(@ModelAttribute("reservationForm") final ReservationForm form) throws EntityNotFoundException {
+    public ModelAndView reservationPost(@ModelAttribute("reservationForm") final ReservationForm form) throws EntityNotFoundException, RequestInvalidException {
         final ModelAndView mav = new ModelAndView("reservationPost");
         LOGGER.debug("Request received to do a reservation on room with id: " + form.getRoomId());
+        if (!roomService.isRoomFreeOnDate(form.getRoomId(), form.getStartDate(), form.getEndDate())) throw new RequestInvalidException();
         Reservation reserva = new Reservation(form.getRoomId(),
                 form.getUserEmail(), Date.valueOf(form.getStartDate()).toLocalDate(),
                 Date.valueOf(form.getEndDate()).toLocalDate(), 0L);
