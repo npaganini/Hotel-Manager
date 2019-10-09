@@ -10,6 +10,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.Optional;
+
 @RunWith(MockitoJUnitRunner.class)
 public class ProductServiceImplTest {
     private static final long ID_1 = 1L;
@@ -48,6 +50,8 @@ public class ProductServiceImplTest {
     @Test
     public void testUnableProduct() throws Exception {
         // 1. Setup!
+        Product product1 = new Product(PRODUCT_NAME_1, PRODUCT_PRICE_1);
+        Mockito.when(productDao.findById(ID_1)).thenReturn(Optional.of(product1));
         Mockito.when(productDao.updateProductEnable(ID_1, FALSE)).thenReturn(BOOLEAN_INT_TRUE);
         // 2. SUT
         boolean productDisabled = productService.unableProduct(ID_1);
@@ -62,6 +66,9 @@ public class ProductServiceImplTest {
     @Test
     public void testEnableProduct() throws Exception {
         // 1. Setup!
+        byte[] file = null;
+        Product product1 = new Product(ID_1, PRODUCT_NAME_1, PRODUCT_PRICE_1, file, FALSE);
+        Mockito.when(productDao.findById(ID_1)).thenReturn(Optional.of(product1));
         Mockito.when(productDao.updateProductEnable(ID_1, TRUE)).thenReturn(BOOLEAN_INT_TRUE);
         // 2. SUT
         boolean productEnabled = productService.enableProduct(ID_1);
