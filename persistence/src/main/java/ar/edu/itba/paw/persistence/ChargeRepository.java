@@ -68,9 +68,9 @@ public class ChargeRepository extends SimpleRepository<Charge> implements Charge
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("reservationId", reservationId);
         return jdbcTemplateWithNamedParameter
-                .query("SELECT * FROM " + Charge.TABLE_NAME + " NATURAL JOIN " +
-                        Product.TABLE_NAME + " NATURAL JOIN " + Reservation.TABLE_NAME +
-                        " r WHERE r.id = :reservationId", parameters, getRowMapperOfChargeRoomReservationDTO());
+                .query("SELECT * FROM " + Charge.TABLE_NAME + " c JOIN " +
+                        Product.TABLE_NAME + " p ON c.product_id = p.id JOIN " + Reservation.TABLE_NAME +
+                        " res ON res.id = c.reservation_id WHERE res.id = :reservationId", parameters, getRowMapperOfChargeRoomReservationDTO());
     }
 
     @Override

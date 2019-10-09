@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.services.ProductService;
 import ar.edu.itba.paw.interfaces.services.StorageService;
 import ar.edu.itba.paw.models.product.Product;
@@ -44,7 +45,7 @@ public class ProductController {
     }
 
     @GetMapping("/products/disable")
-    public ModelAndView hideProduct(@RequestParam(value = "productId", required = false) long productId) {
+    public ModelAndView hideProduct(@RequestParam(value = "productId", required = false) long productId) throws Exception {
         final ModelAndView mav = new ModelAndView("productDisable");
         productService.unableProduct(productId);
         return mav;
@@ -52,7 +53,7 @@ public class ProductController {
 
 
     @GetMapping("/products/available")
-    public ModelAndView showProduct(@RequestParam(value = "productId", required = false) long productId) {
+    public ModelAndView showProduct(@RequestParam(value = "productId", required = false) long productId) throws Exception {
         final ModelAndView mav = new ModelAndView("productAvailable");
         productService.enableProduct(productId);
         return mav;
@@ -77,7 +78,7 @@ public class ProductController {
     }
 
     @GetMapping(value = "/product/img", produces = MediaType.IMAGE_PNG_VALUE)
-    public @ResponseBody byte[] getImg(@RequestParam("productId") long productId) {
+    public @ResponseBody byte[] getImg(@RequestParam("productId") long productId) throws EntityNotFoundException {
         return productService.findProductById(productId).getFile();
     }
 }

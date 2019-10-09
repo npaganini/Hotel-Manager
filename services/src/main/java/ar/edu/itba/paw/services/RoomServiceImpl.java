@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RoomServiceImpl implements RoomService {
@@ -95,6 +96,13 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public List<RoomReservationDTO> getRoomsReservedActive() {
         return roomDao.getRoomsReservedActive();
+    }
+
+    @Override
+    public boolean isRoomFreeOnDate(long roomId, String startDate, String endDate) {
+        List<Room> rooms = roomDao.findAllFreeBetweenDates(startDate, endDate)
+                .parallelStream().filter(room -> room.getId() == roomId).collect(Collectors.toList());
+        return rooms.size() == 1 && rooms.get(0).getId() == roomId;
     }
 
 }

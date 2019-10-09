@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
+import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.ChargeService;
 import ar.edu.itba.paw.interfaces.services.ReservationService;
 import ar.edu.itba.paw.interfaces.services.RoomService;
@@ -51,11 +52,11 @@ public class RoomController {
     }
 
 
-
     @PostMapping("/reservationPost")
-    public ModelAndView reservationPost(@ModelAttribute("reservationForm") final ReservationForm form) throws EntityNotFoundException {
+    public ModelAndView reservationPost(@ModelAttribute("reservationForm") final ReservationForm form) throws EntityNotFoundException, RequestInvalidException {
         final ModelAndView mav = new ModelAndView("reservationPost");
         LOGGER.debug("Request received to do a reservation on room with id: " + form.getRoomId());
+        if (!roomService.isRoomFreeOnDate(form.getRoomId(), form.getStartDate(), form.getEndDate())) throw new RequestInvalidException();
         Reservation reserva = new Reservation(form.getRoomId(),
                 form.getUserEmail(), Date.valueOf(form.getStartDate()).toLocalDate(),
                 Date.valueOf(form.getEndDate()).toLocalDate(), 0L);
@@ -71,10 +72,13 @@ public class RoomController {
     }
 
     @PostMapping("/checkinPost")
-    public ModelAndView checkinPost(@ModelAttribute("checkinForm") final CheckinForm form) throws EntityNotFoundException {
+    public ModelAndView checkinPost(@ModelAttribute("checkinForm") final CheckinForm form) throws RequestInvalidException, EntityNotFoundException {
         final ModelAndView mav = new ModelAndView("checkinPost");
         LOGGER.debug("Request received to do the check-in on reservation with hash: " + form.getId_reservation());
         Reservation reservation = reservationService.getReservationByHash(form.getId_reservation());
+        if (reservation.isActive()) {
+            throw new RequestInvalidException();
+        }
         roomService.reservateRoom(reservation.getRoomId(), reservation);
         reservationService.activeReservation(reservation.getId());
         return mav;
@@ -86,12 +90,15 @@ public class RoomController {
     }
 
     @PostMapping("/checkoutPost")
-    public ModelAndView checkoutPost(@ModelAttribute("checkoutForm") final CheckoutForm form) throws EntityNotFoundException {
+    public ModelAndView checkoutPost(@ModelAttribute("checkoutForm") final CheckoutForm form) throws RequestInvalidException, EntityNotFoundException {
         final ModelAndView mav = new ModelAndView("checkoutPost");
+        Reservation reservation = reservationService.getReservationByHash(form.getId_reservation());
+        if (!reservation.isActive()) {
+            throw new RequestInvalidException();
+        }
         LOGGER.debug("Request received to do the check-out on reservation with hash: " + form.getId_reservation());
         mav.addObject("charges", chargeService.getAllChargesByReservationId(reservationService.getReservationByHash(form.getId_reservation()).getId()));
         mav.addObject("totalCharge", chargeService.sumCharge(reservationService.getReservationByHash(form.getId_reservation()).getId()));
-        Reservation reservation = reservationService.getReservationByHash(form.getId_reservation());
         roomService.freeRoom(reservation.getRoomId());
         reservationService.inactiveReservation(reservation.getId());
         return mav;
@@ -126,7 +133,7 @@ public class RoomController {
     }
 
     @GetMapping("/orders/sendOrder")
-    public ModelAndView sendOrder(@RequestParam(value = "chargeId", required = false) long chargeId) {
+    public ModelAndView sendOrder(@RequestParam(value = "chargeId", required = false) long chargeId) throws Exception {
         final ModelAndView mav = new ModelAndView("orderFinished");
         chargeService.setChargeToDelivered(chargeId);
         return mav;

@@ -1,12 +1,15 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.daos.ProductDao;
+import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
+import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.ProductService;
 import ar.edu.itba.paw.models.product.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import sun.misc.Request;
 
 import java.io.File;
 import java.util.List;
@@ -29,27 +32,35 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean unableProduct(long productId) {
+    public boolean unableProduct(long productId) throws RequestInvalidException {
         LOGGER.debug("About to unable product for visibility with id " + productId);
+        if (!productDao.findById(productId).orElseThrow(RequestInvalidException::new).isEnable()) {
+            throw new RequestInvalidException();
+        }
         return productDao.updateProductEnable(productId, false) > 0;
     }
 
     @Override
-    public boolean enableProduct(long productId) {
+    public boolean enableProduct(long productId) throws RequestInvalidException {
         LOGGER.debug("About to enable product for visibility with id " + productId);
+        if (productDao.findById(productId).orElseThrow(RequestInvalidException::new).isEnable()) {
+            throw new RequestInvalidException();
+        }
         return productDao.updateProductEnable(productId, true) > 0;
     }
 
     @Override
-    public List<Product> getAll(){
+    public List<Product> getAll() {
         return productDao.getAllProducts();
     }
 
     @Override
     public List<Product> getAllProductsForTable(){return productDao.getAllProductsForTable();}
 
-    public Product findProductById(long productId) {
-        return productDao.findById(productId).get();
+    @Override
+    public Product findProductById(long productId) throws EntityNotFoundException {
+        return productDao.findById(productId).orElseThrow(() ->
+                new EntityNotFoundException("Can't find product with id " + productId));
     }
 
 }

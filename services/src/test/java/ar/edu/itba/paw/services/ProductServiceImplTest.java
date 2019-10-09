@@ -46,7 +46,7 @@ public class ProductServiceImplTest {
      * uses productDao.updateProductEnable(long productId)
      **/
     @Test
-    public void testUnableProduct() {
+    public void testUnableProduct() throws Exception {
         // 1. Setup!
         Mockito.when(productDao.updateProductEnable(ID_1, FALSE)).thenReturn(BOOLEAN_INT_TRUE);
         // 2. SUT
@@ -60,7 +60,7 @@ public class ProductServiceImplTest {
      * uses productDao.updateProductEnable(long productID)
      **/
     @Test
-    public void testEnableProduct() {
+    public void testEnableProduct() throws Exception {
         // 1. Setup!
         Mockito.when(productDao.updateProductEnable(ID_1, TRUE)).thenReturn(BOOLEAN_INT_TRUE);
         // 2. SUT
