@@ -77,9 +77,10 @@ public class ChargeRepository extends SimpleRepository<Charge> implements Charge
     public double sumCharge(long reservationId) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
         parameterSource.addValue("reservationId", reservationId);
-        return jdbcTemplateWithNamedParameter.query("SELECT sum(p.price) FROM charge c JOIN product p " +
+        List<Double> queryResult = jdbcTemplateWithNamedParameter.query("SELECT sum(p.price) FROM charge c JOIN product p " +
                         "ON p.id = c.product_id JOIN reservation r ON c.reservation_id = r.id WHERE r.id = :reservationId GROUP BY r.id",
-                parameterSource, getSumRowMapper()).get(0);
+                parameterSource, getSumRowMapper());
+        return queryResult.size() > 0 ? queryResult.get(0) : 0d;
     }
 
     @Override

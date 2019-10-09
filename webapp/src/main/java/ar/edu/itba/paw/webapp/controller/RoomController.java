@@ -97,13 +97,13 @@ public class RoomController {
     @Transactional
     public ModelAndView checkoutPost(@ModelAttribute("checkoutForm") final CheckoutForm form) throws RequestInvalidException, EntityNotFoundException {
         final ModelAndView mav = new ModelAndView("checkoutPost");
-        Reservation reservation = reservationService.getReservationByHash(form.getId_reservation());
+        Reservation reservation = reservationService.getReservationByHash(form.getId_reservation().trim());
         if (!reservation.isActive()) {
             throw new RequestInvalidException();
         }
         LOGGER.debug("Request received to do the check-out on reservation with hash: " + form.getId_reservation());
-        mav.addObject("charges", chargeService.getAllChargesByReservationId(reservationService.getReservationByHash(form.getId_reservation()).getId()));
-        mav.addObject("totalCharge", chargeService.sumCharge(reservationService.getReservationByHash(form.getId_reservation()).getId()));
+        mav.addObject("charges", chargeService.getAllChargesByReservationId(reservation.getId()));
+        mav.addObject("totalCharge", chargeService.sumCharge(reservation.getId()));
         roomService.freeRoom(reservation.getRoomId());
         reservationService.inactiveReservation(reservation.getId());
         return mav;
