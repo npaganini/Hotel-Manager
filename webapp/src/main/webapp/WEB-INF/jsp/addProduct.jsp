@@ -33,7 +33,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home">e-lobby</a>
+                        <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home"><spring:message code="logo"/></a>
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse navbar-right" id="bs-sidebar-navbar-collapse-1">
@@ -78,7 +78,7 @@
                id="myForm">
         <div class="row">
             <div class="col-xs-6">
-                <label for="description">Description: </label>
+                <label for="description"><spring:message code="product.description"/>: </label>
                 <form:input id="description" path="description" required="required"/>
             </div>
             <div class="col-xs-6">
@@ -126,7 +126,7 @@
 
             var x = document.forms["myForm"]["price"].value;
             if (x <= 0) {
-                alert("El precio debe ser mayor que cero");
+                alert(<spring:message code="product.price.positive"/>);
                 //disable the submit button
                 $("#submit").attr("disabled", false);
 

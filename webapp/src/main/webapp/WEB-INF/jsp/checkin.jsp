@@ -73,7 +73,7 @@
             <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                 <form:input id="email" path="userEmail" type="text" class="form-control" name="email"
-                            placeholder="Email" required="required"></form:input>
+                            placeholder="Email" required="required"/>
             </div>
         </div>
         <div class="col-xs-6">
@@ -81,7 +81,7 @@
             <div class="input-group">
                 <span class="input-group-addon"></span>
                 <form:input id="IDres" path="id_reservation" type="text" class="form-control" name="IDres"
-                            placeholder="ID de reserva" required="required"></form:input>
+                            placeholder="ID de reserva" required="required"/>
             </div>
         </div>
     </div>

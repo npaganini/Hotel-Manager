@@ -32,7 +32,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home">e-lobby</a>
+                        <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home"><spring:message code="logo"/></a>
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse navbar-right" id="bs-sidebar-navbar-collapse-1">
@@ -58,14 +58,14 @@
     </div>
     <div class="row myheader vertical-align">
         <div class="col-xs-12" style="text-align: left">
-            <div>Ops!</div>
+            <div><spring:message code="error"/></div>
         </div>
     </div>
     <br>
     <br>
     <div class="row" style="font-size:x-large ">
         <div class="col" style="margin-left: 25px">
-           Something wrong happen while we were trying to process your request, try again in a few minutes.
+            <spring:message code="error.500"/>
         </div>
     </div>
     <br>
