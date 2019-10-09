@@ -69,7 +69,7 @@
                 <c:forEach var="prod" items="${product}">
                     <tr>
 
-                        <td style="text-align: left">foto</td>
+                        <td style="text-align: left">${prod.file}</td>
                         <td style="text-align: left">${prod.description}</td>
                         <td style="text-align: left">${prod.price}</td>
 
