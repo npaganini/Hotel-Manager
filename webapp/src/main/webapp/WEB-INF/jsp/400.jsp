@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 
 
@@ -36,15 +37,15 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="${pageContext.request.contextPath}/rooms/checkin">Check-In</a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/checkout">Check-Out</a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/reservations">Reservas</a></li>
-                            <li><a href="${pageContext.request.contextPath}/products">Productos</a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/orders">Pedidos</a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/checkin"><spring:message code="reservation.checkin"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/checkout"><spring:message code="reservation.checkout"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/reservations"><spring:message code="reservation.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/products"><spring:message code="product.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/orders"><spring:message code="reservation.order.plural"/></a></li>
                             <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Cuenta<span class="caret"></span></a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><spring:message code="user.account"/><span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="${pageContext.request.contextPath}/rooms/home">Logout</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/rooms/home"><spring:message code="user.logout"/></a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -69,7 +70,7 @@
     <br>
     <div class="row">
         <div class="col" style="margin-left: 25px">
-            <button type="button" class="btn btn-success btn-lg"><a href="${pageContext.request.contextPath}/rooms/home" style="color: white">Volver</a></button>
+            <button type="button" class="btn btn-success btn-lg"><a href="${pageContext.request.contextPath}/rooms/home" style="color: white"><spring:message code="user.home"/></a></button>
         </div>
     </div>
 

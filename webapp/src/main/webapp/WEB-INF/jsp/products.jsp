@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <html>
 
@@ -36,15 +37,15 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="${pageContext.request.contextPath}/rooms/checkin">Check-In</a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/checkout">Check-Out</a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/reservations">Reservas</a></li>
-                            <li><a href="${pageContext.request.contextPath}/products">Productos</a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/orders">Pedidos</a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/checkin"><spring:message code="reservation.checkin"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/checkout"><spring:message code="reservation.checkout"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/reservations"><spring:message code="reservation.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/products"><spring:message code="product.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/orders"><spring:message code="reservation.order.plural"/></a></li>
                             <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Cuenta<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="${pageContext.request.contextPath}/rooms/home">Logout</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/rooms/home"><spring:message code="user.logout"/></a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -55,7 +56,7 @@
     </div>
     <div class="row myheader vertical-align">
         <div class="col-xs-6" style="text-align: left">
-            <div>Productos</div>
+            <div><spring:message code="product.plural"/></div>
         </div>
     </div>
     <br>
@@ -65,10 +66,10 @@
             <table id="myTable" class="display" style="width:100%;  border: 1px solid black !important;">
                 <thead>
                 <tr>
-                    <th>Producto</th>
-                    <th>Descripcion</th>
-                    <th>Precio</th>
-                    <th>Estado</th>
+                    <th><spring:message code="product.singular"/></th>
+                    <th><spring:message code="product.description"/></th>
+                    <th><spring:message code="user.product.price"/></th>
+                    <th><spring:message code="room.state"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -84,7 +85,7 @@
                         <c:if test = "${prod.enable == true}">
                             <td style="text-align: left">
                                 <button id="disable" value="${prod.id}"  type="button" class="btn btn-default btn-lg">
-                                    <div style="color: black"><a href="${pageContext.request.contextPath}/products/disable" style="color: black" >Desabilitar</a></div>
+                                    <div style="color: black"><a href="${pageContext.request.contextPath}/products/disable" style="color: black" ><spring:message code="enable"/></a></div>
                                 </button>
                             </td>
                         </c:if>
@@ -92,7 +93,7 @@
                         <c:if test = "${prod.enable == false}">
                             <td style="text-align: left">
                                 <button id="available" value="${prod.id}" type="button" class="btn btn-primary btn-lg">
-                                    <div style="color: black"><a href="${pageContext.request.contextPath}/products/available" style="color: white" >Habilitar</a></div>
+                                    <div style="color: black"><a href="${pageContext.request.contextPath}/products/available" style="color: white" ><spring:message code="disable"/></a></div>
                                 </button>
                             </td>
                         </c:if>
@@ -107,7 +108,7 @@
             <div class="row" style="height: 45px;text-align: center">
                 <div class="col-xs-2">
                     <button type="button" class="btn btn-success btn-lg"><a
-                            href="${pageContext.request.contextPath}/products/addProduct" style="color: white">Agregar</a>
+                            href="${pageContext.request.contextPath}/products/addProduct" style="color: white"><spring:message code="add"/></a>
                     </button>
                 </div>
             </div>
@@ -115,7 +116,7 @@
             <div class="row">
                 <div class="col-xs-2">
                     <button type="button" class="btn btn-danger btn-lg"><a
-                            href="${pageContext.request.contextPath}/rooms/home" style="color: white">Volver</a>
+                            href="${pageContext.request.contextPath}/rooms/home" style="color: white"><spring:message code="user.home"/></a>
                     </button>
                 </div>
             </div>

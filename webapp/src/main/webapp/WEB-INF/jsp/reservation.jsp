@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 
 <html>
@@ -38,15 +39,15 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="${pageContext.request.contextPath}/rooms/checkin">Check-In</a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/checkout">Check-Out</a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/reservations">Reservas</a></li>
-                            <li><a href="${pageContext.request.contextPath}/products">Productos</a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/orders">Pedidos</a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/checkin"><spring:message code="reservation.checkin"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/checkout"><spring:message code="reservation.checkout"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/reservations"><spring:message code="reservation.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/products"><spring:message code="product.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/orders"><spring:message code="reservation.order.plural"/></a></li>
                             <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Cuenta<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="${pageContext.request.contextPath}/rooms/home">Logout</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/rooms/home"><spring:message code="user.logout"/></a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -58,7 +59,7 @@
     <c:url value="/rooms/reservationPost" var="postPath"/>
     <form:form modelAttribute="reservationForm" name="myForm" action="${postPath}" method="post">
     <div class="row myheader">
-        <div class="col-xs-12 " style="text-align: left">Nueva reserva</div>
+        <div class="col-xs-12 " style="text-align: left"><spring:message code="reservation.new"/></div>
     </div>
     <br>
     <br>
@@ -66,7 +67,7 @@
         <div class="col-xs-6">
             <div class="form-question">
                 <div class="form-question__title">
-                    <form:label class="items" path="startDate">Desde: </form:label>
+                    <form:label class="items" path="startDate"><spring:message code="room.from"/>: </form:label>
 
                 </div>
 
@@ -80,7 +81,7 @@
         <div class="col-xs-6">
             <div class="form-question">
                 <div class="form-question__title">
-                    <form:label class="items" path="endDate">Hasta: </form:label>
+                    <form:label class="items" path="endDate"><spring:message code="room.until"/>: </form:label>
                 </div>
                 <div class="input-container">
                     <form:input id="to_date" path="endDate" type="date" name="effective-date" minlength="1"
@@ -96,7 +97,7 @@
     <div class="row">
         <div class="col" style="text-align: center">
             <button id="search" type="button" class="btn btn-success btn-lg">
-                <div style="color: white">Filtrar habitaciones</div>
+                <div style="color: white"><spring:message code="room.filter"/></div>
             </button>
 
         </div>
@@ -106,7 +107,7 @@
 
     <div class="row" style="height: 45px">
         <div class="col-xs-6">
-            <form:label class="items" path="roomId">Habitaciones: </form:label>
+            <form:label class="items" path="roomId"><spring:message code="room.plural"/>: </form:label>
             <div id="room_number">
                 <form:select path="roomId" required="required">
                     <form:option value="0">-</form:option>
@@ -117,7 +118,7 @@
             </div>
         </div>
         <div class="col-xs-6">
-            <form:label class="items" path="userEmail">Email del titular: </form:label>
+            <form:label class="items" path="userEmail"><spring:message code="reservation.email"/>: </form:label>
             <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                 <form:input id="email" path="userEmail" type="text" class="form-control" name="email"
@@ -129,11 +130,11 @@
     <div class="row" style="height: 45px">
         <br><br>
         <div class="col-xs-2">
-            <input type="submit" class="btn btn-success btn-lg" value="Reservar"/>
+            <input type="submit" class="btn btn-success btn-lg" value="<spring:message code="reserve"/>"/>
         </div>
         <div class="col-xs-2">
             <button type="button" class="btn btn-danger btn-lg"><a href="${pageContext.request.contextPath}/rooms/home"
-                                                                   style="color: white">Cancelar</a>
+                                                                   style="color: white"><spring:message code="cancel"/></a>
             </button>
         </div>
 
