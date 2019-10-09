@@ -73,9 +73,6 @@
     <br>
     <br>
     <div class="row" style="font-size:x-large ">
-        <div class="col" style="margin-left: 25px">
-            <spring:message code="success"/>
-        </div>
     </div>
 
     <div class="row">
