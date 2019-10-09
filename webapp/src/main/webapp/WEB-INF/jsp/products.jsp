@@ -68,8 +68,8 @@
                 <tr>
                     <th><spring:message code="product.singular"/></th>
                     <th><spring:message code="product.description"/></th>
-                    <th>Precio</th>
-                    <th>Estado</th>
+                    <th><spring:message code="user.product.price"/></th>
+                    <th><spring:message code="room.state"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -85,7 +85,7 @@
                         <c:if test = "${prod.enable == true}">
                             <td style="text-align: left">
                                 <button id="disable" value="${prod.id}"  type="button" class="btn btn-default btn-lg">
-                                    <div style="color: black"><a href="${pageContext.request.contextPath}/products/disable" style="color: black" >Desabilitar</a></div>
+                                    <div style="color: black"><a href="${pageContext.request.contextPath}/products/disable" style="color: black" ><spring:message code="enable"/></a></div>
                                 </button>
                             </td>
                         </c:if>
@@ -93,7 +93,7 @@
                         <c:if test = "${prod.enable == false}">
                             <td style="text-align: left">
                                 <button id="available" value="${prod.id}" type="button" class="btn btn-primary btn-lg">
-                                    <div style="color: black"><a href="${pageContext.request.contextPath}/products/available" style="color: white" >Habilitar</a></div>
+                                    <div style="color: black"><a href="${pageContext.request.contextPath}/products/available" style="color: white" ><spring:message code="disable"/></a></div>
                                 </button>
                             </td>
                         </c:if>
@@ -108,7 +108,7 @@
             <div class="row" style="height: 45px;text-align: center">
                 <div class="col-xs-2">
                     <button type="button" class="btn btn-success btn-lg"><a
-                            href="${pageContext.request.contextPath}/products/addProduct" style="color: white">Agregar</a>
+                            href="${pageContext.request.contextPath}/products/addProduct" style="color: white"><spring:message code="add"/></a>
                     </button>
                 </div>
             </div>
@@ -116,7 +116,7 @@
             <div class="row">
                 <div class="col-xs-2">
                     <button type="button" class="btn btn-danger btn-lg"><a
-                            href="${pageContext.request.contextPath}/rooms/home" style="color: white">Volver</a>
+                            href="${pageContext.request.contextPath}/rooms/home" style="color: white"><spring:message code="user.home"/></a>
                     </button>
                 </div>
             </div>
