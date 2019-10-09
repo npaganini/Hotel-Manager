@@ -56,7 +56,9 @@ public class UserRepositoryTest {
         simpleJdbcInsert.execute(args);
     }
 
-    // public User findByEmail(String userEmail)
+    /**
+     * @function_to_test User findByEmail(String userEmail)
+     */
     @Test
     public void testFindByEmail() {
         final Optional<User> user = userDao.findByEmail(USER_EMAIL);
@@ -65,7 +67,9 @@ public class UserRepositoryTest {
         assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, "users"));
     }
 
-    // public User findByUsername(String username)
+    /**
+     * @function_to_test User findByUsername(String username)
+     */
     @Test
     public void testFindByUsername() {
         final Optional<User> user = userDao.findByUsername(USER_NAME);
