@@ -17,7 +17,7 @@
 </head>
 <body class="container cont"
       style="height: 100vh !important; width: 100vw !important;margin-left: 0 !important; margin-right: 0 !important">
-<div >
+<div>
     <div class="row">
         <div class="col">
             <nav class="navbar navbar-inverse sidebar" style="z-index: initial !important;" role="navigation">
@@ -31,21 +31,31 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home"><spring:message code="logo"/></a>
+                        <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home"><spring:message
+                                code="logo"/></a>
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse navbar-right" id="bs-sidebar-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="${pageContext.request.contextPath}/rooms/checkin"><spring:message code="reservation.checkin"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/checkout"><spring:message code="reservation.checkout"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/reservations"><spring:message code="reservation.plural"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/products"><spring:message code="product.plural"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/orders"><spring:message code="reservation.order.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/checkin"><spring:message
+                                    code="reservation.checkin"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/checkout"><spring:message
+                                    code="reservation.checkout"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/reservations"><spring:message
+                                    code="reservation.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/products"><spring:message
+                                    code="product.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/orders"><spring:message
+                                    code="reservation.order.plural"/></a></li>
                             <li class="dropdown">
 
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> <spring:message code="user.account"/><span class="caret"></span></a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span
+                                        class="glyphicon glyphicon-user"></span> <spring:message
+                                        code="user.account"/><span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="${pageContext.request.contextPath}/logout"><span class="glyphicon glyphicon-log-in"></span><spring:message code="user.logout"/></a></li>
+                                    <li><a href="${pageContext.request.contextPath}/logout"><span
+                                            class="glyphicon glyphicon-log-in"></span><spring:message
+                                            code="user.logout"/></a></li>
 
                                 </ul>
                             </li>
@@ -81,8 +91,8 @@
                 <c:forEach var="charge" items="${charges}">
                     <tr>
 
-                            <td style="text-align: left">${charge.product.description}</td>
-                            <td style="text-align: left">${charge.product.price}</td>
+                        <td style="text-align: left">${charge.product.description}</td>
+                        <td style="text-align: left">${charge.product.price}</td>
 
                     </tr>
                 </c:forEach>
@@ -97,9 +107,11 @@
         </div>
     </div>
 
-        <div class="col-xs-6" style="margin-left: 25px">
-            <button type="button" class="btn btn-success btn-lg"><a href="${pageContext.request.contextPath}/rooms/home" style="color: white"><spring:message code="user.home"/></a></button>
-        </div>
+    <div class="col-xs-6" style="margin-left: 25px">
+        <button type="button" class="btn btn-success btn-lg"><a href="${pageContext.request.contextPath}/rooms/home"
+                                                                style="color: white"><spring:message
+                code="user.home"/></a></button>
+    </div>
 
 
 </div>
@@ -109,7 +121,7 @@
 <script>
     $(document).ready(function () {
         $('#myTable').DataTable({
-            filter: false,
+            filter: false
         });
     });
 </script>
