@@ -1,0 +1,130 @@
+.myheader{
+    background-color:black;
+    text-align: left;
+    color: white;
+    font-family: Arial, serif;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.confirTable{
+    background-color: white;
+    margin-left: 25px;
+    font-size: x-large;
+    border-radius: 5px;
+    border-collapse: collapse;
+    width: 75%;
+}
+
+.vertical-align {
+    display: flex;
+    align-items: center;
+}
+
+.login{
+    background-image: url("../utilities/cork-wallet.png");
+}
+
+.cont{
+    background-image: url("../utilities/cork-wallet.png");
+}
+
+/* for tables */
+
+.my_table{
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.my_th{
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+.my_tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+/* for calendar*/
+
+.form-question {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 0 3rem;
+    min-height: 3rem;
+}
+.form-question__title {
+    color: #342357;
+    font-size: 1.5rem;
+    padding: 1rem;
+}
+.input-container {
+    border-bottom: solid 2px #333333;
+}
+.input-container input {
+    border: none;
+    box-sizing: border-box;
+    outline: 0;
+    padding: .75rem;
+    width: 100%;
+}
+
+/* end calendar*/
+
+.items{
+    font-family: Arial, serif;
+    font-size: 20px;
+    color: black;
+
+}
+
+.few-items-table {
+    background-color: white;
+    font-size: large;
+    border-collapse: collapse;
+    width: 75%;
+}
+
+.col-alone {
+    padding-left: 20px;
+    margin-left: 5px;
+}
+
+.no-reservs {
+    font-size: large;
+}
+
+.message{
+    padding-bottom: 1.5rem;
+    padding-top: 1.5rem;
+    border: #0c0c0c;
+}
+
+.action-btn {
+    white-space:normal
+}
+
+.my-card-title {
+    margin-top: 5px;
+}
+
+.product-card {
+    width: 256px !important;
+    height: 256px !important;
+}
+
+.user-logout {
+    float:right !important;
+    align-items:center;
+}
+
+.user-navbar {
+    margin-bottom: .5rem;
+    font-family: inherit;
+    font-size: 50px;
+    font-weight: 500;
+    line-height: 1.1;
+}
