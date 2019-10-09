@@ -49,6 +49,7 @@ public class ChargeServiceImplTest {
         // 1. Setup!
         Product product1 = new Product(PRODUCT_NAME_1, PRODUCT_PRICE_1);
         Reservation reservationValid = new Reservation(ID_1, FAKE_VALID_EMAIL, Date.valueOf(START_DATE).toLocalDate(), Date.valueOf(END_DATE).toLocalDate(), ID_1);
+        reservationValid.setActive(true);
         Charge charge1 = new Charge(ID_1, ID_1);
         ChargeRoomReservationDTO chargeRoomReservationDTO = new ChargeRoomReservationDTO(product1, charge1, reservationValid);
         List<ChargeRoomReservationDTO> chargeRoomReservationDTOList = new LinkedList<>();
