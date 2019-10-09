@@ -31,7 +31,7 @@ public class ChargeServiceImpl implements ChargeService {
     public List<ChargeRoomReservationDTO> getAllChargesByReservationId(long reservationId) throws RequestInvalidException {
         LOGGER.debug("Getting all current charges for reservation with id " + reservationId);
         Optional<Reservation> reservationOptional = reservationDao.findById(reservationId);
-        if (!reservationOptional.isPresent()) {
+        if (!reservationOptional.isPresent() || !reservationOptional.get().isActive()) {
             throw new RequestInvalidException();
         }
         return chargeDao.findChargeByReservationHash(reservationId);
