@@ -66,7 +66,7 @@
             </nav>
         </div>
     </div>
-    <c:url value="${pageContext.request.contextPath}/rooms/checkoutPost" var="postPath"/>
+    <c:url value="/rooms/checkoutPost" var="postPath"/>
     <form:form modelAttribute="checkoutForm" id="myForm" action="${postPath}" method="post">
 
     <div class="row myheader vertical-align">
