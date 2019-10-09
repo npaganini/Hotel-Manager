@@ -13,3 +13,14 @@
     `mvn -Djetty.port=` `<anotherPort>` ` jetty:run`
 
 Check `localhost:<portUsed>` to see if the application is running!
+
+- Credenciales:
+	- manager (manager)
+		user: manager
+		password: password
+	- employee (empleado)
+		user: employee
+		password: password
+	- cualquier otro usuario con rol cliente creado mediante una reserva:
+		user: <emailIngresado>
+		password: <emailIngresado>
