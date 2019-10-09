@@ -27,7 +27,7 @@
 <body class="cont">
 <div class="container-fluid">
 <c:choose>
-    <c:when test="${charge}">
+    <c:when test="${!charge.delivered}">
         <h1 class="modal-title row navbar-default message confirTable">
             &nbsp;<spring:message code="user.product.bought"/>
         </h1>
