@@ -29,7 +29,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public Reservation getReservationByHash(String hash) throws EntityNotFoundException {
         LOGGER.debug("About to get reservation with hash " + hash);
-        return reservationDao.findReservationByHash(hash).orElseThrow(
+        return reservationDao.findReservationByHash(hash.trim()).orElseThrow(
                 () -> new EntityNotFoundException("Reservation of hash " + hash + " not found"));
     }
 
