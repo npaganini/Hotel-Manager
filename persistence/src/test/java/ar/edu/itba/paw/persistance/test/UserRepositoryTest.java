@@ -43,10 +43,17 @@ public class UserRepositoryTest {
     @Before
     public void setUp() {
         jdbcTemplate = new JdbcTemplate(ds);
+
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "charge");
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "reservation");
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "product");
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "users");
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "room");
+
+        // Users
         simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("users")
                 .usingGeneratedKeyColumns("id");
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, "users");
         Map<String, Object> args = new HashMap<>();
         args.put("id", 1);
         args.put("email", USER_EMAIL);

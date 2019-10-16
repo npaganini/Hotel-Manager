@@ -25,12 +25,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 import javax.sql.DataSource;
 
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.util.*;
-//import java.util.HashMap;
-//import java.util.Map;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
@@ -40,15 +36,19 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 public class ChargeRepositoryTest {
-    public final static long ID_1 = 1;
-    public final static long PRODUCT_ID = 1;
-    public final static long RESERVATION_ID = 1;
-    public final static boolean FALSE = false;
-    public final static boolean TRUE = true;
+    private final static long ID_1 = 1;
+    private final static long PRODUCT_ID = 1;
+    private final static long RESERVATION_ID = 1;
+    private final static boolean FALSE = false;
+    private final static boolean TRUE = true;
+    private final static int ROOM_NUMBER = 105;
     private static final String USER_EMAIL = "email@email.com";
-    private static final String USER_NAME = USER_EMAIL;
+    private static final String USER_NAME = "username";
+    private static final String USER_PASSWORD = "password";
     private static final String USER_ROLE = "CLIENT";
+    private static final String HASH = "mYzUp3rH4sH";
     private static final double PRODUCT_PRICE = 25.59;
+    private static final String TYPE_DOUBLE = "DOUBLE";
 
     @Autowired
     private DataSource ds;
@@ -59,45 +59,72 @@ public class ChargeRepositoryTest {
     private JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert simpleJdbcInsert;
 
-//    @Before
-//    public void setUp() {
-//        jdbcTemplate = new JdbcTemplate(ds);
-//        simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
-//                .withTableName("product")
-//                .usingGeneratedKeyColumns("id");
-//        JdbcTestUtils.deleteFromTables(jdbcTemplate, "product");
-//        Map<String, Object> argsProduct = new HashMap<>();
-//        argsProduct.put("id", 1);
-//        argsProduct.put("description", "Product1");
-//        argsProduct.put("price", 13.99f);
-//        argsProduct.put("file", new byte[8]);
-//        argsProduct.put("enable", true);
-//        simpleJdbcInsert.execute(argsProduct);
-//        simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
-//                .withTableName("reservation")
-//                .usingGeneratedKeyColumns("id");
-//        JdbcTestUtils.deleteFromTables(jdbcTemplate, "reservation");
-//        Map<String, Object> argsReservation = new HashMap<>();
-//        argsReservation.put("id", 1);
-//        argsReservation.put("start_date", Timestamp.valueOf("2019-09-30 14:00:00"));
-//        argsReservation.put("end_date", Timestamp.valueOf("2019-10-11 10:00:00"));
-//        argsReservation.put("user_email", "email@email.com");
-//        argsReservation.put("room_id", 1);
-//        argsReservation.put("hash", "mYzUp3rH4sH");
-//        argsReservation.put("is_active", true);
-//        argsReservation.put("user_id", 1);
-//        simpleJdbcInsert.execute(argsReservation);
-//        simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
-//                .withTableName("charge")
-//                .usingGeneratedKeyColumns("id");
-//        JdbcTestUtils.deleteFromTables(jdbcTemplate, "charge");
-//        Map<String, Object> argsCharge = new HashMap<>();
-//        argsCharge.put("id", 1);
-//        argsCharge.put("product_id", 1);
-//        argsCharge.put("reservation_id", 1);
-//        argsCharge.put("delivered", false);
-//        simpleJdbcInsert.execute(argsCharge);
-//    }
+    @Before
+    public void setUp() {
+        jdbcTemplate = new JdbcTemplate(ds);
+
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "charge");
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "reservation");
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "product");
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "users");
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "room");
+
+        // Room
+        simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
+                .withTableName("room");
+        Map<String, Object> argsRoom = new HashMap<>();
+        argsRoom.put("id", ID_1);
+        argsRoom.put("room_type", TYPE_DOUBLE);
+        argsRoom.put("is_free_now", TRUE);
+        argsRoom.put("number", ROOM_NUMBER);
+        simpleJdbcInsert.execute(argsRoom);
+
+        // User
+        simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
+                .withTableName("users");
+        Map<String, Object> argsUser = new HashMap<>();
+        argsUser.put("id", ID_1);
+        argsUser.put("email", USER_EMAIL);
+        argsUser.put("username", USER_NAME);
+        argsUser.put("password", USER_PASSWORD);
+        argsUser.put("role", USER_ROLE);
+        simpleJdbcInsert.execute(argsUser);
+
+        // Product
+        simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
+                .withTableName("product");
+        Map<String, Object> argsProduct = new HashMap<>();
+        argsProduct.put("id", ID_1);
+        argsProduct.put("description", "Product1");
+        argsProduct.put("price", 13.99f);
+        argsProduct.put("file", new byte[8]);
+        argsProduct.put("enable", TRUE);
+        simpleJdbcInsert.execute(argsProduct);
+
+        // Reservation
+        simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
+                .withTableName("reservation");
+        Map<String, Object> argsReservation = new HashMap<>();
+        argsReservation.put("id", ID_1);
+        argsReservation.put("start_date", Timestamp.valueOf("2019-09-30 14:00:00"));
+        argsReservation.put("end_date", Timestamp.valueOf("2019-10-11 10:00:00"));
+        argsReservation.put("user_email", "email@email.com");
+        argsReservation.put("room_id", ID_1);
+        argsReservation.put("hash", HASH);
+        argsReservation.put("is_active", TRUE);
+        argsReservation.put("user_id", ID_1);
+        simpleJdbcInsert.execute(argsReservation);
+
+        // Charge
+        simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
+                .withTableName("charge");
+        Map<String, Object> argsCharge = new HashMap<>();
+        argsCharge.put("id", ID_1);
+        argsCharge.put("product_id", ID_1);
+        argsCharge.put("reservation_id", ID_1);
+        argsCharge.put("delivered", FALSE);
+        simpleJdbcInsert.execute(argsCharge);
+    }
 
     /**
      * @function_to_test Map<Product, Integer> getAllChargesByUser(String userEmail, long reservationId)
@@ -112,7 +139,7 @@ public class ChargeRepositoryTest {
 //        while(!hasProductId && it.hasNext()) {
 //            hasProductId = ((Product) it.next()).getId() == ID_1;
 //        }
-////        assertTrue(hasProductId);
+//        assertTrue(hasProductId);
 //        assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, "charge"));
     }
 
