@@ -43,10 +43,17 @@ public class UserRepositoryTest {
     @Before
     public void setUp() {
         jdbcTemplate = new JdbcTemplate(ds);
+
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "charge");
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "reservation");
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "product");
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "users");
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "room");
+
+        // Users
         simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("users")
                 .usingGeneratedKeyColumns("id");
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, "users");
         Map<String, Object> args = new HashMap<>();
         args.put("id", 1);
         args.put("email", USER_EMAIL);
@@ -56,7 +63,9 @@ public class UserRepositoryTest {
         simpleJdbcInsert.execute(args);
     }
 
-    // public User findByEmail(String userEmail)
+    /**
+     * @function_to_test User findByEmail(String userEmail)
+     */
     @Test
     public void testFindByEmail() {
         final Optional<User> user = userDao.findByEmail(USER_EMAIL);
@@ -65,7 +74,9 @@ public class UserRepositoryTest {
         assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, "users"));
     }
 
-    // public User findByUsername(String username)
+    /**
+     * @function_to_test User findByUsername(String username)
+     */
     @Test
     public void testFindByUsername() {
         final Optional<User> user = userDao.findByUsername(USER_NAME);
