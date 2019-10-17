@@ -10,6 +10,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.Optional;
+
 @RunWith(MockitoJUnitRunner.class)
 public class ProductServiceImplTest {
     private static final long ID_1 = 1L;
@@ -18,6 +20,8 @@ public class ProductServiceImplTest {
     private static final int BOOLEAN_INT_TRUE = 1;
     private static final String PRODUCT_NAME_1 = "Snickers";
     private static final float PRODUCT_PRICE_1 = 15.99f;
+
+    private static Product product1 = new Product(PRODUCT_NAME_1, PRODUCT_PRICE_1);
 
     @Mock
     private ProductDao productDao;
@@ -32,7 +36,6 @@ public class ProductServiceImplTest {
     @Test
     public void testSave() {
         // 1. Setup!
-        Product product1 = new Product(PRODUCT_NAME_1, PRODUCT_PRICE_1);
         Mockito.when(productDao.save(product1)).thenReturn(product1);
         // 2. SUT
         Product productCreated = productService.saveProduct(product1);
@@ -48,6 +51,7 @@ public class ProductServiceImplTest {
     @Test
     public void testUnableProduct() throws Exception {
         // 1. Setup!
+        Mockito.when(productDao.findById(ID_1)).thenReturn(java.util.Optional.of(product1));
         Mockito.when(productDao.updateProductEnable(ID_1, FALSE)).thenReturn(BOOLEAN_INT_TRUE);
         // 2. SUT
         boolean productDisabled = productService.unableProduct(ID_1);
@@ -62,6 +66,7 @@ public class ProductServiceImplTest {
     @Test
     public void testEnableProduct() throws Exception {
         // 1. Setup!
+        Mockito.when(productDao.findById(ID_1)).thenReturn(java.util.Optional.of(new Product(ID_1, PRODUCT_NAME_1, PRODUCT_PRICE_1, new byte[8], FALSE)));
         Mockito.when(productDao.updateProductEnable(ID_1, TRUE)).thenReturn(BOOLEAN_INT_TRUE);
         // 2. SUT
         boolean productEnabled = productService.enableProduct(ID_1);
