@@ -31,18 +31,15 @@ public class ChargeServiceImpl implements ChargeService {
     public List<ChargeRoomReservationDTO> getAllChargesByReservationId(long reservationId) throws RequestInvalidException {
         LOGGER.debug("Getting all current charges for reservation with id " + reservationId);
         Optional<Reservation> reservationOptional = reservationDao.findById(reservationId);
-        if (!reservationOptional.isPresent()) {
+        if (!reservationOptional.isPresent() || !reservationOptional.get().isActive()) {
             throw new RequestInvalidException();
         }
         return chargeDao.findChargeByReservationHash(reservationId);
     }
 
     @Override
-    public double sumCharge(long reservationId) throws RequestInvalidException {
+    public double sumCharge(long reservationId) {
         LOGGER.debug("Getting the balance of reservation with id" + reservationId);
-        if (!chargeDao.findById(reservationId).isPresent()) {
-            throw new RequestInvalidException();
-        }
         return chargeDao.sumCharge(reservationId);
     }
 

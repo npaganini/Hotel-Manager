@@ -21,9 +21,14 @@
 <div class="container-fluid">
     <div class="form-group" style="grid-auto-columns: auto">
         <div class="modal-title row navbar-default my-card-title message">
-            <h1>
+            <span class="user-navbar">
                 <spring:message code="user.product.offered"/>
-            </h1>
+            </span>
+            <span>
+                <a href="${pageContext.request.contextPath}/logout" class="btn btn-primary user-logout align-self-end">
+                    <spring:message code="user.logout"/>
+                </a>
+            </span>
         </div>
         <div class="card-deck my-card-title">
             <c:forEach var="product" items="${ProductsList}">
@@ -32,7 +37,7 @@
                 <div class="card-body container text-xs-center">
                     <h5 class="card-title text-xs-center message">${product.description}</h5>
                     <p class="card-text price text-xs-center"><fmt:formatNumber type="currency" maxFractionDigits="2" minFractionDigits="2" value="${product.price}"/></p>
-                    <form:form modelAttribute="buyProductForm" action='/user/buyProducts?reservationId=${pageContext.request.getParameter("reservationId")}' method="post">
+                    <form:form modelAttribute="buyProductForm" action='${pageContext.request.contextPath}/user/buyProducts?reservationId=${pageContext.request.getParameter("reservationId")}' method="post">
                         <form:input type="hidden" name="productId" path="productId" value="${product.id}"/>
                         <input class="btn btn-primary" type="submit" value="<spring:message code="user.product.buy"/>">
                     </form:form>

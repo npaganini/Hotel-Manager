@@ -19,6 +19,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ChargeServiceImplTest {
@@ -51,6 +52,7 @@ public class ChargeServiceImplTest {
     public void testGetAllChargesByReservationId() throws Exception {
         // 1. Setup!
         Product product1 = new Product(PRODUCT_NAME_1, PRODUCT_PRICE_1);
+        myReservation.setActive(true);
         Charge charge1 = new Charge(ID_1, ID_1);
         ChargeRoomReservationDTO chargeRoomReservationDTO = new ChargeRoomReservationDTO(product1, charge1, myReservation);
         List<ChargeRoomReservationDTO> chargeRoomReservationDTOList = new LinkedList<>();
@@ -78,7 +80,7 @@ public class ChargeServiceImplTest {
     @Test
     public void testSumCharge() throws Exception {
         // 1. Setup!
-        Mockito.when(chargeDao.findById(ID_1)).thenReturn(java.util.Optional.of(new Charge(ID_1, ID_1)));
+//        Mockito.when(chargeDao.findById(ID_1)).thenReturn(java.util.Optional.of(new Charge(ID_1, ID_1)));
         Mockito.when(chargeDao.sumCharge(ID_1)).thenReturn(TOTAL);
         // 2. SUT
         double total = chargeService.sumCharge(ID_1);

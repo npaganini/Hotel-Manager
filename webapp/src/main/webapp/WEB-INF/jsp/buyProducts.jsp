@@ -28,9 +28,16 @@
 <div class="container-fluid">
 <c:choose>
     <c:when test="${!charge.delivered}">
-        <h1 class="modal-title row navbar-default message confirTable">
-            &nbsp;<spring:message code="user.product.bought"/>
-        </h1>
+        <div class="modal-title row navbar-default my-card-title message">
+                <span class="user-navbar">
+                    &nbsp;<spring:message code="user.product.bought"/>
+                </span>
+                <span>
+                    <a href="${pageContext.request.contextPath}/logout" class="btn btn-primary user-logout align-self-end">
+                        <spring:message code="user.logout"/>
+                    </a>
+                </span>
+        </div>
         <div class="container">
             <div class="message row"><spring:message code="user.product.itemsDelivered"/></div>
     </c:when>

@@ -66,7 +66,7 @@ public class ProductServiceImplTest {
     @Test
     public void testEnableProduct() throws Exception {
         // 1. Setup!
-        Mockito.when(productDao.findById(ID_1)).thenReturn(java.util.Optional.of(new Product(ID_1, PRODUCT_NAME_1, PRODUCT_PRICE_1, new byte[8], FALSE)));
+        Mockito.when(productDao.findById(ID_1)).thenReturn(java.util.Optional.of(new Product(ID_1, PRODUCT_NAME_1, PRODUCT_PRICE_1, null, FALSE)));
         Mockito.when(productDao.updateProductEnable(ID_1, TRUE)).thenReturn(BOOLEAN_INT_TRUE);
         // 2. SUT
         boolean productEnabled = productService.enableProduct(ID_1);

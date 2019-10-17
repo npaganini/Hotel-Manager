@@ -5,23 +5,28 @@
 <html>
 <head>
     <title><spring:message code="user.landing"/></title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
-          integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
-    <script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/slideBar.js"></script>
-
-    <link href="http://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
-    <script type="text/javascript"
-            src="${pageContext.request.contextPath}/resources/js/jquery.dataTables.min.js"></script>
-
     <link href="${pageContext.request.contextPath}/resources/CSS/my_style.css" rel="stylesheet">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+    <script src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js'></script>
 </head>
 <body class="cont">
 <div class="container-fluid">
     <div class="panel-title">
-        <h1 class="text-xs-center modal-title row navbar-default"><spring:message code="user.reservation.currents"/></h1>
+        <div class="modal-title row navbar-default my-card-title message">
+            <span class="user-navbar text-xs-center text-center">
+                &nbsp<spring:message code="user.reservation.currents"/>
+            </span>
+            <span>
+                <a href="${pageContext.request.contextPath}/logout" class="btn btn-primary user-logout align-self-end vertical-center">
+                    <spring:message code="user.logout"/>
+                </a>
+            </span>
+        </div>
     </div>
     <table class="table text-xs-center">
         <thead class="thead-dark">

@@ -27,7 +27,7 @@ public class UserController extends SimpleController {
 
     @GetMapping("/home")
     public ModelAndView getLandingPage(Authentication authentication) {
-        final ModelAndView mav = new ModelAndView("userLanding");
+        final ModelAndView mav = new ModelAndView("userIndex");
         LOGGER.debug("Request received to user's landing page");
         mav.addObject("ReservationsList",
                 userService.findActiveReservation(getUsername(authentication)));

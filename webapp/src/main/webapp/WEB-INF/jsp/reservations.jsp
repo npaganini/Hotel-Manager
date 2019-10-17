@@ -1,10 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <html>
 
 <head>
-    <title>e-lobby</title>
+    <title><spring:message code="logo"/></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
@@ -17,7 +18,7 @@
 </head>
 <body class="container cont"
       style="height: 100vh !important; width: 100vw !important;margin-left: 0 !important; margin-right: 0 !important">
-<div>
+<div >
     <div class="row">
         <div class="col">
             <nav class="navbar navbar-inverse sidebar" style="z-index: initial !important;" role="navigation">
@@ -31,20 +32,20 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home">e-lobby</a>
+                        <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home"><spring:message code="logo"/></a>
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
+                    <div class="collapse navbar-collapse navbar-right" id="bs-sidebar-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="${pageContext.request.contextPath}/rooms/checkin">Check-In</a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/checkout">Check-Out</a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/reservations">Reservas</a></li>
-                            <li><a href="${pageContext.request.contextPath}/products">Productos</a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/orders">Pedidos</a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/checkin"><spring:message code="reservation.checkin"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/checkout"><spring:message code="reservation.checkout"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/reservations"><spring:message code="reservation.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/products"><spring:message code="product.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/orders"><spring:message code="reservation.order.plural"/></a></li>
                             <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Cuenta<span class="caret"></span></a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> <spring:message code="user.account"/><span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="${pageContext.request.contextPath}/rooms/home">Logout</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/logout"><span class="glyphicon glyphicon-log-in"></span> <spring:message code="user.logout"/></a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -53,10 +54,9 @@
             </nav>
         </div>
     </div>
-
     <div class="row myheader vertical-align">
         <div class="col-xs-6" style="text-align: left">
-            <div>Reservas</div>
+            <div><spring:message code="reservation.plural"/></div>
         </div>
 
     </div>
@@ -70,7 +70,7 @@
             <div class="col-xs-6">
                 <div class="form-question">
                     <div class="form-question__title">
-                        <label class="items" path="startDate">Desde:</label>
+                        <label class="items" path="startDate"><spring:message code="room.from"/>:</label>
 
                     </div>
 
@@ -85,7 +85,7 @@
             <div class="col-xs-6">
                 <div class="form-question">
                     <div class="form-question__title">
-                        <label class="items" path="endDate">Hasta: </label>
+                        <label class="items" path="endDate"><spring:message code="room.until"/>: </label>
                     </div>
                     <div class="input-container">
                         <input id="to_date" path="endDate" type="date" name="effective-date" minlength="1"
@@ -98,7 +98,7 @@
         </div>
         <div class="row">
             <div class="col-xs-6">
-                <label class="items" path="userEmail">Titular: </label>
+                <label class="items" path="userEmail"><spring:message code="room.owner"/>: </label>
                 <div class="input-group">
                     <span class="input-group-addon"></span>
                     <input id="IDres" path="userEmail" type="text" class="form-control" name="IDres"
@@ -109,12 +109,12 @@
                 <div>
                     <div class="col-xs-2">
                         <button id="search" type="button" class="btn btn-success btn-lg">
-                            <div style="color: white">Buscar</div>
+                            <div style="color: white"><spring:message code="search"/></div>
                         </button>
                     </div>
                     <div class="col-xs-2">
                         <button type="button" class="btn btn-default btn-lg"><a
-                                href="${pageContext.request.contextPath}/rooms/home" style="color: black">Cancelar</a>
+                                href="${pageContext.request.contextPath}/rooms/home" style="color: black"><spring:message code="cancel"/></a>
                         </button>
                     </div>
 
@@ -130,10 +130,11 @@
             <table id="myTable" class="display" style="width:100%;  border: 1px solid black !important;">
                 <thead>
                 <tr>
-                    <th>Habitacion</th>
-                    <th>Titular</th>
-                    <th>Desde</th>
-                    <th>Hasta</th>
+                    <th><spring:message code="room.singular"/></th>
+                    <th><spring:message code="room.owner"/></th>
+                    <th><spring:message code="room.from"/></th>
+                    <th><spring:message code="room.until"/></th>
+                    <th><spring:message code="reservation.isActive"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -144,6 +145,8 @@
                         <td style="text-align: left">${reservation.reservation.userEmail}</td>
                         <td style="text-align: left">${reservation.reservation.startDate}</td>
                         <td style="text-align: left">${reservation.reservation.endDate}</td>
+                        <td style="text-align: left">${reservation.reservation.active ? 'TRUE' : 'FALSE'}</td>
+
 
                     </tr>
                 </c:forEach>
@@ -175,7 +178,7 @@
             var endDate = $('#to_date').val();
             var userEmail = $('#IDres').val();
 
-            basePath = "/rooms/reservations?startDate=" + startDate + "&endDate=" + endDate + "&userEmail=" + userEmail;
+            basePath = "${pageContext.request.contextPath}" + "/rooms/reservations?startDate=" + startDate + "&endDate=" + endDate + "&userEmail=" + userEmail;
             event.preventDefault();
             location.href = basePath;
             return false;

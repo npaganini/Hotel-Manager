@@ -14,12 +14,13 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header" style="font-family: Arial, serif;font-weight: bold;font-size: 25px;">Register</div>
+                    <div class="card-header" style="font-family: Arial, serif;font-weight: bold;font-size: 25px;"><spring:message code="login"/></div>
                     <div class="card-body">
                         <form action="${pageContext.request.contextPath}/login" method="post">
                             <div class="form-group row">
-                                <label for="username" class="col-md-4 col-form-label text-md-right">E-Mail
-                                    Address</label>
+                                <label for="username" class="col-md-4 col-form-label text-md-right">
+                                    <spring:message code="email"/>
+                                </label>
                                 <div class="col-md-6">
                                     <input type="text" id="username" class="form-control" name="username"
                                            required autofocus>
@@ -27,7 +28,7 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
+                                <label for="password" class="col-md-4 col-form-label text-md-right"><spring:message code="password"/></label>
                                 <div class="col-md-6">
                                     <input type="password" id="password" class="form-control" name="password" required>
                                 </div>
@@ -37,7 +38,7 @@
                                 <div class="col-md-6 offset-md-4">
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="rememberMe"> Remember Me
+                                            <input type="checkbox" name="rememberMe"> <spring:message code="rememberme"/>
                                         </label>
                                     </div>
                                 </div>
@@ -45,7 +46,7 @@
 
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    Login
+                                    <spring:message code="login"/>
                                 </button>
                             </div>
                         </form>
