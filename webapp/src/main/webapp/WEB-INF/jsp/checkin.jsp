@@ -69,14 +69,6 @@
 
     <div class="row">
         <div class="col-xs-6">
-            <form:label class="items" path="userEmail"><spring:message code="reservation.email"/>: </form:label>
-            <div class="input-group">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                <form:input id="email" path="userEmail" type="text" class="form-control" name="email"
-                            placeholder="Email" required="required"/>
-            </div>
-        </div>
-        <div class="col-xs-6">
             <form:label class="items" path="id_reservation"><spring:message code="reservation.id"/>: </form:label>
             <div class="input-group">
                 <span class="input-group-addon"></span>
@@ -84,21 +76,18 @@
                             placeholder="ID de reserva" required="required"/>
             </div>
         </div>
+        <div class="col-xs-3">
+            <br>
+            <input type="submit" style="align-content: center" id="sign" class="btn btn-success btn-lg" value="<spring:message code="accept"/>"/>
+        </div>
+        <div class="col-xs-3">
+            <br>
+            <button type="button" onclick="location.href='${pageContext.request.contextPath}/rooms/home'" id="back" class="btn btn-danger btn-lg"><a style="color: white"><spring:message code="cancel"/></a>
+
+            </button>
+        </div>
+
     </div>
-
-
-<div class="row" style="height: 45px">
-    <br><br>
-    <div class="col-xs-2">
-        <input type="submit" id="sign" class="btn btn-success btn-lg" value="<spring:message code="accept"/>"/>
-    </div>
-    <div class="col-xs-2">
-        <button type="button" onclick="location.href='${pageContext.request.contextPath}/rooms/home'" id="back" class="btn btn-danger btn-lg"><a style="color: white"><spring:message code="cancel"/></a>
-
-        </button>
-    </div>
-
-</div>
 
 </div>
 </form:form>

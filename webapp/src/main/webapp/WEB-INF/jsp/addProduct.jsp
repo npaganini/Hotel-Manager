@@ -33,7 +33,8 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home"><spring:message code="logo"/></a>
+                        <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home"><spring:message
+                                code="logo"/></a>
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse navbar-right" id="bs-sidebar-navbar-collapse-1">
@@ -83,7 +84,7 @@
             </div>
             <div class="col-xs-6">
                 <label for="price"><spring:message code="user.product.price"/>: </label>
-                <form:input id="price" path="price" type="number" required="required"/>
+                <form:input id="price" path="price" type="number" min="0" required="required"/>
             </div>
 
         </div>
@@ -102,8 +103,9 @@
                 </div>
                 <div class="col-xs-2">
 
-                    <button type="button" href="${pageContext.request.contextPath}/products" id="back" class="btn btn-danger btn-lg"><a
-                             style="color: white"><spring:message
+                    <button type="button" href="${pageContext.request.contextPath}/products" id="back"
+                            class="btn btn-danger btn-lg"><a
+                            style="color: white"><spring:message
                             code="user.home"/></a></button>
 
                 </div>
@@ -124,19 +126,6 @@
 
         $('#myForm').submit(function () {
 
-            var x = document.forms["myForm"]["price"].value;
-            if (x <= 0) {
-                alert(<spring:message code="product.price.positive"/>);
-                //disable the submit button
-                $("#submit").attr("disabled", false);
-
-                //disable a normal button
-                $("#reset").attr("disabled", false);
-
-                $("#back").attr("disabled", false);
-                return false;
-            } else {
-
                 //disable the submit button
                 $("#submit").attr("disabled", true);
 
@@ -146,7 +135,6 @@
                 $("#back").attr("disabled", true);
 
                 return true;
-            }
 
         });
     });
