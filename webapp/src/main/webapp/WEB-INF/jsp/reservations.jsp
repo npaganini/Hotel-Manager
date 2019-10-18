@@ -113,8 +113,8 @@
                         </button>
                     </div>
                     <div class="col-xs-2">
-                        <button type="button" class="btn btn-default btn-lg"><a
-                                href="${pageContext.request.contextPath}/rooms/home" style="color: black"><spring:message code="cancel"/></a>
+                        <button type="button" onclick="location.href='${pageContext.request.contextPath}/rooms/home'" class="btn btn-default btn-lg"><a
+                                 style="color: black"><spring:message code="cancel"/></a>
                         </button>
                     </div>
 
