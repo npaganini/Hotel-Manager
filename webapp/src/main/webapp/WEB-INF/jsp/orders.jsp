@@ -89,7 +89,7 @@
 
                         <c:if test="${order.delivered == false}">
                             <td style="text-align: left">
-                                <button onclick="disableButtons()" id="finished" value="${order.chargeId}" type="button"
+                                <button onclick="disableButtons(this)" id="finished" value="${order.chargeId}" type="button"
                                         class="btn btn-default btn-lg">
                                     <div style="color: black"><a
                                             style="color: black"><spring:message code="send"/></a></div>
@@ -144,28 +144,11 @@
         });
     });
 
-    $(document).ready(function () {
-
-        $('#finished').off().on('click', function (event) {
-            var basePath;
-
-            var chargeId = $('#finished').val();
-
-            basePath = "${pageContext.request.contextPath}" + "/rooms/orders/sendOrder?chargeId=" + chargeId;
-            event.preventDefault();
-            location.href = basePath;
-            return false;
-
-        })
-
-    });
-
-
-    function disableButtons() {
+    function disableButtons(event) {
         document.getElementById("finished").disabled = true;
         document.getElementById("refresh").disabled = true;
         document.getElementById("back").disabled = true;
-
+        location.href = "${pageContext.request.contextPath}" + "/rooms/orders/sendOrder?chargeId=" + event.value;
     }
 </script>
 
