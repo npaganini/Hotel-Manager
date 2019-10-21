@@ -68,8 +68,7 @@
             <div><spring:message code="room.occupied.plural"/></div>
         </div>
         <div class="col-xs-6 " style="text-align: right">
-            <button type="button" class="btn btn-success btn-lg"><a
-                    href="${pageContext.request.contextPath}/rooms/reservation" style="color: white"><spring:message
+            <button type="button" onclick="location.href='${pageContext.request.contextPath}/rooms/reservation'"  class="btn btn-success btn-lg"><a style="color: white"><spring:message
                     code="reservation.new"/></a>
             </button>
 

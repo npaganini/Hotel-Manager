@@ -112,8 +112,8 @@
         <div class="col-xs-4">
             <div class="row" style="height: 45px;text-align: center">
                 <div class="col-xs-2">
-                    <button type="button" id="refresh" class="btn btn-success btn-lg"><a
-                            href="${pageContext.request.contextPath}/rooms/orders" style="color: white"><spring:message
+                    <button type="button" onclick="location.href='${pageContext.request.contextPath}/rooms/orders'" id="refresh" class="btn btn-success btn-lg"><a
+                             style="color: white"><spring:message
                             code="refresh"/></a>
                     </button>
                 </div>
@@ -122,8 +122,8 @@
             <div class="row">
                 <div class="col-xs-2">
 
-                    <button type="button" id="back" class="btn btn-danger btn-lg"><a
-                            href="${pageContext.request.contextPath}/rooms/home" style="color: white"><spring:message
+                    <button type="button" onclick="location.href='${pageContext.request.contextPath}/rooms/home'" id="back" class="btn btn-danger btn-lg"><a
+                             style="color: white"><spring:message
                             code="user.home"/></a>
 
                     </button>
