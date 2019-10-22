@@ -30,7 +30,7 @@ public class ExceptionHandlerController {
 
     @ExceptionHandler(NoHandlerFoundException.class)
     public ModelAndView handle(HttpServletRequest req, Exception ex) {
-        return new ModelAndView("400");
+        return new ModelAndView("404");
     }
 
 }
