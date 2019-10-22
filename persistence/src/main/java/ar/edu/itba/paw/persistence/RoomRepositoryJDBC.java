@@ -15,13 +15,13 @@ import javax.sql.DataSource;
 import java.time.LocalDate;
 import java.util.List;
 
-@Repository
-public class RoomRepository extends SimpleRepository<Room> implements RoomDao {
+//@Repository
+public class RoomRepositoryJDBC extends SimpleRepositoryJDBC<Room> implements RoomDao {
 
     private static final RowMapper<Room> ROW_MAPPER = (resultSet, i) -> new Room(resultSet);
 
-    @Autowired
-    public RoomRepository(DataSource dataSource) {
+//    @Autowired
+    public RoomRepositoryJDBC(DataSource dataSource) {
         super(new NamedParameterJdbcTemplate(dataSource));
     }
 

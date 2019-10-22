@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.persistance.test;
 
 import ar.edu.itba.paw.persistance.config.TestConfig;
-import ar.edu.itba.paw.persistence.RoomRepository;
+import ar.edu.itba.paw.persistence.RoomRepositoryJDBC;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +30,7 @@ public class RoomRepositoryTest {
     private DataSource ds;
 
     @Autowired
-    private RoomRepository roomRepository;
+    private RoomRepositoryJDBC roomRepository;
 
     private JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert simpleJdbcInsert;

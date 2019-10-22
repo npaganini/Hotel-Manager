@@ -1,15 +1,19 @@
 package ar.edu.itba.paw.models.product;
 
 import ar.edu.itba.paw.models.SqlObject;
+import ar.edu.itba.paw.models.charge.Charge;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import javax.persistence.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Getter
+@Entity
 @AllArgsConstructor
 public class Product implements SqlObject {
 
@@ -21,10 +25,22 @@ public class Product implements SqlObject {
 
     public final static String TABLE_NAME = "product";
 
+    // tableName_keyID_seq
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_id_seq")
+    @SequenceGenerator(sequenceName = "product_id_seq", name = "product_id_seq", allocationSize = 1)
     private long id;
+
+    @Column(length = 32, nullable = false)
     private String description;
+
+    @Column(nullable = false)
     private double price;
+
+    @Column(columnDefinition="BINARY(64)")
     private byte[] file;
+
+    @Column(nullable = false)
     private boolean enable;
 
     public Product(ResultSet resultSet) throws SQLException {

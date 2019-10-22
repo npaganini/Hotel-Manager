@@ -2,7 +2,7 @@ package ar.edu.itba.paw.persistance.test;
 
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.persistance.config.TestConfig;
-import ar.edu.itba.paw.persistence.UserRepository;
+import ar.edu.itba.paw.persistence.UserRepositoryJDBC;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,7 +35,7 @@ public class UserRepositoryTest {
     private DataSource ds;
 
     @Autowired
-    private UserRepository userDao;
+    private UserRepositoryJDBC userDao;
 
     private JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert simpleJdbcInsert;

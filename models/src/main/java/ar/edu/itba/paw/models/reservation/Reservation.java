@@ -2,11 +2,14 @@ package ar.edu.itba.paw.models.reservation;
 
 import ar.edu.itba.paw.models.SqlObject;
 import ar.edu.itba.paw.models.charge.Charge;
+import ar.edu.itba.paw.models.room.Room;
+import ar.edu.itba.paw.models.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.*;
 import java.nio.charset.Charset;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,7 +19,9 @@ import java.util.*;
 @Getter
 @NoArgsConstructor
 @Setter
+@Entity
 @AllArgsConstructor
+@Table(name = "reservation")
 public class Reservation implements SqlObject {
 
     public final static String KEY_ID = "id";
@@ -30,15 +35,38 @@ public class Reservation implements SqlObject {
 
     public final static String TABLE_NAME = "reservation";
 
-
+    // tableName_keyID_seq
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reservation_id_seq")
+    @SequenceGenerator(sequenceName = "reservation_id_seq", name = "reservation_id_seq", allocationSize = 1)
     private long id;
+
+    // Hibernate version supports LocalDate
+    @Column(nullable = false)
     private LocalDate startDate;
+    @Column(nullable = false)
     private LocalDate endDate;
-    private List<Charge> extraCharges = new ArrayList<>();
+
+    @Column(length = 100)
     private String userEmail;
+
     private long roomId;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    private Room assignedRoom;
+
     private long userId;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User reservationOwner;
+
+    @Column(nullable = false)
     private boolean isActive;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "reservationToCharge")
+    private List<Charge> extraCharges = new ArrayList<>();
+
+    @Column(nullable = false)
     private String hash = getRandomString();
 
     public Reservation(ResultSet resultSet) throws SQLException {
@@ -58,6 +86,16 @@ public class Reservation implements SqlObject {
         this.endDate = endDate;
         this.userEmail = userEmail;
         this.userId = userId;
+    }
+
+    public Reservation(Room room, String userEmail, LocalDate startDate, LocalDate endDate, User user) {
+        this.startDate = startDate;
+        this.assignedRoom = room;
+        this.roomId = room.getId();
+        this.endDate = endDate;
+        this.userEmail = userEmail;
+        this.userId = user.getId();
+        this.reservationOwner = user;
     }
 
     @Override

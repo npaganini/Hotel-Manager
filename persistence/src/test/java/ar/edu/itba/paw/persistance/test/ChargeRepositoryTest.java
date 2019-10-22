@@ -1,8 +1,7 @@
 package ar.edu.itba.paw.persistance.test;
 
-import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.persistance.config.TestConfig;
-import ar.edu.itba.paw.persistence.ChargeRepository;
+import ar.edu.itba.paw.persistence.ChargeRepositoryJDBC;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,16 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.jdbc.JdbcTestUtils;
+
 import javax.sql.DataSource;
 
 import java.sql.Timestamp;
@@ -54,7 +44,7 @@ public class ChargeRepositoryTest {
     private DataSource ds;
 
     @Autowired
-    private ChargeRepository chargeDao;
+    private ChargeRepositoryJDBC chargeDao;
 
     private JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert simpleJdbcInsert;

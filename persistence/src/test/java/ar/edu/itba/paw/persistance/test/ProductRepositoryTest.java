@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.persistance.test;
 
 import ar.edu.itba.paw.persistance.config.TestConfig;
-import ar.edu.itba.paw.persistence.ProductRepository;
+import ar.edu.itba.paw.persistence.ProductRepositoryJDBC;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class ProductRepositoryTest {
     private DataSource ds;
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductRepositoryJDBC productRepository;
 
     private JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert simpleJdbcInsert;

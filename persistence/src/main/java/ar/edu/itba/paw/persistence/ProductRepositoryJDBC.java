@@ -11,15 +11,14 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
-import java.util.Map;
 
-@Repository
-public class ProductRepository extends SimpleRepository<Product> implements ProductDao {
+//@Repository
+public class ProductRepositoryJDBC extends SimpleRepositoryJDBC<Product> implements ProductDao {
 
     private final static RowMapper<Product> ROW_MAPPER = (resultSet, i) -> new Product(resultSet);
 
-    @Autowired
-    public ProductRepository(DataSource dataSource) {
+//    @Autowired
+    public ProductRepositoryJDBC(DataSource dataSource) {
         super(new NamedParameterJdbcTemplate(dataSource));
     }
 

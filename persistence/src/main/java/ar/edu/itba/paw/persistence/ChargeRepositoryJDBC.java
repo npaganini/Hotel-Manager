@@ -19,13 +19,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Repository
-public class ChargeRepository extends SimpleRepository<Charge> implements ChargeDao {
+//@Repository
+public class ChargeRepositoryJDBC extends SimpleRepositoryJDBC<Charge> implements ChargeDao {
 
     private final static RowMapper<Charge> ROW_MAPPER = (resultSet, rowNum) -> new Charge(resultSet);
 
-    @Autowired
-    public ChargeRepository(DataSource dataSource) {
+//    @Autowired
+    public ChargeRepositoryJDBC(DataSource dataSource) {
         super(new NamedParameterJdbcTemplate(dataSource));
     }
 

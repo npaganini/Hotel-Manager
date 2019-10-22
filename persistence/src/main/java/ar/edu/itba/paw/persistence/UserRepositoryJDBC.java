@@ -13,13 +13,13 @@ import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
-public class UserRepository extends SimpleRepository<User> implements UserDao {
+//@Repository
+public class UserRepositoryJDBC extends SimpleRepositoryJDBC<User> implements UserDao {
 
     private static final RowMapper<User> ROW_MAPPER = (resultSet, i) -> new User(resultSet);
 
-    @Autowired
-    public UserRepository(DataSource dataSource) {
+//    @Autowired
+    public UserRepositoryJDBC(DataSource dataSource) {
         super(new NamedParameterJdbcTemplate(dataSource));
     }
 

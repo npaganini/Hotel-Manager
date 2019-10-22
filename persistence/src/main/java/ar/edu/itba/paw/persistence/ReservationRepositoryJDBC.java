@@ -15,13 +15,13 @@ import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
-public class ReservationRepository extends SimpleRepository<Reservation> implements ReservationDao {
+//@Repository
+public class ReservationRepositoryJDBC extends SimpleRepositoryJDBC<Reservation> implements ReservationDao {
 
     private static final RowMapper<Reservation> ROW_MAPPER = (resultSet, i) -> new Reservation(resultSet);
 
-    @Autowired
-    public ReservationRepository(DataSource dataSource) {
+//    @Autowired
+    public ReservationRepositoryJDBC(DataSource dataSource) {
         super(new NamedParameterJdbcTemplate(dataSource));
     }
 
