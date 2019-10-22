@@ -18,7 +18,7 @@
 </head>
 <body class="container cont"
       style="height: 100vh !important; width: 100vw !important;margin-left: 0 !important; margin-right: 0 !important">
-<div>
+<div >
     <div class="row myheader vertical-align">
         <div class="col-xs-12" style="text-align: left">
             <div><spring:message code="error"/></div>
@@ -28,7 +28,7 @@
     <br>
     <div class="row" style="font-size:x-large ">
         <div class="col" style="margin-left: 25px">
-            <spring:message code="error.403"/>
+            <spring:message code="error.404"/>
         </div>
     </div>
     <br>
