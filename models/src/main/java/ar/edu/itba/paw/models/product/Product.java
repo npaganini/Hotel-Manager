@@ -4,6 +4,7 @@ import ar.edu.itba.paw.models.SqlObject;
 import ar.edu.itba.paw.models.charge.Charge;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.ResultSet;
@@ -14,7 +15,9 @@ import java.util.Map;
 
 @Getter
 @Entity
+@NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "product")
 public class Product implements SqlObject {
 
     public final static String KEY_ID = "id";

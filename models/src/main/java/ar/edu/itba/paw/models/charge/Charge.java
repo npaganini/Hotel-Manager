@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ import java.util.Map;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "charge")
 public class Charge implements SqlObject {
@@ -36,7 +38,7 @@ public class Charge implements SqlObject {
     @Column(nullable = false)
     private boolean delivered;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @OneToOne(fetch = FetchType.EAGER, optional = false)
     private Product productPurchased;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
@@ -76,4 +78,7 @@ public class Charge implements SqlObject {
         this.id = id;
     }
 
+    public void setProductDelivered() {
+        this.delivered = true;
+    }
 }

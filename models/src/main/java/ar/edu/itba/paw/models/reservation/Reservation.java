@@ -17,9 +17,9 @@ import java.time.LocalDate;
 import java.util.*;
 
 @Getter
-@NoArgsConstructor
 @Setter
 @Entity
+@NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "reservation")
 public class Reservation implements SqlObject {
@@ -52,7 +52,7 @@ public class Reservation implements SqlObject {
 
     private long roomId;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Room assignedRoom;
 
     private long userId;

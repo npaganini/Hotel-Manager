@@ -4,6 +4,7 @@ import ar.edu.itba.paw.models.SqlObject;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.ResultSet;
@@ -13,8 +14,9 @@ import java.util.List;
 import java.util.Map;
 
 @Getter
-@AllArgsConstructor
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "users")
 public class User implements SqlObject {
     public final static String KEY_ID = "id";
@@ -46,10 +48,6 @@ public class User implements SqlObject {
 
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "reservationOwner")
     private List<Reservation> myReservations;
-
-    public User() {
-        // Just for Hibernate
-    }
 
     @Override
     public void setId(long id) {

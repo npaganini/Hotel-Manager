@@ -4,6 +4,7 @@ import ar.edu.itba.paw.models.SqlObject;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ import java.util.Map;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "room")
 public class Room implements SqlObject {

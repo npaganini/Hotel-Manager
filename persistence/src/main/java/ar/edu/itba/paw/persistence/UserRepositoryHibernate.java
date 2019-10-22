@@ -47,19 +47,4 @@ public class UserRepositoryHibernate implements UserDao {
     public List<User> findAll() {
         return em.createQuery("from User", User.class).getResultList();
     }
-
-    //    @Override
-//    public User create(final String username, final String
-//            password) {
-//        final User user = new User(username, password);
-//        em.persist(user);
-//        return user;
-//    }
-//    @Override
-//    public User getByUsername(final String username) {
-//        final TypedQuery<User> query = em.createQuery("from User as u where u.username = :username", User.class);
-//        query.setParameter("username", username);
-//        final List<User> list = query.getResultList();
-//        return list.isEmpty() ? null : list.get(0);
-//    }
 }
