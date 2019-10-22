@@ -5,7 +5,6 @@ import ar.edu.itba.paw.models.charge.Charge;
 import ar.edu.itba.paw.models.dtos.ChargeDeliveryDTO;
 import ar.edu.itba.paw.models.dtos.ChargeRoomReservationDTO;
 import ar.edu.itba.paw.models.product.Product;
-import ar.edu.itba.paw.models.user.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -33,14 +32,6 @@ public class ChargeRepositoryHibernate implements ChargeDao {
         }
         return ans;
     }
-//    FROM charge c JOIN product p " +
-//    "ON c.product_id = p.id JOIN reservation r ON r.id = c.reservation_id " +
-//    "WHERE r.user_email = :email AND r.id = :reservationId group by p.id"
-
-//    final TypedQuery<User> query = em.createQuery("from User as u where u.email = :userEmail", User.class);
-//        query.setParameter("userEmail", userEmail);
-//    final List<User> list = query.getResultList();
-//        return Optional.ofNullable(list.get(0));    // returns null if list is empty (no user with that username found)
 
     @Override
     public List<ChargeRoomReservationDTO> findChargeByReservationHash(long reservationId) {
