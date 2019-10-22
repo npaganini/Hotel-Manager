@@ -71,7 +71,7 @@
     <br>
     <div class="row">
         <div class="col" style="margin-left: 25px">
-            <button type="button" class="btn btn-success btn-lg"><a href="${pageContext.request.contextPath}/rooms/home" style="color: white"><spring:message code="user.home"/></a></button>
+            <button type="button" onclick="location.href='${pageContext.request.contextPath}/rooms/home'" class="btn btn-success btn-lg"><a style="color: white"><spring:message code="user.home"/></a></button>
         </div>
     </div>
 

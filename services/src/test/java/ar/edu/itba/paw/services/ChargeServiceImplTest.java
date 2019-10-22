@@ -7,6 +7,7 @@ import ar.edu.itba.paw.models.dtos.ChargeRoomReservationDTO;
 import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -31,6 +32,9 @@ public class ChargeServiceImplTest {
     private static final String START_DATE = "2019-09-30";
     private static final String END_DATE = "2019-10-10";
 
+    private static Reservation myReservation = new Reservation(ID_1, FAKE_VALID_EMAIL, Date.valueOf(START_DATE).toLocalDate(), Date.valueOf(END_DATE).toLocalDate(), ID_1);
+
+
     @Mock
     private ChargeDao chargeDao;
     @Mock
@@ -48,14 +52,13 @@ public class ChargeServiceImplTest {
     public void testGetAllChargesByReservationId() throws Exception {
         // 1. Setup!
         Product product1 = new Product(PRODUCT_NAME_1, PRODUCT_PRICE_1);
-        Reservation reservationValid = new Reservation(ID_1, FAKE_VALID_EMAIL, Date.valueOf(START_DATE).toLocalDate(), Date.valueOf(END_DATE).toLocalDate(), ID_1);
-        reservationValid.setActive(true);
+        myReservation.setActive(true);
         Charge charge1 = new Charge(ID_1, ID_1);
-        ChargeRoomReservationDTO chargeRoomReservationDTO = new ChargeRoomReservationDTO(product1, charge1, reservationValid);
+        ChargeRoomReservationDTO chargeRoomReservationDTO = new ChargeRoomReservationDTO(product1, charge1, myReservation);
         List<ChargeRoomReservationDTO> chargeRoomReservationDTOList = new LinkedList<>();
         chargeRoomReservationDTOList.add(chargeRoomReservationDTO);
-        Mockito.when(reservationDao.findById(ID_1)).thenReturn(Optional.of(reservationValid));
         Mockito.when(chargeDao.findChargeByReservationHash(ID_1)).thenReturn(chargeRoomReservationDTOList);
+        Mockito.when(reservationDao.findById(ID_1)).thenReturn(java.util.Optional.of(myReservation));
         // 2. SUT
         List<ChargeRoomReservationDTO> userReservations = chargeService.getAllChargesByReservationId(ID_1);
         // 3. Asserts
@@ -77,8 +80,7 @@ public class ChargeServiceImplTest {
     @Test
     public void testSumCharge() throws Exception {
         // 1. Setup!
-        Charge aCharge = new Charge(ID_1, ID_1);
-        Mockito.when(chargeDao.findById(ID_1)).thenReturn(Optional.of(aCharge));
+//        Mockito.when(chargeDao.findById(ID_1)).thenReturn(java.util.Optional.of(new Charge(ID_1, ID_1)));
         Mockito.when(chargeDao.sumCharge(ID_1)).thenReturn(TOTAL);
         // 2. SUT
         double total = chargeService.sumCharge(ID_1);

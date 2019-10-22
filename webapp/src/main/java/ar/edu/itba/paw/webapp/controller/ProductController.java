@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
+import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.ProductService;
 import ar.edu.itba.paw.interfaces.services.StorageService;
 import ar.edu.itba.paw.models.product.Product;
@@ -55,7 +56,10 @@ public class ProductController {
 
     @PostMapping("/products/addProduct")
     public String addProduct(@ModelAttribute ProductForm productForm,
-                             RedirectAttributes redirectAttributes) throws IOException {
+                             RedirectAttributes redirectAttributes) throws IOException, RequestInvalidException {
+        if (productForm.getPrice() < 0) {
+            throw new RequestInvalidException();
+        }
         LOGGER.debug("Request to add product to DB received");
         productService.saveProduct(new Product(productForm.getDescription(),
                 productForm.getPrice(), productForm.getImg().getBytes()));

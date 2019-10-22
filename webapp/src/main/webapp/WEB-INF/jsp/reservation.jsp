@@ -133,8 +133,7 @@
             <input type="submit" id="reserv" class="btn btn-success btn-lg" value="<spring:message code="reserve"/>" />
         </div>
         <div class="col-xs-2">
-            <button type="button" id="back" class="btn btn-danger btn-lg"><a href="${pageContext.request.contextPath}/rooms/home"
-                                                                   style="color: white"><spring:message code="cancel"/></a>
+            <button type="button" onclick="location.href='${pageContext.request.contextPath}/rooms/home'" id="back" class="btn btn-danger btn-lg"><a style="color: white"><spring:message code="cancel"/></a>
             </button>
         </div>
 
