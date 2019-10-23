@@ -74,22 +74,22 @@ public class UserServiceImplTest {
      * @function_to_test List<RoomReservationDTO> findActiveReservation(String userEmail)
      * uses reservationDao.findActiveReservation(String email)
      */
-    @Test
-    public void testFindActiveReservation() {
-        // 1. Setup!
-        Room room = new Room(ID_1, RoomType.DOUBLE, FALSE, ROOM_NUMBER);
-        Reservation reservationValid = new Reservation(ID_1, FAKE_VALID_EMAIL, Date.valueOf(START_DATE).toLocalDate(), Date.valueOf(END_DATE).toLocalDate(), ID_1);
-        RoomReservationDTO reservationDTO = new RoomReservationDTO(room, reservationValid);
-        List<RoomReservationDTO> list = new LinkedList<>();
-        list.add(reservationDTO);
-        Mockito.when(reservationDao.findActiveReservation(FAKE_VALID_EMAIL)).thenReturn(list);
-        // 2. SUT
-        List<RoomReservationDTO> reservationList = userService.findActiveReservation(FAKE_VALID_EMAIL);
-        // 3. Asserts
-        Assert.assertNotNull(reservationList);
-        Assert.assertEquals(RESERVATIONS_ARRAY_LIST_SIZE, reservationList.size());
-        Assert.assertFalse(reservationList.get(0).getRoom().isFreeNow());
-    }
+//    @Test
+//    public void testFindActiveReservation() {
+//        // 1. Setup!
+//        Room room = new Room(ID_1, RoomType.DOUBLE, FALSE, ROOM_NUMBER);
+//        Reservation reservationValid = new Reservation(ID_1, FAKE_VALID_EMAIL, Date.valueOf(START_DATE).toLocalDate(), Date.valueOf(END_DATE).toLocalDate(), ID_1);
+//        RoomReservationDTO reservationDTO = new RoomReservationDTO(room, reservationValid);
+//        List<RoomReservationDTO> list = new LinkedList<>();
+//        list.add(reservationDTO);
+//        Mockito.when(reservationDao.findActiveReservation(FAKE_VALID_EMAIL)).thenReturn(list);
+//        // 2. SUT
+//        List<RoomReservationDTO> reservationList = userService.findActiveReservation(FAKE_VALID_EMAIL);
+//        // 3. Asserts
+//        Assert.assertNotNull(reservationList);
+//        Assert.assertEquals(RESERVATIONS_ARRAY_LIST_SIZE, reservationList.size());
+//        Assert.assertFalse(reservationList.get(0).getRoom().isFreeNow());
+//    }
 
     /**
      * @function_to_test Map<Product, Integer> checkProductsPurchasedByUserByReservationId(String userEmail, long reservationId)
