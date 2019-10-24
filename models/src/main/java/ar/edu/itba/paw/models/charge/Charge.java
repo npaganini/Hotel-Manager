@@ -32,17 +32,22 @@ public class Charge implements SqlObject {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "charge_id_seq")
     @SequenceGenerator(sequenceName = "charge_id_seq", name = "charge_id_seq", allocationSize = 1)
-    private long id;
-    private long productId;
-    private long reservationId;
+    @Column(name = "id")
+    private Long id;
     @Column(nullable = false)
     private boolean delivered;
 
     @OneToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "product_id")
     private Product productPurchased;
+//    @Column(name = "product_id")
+    private Long productId;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "reservation_id")
     private Reservation reservationToCharge;
+//    @Column(name = "reservation_id")
+    private Long reservationId;
 
     public Charge(ResultSet resultSet) throws SQLException {
         this.id = resultSet.getLong(KEY_ID);

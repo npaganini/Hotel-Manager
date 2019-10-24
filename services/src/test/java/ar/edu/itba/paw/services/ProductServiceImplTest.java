@@ -19,7 +19,7 @@ public class ProductServiceImplTest {
     private static final boolean TRUE = true;
     private static final int BOOLEAN_INT_TRUE = 1;
     private static final String PRODUCT_NAME_1 = "Snickers";
-    private static final float PRODUCT_PRICE_1 = 15.99f;
+    private static final double PRODUCT_PRICE_1 = 15.99;
 
     private static Product product1 = new Product(PRODUCT_NAME_1, PRODUCT_PRICE_1);
 

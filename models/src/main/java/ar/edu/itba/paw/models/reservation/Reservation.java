@@ -39,7 +39,7 @@ public class Reservation implements SqlObject {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reservation_id_seq")
     @SequenceGenerator(sequenceName = "reservation_id_seq", name = "reservation_id_seq", allocationSize = 1)
-    private long id;
+    private Long id;
 
     // Hibernate version supports LocalDate
     @Column(nullable = false)
@@ -50,12 +50,12 @@ public class Reservation implements SqlObject {
     @Column(length = 100)
     private String userEmail;
 
-    private long roomId;
+    private Long roomId;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Room assignedRoom;
 
-    private long userId;
+    private Long userId;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private User reservationOwner;

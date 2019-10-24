@@ -32,13 +32,13 @@ public class Product implements SqlObject {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_id_seq")
     @SequenceGenerator(sequenceName = "product_id_seq", name = "product_id_seq", allocationSize = 1)
-    private long id;
+    private Long id;
 
     @Column(length = 32, nullable = false)
     private String description;
 
     @Column(nullable = false)
-    private double price;
+    private Double price;
 
     @Column(columnDefinition="BINARY(64)")
     private byte[] file;
