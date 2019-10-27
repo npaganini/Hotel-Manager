@@ -57,8 +57,7 @@ public class UserController extends SimpleController {
         LOGGER.debug("Request received to buy products on reservation with id" + reservationId);
         if (buyProductForm != null) {
             final ModelAndView mav = new ModelAndView("buyProducts");
-            Charge charge = new Charge(buyProductForm.getProductId(), reservationId);
-            mav.addObject("charge", userService.addCharge(charge));
+            mav.addObject("charge", userService.addCharge(buyProductForm.getProductId(), reservationId));
             return mav;
         }
         return new ModelAndView("redirect:/products");

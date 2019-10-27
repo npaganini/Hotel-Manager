@@ -1,13 +1,11 @@
-package ar.edu.itba.paw.persistence;
+/*package ar.edu.itba.paw.persistence.jdbc;
 
 import ar.edu.itba.paw.interfaces.daos.ProductDao;
 import ar.edu.itba.paw.models.product.Product;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -64,3 +62,4 @@ public class ProductRepositoryJDBC extends SimpleRepositoryJDBC<Product> impleme
         return jdbcTemplateWithNamedParameter.query("SELECT * FROM product WHERE description=:description", parameters, getRowMapper());
     }
 }
+*/

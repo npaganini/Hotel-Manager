@@ -17,10 +17,4 @@ public class ChargeRoomReservationDTO {
     private Product product;
     private Charge charge;
     private Reservation reservation;
-
-    public ChargeRoomReservationDTO(ResultSet resultSet) throws SQLException {
-        this.product = new Product(resultSet);
-        this.charge = new Charge(resultSet);
-        this.reservation = new Reservation(resultSet);
-    }
 }

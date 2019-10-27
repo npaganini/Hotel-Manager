@@ -13,11 +13,13 @@ import ar.edu.itba.paw.models.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -54,24 +56,27 @@ public class RoomServiceImpl implements RoomService {
 
     @Transactional
     @Override
-    public void doReservation(Reservation reserva) {
-        LOGGER.debug("About to do reservation with hash " + reserva.getHash());
-        LOGGER.debug("Looking if there is already a user created with email " + reserva.getUserEmail());
-        Optional<User> user = userDao.findByEmail(reserva.getUserEmail());
-        if (user.isPresent()) {
-            LOGGER.debug("There is already an user created with email " + reserva.getUserEmail());
-            reserva.setUserId(user.get().getId());
+    public Reservation doReservation(long roomId, String userEmail, LocalDate startDate, LocalDate endDate) throws RequestInvalidException {
+        if (!isRoomFreeOnDate(roomId, startDate, endDate))
+            throw new RequestInvalidException();
+        LOGGER.debug("Looking if there is already a user created with email " + userEmail);
+        Optional<User> userOptional = userDao.findByEmail(userEmail);
+        User user;
+        if (userOptional.isPresent()) {
+            user = userOptional.get();
+            LOGGER.debug("There is already an user created with email " + userEmail);
         } else {
-            LOGGER.debug("There is not an user created with email " + reserva.getUserEmail() + ". So we create one");
-            reserva.setUserId(userDao.save(new User(reserva.getUserEmail(),
-                    reserva.getUserEmail(),
-                    new BCryptPasswordEncoder().encode(reserva.getUserEmail()))).getId());
+            LOGGER.debug("There is not an user created with email " + userEmail + ". So we create one");
+            user = userDao.save(new User(userEmail,
+                    userEmail,
+                    new BCryptPasswordEncoder().encode(userEmail)));
         }
-        LOGGER.debug("Saving reservation with hash " + reserva.getHash());
-        reservationDao.save(reserva);
+        LOGGER.debug("Saving reservation ");
+        Reservation reservation = reservationDao.save(new Reservation());
         LOGGER.debug("Sending email with confirmation of reservation to user");
-        emailService.sendConfirmationOfReservation(reserva.getUserEmail(), "Reserva confirmada",
-                reserva.getHash());
+        emailService.sendConfirmationOfReservation(userEmail, "Reserva confirmada",
+                reservation.getHash());
+        return reservation;
     }
 
     @Override
@@ -86,19 +91,12 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<RoomReservationDTO> findAllBetweenDatesAndEmail(String startDate, String endDate, String email) throws RequestInvalidException {
-        validateDatesInverval(startDate, endDate);
+    public List<RoomReservationDTO> findAllBetweenDatesAndEmail(String startDate, String endDate, String email) {
         return roomDao.findAllBetweenDatesAndEmail(startDate, endDate, email);
     }
 
-    private void validateDatesInverval(String startDate, String endDate) throws RequestInvalidException {
-        if (!startDate.isEmpty() && !endDate.isEmpty() && !LocalDate.parse(startDate).isBefore(LocalDate.parse(endDate)))
-            throw new RequestInvalidException();
-    }
-
     @Override
-    public List<Room> findAllFreeBetweenDates(String startDate, String endDate) throws RequestInvalidException {
-        validateDatesInverval(startDate, endDate);
+    public List<Room> findAllFreeBetweenDates(String startDate, String endDate) {
         return roomDao.findAllFreeBetweenDates(startDate, endDate);
     }
 
@@ -108,11 +106,15 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public boolean isRoomFreeOnDate(long roomId, String startDate, String endDate) throws RequestInvalidException {
-        validateDatesInverval(startDate, endDate);
+    public boolean isRoomFreeOnDate(long roomId, LocalDate startDate, LocalDate endDate) {
         List<Room> rooms = roomDao.findAllFreeBetweenDates(startDate, endDate)
                 .parallelStream().filter(room -> room.getId() == roomId).collect(Collectors.toList());
         return rooms.size() == 1 && rooms.get(0).getId() == roomId;
+    }
+
+    @Override
+    public List<Room> findAllFreeBetweenDates(String startDate, String endDate) {
+        return roomDao.findAllFreeBetweenDates(LocalDate.parse(startDate), LocalDate.parse(endDate));
     }
 
 }

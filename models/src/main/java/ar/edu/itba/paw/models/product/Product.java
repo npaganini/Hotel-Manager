@@ -18,7 +18,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "product")
-public class Product implements SqlObject {
+public class Product {
 
     public final static String KEY_ID = "id";
     public final static String KEY_DESCRIPTION = "description";
@@ -28,10 +28,8 @@ public class Product implements SqlObject {
 
     public final static String TABLE_NAME = "product";
 
-    // tableName_keyID_seq
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_id_seq")
-    @SequenceGenerator(sequenceName = "product_id_seq", name = "product_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(length = 32, nullable = false)
@@ -67,6 +65,7 @@ public class Product implements SqlObject {
         this.enable = true;
     }
 
+    /*
     @Override
     public Map<String, Object> toMap() {
         Map<String, Object> productToMap = new HashMap<>();
@@ -77,10 +76,6 @@ public class Product implements SqlObject {
         productToMap.put(KEY_ENABLE, isEnable());
         return productToMap;
     }
-
-    @Override
-    public void setId(long id) {
-        this.id = id;
-    }
+*/
 
 }

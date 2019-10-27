@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.persistence;
+package ar.edu.itba.paw.persistence.hibernate;
 
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
 import ar.edu.itba.paw.models.dtos.RoomReservationDTO;
@@ -43,12 +43,8 @@ public class ReservationRepositoryHibernate implements ReservationDao {
 
     @Override
     public Reservation save(Reservation reservation) {
-        final Reservation reservationToAdd = new Reservation(
-                reservation.getAssignedRoom().getId(), reservation.getUserEmail(), reservation.getStartDate(),
-                reservation.getEndDate(), reservation.getUserId()
-        );
-        em.persist(reservationToAdd);
-        return reservationToAdd;
+        em.persist(reservation);
+        return reservation;
     }
 
     @Override
@@ -58,6 +54,6 @@ public class ReservationRepositoryHibernate implements ReservationDao {
 
     @Override
     public List<Reservation> findAll() {
-        return em.createQuery("from Reservation", Reservation.class).getResultList();
+        return em.createQuery("FROM Reservation", Reservation.class).getResultList();
     }
 }

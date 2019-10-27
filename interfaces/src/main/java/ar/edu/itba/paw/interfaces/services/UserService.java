@@ -15,6 +15,5 @@ public interface UserService {
 
     List<Product> getProducts();
 
-    Charge addCharge(Charge product);
-
+    Charge addCharge(long productId, long reservationId);
 }

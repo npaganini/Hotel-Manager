@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.persistence;
+package ar.edu.itba.paw.persistence.hibernate;
 
 import ar.edu.itba.paw.interfaces.daos.ChargeDao;
 import ar.edu.itba.paw.models.charge.Charge;
@@ -28,7 +28,7 @@ public class ChargeRepositoryHibernate implements ChargeDao {
         final List<Charge> list = query.getResultList();
         final Map<Product, Integer> ans = new HashMap<>();
         for(Charge charge: list) {
-            ans.merge(charge.getProductPurchased(), 1, Integer::sum);
+            ans.merge(charge.getProduct(), 1, Integer::sum);
         }
         return ans;
     }
@@ -40,7 +40,7 @@ public class ChargeRepositoryHibernate implements ChargeDao {
         final List<Charge> list = query.getResultList();
         final List<ChargeRoomReservationDTO> ans = new LinkedList<>();
         for(Charge charge: list) {
-            ans.add(new ChargeRoomReservationDTO(charge.getProductPurchased(), charge, charge.getReservationToCharge()));
+            ans.add(new ChargeRoomReservationDTO(charge.getProduct(), charge, charge.getReservation()));
         }
         return ans;
     }
@@ -52,7 +52,7 @@ public class ChargeRepositoryHibernate implements ChargeDao {
         final List<Charge> list = query.getResultList();
         double ans = 0;
         for(Charge charge: list) {
-            ans += charge.getProductPurchased().getPrice();
+            ans += charge.getProduct().getPrice();
         }
         return ans;
     }
@@ -63,7 +63,7 @@ public class ChargeRepositoryHibernate implements ChargeDao {
         final List<Charge> list = query.getResultList();
         List<ChargeDeliveryDTO> ans = new LinkedList<>();
         for(Charge charge: list) {
-            ans.add(new ChargeDeliveryDTO(charge.getId(), charge.getReservationToCharge().getAssignedRoom().getNumber(), false, charge.getProductPurchased().getDescription()));
+            ans.add(new ChargeDeliveryDTO(charge.getId(), charge.getReservation().getRoom().getNumber(), false, charge.getProduct().getDescription()));
         }
         return ans;
     }
@@ -83,7 +83,7 @@ public class ChargeRepositoryHibernate implements ChargeDao {
 
     @Override
     public Charge save(Charge charge) {
-        final Charge chargeToAdd = new Charge(charge.getProductPurchased(), charge.getReservationToCharge());
+        final Charge chargeToAdd = new Charge(charge.getProduct(), charge.getReservation());
         em.persist(chargeToAdd);
         return chargeToAdd;
     }

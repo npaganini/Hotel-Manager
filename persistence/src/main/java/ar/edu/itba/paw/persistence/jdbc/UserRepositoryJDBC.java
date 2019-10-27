@@ -1,13 +1,12 @@
-package ar.edu.itba.paw.persistence;
+/*package ar.edu.itba.paw.persistence.jdbc;
 
 import ar.edu.itba.paw.interfaces.daos.UserDao;
 import ar.edu.itba.paw.models.user.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import ar.edu.itba.paw.persistence.jdbc.SimpleRepositoryJDBC;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -56,3 +55,4 @@ public class UserRepositoryJDBC extends SimpleRepositoryJDBC<User> implements Us
                 " WHERE " + User.KEY_USERNAME + " = :username", mapSqlParameterSource, getRowMapper()));
     }
 }
+*/

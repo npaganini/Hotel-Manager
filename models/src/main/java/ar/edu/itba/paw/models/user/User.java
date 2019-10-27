@@ -18,7 +18,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
-public class User implements SqlObject {
+public class User {
     public final static String KEY_ID = "id";
     public final static String KEY_EMAIL = "email";
     public final static String KEY_USERNAME = "username";
@@ -27,11 +27,8 @@ public class User implements SqlObject {
 
     public final static String TABLE_NAME = "users";
 
-    // tableName_keyID_seq
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_seq")
-    @SequenceGenerator(sequenceName = "users_id_seq", name = "users_id_seq", allocationSize = 1)
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(length = 100, unique = true)
@@ -46,13 +43,8 @@ public class User implements SqlObject {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "reservationOwner")
-    private List<Reservation> myReservations;
-
-    @Override
-    public void setId(long id) {
-        this.id = id;
-    }
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Reservation> reservations;
 
     public User(ResultSet resultSet) throws SQLException {
         this.id = resultSet.getLong(KEY_ID);
@@ -67,16 +59,5 @@ public class User implements SqlObject {
         this.username = username;
         this.password = password;
         this.role = UserRole.CLIENT;
-    }
-
-    @Override
-    public Map<String, Object> toMap() {
-        Map<String, Object> userToMap = new HashMap<>();
-        userToMap.put(KEY_ID, getId());
-        userToMap.put(KEY_EMAIL, getEmail());
-        userToMap.put(KEY_USERNAME, getUsername());
-        userToMap.put(KEY_ROLE, getRole().toString());
-        userToMap.put(KEY_PASSWORD, getPassword());
-        return userToMap;
     }
 }

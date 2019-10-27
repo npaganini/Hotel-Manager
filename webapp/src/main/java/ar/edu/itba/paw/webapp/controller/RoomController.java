@@ -56,14 +56,9 @@ public class RoomController {
     public ModelAndView reservationPost(@ModelAttribute("reservationForm") final ReservationForm form) throws EntityNotFoundException, RequestInvalidException {
         final ModelAndView mav = new ModelAndView("reservationPost");
         LOGGER.debug("Request received to do a reservation on room with id: " + form.getRoomId());
-        if (!roomService.isRoomFreeOnDate(form.getRoomId(), form.getStartDate(), form.getEndDate()))
-            throw new RequestInvalidException();
-        Reservation reserva = new Reservation(form.getRoomId(),
+        mav.addObject("reserva", roomService.doReservation(form.getRoomId(),
                 form.getUserEmail(), Date.valueOf(form.getStartDate()).toLocalDate(),
-                Date.valueOf(form.getEndDate()).toLocalDate(), 0L);
-        roomService.doReservation(reserva);
-        LOGGER.debug("Response about to be sent, reservation made, with hash: " + reserva.getHash());
-        mav.addObject("reserva", reserva);
+                Date.valueOf(form.getEndDate()).toLocalDate()));
         return mav;
     }
 
@@ -81,7 +76,7 @@ public class RoomController {
         if (reservation.isActive()) {
             throw new RequestInvalidException();
         }
-        roomService.reservateRoom(reservation.getRoomId(), reservation);
+        roomService.reservateRoom(reservation.getRoom().getId(), reservation);
         reservationService.activeReservation(reservation.getId());
         return mav;
     }
@@ -102,7 +97,7 @@ public class RoomController {
         LOGGER.debug("Request received to do the check-out on reservation with hash: " + form.getId_reservation());
         mav.addObject("charges", chargeService.getAllChargesByReservationId(reservation.getId()));
         mav.addObject("totalCharge", chargeService.sumCharge(reservation.getId()));
-        roomService.freeRoom(reservation.getRoomId());
+        roomService.freeRoom(reservation.getRoom().getId());
         reservationService.inactiveReservation(reservation.getId());
         return mav;
     }

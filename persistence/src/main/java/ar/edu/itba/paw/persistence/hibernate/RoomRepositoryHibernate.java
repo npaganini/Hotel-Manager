@@ -1,14 +1,14 @@
-package ar.edu.itba.paw.persistence;
+package ar.edu.itba.paw.persistence.hibernate;
 
 import ar.edu.itba.paw.interfaces.daos.RoomDao;
 import ar.edu.itba.paw.models.dtos.RoomReservationDTO;
 import ar.edu.itba.paw.models.room.Room;
-import ar.edu.itba.paw.models.user.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +36,7 @@ public class RoomRepositoryHibernate implements RoomDao {
 //        return Optional.ofNullable(list.get(0));
 
     @Override
-    public List<Room> findAllFreeBetweenDates(String startDate, String endDate) {
+    public List<Room> findAllFreeBetweenDates(LocalDate startDate, LocalDate endDate) {
         return null;
     }
 
@@ -63,7 +63,7 @@ public class RoomRepositoryHibernate implements RoomDao {
 
     @Override
     public Room save(Room room) {
-        final Room roomToAdd = new Room(room.getId(), room.getRoomType(), room.isFreeNow(), room.getNumber(), room.getMyReservations());
+        final Room roomToAdd = new Room(room.getId(), room.getRoomType(), room.isFreeNow(), room.getNumber(), room.getReservations());
         em.persist(roomToAdd);
         return roomToAdd;
     }

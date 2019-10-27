@@ -6,25 +6,24 @@ import ar.edu.itba.paw.models.dtos.RoomReservationDTO;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface RoomService {
 
-    List<Room> getRoomsList();
-
     Room getRoom(long roomID);
-
-    void doReservation(Reservation reserva) throws EntityNotFoundException;
 
     void reservateRoom(long roomId, Reservation reservation);
 
     void freeRoom(long roomId);
 
-    List<Room> findAllFreeBetweenDates(String startDate, String endDate) throws RequestInvalidException;
-
-    List<RoomReservationDTO> findAllBetweenDatesAndEmail(String startDate, String endDate, String email) throws RequestInvalidException;
+    List<RoomReservationDTO> findAllBetweenDatesAndEmail(String startDate, String endDate, String email);
 
     List<RoomReservationDTO> getRoomsReservedActive();
 
-    boolean isRoomFreeOnDate(long roomId, String startDate, String endDate) throws RequestInvalidException;
+    Reservation doReservation(long roomId, String userEmail, LocalDate startDate, LocalDate endDate) throws RequestInvalidException;
+
+    boolean isRoomFreeOnDate(long roomId, LocalDate startDate, LocalDate endDate);
+
+    List<Room> findAllFreeBetweenDates(String startDate, String endDate);
 }

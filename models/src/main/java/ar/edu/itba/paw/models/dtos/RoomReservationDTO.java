@@ -14,8 +14,4 @@ public class RoomReservationDTO {
     private Room room;
     private Reservation reservation;
 
-    public RoomReservationDTO(ResultSet resultSet) throws SQLException {
-        this.room = new Room(resultSet);
-        this.reservation = new Reservation(resultSet);
-    }
 }

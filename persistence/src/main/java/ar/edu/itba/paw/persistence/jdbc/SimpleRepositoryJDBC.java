@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.persistence;
+/*package ar.edu.itba.paw.persistence.jdbc;
 
 import ar.edu.itba.paw.interfaces.daos.SimpleDao;
 import ar.edu.itba.paw.models.SqlObject;
@@ -59,3 +59,4 @@ public abstract class SimpleRepositoryJDBC<T extends SqlObject> implements Simpl
 
     abstract SimpleJdbcInsert getJdbcInsert();
 }
+*/
