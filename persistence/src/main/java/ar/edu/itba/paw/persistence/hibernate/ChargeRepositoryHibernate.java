@@ -13,21 +13,19 @@ import javax.persistence.TypedQuery;
 import java.util.*;
 
 @Repository
-public class ChargeRepositoryHibernate implements ChargeDao {
-    @PersistenceContext
-    private EntityManager em;
+public class ChargeRepositoryHibernate extends SimpleRepositoryHibernate<Charge> implements ChargeDao {
 
     @Override
     public Map<Product, Integer> getAllChargesByUser(String userEmail, long reservationId) {
         final TypedQuery<Charge> query = em.createQuery(
                 "FROM Charge AS c " +
-                    "WHERE c.reservationToCharge.userEmail = :userEmail AND c.reservationToCharge.id = :reservationId",
+                        "WHERE c.reservationToCharge.userEmail = :userEmail AND c.reservationToCharge.id = :reservationId",
                 Charge.class);
         query.setParameter("userEmail", userEmail);
         query.setParameter("reservationId", reservationId);
         final List<Charge> list = query.getResultList();
         final Map<Product, Integer> ans = new HashMap<>();
-        for(Charge charge: list) {
+        for (Charge charge : list) {
             ans.merge(charge.getProduct(), 1, Integer::sum);
         }
         return ans;
@@ -39,7 +37,7 @@ public class ChargeRepositoryHibernate implements ChargeDao {
         query.setParameter("reservationId", reservationId);
         final List<Charge> list = query.getResultList();
         final List<ChargeRoomReservationDTO> ans = new LinkedList<>();
-        for(Charge charge: list) {
+        for (Charge charge : list) {
             ans.add(new ChargeRoomReservationDTO(charge.getProduct(), charge, charge.getReservation()));
         }
         return ans;
@@ -51,7 +49,7 @@ public class ChargeRepositoryHibernate implements ChargeDao {
         query.setParameter("reservationId", reservationId);
         final List<Charge> list = query.getResultList();
         double ans = 0;
-        for(Charge charge: list) {
+        for (Charge charge : list) {
             ans += charge.getProduct().getPrice();
         }
         return ans;
@@ -62,7 +60,7 @@ public class ChargeRepositoryHibernate implements ChargeDao {
         final TypedQuery<Charge> query = em.createQuery("FROM Charge AS c WHERE c.delivered = FALSE", Charge.class);
         final List<Charge> list = query.getResultList();
         List<ChargeDeliveryDTO> ans = new LinkedList<>();
-        for(Charge charge: list) {
+        for (Charge charge : list) {
             ans.add(new ChargeDeliveryDTO(charge.getId(), charge.getReservation().getRoom().getNumber(), false, charge.getProduct().getDescription()));
         }
         return ans;
@@ -73,7 +71,7 @@ public class ChargeRepositoryHibernate implements ChargeDao {
         final TypedQuery<Charge> query = em.createQuery("FROM Charge AS c WHERE c.id = :chargeId", Charge.class);
         query.setParameter("chargeId", chargeId);
         final Charge charge = query.getSingleResult();
-        if(charge != null) {
+        if (charge != null) {
             charge.setProductDelivered();
             em.merge(charge);
             return 1;
@@ -81,20 +79,14 @@ public class ChargeRepositoryHibernate implements ChargeDao {
         return 0;
     }
 
+
     @Override
-    public Charge save(Charge charge) {
-        final Charge chargeToAdd = new Charge(charge.getProduct(), charge.getReservation());
-        em.persist(chargeToAdd);
-        return chargeToAdd;
+    String getTableName() {
+        return Charge.TABLE_NAME;
     }
 
     @Override
-    public Optional<Charge> findById(long id) {
-        return Optional.ofNullable(em.find(Charge.class, id));
-    }
-
-    @Override
-    public List<Charge> findAll() {
-        return em.createQuery("from Charge", Charge.class).getResultList();
+    Class<Charge> getModelClass() {
+        return Charge.class;
     }
 }

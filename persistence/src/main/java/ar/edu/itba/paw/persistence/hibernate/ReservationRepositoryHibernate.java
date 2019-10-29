@@ -12,9 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class ReservationRepositoryHibernate implements ReservationDao {
-    @PersistenceContext
-    private EntityManager em;
+public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Reservation> implements ReservationDao {
 
     @Override
     public List<RoomReservationDTO> findAllReservationsByUserEmail(String userEmail) {
@@ -42,18 +40,12 @@ public class ReservationRepositoryHibernate implements ReservationDao {
     }
 
     @Override
-    public Reservation save(Reservation reservation) {
-        em.persist(reservation);
-        return reservation;
+    String getTableName() {
+        return Reservation.TABLE_NAME;
     }
 
     @Override
-    public Optional<Reservation> findById(long id) {
-        return Optional.ofNullable(em.find(Reservation.class, id));
-    }
-
-    @Override
-    public List<Reservation> findAll() {
-        return em.createQuery("FROM Reservation", Reservation.class).getResultList();
+    Class<Reservation> getModelClass() {
+        return Reservation.class;
     }
 }

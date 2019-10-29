@@ -11,9 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class UserRepositoryHibernate implements UserDao {
-    @PersistenceContext
-    private EntityManager em;
+public class UserRepositoryHibernate extends SimpleRepositoryHibernate<User> implements UserDao {
 
     @Override
     public Optional<User> findByEmail(String userEmail) {
@@ -32,19 +30,12 @@ public class UserRepositoryHibernate implements UserDao {
     }
 
     @Override
-    public User save(User user) {
-        final User userToAdd = new User(user.getEmail(), user.getUsername(), user.getPassword());
-        em.persist(userToAdd);
-        return userToAdd;
+    String getTableName() {
+        return User.TABLE_NAME;
     }
 
     @Override
-    public Optional<User> findById(long id) {
-        return Optional.ofNullable(em.find(User.class, id));
-    }
-
-    @Override
-    public List<User> findAll() {
-        return em.createQuery("from User", User.class).getResultList();
+    Class<User> getModelClass() {
+        return User.class;
     }
 }

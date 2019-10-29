@@ -1,19 +1,16 @@
 package ar.edu.itba.paw.models.product;
 
-import ar.edu.itba.paw.models.SqlObject;
-import ar.edu.itba.paw.models.charge.Charge;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -38,7 +35,6 @@ public class Product {
     @Column(nullable = false)
     private Double price;
 
-    @Column(columnDefinition="BINARY(64)")
     private byte[] file;
 
     @Column(nullable = false)

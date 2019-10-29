@@ -14,9 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class RoomRepositoryHibernate implements RoomDao {
-    @PersistenceContext
-    private EntityManager em;
+public class RoomRepositoryHibernate extends SimpleRepositoryHibernate<Room> implements RoomDao {
 
     @Override
     public List<RoomReservationDTO> findAllBetweenDatesAndEmail(String startDate, String endDate, String email) {
@@ -62,19 +60,12 @@ public class RoomRepositoryHibernate implements RoomDao {
     }
 
     @Override
-    public Room save(Room room) {
-        final Room roomToAdd = new Room(room.getId(), room.getRoomType(), room.isFreeNow(), room.getNumber(), room.getReservations());
-        em.persist(roomToAdd);
-        return roomToAdd;
+    String getTableName() {
+        return Room.TABLE_NAME;
     }
 
     @Override
-    public Optional<Room> findById(long id) {
-        return Optional.ofNullable(em.find(Room.class, id));
-    }
-
-    @Override
-    public List<Room> findAll() {
-        return em.createQuery("from Room", Room.class).getResultList();
+    Class<Room> getModelClass() {
+        return Room.class;
     }
 }

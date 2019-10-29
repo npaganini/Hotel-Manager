@@ -11,9 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class ProductRepositoryHibernate implements ProductDao {
-    @PersistenceContext
-    private EntityManager em;
+public class ProductRepositoryHibernate extends SimpleRepositoryHibernate<Product> implements ProductDao {
 
     @Override
     public List<Product> getAllProducts() {
@@ -36,19 +34,12 @@ public class ProductRepositoryHibernate implements ProductDao {
     }
 
     @Override
-    public Product save(Product product) {
-        final Product productToAdd = new Product(product.getDescription(), product.getPrice(), product.getFile());
-        em.persist(productToAdd);
-        return productToAdd;
+    String getTableName() {
+        return Product.TABLE_NAME;
     }
 
     @Override
-    public Optional<Product> findById(long id) {
-        return Optional.ofNullable(em.find(Product.class, id));
-    }
-
-    @Override
-    public List<Product> findAll() {
-        return em.createQuery("from Product", Product.class).getResultList();
+    Class<Product> getModelClass() {
+        return Product.class;
     }
 }
