@@ -49,16 +49,18 @@ public class ProductServiceImpl implements ProductService {
         return productDao.updateProductEnable(productId, true) > 0;
     }
 
+    //TODO estos metodos estan repetidos
     @Transactional
     @Override
     public List<Product> getAll() {
-        return productDao.getAllProducts();
+        return productDao.findAll();
     }
 
+    //TODO estos metodos estan repetidos
     @Transactional
     @Override
     public List<Product> getAllProductsForTable() {
-        return productDao.getAllProductsForTable();
+        return productDao.findAll();
     }
 
     @Transactional

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,23 +15,16 @@ import java.util.Optional;
 public class ProductRepositoryHibernate extends SimpleRepositoryHibernate<Product> implements ProductDao {
 
     @Override
-    public List<Product> getAllProducts() {
-        return null;
-    }
-
-    @Override
     public int updateProductEnable(long productId, boolean enable) {
+        final TypedQuery<Product> query = em.createQuery("FROM Product AS p WHERE p.id = :productId", Product.class);
+        query.setParameter("productId", productId);
+        Product product = query.getSingleResult();
+        if (product != null) {
+            product.setEnable(enable);
+            em.merge(product);
+            return 1;
+        }
         return 0;
-    }
-
-    @Override
-    public List<Product> findAllProductsByDescription(String description) {
-        return null;
-    }
-
-    @Override
-    public List<Product> getAllProductsForTable() {
-        return null;
     }
 
     @Override

@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Product> getProducts() {
-        return new LinkedList<>(productDao.getAllProducts());
+        return new LinkedList<>(productDao.findAll());
     }
 
     @Override
