@@ -12,14 +12,12 @@ import form.ReservationForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Date;
-import java.time.LocalDate;
 
 @Controller
 @RequestMapping("rooms")
@@ -110,24 +108,22 @@ public class RoomController {
     }
 
     @GetMapping("/reservation")
-    public ModelAndView reservation(@RequestParam(value = "startDate", required = false) String startDate,
-                                    @RequestParam(value = "endDate", required = false) String endDate,
-                                    @ModelAttribute("reservationForm") final ReservationForm form) {
+    public ModelAndView reservation(@RequestParam(value = "startDate", required = false, defaultValue = "") String startDate,
+                                    @RequestParam(value = "endDate", required = false, defaultValue = "") String endDate,
+                                    @ModelAttribute("reservationForm") final ReservationForm form) throws RequestInvalidException {
         final ModelAndView mav = new ModelAndView("reservation");
-        if (!(startDate == null || endDate == null) && !(startDate.isEmpty() || endDate.isEmpty()) && LocalDate.parse(startDate).isBefore(LocalDate.parse(endDate)))
-            mav.addObject("allRooms", roomService.findAllFreeBetweenDates(startDate, endDate));
+        mav.addObject("allRooms", roomService.findAllFreeBetweenDates(startDate, endDate));
         return mav;
     }
 
 
     @GetMapping("/reservations")
-    public ModelAndView reservations(@RequestParam(value = "startDate", required = false) String startDate,
-                                     @RequestParam(value = "endDate", required = false) String endDate,
-                                     @RequestParam(value = "userEmail", required = false) String userEmail) {
+    public ModelAndView reservations(@RequestParam(value = "startDate", required = false, defaultValue = "") String startDate,
+                                     @RequestParam(value = "endDate", required = false, defaultValue = "") String endDate,
+                                     @RequestParam(value = "userEmail", required = false, defaultValue = "") String userEmail) throws RequestInvalidException {
         final ModelAndView mav = new ModelAndView("reservations");
-        if (!(startDate == null || endDate == null) && !(startDate.isEmpty() || endDate.isEmpty()) && LocalDate.parse(startDate).isBefore(LocalDate.parse(endDate)))
-            mav.addObject("reservations", roomService.findAllBetweenDatesAndEmail(startDate,
-                    endDate, userEmail));
+        mav.addObject("reservations", roomService.findAllBetweenDatesAndEmail(startDate,
+                endDate, userEmail));
         return mav;
     }
 

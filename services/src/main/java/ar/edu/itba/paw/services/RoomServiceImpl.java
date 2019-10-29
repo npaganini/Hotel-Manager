@@ -3,6 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
 import ar.edu.itba.paw.interfaces.daos.RoomDao;
 import ar.edu.itba.paw.interfaces.daos.UserDao;
+import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.RoomService;
 import ar.edu.itba.paw.models.dtos.RoomReservationDTO;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -84,12 +86,19 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<RoomReservationDTO> findAllBetweenDatesAndEmail(String startDate, String endDate, String email) {
+    public List<RoomReservationDTO> findAllBetweenDatesAndEmail(String startDate, String endDate, String email) throws RequestInvalidException {
+        validateDatesInverval(startDate, endDate);
         return roomDao.findAllBetweenDatesAndEmail(startDate, endDate, email);
     }
 
+    private void validateDatesInverval(String startDate, String endDate) throws RequestInvalidException {
+        if (!startDate.isEmpty() && !endDate.isEmpty() && !LocalDate.parse(startDate).isBefore(LocalDate.parse(endDate)))
+            throw new RequestInvalidException();
+    }
+
     @Override
-    public List<Room> findAllFreeBetweenDates(String startDate, String endDate) {
+    public List<Room> findAllFreeBetweenDates(String startDate, String endDate) throws RequestInvalidException {
+        validateDatesInverval(startDate, endDate);
         return roomDao.findAllFreeBetweenDates(startDate, endDate);
     }
 
@@ -99,7 +108,8 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public boolean isRoomFreeOnDate(long roomId, String startDate, String endDate) {
+    public boolean isRoomFreeOnDate(long roomId, String startDate, String endDate) throws RequestInvalidException {
+        validateDatesInverval(startDate, endDate);
         List<Room> rooms = roomDao.findAllFreeBetweenDates(startDate, endDate)
                 .parallelStream().filter(room -> room.getId() == roomId).collect(Collectors.toList());
         return rooms.size() == 1 && rooms.get(0).getId() == roomId;
