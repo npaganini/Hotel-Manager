@@ -54,7 +54,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public List<Reservation> getAll() {
         LOGGER.debug("About to get all the confirmed reservations");
-        return reservationDao.getAll();
+        return reservationDao.findAll();
     }
 
     @Override

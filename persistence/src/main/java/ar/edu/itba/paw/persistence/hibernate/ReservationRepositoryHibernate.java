@@ -1,13 +1,10 @@
 package ar.edu.itba.paw.persistence.hibernate;
 
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
-import ar.edu.itba.paw.models.dtos.RoomReservationDTO;
 import ar.edu.itba.paw.models.reservation.Reservation;
-import ar.edu.itba.paw.models.user.User;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,28 +12,27 @@ import java.util.Optional;
 public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Reservation> implements ReservationDao {
 
     @Override
-    public List<RoomReservationDTO> findAllReservationsByUserEmail(String userEmail) {
-        return null;
-    }
-
-    @Override
     public Optional<Reservation> findReservationByHash(String hash) {
-        return Optional.empty();
+        return Optional.of(
+                em.createQuery("FROM " + getTableName() + " as r WHERE r.hash = :hash", getModelClass())
+                        .setParameter("hash", hash)
+                        .getSingleResult()
+        );
     }
 
     @Override
-    public int updateActive(long reservationId, boolean b) {
-        return 0;
+    public int updateActive(long reservationId, boolean active) {
+        Reservation reservation = findById(reservationId).orElseThrow(EntityNotFoundException::new);
+        reservation.setActive(active);
+        em.merge(reservation);
+        return 1;
     }
 
     @Override
-    public List<RoomReservationDTO> findActiveReservation(String userEmail) {
-        return null;
-    }
-
-    @Override
-    public List<Reservation> getAll() {
-        return null;
+    public List<Reservation> findActiveReservationByEmail(String userEmail) {
+        return em.createQuery("FROM " + getTableName() + " as r WHERE r.userEmail = :userEmail AND r.isActive = true", getModelClass())
+                        .setParameter("userEmail", userEmail)
+                        .getResultList();
     }
 
     @Override
