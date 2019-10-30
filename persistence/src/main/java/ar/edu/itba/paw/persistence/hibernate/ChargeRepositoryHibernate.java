@@ -3,6 +3,8 @@ package ar.edu.itba.paw.persistence.hibernate;
 import ar.edu.itba.paw.interfaces.daos.ChargeDao;
 import ar.edu.itba.paw.models.charge.Charge;
 import ar.edu.itba.paw.models.dtos.ChargeDeliveryDTO;
+import ar.edu.itba.paw.models.dtos.ProductAmountDTO;
+import ar.edu.itba.paw.models.dtos.ProductChargeDTO;
 import ar.edu.itba.paw.models.product.Product;
 import org.springframework.stereotype.Repository;
 
@@ -12,40 +14,33 @@ import java.util.*;
 @Repository
 public class ChargeRepositoryHibernate extends SimpleRepositoryHibernate<Charge> implements ChargeDao {
 
-    //FIXME esto no me gusta nada
     @Override
     public Map<Product, Integer> getAllChargesByUser(String userEmail, long reservationId) {
-        final TypedQuery<Charge> query = em.createQuery(
-                "FROM Charge AS c " +
-                        "WHERE c.reservationToCharge.userEmail = :userEmail AND c.reservationToCharge.id = :reservationId",
-               Charge.class);
+        final TypedQuery<ProductAmountDTO> query = em.createQuery(
+                "SELECT c.product, COUNT(c.product) FROM Charge AS c " +
+                        "WHERE c.reservation.userEmail = :userEmail AND c.reservation.id = :reservationId",
+               ProductAmountDTO.class);
         query.setParameter("userEmail", userEmail);
         query.setParameter("reservationId", reservationId);
-        final List<Charge> list = query.getResultList();
+        final List<ProductAmountDTO> list = query.getResultList();
         final Map<Product, Integer> ans = new HashMap<>();
-        for (Charge charge : list) {
-            ans.merge(charge.getProduct(), 1, Integer::sum);
+        for (ProductAmountDTO product : list) {
+            ans.put(product.getProduct(), product.getAmount());
         }
         return ans;
     }
 
     @Override
     public List<Charge> findChargeByReservationHash(long reservationId) {
-        return em.createQuery("FROM Charge AS c WHERE c.reservationToCharge.id = :reservationId",
+        return em.createQuery("FROM Charge AS c WHERE c.reservation.id = :reservationId",
                 Charge.class).getResultList();
     }
 
-    //FIXME esto es realmente feo, para que postgres tiene un sum?
     @Override
     public double sumCharge(long reservationId) {
-        final TypedQuery<Charge> query = em.createQuery("FROM Charge AS c WHERE c.reservationToCharge.id = :reservationId", Charge.class);
+        final TypedQuery<Double> query = em.createQuery("SELECT SUM(c.product.price) FROM Charge AS c WHERE c.reservation.id = :reservationId", Double.class);
         query.setParameter("reservationId", reservationId);
-        final List<Charge> list = query.getResultList();
-        double ans = 0;
-        for (ar.edu.itba.paw.models.charge.Charge charge : list) {
-            ans += charge.getProduct().getPrice();
-        }
-        return ans;
+        return query.getSingleResult();
     }
 
     @Override
