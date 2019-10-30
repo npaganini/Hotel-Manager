@@ -2,6 +2,7 @@ package ar.edu.itba.paw.persistence.hibernate;
 
 import ar.edu.itba.paw.interfaces.daos.RoomDao;
 import ar.edu.itba.paw.models.dtos.RoomReservationDTO;
+import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
 import org.springframework.stereotype.Repository;
 
@@ -22,25 +23,35 @@ public class RoomRepositoryHibernate extends SimpleRepositoryHibernate<Room> imp
         if(startDate != null && startDate.length() > 0
             && endDate != null && endDate.length() > 0
             && email != null && email.length() > 0) {
-//            final TypedQuery<Room> query = em.createQuery("FROM Room AS r " +
-//                    "WHERE ")
-            return new LinkedList<>();
+            final TypedQuery<Reservation> query = em.createQuery(
+                    "FROM Reservation as res WHERE (res.startDate >= :startDate AND res.endDate <= :endDate AND res.userEmail = :email)", Reservation.class);
+            query.setParameter("startDate", startDate);
+            query.setParameter("endDate", endDate);
+            query.setParameter("email", email);
+            final List<Reservation> list = query.getResultList();
+            final List<RoomReservationDTO> rrDTO = new LinkedList<>();
+            for(Reservation r: list) {
+                rrDTO.add(new RoomReservationDTO(r.getRoom(), r));
+            }
+            return rrDTO;
         }
         return null;
     }
 
-//    final TypedQuery<User> query = em.createQuery("from User as u where u.username = :username", User.class);
-//        query.setParameter("username", username);
-//    final List<User> list = query.getResultList();
-//        return Optional.ofNullable(list.get(0));
-
     @Override
     public List<Room> findAllFreeBetweenDates(LocalDate startDate, LocalDate endDate) {
-        return null;
+        final TypedQuery<Room> query = em.createQuery("FROM Room as ro WHERE NOT EXISTS (" +
+                "FROM Reservation as res WHERE (:startDate <= res.endDate AND :startDate >= res.startDate) OR (:endDate >= res.startDate AND :endDate <= res.endDate) " +
+                ")", Room.class);
+        query.setParameter("startDate", startDate);
+        query.setParameter("endDate", endDate);
+        return query.getResultList();
     }
 
     @Override
     public int reserveRoom(long roomId) {
+        Room room = findById(roomId).orElseThrow(EntityNotFoundException::new);
+        room.setFreeNow(false);
         return 0;
     }
 

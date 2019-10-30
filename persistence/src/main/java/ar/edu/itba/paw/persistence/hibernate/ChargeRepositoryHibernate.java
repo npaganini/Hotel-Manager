@@ -19,7 +19,7 @@ public class ChargeRepositoryHibernate extends SimpleRepositoryHibernate<Charge>
         final TypedQuery<ProductAmountDTO> query = em.createQuery(
                 "SELECT c.product, COUNT(c.product) FROM Charge AS c " +
                         "WHERE c.reservation.userEmail = :userEmail AND c.reservation.id = :reservationId",
-               ProductAmountDTO.class);
+               ProductAmountDTO.class); // TODO we should no longer use DTOs
         query.setParameter("userEmail", userEmail);
         query.setParameter("reservationId", reservationId);
         final List<ProductAmountDTO> list = query.getResultList();

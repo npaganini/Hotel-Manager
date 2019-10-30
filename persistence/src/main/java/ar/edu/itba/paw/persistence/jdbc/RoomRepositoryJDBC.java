@@ -50,7 +50,7 @@
 //                " r WHERE " + Room.KEY_FREE_NOW + " = true", getRowMapper());
 //    }
 //
-//    private String getAndCriteriasToFindRooms(String startDate, String endDate, String email) {
+//    private String getAndCriteriaToFindRooms(String startDate, String endDate, String email) {
 //        StringBuilder andSentendeBuilder = new StringBuilder();
 //        if (startDate != null && startDate.length() > 0)
 //            andSentendeBuilder.append("WHERE res.start_date >= :startDate ");
