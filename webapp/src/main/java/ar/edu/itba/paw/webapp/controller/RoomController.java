@@ -76,7 +76,7 @@ public class RoomController {
         if (reservation.isActive()) {
             throw new RequestInvalidException();
         }
-        roomService.reservateRoom(reservation.getRoom().getId(), reservation);
+        roomService.reserveRoom(reservation.getRoom().getId(), reservation);
         reservationService.activeReservation(reservation.getId());
         return mav;
     }

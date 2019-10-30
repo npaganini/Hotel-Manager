@@ -13,7 +13,7 @@ public interface RoomService {
 
     Room getRoom(long roomID);
 
-    void reservateRoom(long roomId, Reservation reservation);
+    void reserveRoom(long roomId, Reservation reservation);
 
     void freeRoom(long roomId);
 

@@ -13,13 +13,11 @@ import ar.edu.itba.paw.models.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -80,8 +78,8 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void reservateRoom(long roomID, Reservation reservation) {
-        roomDao.reservateRoom(roomID);
+    public void reserveRoom(long roomID, Reservation reservation) {
+        roomDao.reserveRoom(roomID);
         emailService.sendCheckinEmail(reservation);
     }
 

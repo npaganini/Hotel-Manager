@@ -27,9 +27,9 @@
 //
 //    @Override
 //    public List<RoomReservationDTO> findAllBetweenDatesAndEmail(String startDate, String endDate, String email) {
-//        String andCriterias = getAndCriteriasToFindRooms(startDate, endDate, email);
+//        String andCriteria = getAndCriteriaToFindRooms(startDate, endDate, email);
 //        return jdbcTemplateWithNamedParameter.query("SELECT * FROM " + Reservation.TABLE_NAME + " res JOIN "
-//                        + Room.TABLE_NAME + " r ON res.room_id = r.id " + andCriterias,
+//                        + Room.TABLE_NAME + " r ON res.room_id = r.id " + andCriteria,
 //                getParametersToUse(startDate, endDate, email), getRowMapperWithJoin());
 //    }
 //
@@ -73,7 +73,7 @@
 //
 //
 //    @Override
-//    public int reservateRoom(long roomId) {
+//    public int reserveRoom(long roomId) {
 //        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
 //        parameterSource.addValue("roomId", roomId);
 //        return jdbcTemplateWithNamedParameter.update("UPDATE " + Room.TABLE_NAME + " SET " + Room.KEY_FREE_NOW + " " +

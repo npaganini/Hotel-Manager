@@ -6,6 +6,7 @@ import ar.edu.itba.paw.models.room.Room;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.time.LocalDate;
@@ -39,7 +40,7 @@ public class RoomRepositoryHibernate extends SimpleRepositoryHibernate<Room> imp
     }
 
     @Override
-    public int reservateRoom(long roomId) {
+    public int reserveRoom(long roomId) {
         return 0;
     }
 
@@ -51,7 +52,9 @@ public class RoomRepositoryHibernate extends SimpleRepositoryHibernate<Room> imp
 
     @Override
     public void freeRoom(long roomId) {
-
+        Room room = findById(roomId).orElseThrow(EntityNotFoundException::new);
+        room.setFreeNow(true);
+        em.merge(room);
     }
 
     @Override
