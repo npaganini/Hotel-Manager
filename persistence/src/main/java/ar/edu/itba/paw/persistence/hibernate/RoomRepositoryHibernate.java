@@ -19,7 +19,7 @@ import java.util.Optional;
 public class RoomRepositoryHibernate extends SimpleRepositoryHibernate<Room> implements RoomDao {
 
     @Override
-    public List<RoomReservationDTO> findAllBetweenDatesAndEmail(String startDate, String endDate, String email) {
+    public List<Reservation> findAllBetweenDatesAndEmail(String startDate, String endDate, String email) {
         if(startDate != null && startDate.length() > 0
             && endDate != null && endDate.length() > 0
             && email != null && email.length() > 0) {
@@ -28,12 +28,7 @@ public class RoomRepositoryHibernate extends SimpleRepositoryHibernate<Room> imp
             query.setParameter("startDate", startDate);
             query.setParameter("endDate", endDate);
             query.setParameter("email", email);
-            final List<Reservation> list = query.getResultList();
-            final List<RoomReservationDTO> rrDTO = new LinkedList<>();
-            for(Reservation r: list) {
-                rrDTO.add(new RoomReservationDTO(r.getRoom(), r));
-            }
-            return rrDTO;
+            return query.getResultList();
         }
         return null;
     }
@@ -41,8 +36,8 @@ public class RoomRepositoryHibernate extends SimpleRepositoryHibernate<Room> imp
     @Override
     public List<Room> findAllFreeBetweenDates(LocalDate startDate, LocalDate endDate) {
         final TypedQuery<Room> query = em.createQuery("FROM Room as ro WHERE NOT EXISTS (" +
-                "FROM Reservation as res WHERE (:startDate <= res.endDate AND :startDate >= res.startDate) OR (:endDate >= res.startDate AND :endDate <= res.endDate) " +
-                ")", Room.class);
+            "FROM Reservation as res WHERE (:startDate <= res.endDate AND :startDate >= res.startDate) OR (:endDate >= res.startDate AND :endDate <= res.endDate) " +
+        ")", Room.class);
         query.setParameter("startDate", startDate);
         query.setParameter("endDate", endDate);
         return query.getResultList();
@@ -57,8 +52,7 @@ public class RoomRepositoryHibernate extends SimpleRepositoryHibernate<Room> imp
 
     @Override
     public List<Room> findAllFree() {
-        final TypedQuery<Room> query = em.createQuery("FROM Room AS r WHERE r.freeNow = true", Room.class);
-        return query.getResultList();
+        return em.createQuery("FROM Room AS r WHERE r.freeNow = true", Room.class).getResultList();
     }
 
     @Override
@@ -69,8 +63,8 @@ public class RoomRepositoryHibernate extends SimpleRepositoryHibernate<Room> imp
     }
 
     @Override
-    public List<RoomReservationDTO> getRoomsReservedActive() {
-        return null;
+    public List<Room> getRoomsReservedActive() {
+        return em.createQuery("FROM Room AS r WHERE r.freeNow = false", Room.class).getResultList();
     }
 
     @Override
