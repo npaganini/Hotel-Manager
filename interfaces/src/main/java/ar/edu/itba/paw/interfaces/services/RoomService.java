@@ -17,9 +17,9 @@ public interface RoomService {
 
     void freeRoom(long roomId);
 
-    List<RoomReservationDTO> findAllBetweenDatesAndEmail(String startDate, String endDate, String email);
+    List<Reservation> findAllBetweenDatesAndEmail(String startDate, String endDate, String email);
 
-    List<RoomReservationDTO> getRoomsReservedActive();
+    List<Reservation> getRoomsReservedActive();
 
     Reservation doReservation(long roomId, String userEmail, LocalDate startDate, LocalDate endDate) throws RequestInvalidException;
 

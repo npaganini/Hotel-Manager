@@ -140,14 +140,11 @@
                 <tbody>
                 <c:forEach var="reservation" items="${reservations}">
                     <tr>
-
                         <td style="text-align: left">${reservation.room.number}</td>
-                        <td style="text-align: left">${reservation.reservation.userEmail}</td>
-                        <td style="text-align: left">${reservation.reservation.startDate}</td>
-                        <td style="text-align: left">${reservation.reservation.endDate}</td>
-                        <td style="text-align: left">${reservation.reservation.active ? 'TRUE' : 'FALSE'}</td>
-
-
+                        <td style="text-align: left">${reservation.userEmail}</td>
+                        <td style="text-align: left">${reservation.startDate}</td>
+                        <td style="text-align: left">${reservation.endDate}</td>
+                        <td style="text-align: left">${reservation.active ? 'TRUE' : 'FALSE'}</td>
                     </tr>
                 </c:forEach>
                 </tbody>

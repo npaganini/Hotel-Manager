@@ -44,7 +44,7 @@ public class ChargeServiceImpl implements ChargeService {
     }
 
     @Override
-    public List<ChargeDeliveryDTO> getAllChargesNotDelivered() {
+    public List<Charge> getAllChargesNotDelivered() {
         return chargeDao.findAllChargesNotDelivered();
     }
 

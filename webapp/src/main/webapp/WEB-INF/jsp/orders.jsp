@@ -37,24 +37,15 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse navbar-right" id="bs-sidebar-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="${pageContext.request.contextPath}/rooms/checkin"><spring:message
-                                    code="reservation.checkin"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/checkout"><spring:message
-                                    code="reservation.checkout"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/reservations"><spring:message
-                                    code="reservation.plural"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/products"><spring:message
-                                    code="product.plural"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/orders"><spring:message
-                                    code="reservation.order.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/checkin"><spring:message code="reservation.checkin"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/checkout"><spring:message code="reservation.checkout"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/reservations"><spring:message code="reservation.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/products"><spring:message code="product.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/orders"><spring:message code="reservation.order.plural"/></a></li>
                             <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> <spring:message code="user.account"/><span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-
-                                    <li><a href="${pageContext.request.contextPath}/logout"><span
-                                            class="glyphicon glyphicon-log-in"></span> <spring:message
-                                            code="user.logout"/></a></li>
-
+                                    <li><a href="${pageContext.request.contextPath}/logout"><span class="glyphicon glyphicon-log-in"></span> <spring:message code="user.logout"/></a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -84,12 +75,12 @@
                 <c:forEach var="order" items="${orders}">
                     <tr>
 
-                        <td style="text-align: left">${order.description}</td>
-                        <td style="text-align: left">${order.roomNumber}</td>
+                        <td style="text-align: left">${order.product.description}</td>
+                        <td style="text-align: left">${order.reservation.room.number}</td>
 
                         <c:if test="${order.delivered == false}">
                             <td style="text-align: left">
-                                <button onclick="disableButtons(this)" id="finished" value="${order.chargeId}" type="button"
+                                <button onclick="disableButtons()" id="finished" value="${order.id}" type="button"
                                         class="btn btn-default btn-lg">
                                     <div style="color: black"><a
                                             style="color: black"><spring:message code="send"/></a></div>
@@ -112,20 +103,16 @@
         <div class="col-xs-4">
             <div class="row" style="height: 45px;text-align: center">
                 <div class="col-xs-2">
-                    <button type="button" onclick="location.href='${pageContext.request.contextPath}/rooms/orders'" id="refresh" class="btn btn-success btn-lg"><a
-                             style="color: white"><spring:message
-                            code="refresh"/></a>
+                    <button type="button" id="refresh" class="btn btn-success btn-lg"><a
+                            href="${pageContext.request.contextPath}/rooms/orders" style="color: white"><spring:message code="refresh"/></a>
                     </button>
                 </div>
             </div>
             <br><br>
             <div class="row">
                 <div class="col-xs-2">
-
-                    <button type="button" onclick="location.href='${pageContext.request.contextPath}/rooms/home'" id="back" class="btn btn-danger btn-lg"><a
-                             style="color: white"><spring:message
-                            code="user.home"/></a>
-
+                    <button type="button" id="back" class="btn btn-danger btn-lg">
+                        <a href="${pageContext.request.contextPath}/rooms/home" style="color: white"><spring:message code="user.home"/></a>
                     </button>
                 </div>
             </div>
@@ -144,11 +131,28 @@
         });
     });
 
-    function disableButtons(event) {
+    $(document).ready(function () {
+
+        $('#finished').off().on('click', function (event) {
+            var basePath;
+
+            var chargeId = $('#finished').val();
+
+            basePath = "${pageContext.request.contextPath}" + "/rooms/orders/sendOrder?chargeId=" + chargeId;
+            event.preventDefault();
+            location.href = basePath;
+            return false;
+
+        })
+
+    });
+
+
+    function disableButtons() {
         document.getElementById("finished").disabled = true;
         document.getElementById("refresh").disabled = true;
         document.getElementById("back").disabled = true;
-        location.href = "${pageContext.request.contextPath}" + "/rooms/orders/sendOrder?chargeId=" + event.value;
+
     }
 </script>
 

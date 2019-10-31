@@ -32,7 +32,6 @@ public class RoomServiceImpl implements RoomService {
     private final UserDao userDao;
     private final EmailService emailService;
 
-
     @Autowired
     public RoomServiceImpl(RoomDao roomDao, UserDao userDao, ReservationDao reservationDao, EmailService emailService) {
         this.reservationDao = reservationDao;
@@ -40,11 +39,6 @@ public class RoomServiceImpl implements RoomService {
         this.userDao = userDao;
 
         this.emailService = emailService;
-    }
-
-    @Override
-    public List<Room> getRoomsList() {
-        return roomDao.findAllFree();
     }
 
     @Override
@@ -89,17 +83,12 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<RoomReservationDTO> findAllBetweenDatesAndEmail(String startDate, String endDate, String email) {
+    public List<Reservation> findAllBetweenDatesAndEmail(String startDate, String endDate, String email) {
         return roomDao.findAllBetweenDatesAndEmail(startDate, endDate, email);
     }
 
     @Override
-    public List<Room> findAllFreeBetweenDates(String startDate, String endDate) {
-        return roomDao.findAllFreeBetweenDates(startDate, endDate);
-    }
-
-    @Override
-    public List<RoomReservationDTO> getRoomsReservedActive() {
+    public List<Reservation> getRoomsReservedActive() {
         return roomDao.getRoomsReservedActive();
     }
 

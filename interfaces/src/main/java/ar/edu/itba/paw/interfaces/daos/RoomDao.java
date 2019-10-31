@@ -15,7 +15,7 @@ public interface RoomDao extends SimpleDao<Room> {
 
     void freeRoom(long roomId);
 
-    List<Room> getRoomsReservedActive();
+    List<Reservation> getRoomsReservedActive();
 
     List<Room> findAllFreeBetweenDates(LocalDate startDate, LocalDate endDate);
 }

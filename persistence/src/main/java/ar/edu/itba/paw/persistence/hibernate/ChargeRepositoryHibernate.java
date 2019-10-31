@@ -18,7 +18,8 @@ public class ChargeRepositoryHibernate extends SimpleRepositoryHibernate<Charge>
     public Map<Product, Integer> getAllChargesByUser(String userEmail, long reservationId) {
         final TypedQuery<ProductAmountDTO> query = em.createQuery(
                 "SELECT c.product, COUNT(c.product) FROM Charge AS c " +
-                        "WHERE c.reservation.userEmail = :userEmail AND c.reservation.id = :reservationId",
+                        "WHERE c.reservation.userEmail = :userEmail AND c.reservation.id = :reservationId " +
+                "GROUP BY c.product",
                ProductAmountDTO.class); // TODO we should no longer use DTOs
         query.setParameter("userEmail", userEmail);
         query.setParameter("reservationId", reservationId);
@@ -44,8 +45,8 @@ public class ChargeRepositoryHibernate extends SimpleRepositoryHibernate<Charge>
     }
 
     @Override
-    public List<ChargeDeliveryDTO> findAllChargesNotDelivered() {
-        return em.createQuery("FROM Charge AS c WHERE c.delivered = FALSE", ChargeDeliveryDTO.class).getResultList();
+    public List<Charge> findAllChargesNotDelivered() {
+        return em.createQuery("FROM Charge AS c WHERE c.delivered = FALSE", Charge.class).getResultList();
     }
 
     @Override

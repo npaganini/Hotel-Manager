@@ -89,20 +89,15 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="room" items="${RoomList}">
+                <c:forEach var="reservation" items="${ReservationsList}">
                     <tr>
-
-                        <c:if test="${room.reservation.active == true}">
-
-                            <td style="text-align: left">${room.room.number}</td>
-                            <td style="text-align: left">${room.room.roomType}</td>
-                            <td style="text-align: left">${room.reservation.startDate}</td>
-                            <td style="text-align: left">${room.reservation.endDate}</td>
-                            <td style="text-align: left">${room.reservation.userEmail}</td>
-
+                        <c:if test="${reservation.active == true}">
+                            <td style="text-align: left">${reservation.room.number}</td>
+                            <td style="text-align: left">${reservation.room.roomType}</td>
+                            <td style="text-align: left">${reservation.startDate}</td>
+                            <td style="text-align: left">${reservation.endDate}</td>
+                            <td style="text-align: left">${reservation.userEmail}</td>
                         </c:if>
-
-
                     </tr>
                 </c:forEach>
                 </tbody>

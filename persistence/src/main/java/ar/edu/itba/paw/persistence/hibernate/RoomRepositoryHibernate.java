@@ -63,8 +63,8 @@ public class RoomRepositoryHibernate extends SimpleRepositoryHibernate<Room> imp
     }
 
     @Override
-    public List<Room> getRoomsReservedActive() {
-        return em.createQuery("FROM Room AS r WHERE r.freeNow = false", Room.class).getResultList();
+    public List<Reservation> getRoomsReservedActive() {
+        return em.createQuery("FROM Reservation AS r WHERE r.isActive = true", Reservation.class).getResultList();
     }
 
     @Override

@@ -11,7 +11,7 @@ public interface ChargeService {
 
     double sumCharge(long reservationId) throws RequestInvalidException;
 
-    List<ChargeDeliveryDTO> getAllChargesNotDelivered();
+    List<Charge> getAllChargesNotDelivered();
 
     void setChargeToDelivered(long chargeId) throws RequestInvalidException;
 }
