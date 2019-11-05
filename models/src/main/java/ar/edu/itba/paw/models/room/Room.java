@@ -9,9 +9,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Getter
 @Setter
@@ -31,7 +29,7 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = KEY_ID)
-    private Long id;
+    private Integer id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = KEY_ROOM_TYPE)
@@ -47,7 +45,7 @@ public class Room {
     private List<Reservation> reservations;
 
     public Room(ResultSet resultSet) throws SQLException {
-        this.id = resultSet.getLong(KEY_ID);
+        this.id = resultSet.getInt(KEY_ID);
         this.roomType = RoomType.valueOf(resultSet.getString(KEY_ROOM_TYPE));
         this.freeNow = resultSet.getBoolean(KEY_FREE_NOW);
         this.number = resultSet.getInt(KEY_NUMBER);

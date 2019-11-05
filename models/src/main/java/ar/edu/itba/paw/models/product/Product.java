@@ -27,7 +27,7 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(length = 32, nullable = false)
     private String description;
@@ -41,7 +41,7 @@ public class Product {
     private boolean enable;
 
     public Product(ResultSet resultSet) throws SQLException {
-        this.id = resultSet.getLong(KEY_ID);
+        this.id = resultSet.getInt(KEY_ID);
         this.description = resultSet.getString(KEY_DESCRIPTION);
         this.price = resultSet.getDouble(KEY_PRICE);
         this.file = resultSet.getBytes(KEY_FILE);

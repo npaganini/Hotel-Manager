@@ -29,7 +29,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Integer id;
 
     @Column(length = 100, unique = true)
     private String username;
@@ -47,7 +47,7 @@ public class User {
     private List<Reservation> reservations;
 
     public User(ResultSet resultSet) throws SQLException {
-        this.id = resultSet.getLong(KEY_ID);
+        this.id = resultSet.getInt(KEY_ID);
         this.email = resultSet.getString(KEY_EMAIL);
         this.role = UserRole.valueOf(resultSet.getString(KEY_ROLE));
         this.password = resultSet.getString(KEY_PASSWORD);

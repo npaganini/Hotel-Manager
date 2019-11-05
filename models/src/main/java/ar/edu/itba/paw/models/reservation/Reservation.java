@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.models.reservation;
 
-import ar.edu.itba.paw.models.SqlObject;
 import ar.edu.itba.paw.models.charge.Charge;
 import ar.edu.itba.paw.models.room.Room;
 import ar.edu.itba.paw.models.user.User;
@@ -10,10 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.nio.charset.Charset;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.*;
 
 @Getter
@@ -37,13 +32,12 @@ public class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
-    // Hibernate version supports LocalDate
     @Column(nullable = false, name = KEY_START_DATE)
-    private LocalDate startDate;
+    private Calendar startDate;
     @Column(nullable = false, name = KEY_END_DATE)
-    private LocalDate endDate;
+    private Calendar endDate;
 
     @Column(length = 100, name = KEY_USER_EMAIL)
     private String userEmail;

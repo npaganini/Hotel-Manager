@@ -26,7 +26,7 @@ public class Charge {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private Integer id;
 
     @Column(nullable = false)
     private boolean delivered;
