@@ -39,7 +39,7 @@
 //        parameterSource.addValue("startDate", LocalDate.parse(startDate));
 //        parameterSource.addValue("endDate", LocalDate.parse(endDate));
 //        return jdbcTemplateWithNamedParameter.query("select * from room r where not exists (select res.room_id " +
-//                        "from reservation res WHERE res.room_id = r.id AND ((:startDate <= res.end_date AND :startDate " +
+//                        "SELECT * FROM reservation res WHERE res.room_id = r.id AND ((:startDate <= res.end_date AND :startDate " +
 //                        ">= res.start_date) OR (:endDate >= res.start_date AND :endDate <= res.end_date)))",
 //                parameterSource, getRowMapper());
 //    }

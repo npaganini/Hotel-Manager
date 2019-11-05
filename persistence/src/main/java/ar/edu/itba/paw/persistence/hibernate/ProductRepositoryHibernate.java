@@ -16,7 +16,7 @@ public class ProductRepositoryHibernate extends SimpleRepositoryHibernate<Produc
 
     @Override
     public int updateProductEnable(long productId, boolean enable) {
-        final TypedQuery<Product> query = em.createQuery("FROM Product AS p WHERE p.id = :productId", Product.class);
+        final TypedQuery<Product> query = em.createQuery("SELECT p FROM Product AS p WHERE p.id = :productId", Product.class);
         query.setParameter("productId", productId);
         Product product = query.getSingleResult();
         if (product != null) {
@@ -29,7 +29,7 @@ public class ProductRepositoryHibernate extends SimpleRepositoryHibernate<Produc
 
     @Override
     String getTableName() {
-        return Product.TABLE_NAME;
+        return Product.class.getName();
     }
 
     @Override

@@ -78,17 +78,17 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="resRoomDTO" items="${ReservationsList}">
+                <c:forEach var="reservation" items="${ReservationsList}">
                     <tr>
-                        <td>${resRoomDTO.room.roomType}</td>
-                        <td><fmt:formatDate value="${resRoomDTO.reservation.startDate.time}" pattern="yyyy-MM-dd" /></td>
-                        <td><fmt:formatDate value="${resRoomDTO.reservation.endDate.time}" pattern="yyyy-MM-dd" /></td>
-                        <td>${resRoomDTO.room.number}</td>
+                        <td>${reservation.room.roomType}</td>
+                        <td><fmt:formatDate value="${reservation.startDate.time}" pattern="yyyy-MM-dd" /></td>
+                        <td><fmt:formatDate value="${reservation.endDate.time}" pattern="yyyy-MM-dd" /></td>
+                        <td>${reservation.room.number}</td>
                         <td style="text-align: left">
                             <button id="disable" type="button"
                                     class="btn btn-primary">
                                 <div style="color: white"><a
-                                        href="./products?reservationId=${resRoomDTO.reservation.id}"
+                                        href="./products?reservationId=${reservation.id}"
                                         style="color: white"><spring:message code="user.product.list.buy"/></a></div>
                             </button>
                         </td>
@@ -96,7 +96,7 @@
                             <button type="button"
                                     class="btn btn-primary">
                                 <div style="color: white"><a
-                                        href="./expenses?reservationId=${resRoomDTO.reservation.id}"
+                                        href="./expenses?reservationId=${reservation.id}"
                                         style="color: white"><spring:message code="user.product.expenses"/></a></div>
                             </button>
                         </td>

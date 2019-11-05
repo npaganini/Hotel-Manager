@@ -26,7 +26,7 @@ abstract class SimpleRepositoryHibernate<T> implements SimpleDao<T> {
 
     @Override
     public List<T> findAll() {
-        return em.createQuery("from " + getTableName(), getModelClass()).getResultList();
+        return em.createQuery("SELECT * FROM " + getTableName(), getModelClass()).getResultList();
     }
 
     abstract String getTableName();

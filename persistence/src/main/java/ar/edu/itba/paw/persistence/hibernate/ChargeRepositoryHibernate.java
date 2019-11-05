@@ -33,7 +33,7 @@ public class ChargeRepositoryHibernate extends SimpleRepositoryHibernate<Charge>
 
     @Override
     public List<Charge> findChargeByReservationHash(long reservationId) {
-        return em.createQuery("FROM Charge AS c WHERE c.reservation.id = :reservationId",
+        return em.createQuery("SELECT c FROM Charge AS c WHERE c.reservation.id = :reservationId",
                 Charge.class).getResultList();
     }
 
@@ -46,12 +46,12 @@ public class ChargeRepositoryHibernate extends SimpleRepositoryHibernate<Charge>
 
     @Override
     public List<Charge> findAllChargesNotDelivered() {
-        return em.createQuery("FROM Charge AS c WHERE c.delivered = FALSE", Charge.class).getResultList();
+        return em.createQuery("SELECT c FROM Charge AS c WHERE c.delivered = FALSE", Charge.class).getResultList();
     }
 
     @Override
     public int updateChargeToDelivered(long chargeId) {
-        final TypedQuery<ar.edu.itba.paw.models.charge.Charge> query = em.createQuery("FROM Charge AS c WHERE c.id = :chargeId", Charge.class);
+        final TypedQuery<ar.edu.itba.paw.models.charge.Charge> query = em.createQuery("SELECT c FROM Charge AS c WHERE c.id = :chargeId", Charge.class);
         query.setParameter("chargeId", chargeId);
         final Charge charge = query.getSingleResult();
         if (charge != null) {
@@ -65,8 +65,9 @@ public class ChargeRepositoryHibernate extends SimpleRepositoryHibernate<Charge>
 
     @Override
     String getTableName() {
-        return Charge.TABLE_NAME;
+        return Charge.class.getName();
     }
+
 
     @Override
     Class<Charge> getModelClass() {
