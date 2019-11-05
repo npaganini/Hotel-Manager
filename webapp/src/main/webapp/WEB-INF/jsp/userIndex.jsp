@@ -2,6 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <html>
 
@@ -80,8 +81,8 @@
                 <c:forEach var="resRoomDTO" items="${ReservationsList}">
                     <tr>
                         <td>${resRoomDTO.room.roomType}</td>
-                        <td>${resRoomDTO.reservation.startDate}</td>
-                        <td>${resRoomDTO.reservation.endDate}</td>
+                        <td><fmt:formatDate value="${resRoomDTO.reservation.startDate.time}" pattern="yyyy-MM-dd" /></td>
+                        <td><fmt:formatDate value="${resRoomDTO.reservation.endDate.time}" pattern="yyyy-MM-dd" /></td>
                         <td>${resRoomDTO.room.number}</td>
                         <td style="text-align: left">
                             <button id="disable" type="button"

@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <html>
 
@@ -32,7 +33,8 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home"><spring:message code="logo"/></a>
+                        <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home"><spring:message
+                                code="logo"/></a>
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse navbar-right" id="bs-sidebar-navbar-collapse-1">
@@ -94,8 +96,10 @@
                         <c:if test="${reservation.active == true}">
                             <td style="text-align: left">${reservation.room.number}</td>
                             <td style="text-align: left">${reservation.room.roomType}</td>
-                            <td style="text-align: left">${reservation.startDate}</td>
-                            <td style="text-align: left">${reservation.endDate}</td>
+                            <td style="text-align: left"><fmt:formatDate value="${reservation.startDate.time}"
+                                                                         pattern="yyyy-MM-dd"/></td>
+                            <td style="text-align: left"><fmt:formatDate value="${reservation.endDate.time}"
+                                                                         pattern="yyyy-MM-dd"/></td>
                             <td style="text-align: left">${reservation.userEmail}</td>
                         </c:if>
                     </tr>

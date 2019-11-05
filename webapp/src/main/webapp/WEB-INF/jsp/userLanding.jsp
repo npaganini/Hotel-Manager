@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <html>
 <head>
     <title><spring:message code="user.landing"/></title>
@@ -59,8 +61,8 @@
                         <c:if test="${fn:length(ReservationsList) != 0}">
                             <c:forEach var="resRoomDTO" items="${ReservationsList}">
                                 <td class="text-xs-center align-middle">${resRoomDTO.room.roomType}</td>
-                                <td class="text-xs-center align-middle">${resRoomDTO.reservation.startDate}</td>
-                                <td class="text-xs-center align-middle">${resRoomDTO.reservation.endDate}</td>
+                                <td class="text-xs-center align-middle"><fmt:formatDate value="{resRoomDTO.reservation.startDate.time}" pattern="yyyy-MM-dd"/> </td>
+                                <td class="text-xs-center align-middle"><fmt:formatDate value="${resRoomDTO.reservation.endDate.time}" pattern="yyyy-MM-dd" /></td>
                                 <td class="text-xs-center align-middle">${resRoomDTO.room.number}</td>
                                 <td class="col-alone align-middle" style="inline-size: auto">
                                     <div class="container text-xs-center col-2 card-deck">
