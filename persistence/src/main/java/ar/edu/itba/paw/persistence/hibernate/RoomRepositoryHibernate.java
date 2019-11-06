@@ -11,6 +11,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +25,7 @@ public class RoomRepositoryHibernate extends SimpleRepositoryHibernate<Room> imp
                 && endDate != null && endDate.length() > 0
                 && email != null && email.length() > 0) {
             final TypedQuery<Reservation> query = em.createQuery(
-                    "SELECT r FROM " + Reservation.TABLE_NAME + " as res WHERE" +
+                    "SELECT res FROM Reservation as res WHERE" +
                             " (res.startDate >= :startDate AND res.endDate <= :endDate AND res.userEmail = :email)",
                     Reservation.class);
             query.setParameter("startDate", startDate);
@@ -37,12 +38,16 @@ public class RoomRepositoryHibernate extends SimpleRepositoryHibernate<Room> imp
 
     @Override
     public List<Room> findAllFreeBetweenDates(LocalDate startDate, LocalDate endDate) {
-        final TypedQuery<Room> query = em.createQuery("SELECT r FROM " + Room.TABLE_NAME + " as ro WHERE NOT EXISTS (" +
-                "SELECT r FROM " + Reservation.TABLE_NAME + " as res WHERE (:startDate <= res.endDate " +
+        Calendar startDateCalendar = Calendar.getInstance();
+        Calendar endDateCalendar = Calendar.getInstance();
+        startDateCalendar.setTimeInMillis(startDate.toEpochDay());
+        endDateCalendar.setTimeInMillis(endDate.toEpochDay());
+        final TypedQuery<Room> query = em.createQuery("SELECT ro FROM " + getTableName() + " as ro WHERE NOT EXISTS (" +
+                "SELECT res FROM Reservation as res WHERE (:startDate <= res.endDate " +
                 "AND :startDate >= res.startDate) OR (:endDate >= res.startDate AND :endDate <= res.endDate) " +
                 ")", Room.class);
-        query.setParameter("startDate", startDate);
-        query.setParameter("endDate", endDate);
+        query.setParameter("startDate", startDateCalendar);
+        query.setParameter("endDate", endDateCalendar);
         return query.getResultList();
     }
 
@@ -55,7 +60,7 @@ public class RoomRepositoryHibernate extends SimpleRepositoryHibernate<Room> imp
 
     @Override
     public List<Room> findAllFree() {
-        return em.createQuery("SELECT r FROM " + Room.TABLE_NAME + " AS r WHERE r.freeNow = true", Room.class).getResultList();
+        return em.createQuery("SELECT r FROM " + getTableName() + " AS r WHERE r.freeNow = true", Room.class).getResultList();
     }
 
     @Override
@@ -67,12 +72,12 @@ public class RoomRepositoryHibernate extends SimpleRepositoryHibernate<Room> imp
 
     @Override
     public List<Reservation> getRoomsReservedActive() {
-        return em.createQuery("SELECT r FROM " + getTableName() + "AS r WHERE r.isActive = true", Reservation.class).getResultList();
+        return em.createQuery("SELECT r FROM Reservation AS r WHERE r.isActive = true", Reservation.class).getResultList();
     }
 
     @Override
     String getTableName() {
-        return "Room";
+        return "Room ";
     }
 
     @Override
