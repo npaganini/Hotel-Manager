@@ -31,7 +31,7 @@ public class UserRepositoryHibernate extends SimpleRepositoryHibernate<User> imp
 
     @Override
     String getTableName() {
-        return User.class.getName();
+        return "User";
     }
 
     @Override

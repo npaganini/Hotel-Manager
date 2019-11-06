@@ -72,7 +72,7 @@ public class RoomRepositoryHibernate extends SimpleRepositoryHibernate<Room> imp
 
     @Override
     String getTableName() {
-        return Room.class.getName();
+        return "Room";
     }
 
     @Override

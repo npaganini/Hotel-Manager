@@ -65,7 +65,7 @@ public class ChargeRepositoryHibernate extends SimpleRepositoryHibernate<Charge>
 
     @Override
     String getTableName() {
-        return Charge.class.getName();
+        return "Charge";
     }
 
 

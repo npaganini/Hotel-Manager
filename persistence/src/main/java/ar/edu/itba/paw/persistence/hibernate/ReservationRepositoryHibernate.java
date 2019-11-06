@@ -37,7 +37,7 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
 
     @Override
     String getTableName() {
-        return Reservation.class.getName();
+        return "Reservation";
     }
 
     @Override

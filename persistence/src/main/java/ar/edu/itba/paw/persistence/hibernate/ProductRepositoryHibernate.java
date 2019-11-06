@@ -29,7 +29,7 @@ public class ProductRepositoryHibernate extends SimpleRepositoryHibernate<Produc
 
     @Override
     String getTableName() {
-        return Product.class.getName();
+        return "Product";
     }
 
     @Override
