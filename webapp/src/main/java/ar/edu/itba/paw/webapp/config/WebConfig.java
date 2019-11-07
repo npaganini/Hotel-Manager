@@ -110,6 +110,10 @@ public class WebConfig implements WebMvcConfigurer {
         //properties.setProperty("hibernate.hbm2ddl.auto", "create-drop"); // poner create en vez de update BORRA todos los datos guardados, cuidado
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL92Dialect");
 
+        // TODO: BORRAR ANTES DE MANDAR A PROD
+//        properties.setProperty("hibernate.show_sql", "true");
+//        properties.setProperty("format_sql", "true");
+
         factoryBean.setJpaProperties(properties);
         return factoryBean;
     }

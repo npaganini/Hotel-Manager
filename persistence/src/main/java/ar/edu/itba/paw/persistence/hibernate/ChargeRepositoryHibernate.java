@@ -6,9 +6,16 @@ import ar.edu.itba.paw.models.dtos.ChargeDeliveryDTO;
 import ar.edu.itba.paw.models.dtos.ProductAmountDTO;
 import ar.edu.itba.paw.models.dtos.ProductChargeDTO;
 import ar.edu.itba.paw.models.product.Product;
+import ar.edu.itba.paw.models.reservation.Reservation;
+import ar.edu.itba.paw.models.user.User;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.*;
 
 @Repository
@@ -16,17 +23,30 @@ public class ChargeRepositoryHibernate extends SimpleRepositoryHibernate<Charge>
 
     @Override
     public Map<Product, Integer> getAllChargesByUser(String userEmail, long reservationId) {
-        final TypedQuery<ProductAmountDTO> query = em.createQuery(
-                "SELECT c.product, COUNT(c.product) FROM Charge AS c " +
-                        "WHERE c.reservation.userEmail = :userEmail AND c.reservation.id = :reservationId " +
-                "GROUP BY c.product",
-               ProductAmountDTO.class);
-        query.setParameter("userEmail", userEmail);
-        query.setParameter("reservationId", reservationId);
-        final List<ProductAmountDTO> list = query.getResultList();
+        CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaQuery<Object[]> query = builder.createQuery(Object[].class);
+        Root<Charge> charge = query.from(Charge.class);
+        query.multiselect(charge.get("product"), builder.count(charge));
+        query.where(builder.equal(charge.get("reservation").get("userEmail"), userEmail));
+        query.where(builder.equal(charge.get("reservation").get("id"), reservationId));
+        query.groupBy(charge.get("product"));
+
+//        final TypedQuery<Tuple> query = em.createQuery(
+//                "SELECT c.product, COUNT(c.product) FROM Charge AS c " +
+//                        "WHERE c.reservation.userEmail = :userEmail AND c.reservation.id = :reservationId " +
+//                "GROUP BY c.product",
+//               Tuple.class);
+//        query.setParameter("userEmail", userEmail);
+//        query.setParameter("reservationId", reservationId);
+        final List<Object[]> list = em.createQuery(query).getResultList();
+//        final Map<Product, Integer> ans = new HashMap<>();
+//        for (Tuple product : list) {
+//            ans.put((Product) product.get(0), (Integer) product.get(1));
+//        }
+        // FIXME
         final Map<Product, Integer> ans = new HashMap<>();
-        for (ProductAmountDTO product : list) {
-            ans.put(product.getProduct(), product.getAmount());
+        for(Object[] objectArray: list) {
+            ans.put((Product) objectArray[0], (Integer) objectArray[1]);
         }
         return ans;
     }

@@ -37,7 +37,7 @@ public class UserController extends SimpleController {
     @GetMapping("/expenses")
     public ModelAndView boughtProducts(Authentication authentication, @RequestParam(value = "reservationId") long reservationId) {
         final ModelAndView mav = new ModelAndView("expenses");
-        LOGGER.debug("Request received to retrieve all expenses on reservation with id" + reservationId);
+        LOGGER.debug("Request received to retrieve all expenses on reservation with id " + reservationId);
         mav.addObject("ProductsList",
                 userService.checkProductsPurchasedByUserByReservationId(getUsername(authentication), reservationId));
         return mav;
