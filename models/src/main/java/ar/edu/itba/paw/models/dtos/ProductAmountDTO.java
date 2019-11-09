@@ -8,5 +8,5 @@ import lombok.Getter;
 @Getter
 public class ProductAmountDTO {
     Product product;
-    Integer amount;
+    Long amount;
 }

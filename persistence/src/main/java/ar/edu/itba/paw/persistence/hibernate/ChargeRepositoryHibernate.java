@@ -24,29 +24,20 @@ public class ChargeRepositoryHibernate extends SimpleRepositoryHibernate<Charge>
     @Override
     public Map<Product, Integer> getAllChargesByUser(String userEmail, long reservationId) {
         CriteriaBuilder builder = em.getCriteriaBuilder();
-        CriteriaQuery<Object[]> query = builder.createQuery(Object[].class);
+        CriteriaQuery<ProductAmountDTO> query = builder.createQuery(ProductAmountDTO.class);
         Root<Charge> charge = query.from(Charge.class);
+        Predicate predicateForEmail = builder.equal(charge.get("reservation").get("userEmail"), userEmail);
+        Predicate predicateForId = builder.equal(charge.get("reservation").get("id"), reservationId);
+        Predicate finalPredicate = builder.and(predicateForEmail, predicateForId);
         query.multiselect(charge.get("product"), builder.count(charge));
-        query.where(builder.equal(charge.get("reservation").get("userEmail"), userEmail));
-        query.where(builder.equal(charge.get("reservation").get("id"), reservationId));
+        query.where(finalPredicate);
         query.groupBy(charge.get("product"));
 
-//        final TypedQuery<Tuple> query = em.createQuery(
-//                "SELECT c.product, COUNT(c.product) FROM Charge AS c " +
-//                        "WHERE c.reservation.userEmail = :userEmail AND c.reservation.id = :reservationId " +
-//                "GROUP BY c.product",
-//               Tuple.class);
-//        query.setParameter("userEmail", userEmail);
-//        query.setParameter("reservationId", reservationId);
-        final List<Object[]> list = em.createQuery(query).getResultList();
-//        final Map<Product, Integer> ans = new HashMap<>();
-//        for (Tuple product : list) {
-//            ans.put((Product) product.get(0), (Integer) product.get(1));
-//        }
-        // FIXME
+        final List<ProductAmountDTO> list = em.createQuery(query).getResultList();
+
         final Map<Product, Integer> ans = new HashMap<>();
-        for(Object[] objectArray: list) {
-            ans.put((Product) objectArray[0], (Integer) objectArray[1]);
+        for(ProductAmountDTO product: list) {
+            ans.put(product.getProduct(), Math.toIntExact(product.getAmount()));
         }
         return ans;
     }
