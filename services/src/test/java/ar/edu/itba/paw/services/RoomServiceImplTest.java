@@ -3,6 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
 import ar.edu.itba.paw.interfaces.daos.RoomDao;
 import ar.edu.itba.paw.interfaces.daos.UserDao;
+import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.models.dtos.RoomReservationDTO;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
@@ -121,7 +122,7 @@ public class RoomServiceImplTest {
      * uses roomDao.findAllBetweenDatesAndEmail(startDate, endDate, email)
      **/
     @Test
-    public void testFindAllBetweenDatesAndEmail() {
+    public void testFindAllBetweenDatesAndEmail() throws RequestInvalidException {
         // 1. Setup!
         Room room = new Room(ID_1, RoomType.DOUBLE, TRUE, ROOM_NUMBER_1);
         Reservation reservationToUse = new Reservation(ID_1, FAKE_VALID_EMAIL, Date.valueOf(START_DATE).toLocalDate(), Date.valueOf(END_DATE).toLocalDate(), ID_1);
