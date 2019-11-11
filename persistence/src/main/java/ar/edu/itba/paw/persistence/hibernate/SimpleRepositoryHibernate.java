@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.persistence.hibernate;
 
 import ar.edu.itba.paw.interfaces.daos.SimpleDao;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -12,6 +13,7 @@ abstract class SimpleRepositoryHibernate<T> implements SimpleDao<T> {
     @PersistenceContext
     EntityManager em;
 
+    @Transactional
     @Override
     public T save(T t) {
         em.persist(t);
@@ -20,7 +22,7 @@ abstract class SimpleRepositoryHibernate<T> implements SimpleDao<T> {
     }
 
     @Override
-    public Optional<T> findById(long id) {
+    public Optional<T> findById(int id) {
         return Optional.ofNullable(em.find(getModelClass(), id));
     }
 

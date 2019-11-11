@@ -22,7 +22,7 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
 
     @Override
     public int updateActive(long reservationId, boolean active) {
-        Reservation reservation = findById(reservationId).orElseThrow(EntityNotFoundException::new);
+        Reservation reservation = findById(Math.toIntExact(reservationId)).orElseThrow(EntityNotFoundException::new);
         reservation.setActive(active);
         em.merge(reservation);
         return 1;

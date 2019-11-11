@@ -53,7 +53,7 @@ public class RoomRepositoryHibernate extends SimpleRepositoryHibernate<Room> imp
 
     @Override
     public int reserveRoom(long roomId) {
-        Room room = findById(roomId).orElseThrow(EntityNotFoundException::new);
+        Room room = findById(Math.toIntExact(roomId)).orElseThrow(EntityNotFoundException::new);
         room.setFreeNow(false);
         return 0;
     }
@@ -65,7 +65,7 @@ public class RoomRepositoryHibernate extends SimpleRepositoryHibernate<Room> imp
 
     @Override
     public void freeRoom(long roomId) {
-        Room room = findById(roomId).orElseThrow(EntityNotFoundException::new);
+        Room room = findById(Math.toIntExact(roomId)).orElseThrow(EntityNotFoundException::new);
         room.setFreeNow(true);
         em.merge(room);
     }

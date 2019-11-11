@@ -43,7 +43,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Room getRoom(long roomID) {
-        return roomDao.findById(roomID).orElse(null);
+        return roomDao.findById(Math.toIntExact(roomID)).orElse(null);
     }
 
     @Transactional

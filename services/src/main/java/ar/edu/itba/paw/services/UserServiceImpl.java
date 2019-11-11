@@ -49,8 +49,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Charge addCharge(long productId, long reservationId) {
-        Product product = productDao.findById(productId).orElseThrow(EntityNotFoundException::new);
-        Reservation reservation = reservationDao.findById(reservationId).orElseThrow(EntityNotFoundException::new);
+        Product product = productDao.findById(Math.toIntExact(productId)).orElseThrow(EntityNotFoundException::new);
+        Reservation reservation = reservationDao.findById(Math.toIntExact(reservationId)).orElseThrow(EntityNotFoundException::new);
         return chargeDao.save(new Charge(product, reservation));
     }
 }

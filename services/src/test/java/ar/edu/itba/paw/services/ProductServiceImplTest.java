@@ -51,7 +51,7 @@ public class ProductServiceImplTest {
     @Test
     public void testUnableProduct() throws Exception {
         // 1. Setup!
-        Mockito.when(productDao.findById(ID_1)).thenReturn(java.util.Optional.of(product1));
+        Mockito.when(productDao.findById(Math.toIntExact(ID_1))).thenReturn(java.util.Optional.of(product1));
         Mockito.when(productDao.updateProductEnable(ID_1, FALSE)).thenReturn(BOOLEAN_INT_TRUE);
         // 2. SUT
         boolean productDisabled = productService.unableProduct(ID_1);

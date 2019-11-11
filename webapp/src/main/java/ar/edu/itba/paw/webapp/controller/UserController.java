@@ -54,7 +54,7 @@ public class UserController extends SimpleController {
 
     @PostMapping("/buyProducts")
     public ModelAndView buyProduct(@ModelAttribute("buyProductForm") BuyProductForm buyProductForm, @RequestParam(value = "reservationId") long reservationId) {
-        LOGGER.debug("Request received to buy products on reservation with id" + reservationId);
+        LOGGER.debug("Request received to buy products on reservation with id " + reservationId);
         if (buyProductForm != null) {
             final ModelAndView mav = new ModelAndView("buyProducts");
             mav.addObject("charge", userService.addCharge(buyProductForm.getProductId(), reservationId));
