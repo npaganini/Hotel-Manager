@@ -17,5 +17,4 @@ public interface ReservationService {
 
     List<Reservation> getAll();
 
-    Reservation getReservationById(long reservationId) throws EntityNotFoundException;
 }

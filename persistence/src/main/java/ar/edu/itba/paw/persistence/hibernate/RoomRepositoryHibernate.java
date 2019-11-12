@@ -20,9 +20,9 @@ import java.util.Optional;
 public class RoomRepositoryHibernate extends SimpleRepositoryHibernate<Room> implements RoomDao {
 
     @Override
-    public List<Reservation> findAllBetweenDatesAndEmail(String startDate, String endDate, String email) {
-        if (startDate != null && startDate.length() > 0
-                && endDate != null && endDate.length() > 0
+    public List<Reservation> findAllBetweenDatesAndEmail(Calendar startDate, Calendar endDate, String email) {
+        if (startDate != null
+                && endDate != null
                 && email != null && email.length() > 0) {
             final TypedQuery<Reservation> query = em.createQuery(
                     "SELECT res FROM Reservation as res WHERE" +
@@ -37,17 +37,13 @@ public class RoomRepositoryHibernate extends SimpleRepositoryHibernate<Room> imp
     }
 
     @Override
-    public List<Room> findAllFreeBetweenDates(LocalDate startDate, LocalDate endDate) {
-        Calendar startDateCalendar = Calendar.getInstance();
-        Calendar endDateCalendar = Calendar.getInstance();
-        startDateCalendar.setTimeInMillis(startDate.toEpochDay());
-        endDateCalendar.setTimeInMillis(endDate.toEpochDay());
+    public List<Room> findAllFreeBetweenDates(Calendar startDate, Calendar endDate) {
         final TypedQuery<Room> query = em.createQuery("SELECT ro FROM " + getTableName() + " as ro WHERE NOT EXISTS (" +
                 "SELECT res FROM Reservation as res WHERE (:startDate <= res.endDate " +
                 "AND :startDate >= res.startDate) OR (:endDate >= res.startDate AND :endDate <= res.endDate) " +
                 ")", Room.class);
-        query.setParameter("startDate", startDateCalendar);
-        query.setParameter("endDate", endDateCalendar);
+        query.setParameter("startDate", startDate);
+        query.setParameter("endDate", endDate);
         return query.getResultList();
     }
 
@@ -56,11 +52,6 @@ public class RoomRepositoryHibernate extends SimpleRepositoryHibernate<Room> imp
         Room room = findById(Math.toIntExact(roomId)).orElseThrow(EntityNotFoundException::new);
         room.setFreeNow(false);
         return 0;
-    }
-
-    @Override
-    public List<Room> findAllFree() {
-        return em.createQuery("SELECT r FROM " + getTableName() + " AS r WHERE r.freeNow = true", Room.class).getResultList();
     }
 
     @Override

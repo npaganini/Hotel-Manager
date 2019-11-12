@@ -72,6 +72,7 @@ public class RoomServiceImpl implements RoomService {
         Room room = roomDao.findById(Math.toIntExact(roomId)).orElseThrow(EntityNotFoundException::new);
         LOGGER.debug("Saving reservation...");
         Reservation reservation = reservationDao.save(new Reservation(room, userEmail, startDate, endDate));
+        reservation.setUser(user);
         LOGGER.debug("Sending email with confirmation of reservation to user");
         emailService.sendConfirmationOfReservation(userEmail, "Reserva confirmada",
                 reservation.getHash());
@@ -90,7 +91,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<Reservation> findAllBetweenDatesAndEmail(String startDate, String endDate, String email) {
+    public List<Reservation> findAllBetweenDatesAndEmail(Calendar startDate, Calendar endDate, String email) {
         return roomDao.findAllBetweenDatesAndEmail(startDate, endDate, email);
     }
 
@@ -107,10 +108,9 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<Room> findAllFreeBetweenDates(String startDate, String endDate) throws ParseException {
-        Calendar calendar = Calendar.getInstance();
+    public List<Room> findAllFreeBetweenDates(Calendar startDate, Calendar endDate) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        return roomDao.findAllFreeBetweenDates(Year sdf.parse(startDate), sdf.parse(endDate));
+        return roomDao.findAllFreeBetweenDates(startDate, endDate);
     }
 
 }

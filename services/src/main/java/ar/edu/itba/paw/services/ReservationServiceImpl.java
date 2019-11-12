@@ -57,11 +57,4 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationDao.findAll();
     }
 
-    @Override
-    public Reservation getReservationById(long reservationId) throws EntityNotFoundException {
-        LOGGER.debug("About to get reservation with id " + reservationId);
-        return reservationDao.findById(Math.toIntExact(reservationId))
-                .orElseThrow(() -> new EntityNotFoundException
-                        ("Reservation with id " + reservationId+  " not found"));
-    }
 }

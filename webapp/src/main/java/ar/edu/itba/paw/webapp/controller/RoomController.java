@@ -17,12 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.sql.Date;
+import java.text.ParseException;
 import java.time.LocalDate;
 
 @Controller
 @RequestMapping("rooms")
-public class RoomController {
+public class RoomController extends SimpleController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RoomController.class);
 
@@ -52,14 +52,15 @@ public class RoomController {
         return mav;
     }
 
+
     @PostMapping("/reservationPost")
     @Transactional
-    public ModelAndView reservationPost(@ModelAttribute("reservationForm") final ReservationForm form) throws EntityNotFoundException, RequestInvalidException {
+    public ModelAndView reservationPost(@ModelAttribute("reservationForm") final ReservationForm form) throws RequestInvalidException, ParseException {
         final ModelAndView mav = new ModelAndView("reservationPost");
         LOGGER.debug("Request received to do a reservation on room with id: " + form.getRoomId());
         mav.addObject("reserva", roomService.doReservation(form.getRoomId(),
-                form.getUserEmail(), Date.valueOf(form.getStartDate()).toLocalDate(),
-                Date.valueOf(form.getEndDate()).toLocalDate()));
+                form.getUserEmail(), fromStringToCalendar(form.getStartDate()),
+                fromStringToCalendar(form.getEndDate())));
         return mav;
     }
 
@@ -106,10 +107,13 @@ public class RoomController {
     @GetMapping("/reservation")
     public ModelAndView reservation(@RequestParam(value = "startDate", required = false) String startDate,
                                     @RequestParam(value = "endDate", required = false) String endDate,
-                                    @ModelAttribute("reservationForm") final ReservationForm form) {
+                                    @ModelAttribute("reservationForm") final ReservationForm form) throws ParseException {
         final ModelAndView mav = new ModelAndView("reservation");
-        if (!(startDate == null || endDate == null) && !(startDate.isEmpty() || endDate.isEmpty()) && LocalDate.parse(startDate).isBefore(LocalDate.parse(endDate)))
-            mav.addObject("allRooms", roomService.findAllFreeBetweenDates(startDate, endDate));
+        if (!(startDate == null || endDate == null) && !(startDate.isEmpty() ||
+                endDate.isEmpty()) && LocalDate.parse(startDate).isBefore(LocalDate.parse(endDate)))
+            mav.addObject("allRooms", roomService.findAllFreeBetweenDates(
+                    fromStringToCalendar(startDate), fromStringToCalendar(endDate))
+            );
         return mav;
     }
 
@@ -117,10 +121,14 @@ public class RoomController {
     @GetMapping("/reservations")
     public ModelAndView reservations(@RequestParam(value = "startDate", required = false) String startDate,
                                      @RequestParam(value = "endDate", required = false) String endDate,
-                                     @RequestParam(value = "userEmail", required = false) String userEmail) {
+                                     @RequestParam(value = "userEmail", required = false) String userEmail) throws ParseException {
         final ModelAndView mav = new ModelAndView("reservations");
-        if (!(startDate == null || endDate == null) && !(startDate.isEmpty() || endDate.isEmpty()) && LocalDate.parse(startDate).isBefore(LocalDate.parse(endDate)))
-            mav.addObject("reservations", roomService.findAllBetweenDatesAndEmail(startDate, endDate, userEmail));
+        if (!(startDate == null || endDate == null) &&
+                !(startDate.isEmpty() || endDate.isEmpty()) && LocalDate.parse(startDate).isBefore(LocalDate.parse(endDate)))
+            mav.addObject("reservations",
+                    roomService.findAllBetweenDatesAndEmail(
+                            fromStringToCalendar(startDate), fromStringToCalendar(endDate), userEmail)
+            );
         return mav;
     }
 

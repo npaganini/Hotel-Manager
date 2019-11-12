@@ -7,11 +7,9 @@ import java.util.Calendar;
 import java.util.List;
 
 public interface RoomDao extends SimpleDao<Room> {
-    List<Reservation> findAllBetweenDatesAndEmail(String startDate, String endDate, String email);
+    List<Reservation> findAllBetweenDatesAndEmail(Calendar startDate, Calendar endDate, String email);
 
     int reserveRoom(long roomId);
-
-    List<Room> findAllFree();
 
     void freeRoom(long roomId);
 

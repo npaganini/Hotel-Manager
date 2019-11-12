@@ -1,13 +1,9 @@
 package ar.edu.itba.paw.interfaces.services;
 
-import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
-import ar.edu.itba.paw.models.dtos.RoomReservationDTO;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
 
-import java.text.ParseException;
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
 
@@ -19,7 +15,7 @@ public interface RoomService {
 
     void freeRoom(long roomId);
 
-    List<Reservation> findAllBetweenDatesAndEmail(String startDate, String endDate, String email);
+    List<Reservation> findAllBetweenDatesAndEmail(Calendar startDate, Calendar endDate, String email);
 
     List<Reservation> getRoomsReservedActive();
 
@@ -27,5 +23,5 @@ public interface RoomService {
 
     boolean isRoomFreeOnDate(long roomId, Calendar startDate, Calendar endDate);
 
-    List<Room> findAllFreeBetweenDates(String startDate, String endDate) throws ParseException;
+    List<Room> findAllFreeBetweenDates(Calendar startDate, Calendar endDate);
 }
