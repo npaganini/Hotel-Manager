@@ -1,23 +1,24 @@
 package ar.edu.itba.paw.models.reservation;
 
-import ar.edu.itba.paw.models.SqlObject;
 import ar.edu.itba.paw.models.charge.Charge;
+import ar.edu.itba.paw.models.room.Room;
+import ar.edu.itba.paw.models.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.nio.charset.Charset;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.*;
 
 @Getter
-@NoArgsConstructor
 @Setter
+@Entity
+@NoArgsConstructor
 @AllArgsConstructor
-public class Reservation implements SqlObject {
+@Table(name = "reservation")
+public class Reservation {
 
     public final static String KEY_ID = "id";
     public final static String KEY_START_DATE = "start_date";
@@ -30,53 +31,38 @@ public class Reservation implements SqlObject {
 
     public final static String TABLE_NAME = "reservation";
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    private long id;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private List<Charge> extraCharges = new ArrayList<>();
+    @Column(nullable = false, name = KEY_START_DATE)
+    private Calendar startDate;
+    @Column(nullable = false, name = KEY_END_DATE)
+    private Calendar endDate;
+
+    @Column(length = 100, name = KEY_USER_EMAIL)
     private String userEmail;
-    private long roomId;
-    private long userId;
+
+    @ManyToOne
+    private Room room;
+
+    @ManyToOne
+    private User user;
+
+    @Column(nullable = false, name = KEY_IS_ACTIVE)
     private boolean isActive;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "reservation")
+    private List<Charge> charges = new ArrayList<>();
+
+    @Column(nullable = false)
     private String hash = getRandomString();
 
-    public Reservation(ResultSet resultSet) throws SQLException {
-        this.id = resultSet.getLong(KEY_ID);
-        this.startDate = resultSet.getDate(KEY_START_DATE).toLocalDate();
-        this.endDate = resultSet.getDate(KEY_END_DATE).toLocalDate();
-        this.userEmail = resultSet.getString(KEY_USER_EMAIL);
-        this.roomId = resultSet.getLong(KEY_ROOM_ID);
-        this.userId = resultSet.getLong(KEY_USER_ID);
-        this.hash = resultSet.getString(KEY_HASH);
-        this.isActive = resultSet.getBoolean(KEY_IS_ACTIVE);
-    }
-
-    public Reservation(long roomId, String userEmail, LocalDate startDate, LocalDate endDate, long userId) {
-        this.startDate = startDate;
-        this.roomId = roomId;
-        this.endDate = endDate;
+    public Reservation(Room room, String userEmail, Calendar startDate, Calendar endDate) {
+        this.room = room;
         this.userEmail = userEmail;
-        this.userId = userId;
-    }
-
-    @Override
-    public Map<String, Object> toMap() {
-        Map<String, Object> reservationToMap = new HashMap<>();
-        reservationToMap.put(KEY_ID, getId());
-        reservationToMap.put(KEY_START_DATE, getStartDate());
-        reservationToMap.put(KEY_END_DATE, getEndDate());
-        reservationToMap.put(KEY_USER_EMAIL, getUserEmail());
-        reservationToMap.put(KEY_ROOM_ID, getRoomId());
-        reservationToMap.put(KEY_USER_ID, getUserId());
-        reservationToMap.put(KEY_HASH, getHash());
-        reservationToMap.put(KEY_IS_ACTIVE, isActive());
-        return reservationToMap;
-    }
-
-    @Override
-    public void setId(long id) {
-        this.id = id;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public String toString() {

@@ -37,7 +37,7 @@ public class UserController extends SimpleController {
     @GetMapping("/expenses")
     public ModelAndView boughtProducts(Authentication authentication, @RequestParam(value = "reservationId") long reservationId) {
         final ModelAndView mav = new ModelAndView("expenses");
-        LOGGER.debug("Request received to retrieve all expenses on reservation with id" + reservationId);
+        LOGGER.debug("Request received to retrieve all expenses on reservation with id " + reservationId);
         mav.addObject("ProductsList",
                 userService.checkProductsPurchasedByUserByReservationId(getUsername(authentication), reservationId));
         return mav;
@@ -54,11 +54,10 @@ public class UserController extends SimpleController {
 
     @PostMapping("/buyProducts")
     public ModelAndView buyProduct(@ModelAttribute("buyProductForm") BuyProductForm buyProductForm, @RequestParam(value = "reservationId") long reservationId) {
-        LOGGER.debug("Request received to buy products on reservation with id" + reservationId);
+        LOGGER.debug("Request received to buy products on reservation with id " + reservationId);
         if (buyProductForm != null) {
             final ModelAndView mav = new ModelAndView("buyProducts");
-            Charge charge = new Charge(buyProductForm.getProductId(), reservationId);
-            mav.addObject("charge", userService.addCharge(charge));
+            mav.addObject("charge", userService.addCharge(buyProductForm.getProductId(), reservationId));
             return mav;
         }
         return new ModelAndView("redirect:/products");

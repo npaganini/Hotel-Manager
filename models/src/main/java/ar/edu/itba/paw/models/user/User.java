@@ -1,23 +1,25 @@
 package ar.edu.itba.paw.models.user;
 
 import ar.edu.itba.paw.models.SqlObject;
+import ar.edu.itba.paw.models.reservation.Reservation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Getter
+@Entity
+@NoArgsConstructor
 @AllArgsConstructor
-public class User implements SqlObject {
-
-    @Override
-    public void setId(long id) {
-        this.id = id;
-    }
-
+@Table(name = "users")
+public class User implements Serializable    {
     public final static String KEY_ID = "id";
     public final static String KEY_EMAIL = "email";
     public final static String KEY_USERNAME = "username";
@@ -26,14 +28,27 @@ public class User implements SqlObject {
 
     public final static String TABLE_NAME = "users";
 
-    private long id;
-    private String email;
-    private String password;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(length = 100, unique = true)
     private String username;
+
+    @Column(length = 100, nullable = false)
+    private String password;
+
+    @Column(length = 100, nullable = false)
+    private String email;
+
+    @Enumerated(EnumType.STRING)
     private UserRole role;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Reservation> reservations;
+
     public User(ResultSet resultSet) throws SQLException {
-        this.id = resultSet.getLong(KEY_ID);
+        this.id = resultSet.getInt(KEY_ID);
         this.email = resultSet.getString(KEY_EMAIL);
         this.role = UserRole.valueOf(resultSet.getString(KEY_ROLE));
         this.password = resultSet.getString(KEY_PASSWORD);
@@ -45,16 +60,5 @@ public class User implements SqlObject {
         this.username = username;
         this.password = password;
         this.role = UserRole.CLIENT;
-    }
-
-    @Override
-    public Map<String, Object> toMap() {
-        Map<String, Object> userToMap = new HashMap<>();
-        userToMap.put(KEY_ID, getId());
-        userToMap.put(KEY_EMAIL, getEmail());
-        userToMap.put(KEY_USERNAME, getUsername());
-        userToMap.put(KEY_ROLE, getRole().toString());
-        userToMap.put(KEY_PASSWORD, getPassword());
-        return userToMap;
     }
 }

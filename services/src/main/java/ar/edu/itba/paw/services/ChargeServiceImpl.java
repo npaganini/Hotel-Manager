@@ -4,8 +4,8 @@ import ar.edu.itba.paw.interfaces.daos.ChargeDao;
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.ChargeService;
+import ar.edu.itba.paw.models.charge.Charge;
 import ar.edu.itba.paw.models.dtos.ChargeDeliveryDTO;
-import ar.edu.itba.paw.models.dtos.ChargeRoomReservationDTO;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,9 +28,9 @@ public class ChargeServiceImpl implements ChargeService {
     }
 
     @Override
-    public List<ChargeRoomReservationDTO> getAllChargesByReservationId(long reservationId) throws RequestInvalidException {
+    public List<Charge> getAllChargesByReservationId(long reservationId) throws RequestInvalidException {
         LOGGER.debug("Getting all current charges for reservation with id " + reservationId);
-        Optional<Reservation> reservationOptional = reservationDao.findById(reservationId);
+        Optional<Reservation> reservationOptional = reservationDao.findById(Math.toIntExact(reservationId));
         if (!reservationOptional.isPresent() || !reservationOptional.get().isActive()) {
             throw new RequestInvalidException();
         }
@@ -44,13 +44,13 @@ public class ChargeServiceImpl implements ChargeService {
     }
 
     @Override
-    public List<ChargeDeliveryDTO> getAllChargesNotDelivered() {
+    public List<Charge> getAllChargesNotDelivered() {
         return chargeDao.findAllChargesNotDelivered();
     }
 
     @Override
     public void setChargeToDelivered(long chargeId) throws RequestInvalidException {
-        if (chargeDao.findById(chargeId).orElseThrow(RequestInvalidException::new).isDelivered()) {
+        if (chargeDao.findById(Math.toIntExact(chargeId)).orElseThrow(RequestInvalidException::new).isDelivered()) {
             throw new RequestInvalidException();
         }
         chargeDao.updateChargeToDelivered(chargeId);

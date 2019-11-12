@@ -13,6 +13,12 @@ import org.springframework.jdbc.datasource.init.DatabasePopulator;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -22,11 +28,13 @@ import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 @EnableWebMvc
+@EnableTransactionManagement
 @ComponentScan({"ar.edu.itba.paw.webapp.controller", "ar.edu.itba.paw.services", "ar.edu.itba.paw.persistence"})
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
@@ -60,19 +68,19 @@ public class WebConfig implements WebMvcConfigurer {
         return messageSource;
     }
 
-    @Bean
-    public DataSourceInitializer dataSourceInitializer(final DataSource ds) {
-        final DataSourceInitializer dsi = new DataSourceInitializer();
-        dsi.setDataSource(ds);
-        dsi.setDatabasePopulator(databasePopulator());
-        return dsi;
-    }
-
-    private DatabasePopulator databasePopulator() {
-        final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
-        dbp.addScript(schemaSql);
-        return dbp;
-    }
+//    @Bean
+//    public DataSourceInitializer dataSourceInitializer(final DataSource ds) {
+//        final DataSourceInitializer dsi = new DataSourceInitializer();
+//        dsi.setDataSource(ds);
+//        dsi.setDatabasePopulator(databasePopulator());
+//        return dsi;
+//    }
+//
+//    private DatabasePopulator databasePopulator() {
+//        final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
+//        dbp.addScript(schemaSql);
+//        return dbp;
+//    }
 
     @Bean
     public DataSource dataSource() {
@@ -86,6 +94,33 @@ public class WebConfig implements WebMvcConfigurer {
 //        ds.setUsername("paw-2019b-2");
 //        ds.setPassword("R79Jrbbfz");
         return ds;
+    }
+
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        final LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
+        factoryBean.setPackagesToScan("ar.edu.itba.paw.models");
+        factoryBean.setDataSource(dataSource());
+        final JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        factoryBean.setJpaVendorAdapter(vendorAdapter);
+        final Properties properties = new Properties();
+        properties.setProperty("hibernate.hbm2ddl.auto", "validate");
+
+        // FIXME TODO create-drop for development only
+        //properties.setProperty("hibernate.hbm2ddl.auto", "create-drop"); // poner create en vez de update BORRA todos los datos guardados, cuidado
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL92Dialect");
+
+        // TODO: BORRAR ANTES DE MANDAR A PROD
+//        properties.setProperty("hibernate.show_sql", "true");
+//        properties.setProperty("format_sql", "true");
+
+        factoryBean.setJpaProperties(properties);
+        return factoryBean;
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager(final EntityManagerFactory emf) {
+        return new JpaTransactionManager(emf);
     }
 
     @Bean

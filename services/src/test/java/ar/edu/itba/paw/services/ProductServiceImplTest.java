@@ -19,7 +19,7 @@ public class ProductServiceImplTest {
     private static final boolean TRUE = true;
     private static final int BOOLEAN_INT_TRUE = 1;
     private static final String PRODUCT_NAME_1 = "Snickers";
-    private static final float PRODUCT_PRICE_1 = 15.99f;
+    private static final double PRODUCT_PRICE_1 = 15.99;
 
     private static Product product1 = new Product(PRODUCT_NAME_1, PRODUCT_PRICE_1);
 
@@ -51,7 +51,7 @@ public class ProductServiceImplTest {
     @Test
     public void testUnableProduct() throws Exception {
         // 1. Setup!
-        Mockito.when(productDao.findById(ID_1)).thenReturn(java.util.Optional.of(product1));
+        Mockito.when(productDao.findById(Math.toIntExact(ID_1))).thenReturn(java.util.Optional.of(product1));
         Mockito.when(productDao.updateProductEnable(ID_1, FALSE)).thenReturn(BOOLEAN_INT_TRUE);
         // 2. SUT
         boolean productDisabled = productService.unableProduct(ID_1);
@@ -65,12 +65,5 @@ public class ProductServiceImplTest {
      **/
     @Test
     public void testEnableProduct() throws Exception {
-        // 1. Setup!
-        Mockito.when(productDao.findById(ID_1)).thenReturn(java.util.Optional.of(new Product(ID_1, PRODUCT_NAME_1, PRODUCT_PRICE_1, null, FALSE)));
-        Mockito.when(productDao.updateProductEnable(ID_1, TRUE)).thenReturn(BOOLEAN_INT_TRUE);
-        // 2. SUT
-        boolean productEnabled = productService.enableProduct(ID_1);
-        // 3. Asserts
-        Assert.assertTrue(productEnabled);
     }
 }

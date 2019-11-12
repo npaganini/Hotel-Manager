@@ -1,17 +1,21 @@
 package ar.edu.itba.paw.models.product;
 
-import ar.edu.itba.paw.models.SqlObject;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import javax.persistence.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Getter
+@Setter
+@Entity
+@NoArgsConstructor
 @AllArgsConstructor
-public class Product implements SqlObject {
+@Table(name = "product")
+public class Product {
 
     public final static String KEY_ID = "id";
     public final static String KEY_DESCRIPTION = "description";
@@ -21,14 +25,23 @@ public class Product implements SqlObject {
 
     public final static String TABLE_NAME = "product";
 
-    private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(length = 32, nullable = false)
     private String description;
-    private double price;
+
+    @Column(nullable = false)
+    private Double price;
+
     private byte[] file;
+
+    @Column(nullable = false)
     private boolean enable;
 
     public Product(ResultSet resultSet) throws SQLException {
-        this.id = resultSet.getLong(KEY_ID);
+        this.id = resultSet.getInt(KEY_ID);
         this.description = resultSet.getString(KEY_DESCRIPTION);
         this.price = resultSet.getDouble(KEY_PRICE);
         this.file = resultSet.getBytes(KEY_FILE);
@@ -48,6 +61,7 @@ public class Product implements SqlObject {
         this.enable = true;
     }
 
+    /*
     @Override
     public Map<String, Object> toMap() {
         Map<String, Object> productToMap = new HashMap<>();
@@ -58,10 +72,6 @@ public class Product implements SqlObject {
         productToMap.put(KEY_ENABLE, isEnable());
         return productToMap;
     }
-
-    @Override
-    public void setId(long id) {
-        this.id = id;
-    }
+*/
 
 }

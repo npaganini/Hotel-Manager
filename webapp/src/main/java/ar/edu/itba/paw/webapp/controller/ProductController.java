@@ -3,7 +3,6 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.ProductService;
-import ar.edu.itba.paw.interfaces.services.StorageService;
 import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.webapp.form.ProductForm;
 import org.slf4j.Logger;
@@ -23,12 +22,10 @@ public class ProductController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
 
-    private final StorageService storageService;
     private final ProductService productService;
 
     @Autowired
-    public ProductController(StorageService storageService, ProductService productService) {
-        this.storageService = storageService;
+    public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
@@ -45,7 +42,6 @@ public class ProductController {
         productService.unableProduct(productId);
         return mav;
     }
-
 
     @GetMapping("/products/available")
     public ModelAndView showProduct(@RequestParam(value = "productId", required = false) long productId) throws Exception {

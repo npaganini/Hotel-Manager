@@ -36,7 +36,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public void activeReservation(long reservationId) throws RequestInvalidException {
         LOGGER.debug("About to set reservation with id " + reservationId + " to active");
-        if (reservationDao.findById(reservationId).orElseThrow(RequestInvalidException::new).isActive()) {
+        if (reservationDao.findById(Math.toIntExact(reservationId)).orElseThrow(RequestInvalidException::new).isActive()) {
             throw new RequestInvalidException();
         }
         reservationDao.updateActive(reservationId, true);
@@ -45,7 +45,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public void inactiveReservation(long reservationId) throws RequestInvalidException {
         LOGGER.debug("About to set reservation with id " + reservationId + " to unactivated");
-        if (!reservationDao.findById(reservationId).orElseThrow(RequestInvalidException::new).isActive()) {
+        if (!reservationDao.findById(Math.toIntExact(reservationId)).orElseThrow(RequestInvalidException::new).isActive()) {
             throw new RequestInvalidException();
         }
         reservationDao.updateActive(reservationId, false);
@@ -54,14 +54,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public List<Reservation> getAll() {
         LOGGER.debug("About to get all the confirmed reservations");
-        return reservationDao.getAll();
+        return reservationDao.findAll();
     }
 
-    @Override
-    public Reservation getReservationById(long reservationId) throws EntityNotFoundException {
-        LOGGER.debug("About to get reservation with id " + reservationId);
-        return reservationDao.findById(reservationId)
-                .orElseThrow(() -> new EntityNotFoundException
-                        ("Reservation with id " + reservationId+  " not found"));
-    }
 }

@@ -1,31 +1,29 @@
-package ar.edu.itba.paw.persistence;
+package ar.edu.itba.paw.persistence.jdbc;
 
-import ar.edu.itba.paw.interfaces.daos.ChargeDao;
+/*import ar.edu.itba.paw.interfaces.daos.ChargeDao;
 import ar.edu.itba.paw.models.charge.Charge;
 import ar.edu.itba.paw.models.dtos.ChargeDeliveryDTO;
-import ar.edu.itba.paw.models.dtos.ChargeRoomReservationDTO;
+import ar.edu.itba.paw.models.dtos.Charge;
 import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Repository
-public class ChargeRepository extends SimpleRepository<Charge> implements ChargeDao {
+//@Repository
+public class ChargeRepositoryJDBC extends SimpleRepositoryJDBC<Charge> implements ChargeDao {
 
     private final static RowMapper<Charge> ROW_MAPPER = (resultSet, rowNum) -> new Charge(resultSet);
 
-    @Autowired
-    public ChargeRepository(DataSource dataSource) {
+//    @Autowired
+    public ChargeRepositoryJDBC(DataSource dataSource) {
         super(new NamedParameterJdbcTemplate(dataSource));
     }
 
@@ -64,7 +62,7 @@ public class ChargeRepository extends SimpleRepository<Charge> implements Charge
     }
 
     @Override
-    public List<ChargeRoomReservationDTO> findChargeByReservationHash(long reservationId) {
+    public List<Charge> findChargeByReservationHash(long reservationId) {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("reservationId", reservationId);
         return jdbcTemplateWithNamedParameter
@@ -105,8 +103,8 @@ public class ChargeRepository extends SimpleRepository<Charge> implements Charge
         return (resultSet, i) -> resultSet.getDouble(1);
     }
 
-    private RowMapper<ChargeRoomReservationDTO> getRowMapperOfChargeRoomReservationDTO() {
-        return ((resultSet, i) -> new ChargeRoomReservationDTO(resultSet));
+    private RowMapper<Charge> getRowMapperOfChargeRoomReservationDTO() {
+        return ((resultSet, i) -> new Charge(resultSet));
     }
 
     private RowMapper<ChargeDeliveryDTO> getRowMapperOfChargeDeliveryDTO() {
@@ -115,3 +113,4 @@ public class ChargeRepository extends SimpleRepository<Charge> implements Charge
 
 
 }
+*/

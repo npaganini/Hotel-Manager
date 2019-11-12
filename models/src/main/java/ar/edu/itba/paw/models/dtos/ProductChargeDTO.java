@@ -12,8 +12,4 @@ public class ProductChargeDTO {
     private Product product;
     private Charge charge;
 
-    public ProductChargeDTO(ResultSet resultSet) throws SQLException {
-        this.product = new Product(resultSet);
-        this.charge = new Charge(resultSet);
-    }
 }

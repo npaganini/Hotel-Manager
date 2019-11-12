@@ -17,10 +17,4 @@ public class ChargeDeliveryDTO {
     private boolean delivered;
     private String description;
 
-    public ChargeDeliveryDTO(ResultSet resultSet) throws SQLException {
-        this.chargeId = resultSet.getLong("chargeId");
-        this.delivered = resultSet.getBoolean("delivered");
-        this.description = resultSet.getString("description");
-        this.roomNumber = resultSet.getInt("roomNumber");
-    }
 }
