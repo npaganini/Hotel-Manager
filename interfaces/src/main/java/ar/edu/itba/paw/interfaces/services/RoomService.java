@@ -6,7 +6,9 @@ import ar.edu.itba.paw.models.dtos.RoomReservationDTO;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
 
+import java.text.ParseException;
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.List;
 
 public interface RoomService {
@@ -21,9 +23,9 @@ public interface RoomService {
 
     List<Reservation> getRoomsReservedActive();
 
-    Reservation doReservation(long roomId, String userEmail, LocalDate startDate, LocalDate endDate) throws RequestInvalidException;
+    Reservation doReservation(long roomId, String userEmail, Calendar startDate, Calendar endDate) throws RequestInvalidException;
 
-    boolean isRoomFreeOnDate(long roomId, LocalDate startDate, LocalDate endDate);
+    boolean isRoomFreeOnDate(long roomId, Calendar startDate, Calendar endDate);
 
-    List<Room> findAllFreeBetweenDates(String startDate, String endDate);
+    List<Room> findAllFreeBetweenDates(String startDate, String endDate) throws ParseException;
 }

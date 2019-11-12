@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.*;
 
 @Getter
@@ -56,6 +57,13 @@ public class Reservation {
 
     @Column(nullable = false)
     private String hash = getRandomString();
+
+    public Reservation(Room room, String userEmail, Calendar startDate, Calendar endDate) {
+        this.room = room;
+        this.userEmail = userEmail;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 
     public String toString() {
         return "Reservation id: " + id + " for " + startDate + " to " + endDate + ". User: " + userEmail + " and hash " + hash;
