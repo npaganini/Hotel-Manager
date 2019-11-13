@@ -14,23 +14,6 @@ import java.util.List;
 public class RoomRepositoryHibernate extends SimpleRepositoryHibernate<Room> implements RoomDao {
 
     @Override
-    public List<Reservation> findAllBetweenDatesAndEmail(Calendar startDate, Calendar endDate, String email) {
-        if (startDate != null
-                && endDate != null
-                && email != null && email.length() > 0) {
-            final TypedQuery<Reservation> query = em.createQuery(
-                    "SELECT res FROM Reservation as res WHERE" +
-                            " (res.startDate >= :startDate AND res.endDate <= :endDate AND res.userEmail = :email)",
-                    Reservation.class);
-            query.setParameter("startDate", startDate);
-            query.setParameter("endDate", endDate);
-            query.setParameter("email", email);
-            return query.getResultList();
-        }
-        return null;
-    }
-
-    @Override
     public List<Room> findAllFreeBetweenDates(Calendar startDate, Calendar endDate) {
         final TypedQuery<Room> query = em.createQuery("SELECT ro FROM " + getTableName() + " as ro WHERE NOT EXISTS (" +
                 "SELECT res FROM Reservation as res WHERE (:startDate <= res.endDate " +

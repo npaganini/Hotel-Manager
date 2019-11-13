@@ -5,6 +5,8 @@ import ar.edu.itba.paw.models.reservation.Reservation;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.TypedQuery;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +20,23 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
                         .setParameter("hash", hash)
                         .getSingleResult()
         );
+    }
+
+    @Override
+    public List<Reservation> findAllBetweenDatesAndEmail(Calendar startDate, Calendar endDate, String email) {
+        if (startDate != null
+                && endDate != null
+                && email != null && email.length() > 0) {
+            final TypedQuery<Reservation> query = em.createQuery(
+                    "SELECT res FROM Reservation as res WHERE" +
+                            " (res.startDate >= :startDate AND res.endDate <= :endDate AND res.userEmail = :email)",
+                    Reservation.class);
+            query.setParameter("startDate", startDate);
+            query.setParameter("endDate", endDate);
+            query.setParameter("email", email);
+            return query.getResultList();
+        }
+        return null;
     }
 
     @Override

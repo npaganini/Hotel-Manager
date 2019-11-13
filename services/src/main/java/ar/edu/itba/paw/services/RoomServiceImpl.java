@@ -89,7 +89,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<Reservation> findAllBetweenDatesAndEmail(Calendar startDate, Calendar endDate, String email) {
-        return roomDao.findAllBetweenDatesAndEmail(startDate, endDate, email);
+        return reservationDao.findAllBetweenDatesAndEmail(startDate, endDate, email);
     }
 
     @Override
@@ -106,7 +106,6 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<Room> findAllFreeBetweenDates(Calendar startDate, Calendar endDate) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         return roomDao.findAllFreeBetweenDates(startDate, endDate);
     }
 
