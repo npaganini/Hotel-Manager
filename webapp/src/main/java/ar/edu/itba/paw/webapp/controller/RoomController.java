@@ -5,6 +5,7 @@ import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.ChargeService;
 import ar.edu.itba.paw.interfaces.services.ReservationService;
 import ar.edu.itba.paw.interfaces.services.RoomService;
+import ar.edu.itba.paw.models.dtos.CheckoutDTO;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import form.CheckinForm;
 import form.CheckoutForm;
@@ -74,12 +75,7 @@ public class RoomController extends SimpleController {
     public ModelAndView checkinPost(@ModelAttribute("checkinForm") final CheckinForm form) throws RequestInvalidException, EntityNotFoundException {
         final ModelAndView mav = new ModelAndView("checkinPost");
         LOGGER.debug("Request received to do the check-in on reservation with hash: " + form.getId_reservation());
-        Reservation reservation = reservationService.getReservationByHash(form.getId_reservation());
-        if (reservation.isActive()) {
-            throw new RequestInvalidException();
-        }
-        roomService.reserveRoom(reservation.getRoom().getId(), reservation);
-        reservationService.activeReservation(reservation.getId());
+        roomService.doCheckin(form.getId_reservation());
         return mav;
     }
 
@@ -92,15 +88,10 @@ public class RoomController extends SimpleController {
     @Transactional
     public ModelAndView checkoutPost(@ModelAttribute("checkoutForm") final CheckoutForm form) throws RequestInvalidException, EntityNotFoundException {
         final ModelAndView mav = new ModelAndView("checkoutPost");
-        Reservation reservation = reservationService.getReservationByHash(form.getId_reservation().trim());
-        if (!reservation.isActive()) {
-            throw new RequestInvalidException();
-        }
-        LOGGER.debug("Request received to do the check-out on reservation with hash: " + form.getId_reservation());
-        mav.addObject("charges", chargeService.getAllChargesByReservationId(reservation.getId()));
-        mav.addObject("totalCharge", chargeService.sumCharge(reservation.getId()));
-        roomService.freeRoom(reservation.getRoom().getId());
-        reservationService.inactiveReservation(reservation.getId());
+        CheckoutDTO checkoutDTO = roomService.doCheckout(form.getId_reservation());
+
+        mav.addObject("charges", checkoutDTO.getCharges());
+        mav.addObject("totalCharge", checkoutDTO.getSumCharges());
         return mav;
     }
 

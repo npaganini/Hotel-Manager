@@ -4,8 +4,11 @@ import ar.edu.itba.paw.interfaces.daos.ReservationDao;
 import ar.edu.itba.paw.interfaces.daos.RoomDao;
 import ar.edu.itba.paw.interfaces.daos.UserDao;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
+import ar.edu.itba.paw.interfaces.services.ChargeService;
 import ar.edu.itba.paw.interfaces.services.EmailService;
+import ar.edu.itba.paw.interfaces.services.ReservationService;
 import ar.edu.itba.paw.interfaces.services.RoomService;
+import ar.edu.itba.paw.models.dtos.CheckoutDTO;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
 import ar.edu.itba.paw.models.user.User;
@@ -17,10 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -33,14 +34,19 @@ public class RoomServiceImpl implements RoomService {
     private final RoomDao roomDao;
     private final UserDao userDao;
     private final EmailService emailService;
+    private final ReservationService reservationService;
+    private final ChargeService chargeService;
 
     @Autowired
-    public RoomServiceImpl(RoomDao roomDao, UserDao userDao, ReservationDao reservationDao, EmailService emailService) {
+    public RoomServiceImpl(RoomDao roomDao, UserDao userDao, ReservationDao reservationDao, EmailService emailService,
+                           ReservationService reservationService, ChargeService chargeService) {
         this.reservationDao = reservationDao;
         this.roomDao = roomDao;
         this.userDao = userDao;
 
         this.emailService = emailService;
+        this.reservationService = reservationService;
+        this.chargeService = chargeService;
     }
 
     @Override
@@ -107,6 +113,29 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public List<Room> findAllFreeBetweenDates(Calendar startDate, Calendar endDate) {
         return roomDao.findAllFreeBetweenDates(startDate, endDate);
+    }
+
+    @Override
+    public CheckoutDTO doCheckout(String reservationHash) throws ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException, RequestInvalidException {
+        Reservation reservation = reservationService.getReservationByHash(reservationHash.trim());
+        if (!reservation.isActive()) {
+            throw new RequestInvalidException();
+        }
+        LOGGER.debug("Request received to do the check-out on reservation with hash: " + reservationHash);
+        freeRoom(reservation.getRoom().getId());
+        reservationService.inactiveReservation(reservation.getId());
+        return new CheckoutDTO(chargeService.getAllChargesByReservationId(reservation.getId()),
+                chargeService.sumCharge(reservation.getId()));
+    }
+
+    @Override
+    public void doCheckin(String reservationHash) throws RequestInvalidException, ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException {
+        Reservation reservation = reservationService.getReservationByHash(reservationHash.trim());
+        if (reservation.isActive()) {
+            throw new RequestInvalidException();
+        }
+        reserveRoom(reservation.getRoom().getId(), reservation);
+        reservationService.activeReservation(reservation.getId());
     }
 
 }
