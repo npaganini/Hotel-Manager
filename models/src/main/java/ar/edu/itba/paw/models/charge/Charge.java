@@ -25,8 +25,8 @@ public class Charge {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
+    @Column(name = "id", columnDefinition = "NUMERIC(19,0)")
+    private long id;
 
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
     private boolean delivered;

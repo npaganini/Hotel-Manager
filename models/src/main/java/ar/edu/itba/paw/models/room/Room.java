@@ -28,8 +28,8 @@ public class Room {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = KEY_ID)
-    private Integer id;
+    @Column(name = "id", columnDefinition = "NUMERIC(19,0)")
+    private long id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = KEY_ROOM_TYPE)

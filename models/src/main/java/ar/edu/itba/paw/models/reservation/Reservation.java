@@ -33,7 +33,8 @@ public class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "id", columnDefinition = "NUMERIC(19,0)")
+    private long id;
 
     @Column(nullable = false, name = KEY_START_DATE)
     private Calendar startDate;

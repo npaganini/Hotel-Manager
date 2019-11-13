@@ -22,7 +22,7 @@ abstract class SimpleRepositoryHibernate<T> implements SimpleDao<T> {
     }
 
     @Override
-    public Optional<T> findById(int id) {
+    public Optional<T> findById(long id) {
         return Optional.ofNullable(em.find(getModelClass(), id));
     }
 
