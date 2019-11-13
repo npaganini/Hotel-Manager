@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.models.user;
 
-import ar.edu.itba.paw.models.SqlObject;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,9 +9,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Getter
 @Entity

@@ -3,7 +3,6 @@ package ar.edu.itba.paw.interfaces.services;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.models.product.Product;
 
-import java.io.File;
 import java.util.List;
 
 public interface ProductService {

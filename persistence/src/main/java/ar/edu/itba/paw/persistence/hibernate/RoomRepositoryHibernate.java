@@ -1,20 +1,14 @@
 package ar.edu.itba.paw.persistence.hibernate;
 
 import ar.edu.itba.paw.interfaces.daos.RoomDao;
-import ar.edu.itba.paw.models.dtos.RoomReservationDTO;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import java.time.LocalDate;
 import java.util.Calendar;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class RoomRepositoryHibernate extends SimpleRepositoryHibernate<Room> implements RoomDao {

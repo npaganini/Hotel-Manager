@@ -3,21 +3,11 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
 import ar.edu.itba.paw.interfaces.daos.RoomDao;
 import ar.edu.itba.paw.interfaces.daos.UserDao;
-import ar.edu.itba.paw.models.dtos.RoomReservationDTO;
-import ar.edu.itba.paw.models.reservation.Reservation;
-import ar.edu.itba.paw.models.room.Room;
-import ar.edu.itba.paw.models.room.RoomType;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import java.sql.Date;
-import java.util.LinkedList;
-import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RoomServiceImplTest {

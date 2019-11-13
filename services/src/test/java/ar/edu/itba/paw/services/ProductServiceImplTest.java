@@ -10,8 +10,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.Optional;
-
 @RunWith(MockitoJUnitRunner.class)
 public class ProductServiceImplTest {
     private static final long ID_1 = 1L;

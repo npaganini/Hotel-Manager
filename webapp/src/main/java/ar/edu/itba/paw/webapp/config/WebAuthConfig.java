@@ -2,7 +2,6 @@ package ar.edu.itba.paw.webapp.config;
 
 import ar.edu.itba.paw.models.user.UserRole;
 import ar.edu.itba.paw.webapp.auth.CustomUserDetailsService;
-
 import ar.edu.itba.paw.webapp.auth.MyUserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
