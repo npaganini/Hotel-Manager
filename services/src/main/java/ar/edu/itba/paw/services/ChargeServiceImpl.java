@@ -9,6 +9,7 @@ import ar.edu.itba.paw.models.reservation.Reservation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -48,6 +49,7 @@ public class ChargeServiceImpl implements ChargeService {
     }
 
     @Override
+    @Transactional
     public void setChargeToDelivered(long chargeId) throws RequestInvalidException {
         if (chargeDao.findById(Math.toIntExact(chargeId)).orElseThrow(RequestInvalidException::new).isDelivered()) {
             throw new RequestInvalidException();

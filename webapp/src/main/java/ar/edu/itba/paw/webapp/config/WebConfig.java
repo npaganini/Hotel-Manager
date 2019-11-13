@@ -101,7 +101,7 @@ public class WebConfig implements WebMvcConfigurer {
         final JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         factoryBean.setJpaVendorAdapter(vendorAdapter);
         final Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "validate");
+        properties.setProperty("hibernate.hbm2ddl.auto", "update");
 
         // FIXME TODO create-drop for development only
         //properties.setProperty("hibernate.hbm2ddl.auto", "create-drop"); // poner create en vez de update BORRA todos los datos guardados, cuidado

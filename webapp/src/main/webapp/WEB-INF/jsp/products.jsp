@@ -116,9 +116,9 @@
 
                             <c:if test="${prod.enable == true}">
                                 <td style="text-align: left">
-                                    <button onclick="disableButtons()" id="disable" value="${prod.id}" type="button" class="btn btn-default btn-lg">
+                                    <button onclick="disableButtons(this, false)" id="disable" value="${prod.id}" type="button" class="btn btn-default btn-lg">
                                         <div style="color: black">
-                                            <a href="${pageContext.request.contextPath}/products/disable" style="color: black">
+                                            <a style="color: black">
                                                 <spring:message code="disable"/>
                                             </a>
                                         </div>
@@ -128,10 +128,10 @@
 
                             <c:if test="${prod.enable == false}">
                                 <td style="text-align: left">
-                                    <button onclick="disableButtons()" id="available" value="${prod.id}" type="button"
+                                    <button onclick="disableButtons(this, true)" id="available" value="${prod.id}" type="button"
                                             class="btn btn-primary btn-lg">
                                         <div style="color: black">
-                                            <a href="${pageContext.request.contextPath}/products/available" style="color: white">
+                                            <a style="color: white">
                                                 <spring:message code="enable"/>
                                             </a>
                                         </div>
@@ -212,12 +212,16 @@
 
     });
 
-    function disableButtons() {
-        document.getElementById("available").disabled = true;
-        document.getElementById("add").disabled = true;
-        document.getElementById("back").disabled = true;
-        document.getElementById("disable").disabled = true;
-
+    function disableButtons(event, isEnable) {
+        event.disabled = true
+        if (event) {
+            if (isEnable) {
+                location.href = "${pageContext.request.contextPath}" + "/products/available?productId=" + event.value;
+            }
+            else {
+                location.href = "${pageContext.request.contextPath}" + "/products/disable?productId=" + event.value;
+            }
+        }
     }
 
 

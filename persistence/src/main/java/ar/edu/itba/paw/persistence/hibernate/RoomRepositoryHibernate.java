@@ -28,6 +28,7 @@ public class RoomRepositoryHibernate extends SimpleRepositoryHibernate<Room> imp
     public int reserveRoom(long roomId) {
         Room room = findById(Math.toIntExact(roomId)).orElseThrow(EntityNotFoundException::new);
         room.setFreeNow(false);
+        em.merge(room);
         return 0;
     }
 

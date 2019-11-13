@@ -16,7 +16,7 @@ public class SimpleController {
     Calendar fromStringToCalendar(String date) throws ParseException {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        cal.setTime(sdf.parse("Mon Mar 14 16:02:37 GMT 2011"));// all done
+        cal.setTime(sdf.parse(date));
         return cal;
     }
 

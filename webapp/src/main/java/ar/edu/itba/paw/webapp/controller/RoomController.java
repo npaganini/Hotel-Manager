@@ -66,7 +66,7 @@ public class RoomController extends SimpleController {
     }
 
     @GetMapping("/checkin")
-    public ModelAndView chackin(@ModelAttribute("checkinForm") final CheckinForm form) {
+    public ModelAndView checkin(@ModelAttribute("checkinForm") final CheckinForm form) {
         return new ModelAndView("checkin");
     }
 
@@ -114,12 +114,11 @@ public class RoomController extends SimpleController {
                                      @RequestParam(value = "endDate", required = false) String endDate,
                                      @RequestParam(value = "userEmail", required = false) String userEmail) throws ParseException {
         final ModelAndView mav = new ModelAndView("reservations");
-        if (!(startDate == null || endDate == null) &&
-                !(startDate.isEmpty() || endDate.isEmpty()) && LocalDate.parse(startDate).isBefore(LocalDate.parse(endDate)))
-            mav.addObject("reservations",
-                    roomService.findAllBetweenDatesAndEmail(
-                            fromStringToCalendar(startDate), fromStringToCalendar(endDate), userEmail)
-            );
+        mav.addObject("reservations",
+                roomService.findAllBetweenDatesAndEmail(
+                        startDate == null || startDate.length() == 0 ? null : fromStringToCalendar(startDate),
+                        endDate == null || endDate.length() == 0 ? null : fromStringToCalendar(endDate), userEmail)
+        );
         return mav;
     }
 
