@@ -119,7 +119,8 @@
     $(document).ready(function () {
         $('#myTable').DataTable({
             "order": [[1, "asc"]],
-            filter: false
+            filter: false,
+            "paging": false
         });
     });
 </script>
