@@ -86,17 +86,17 @@
                         <td>${reservation.room.number}</td>
                         <td style="text-align: left">
                             <button id="disable" type="button"
-                                    class="btn btn-primary">
+                                    class="btn btn-primary" onclick="location.href='./products?reservationId=${reservation.id}'">
                                 <div style="color: white"><a
-                                        href="./products?reservationId=${reservation.id}"
+
                                         style="color: white"><spring:message code="user.product.list.buy"/></a></div>
                             </button>
                         </td>
                         <td style="text-align: left">
                             <button type="button"
-                                    class="btn btn-primary">
+                                    class="btn btn-primary" onclick="location.href='./expenses?reservationId=${reservation.id}'">
                                 <div style="color: white"><a
-                                        href="./expenses?reservationId=${reservation.id}"
+
                                         style="color: white"><spring:message code="user.product.expenses"/></a></div>
                             </button>
                         </td>
