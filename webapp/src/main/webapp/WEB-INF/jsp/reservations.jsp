@@ -107,15 +107,26 @@
                 </div>
             </div>
             <div class="col-xs-6">
+                <label class="items" path="people">Huesped: </label>
+                <div class="input-group">
+                    <span class="input-group-addon"></span>
+                    <input id="guest" path="guest" type="text" class="form-control" name="guest" placeholder="Nombre del huesped"
+<%--                           value='${pageContext.request.getParameter()}'>--%>>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-xs-12">
                 <div>
-                    <div class="col-xs-2">
+                    <div class="col-xs-6" style="text-align: right">
                         <button id="search" type="button" class="btn btn-success btn-lg">
                             <div style="color: white"><spring:message code="search"/></div>
                         </button>
                     </div>
-                    <div class="col-xs-2">
+                    <div class="col-xs-6" style="text-align: left">
                         <button type="button" onclick="location.href='${pageContext.request.contextPath}/rooms/home'" class="btn btn-default btn-lg"><a
-                                 style="color: black"><spring:message code="cancel"/></a>
+                                style="color: black"><spring:message code="cancel"/></a>
                         </button>
                     </div>
 
