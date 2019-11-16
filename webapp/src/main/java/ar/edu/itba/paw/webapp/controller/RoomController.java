@@ -116,7 +116,8 @@ public class RoomController extends SimpleController {
     @GetMapping("/reservations")
     public ModelAndView reservations(@RequestParam(value = "startDate", required = false) String startDate,
                                      @RequestParam(value = "endDate", required = false) String endDate,
-                                     @RequestParam(value = "userEmail", required = false) String userEmail) throws ParseException {
+                                     @RequestParam(value = "userEmail", required = false) String userEmail,
+                                     @RequestParam(value = "guest",required = false) String guest) throws ParseException {
         final ModelAndView mav = new ModelAndView("reservations");
         mav.addObject("reservations",
                 roomService.findAllBetweenDatesAndEmail(

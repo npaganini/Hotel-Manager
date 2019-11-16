@@ -110,8 +110,8 @@
                 <label class="items" path="people">Huesped: </label>
                 <div class="input-group">
                     <span class="input-group-addon"></span>
-                    <input id="guest" path="guest" type="text" class="form-control" name="guest" placeholder="Nombre del huesped"
-<%--                           value='${pageContext.request.getParameter()}'>--%>>
+                    <input id="guest" path="guest" type="text" class="form-control" name="guest" placeholder="Apellido del huesped"
+                           value='${pageContext.request.getParameter('guest')}'>
                 </div>
             </div>
         </div>
