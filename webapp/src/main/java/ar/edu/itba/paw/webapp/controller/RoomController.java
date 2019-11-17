@@ -9,6 +9,7 @@ import ar.edu.itba.paw.models.dtos.CheckoutDTO;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import form.CheckinForm;
 import form.CheckoutForm;
+import form.RegistrationForm;
 import form.ReservationForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.jws.WebParam;
 import java.text.ParseException;
 import java.time.LocalDate;
 
@@ -138,6 +140,12 @@ public class RoomController extends SimpleController {
     public ModelAndView sendOrder(@RequestParam(value = "chargeId", required = false) long chargeId) throws Exception {
         final ModelAndView mav = new ModelAndView("orderFinished");
         chargeService.setChargeToDelivered(chargeId);
+        return mav;
+    }
+
+    @GetMapping("/registration")
+    public ModelAndView registration(@ModelAttribute("registrationForm") final RegistrationForm form){
+        final ModelAndView mav = new ModelAndView("registration");
         return mav;
     }
 

@@ -64,9 +64,7 @@
 
     <br>
     <br>
-    <form id="filter"
-          action="<c:url value="/rooms/reservations?startDate=${pageContext.request.getParameter('startDate')}&endDate=${pageContext.request.getParameter('endDate')}&userMail=${pageContext.request.getParameter('userEmail')}&guest=${pageContext.request.getParameter('guest')}"/>"
-          method="get">
+    <form>
         <div class="row">
             <div class="col-xs-6">
                 <div class="form-question">
@@ -171,30 +169,3 @@
 </body>
 </html>
 
-
-<script>
-    $(document).ready(function () {
-        $('#myTable').DataTable({
-            filter: false,
-        });
-    });
-
-    $(document).ready(function () {
-
-        $('#search').off().on('click', function (event) {
-            var basePath = $('#filter').attr('action');
-
-            var startDate = $('#from_date').val();
-            var endDate = $('#to_date').val();
-            var userEmail = $('#IDres').val();
-            var guest = $('#guest').val();
-
-            basePath = "${pageContext.request.contextPath}" + "/rooms/reservations?startDate=" + startDate + "&endDate=" + endDate + "&userEmail=" + userEmail + "&guest=" + guest;
-            event.preventDefault();
-            location.href = basePath;
-            return false;
-
-        })
-
-    })
-</script>
