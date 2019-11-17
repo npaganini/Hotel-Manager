@@ -108,7 +108,7 @@
     <div class="row" style="height: 45px">
         <div class="col-xs-6">
             <form:label class="items" path="roomId"><spring:message code="room.plural"/>: </form:label>
-            <div id="room_number">
+            <div id="room_number" style="visibility:${ListState}">
                 <form:select path="roomId" id="selec" required="required">
                     <form:option value="0">-</form:option>
                     <c:forEach var="room" items="${allRooms}">

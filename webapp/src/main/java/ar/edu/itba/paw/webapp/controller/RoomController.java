@@ -101,10 +101,14 @@ public class RoomController extends SimpleController {
                                     @ModelAttribute("reservationForm") final ReservationForm form) throws ParseException {
         final ModelAndView mav = new ModelAndView("reservation");
         if (!(startDate == null || endDate == null) && !(startDate.isEmpty() ||
-                endDate.isEmpty()) && LocalDate.parse(startDate).isBefore(LocalDate.parse(endDate)))
+                endDate.isEmpty()) && LocalDate.parse(startDate).isBefore(LocalDate.parse(endDate))) {
             mav.addObject("allRooms", roomService.findAllFreeBetweenDates(
                     fromStringToCalendar(startDate), fromStringToCalendar(endDate))
             );
+            mav.addObject("ListState","visible");
+        }
+        else
+            mav.addObject("ListState","hidden");
         return mav;
     }
 
