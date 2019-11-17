@@ -61,11 +61,12 @@ public class Reservation {
     @Column(nullable = false)
     private String hash = getRandomString();
 
-    public Reservation(Room room, String userEmail, Calendar startDate, Calendar endDate) {
+    public Reservation(Room room, String userEmail, Calendar startDate, Calendar endDate, User user) {
         this.room = room;
         this.userEmail = userEmail;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.user = user;
     }
 
     public String toString() {

@@ -11,19 +11,9 @@ import java.util.List;
 
 public interface RoomService {
 
-    Room getRoom(long roomID);
-
-    void reserveRoom(long roomId, Reservation reservation);
+    void reserveRoom(long roomId, Reservation reservation) throws RequestInvalidException, EntityNotFoundException;
 
     void freeRoom(long roomId);
-
-    List<Reservation> findAllBetweenDatesAndEmail(Calendar startDate, Calendar endDate, String email);
-
-    List<Reservation> getRoomsReservedActive();
-
-    Reservation doReservation(long roomId, String userEmail, Calendar startDate, Calendar endDate) throws RequestInvalidException;
-
-    boolean isRoomFreeOnDate(long roomId, Calendar startDate, Calendar endDate);
 
     List<Room> findAllFreeBetweenDates(Calendar startDate, Calendar endDate);
 
