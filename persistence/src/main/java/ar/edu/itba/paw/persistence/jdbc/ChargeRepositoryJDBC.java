@@ -62,7 +62,7 @@ public class ChargeRepositoryJDBC extends SimpleRepositoryJDBC<Charge> implement
     }
 
     @Override
-    public List<Charge> findChargeByReservationHash(long reservationId) {
+    public List<Charge> findChargeByReservationId(long reservationId) {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("reservationId", reservationId);
         return jdbcTemplateWithNamedParameter

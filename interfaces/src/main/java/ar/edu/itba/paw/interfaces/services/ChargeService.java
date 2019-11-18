@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.interfaces.services;
 
+import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.models.charge.Charge;
 
@@ -12,5 +13,5 @@ public interface ChargeService {
 
     List<Charge> getAllChargesNotDelivered();
 
-    void setChargeToDelivered(long chargeId) throws RequestInvalidException;
+    int setChargeToDelivered(long chargeId) throws RequestInvalidException, EntityNotFoundException;
 }
