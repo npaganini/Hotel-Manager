@@ -32,17 +32,17 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public boolean unableProduct(long productId) throws RequestInvalidException {
+    public boolean unableProduct(long productId) throws EntityNotFoundException {
         LOGGER.debug("About to unable product for visibility with id " + productId);
-        productDao.findById(productId).orElseThrow(RequestInvalidException::new);
+        productDao.findById(productId).orElseThrow(() -> new EntityNotFoundException("Cant find product with id " + productId));
         return productDao.updateProductEnable(productId, false) > 0;
     }
 
     @Transactional
     @Override
-    public boolean enableProduct(long productId) throws RequestInvalidException {
+    public boolean enableProduct(long productId) throws EntityNotFoundException {
         LOGGER.debug("About to enable product for visibility with id " + productId);
-        productDao.findById(productId).orElseThrow(RequestInvalidException::new);
+        productDao.findById(productId).orElseThrow(() -> new EntityNotFoundException("Cant find product with id " + productId));
         return productDao.updateProductEnable(productId, true) > 0;
     }
 
