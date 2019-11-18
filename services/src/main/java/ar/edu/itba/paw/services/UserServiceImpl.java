@@ -6,10 +6,7 @@ import ar.edu.itba.paw.interfaces.daos.ReservationDao;
 import ar.edu.itba.paw.interfaces.daos.HelpDao;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.charge.Charge;
-<<<<<<< HEAD
-=======
 import ar.edu.itba.paw.models.help.Help;
->>>>>>> Added ChargeRepositoryTest file.
 import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import org.slf4j.Logger;
