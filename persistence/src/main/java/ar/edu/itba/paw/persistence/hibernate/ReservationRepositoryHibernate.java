@@ -58,7 +58,7 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
     }
 
     @Override
-    public List<Reservation> findActiveReservationByEmail(String userEmail) {
+    public List<Reservation> findActiveReservationsByEmail(String userEmail) {
         return em.createQuery("SELECT r FROM " + getTableName() + " r WHERE r.userEmail = :userEmail AND r.isActive = true", getModelClass())
                 .setParameter("userEmail", userEmail)
                 .getResultList();

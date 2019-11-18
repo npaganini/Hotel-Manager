@@ -30,7 +30,7 @@ public class UserController extends SimpleController {
         final ModelAndView mav = new ModelAndView("userIndex");
         LOGGER.debug("Request received to user's landing page");
         mav.addObject("ReservationsList",
-                userService.findActiveReservation(getUsername(authentication)));
+                userService.findActiveReservations(getUsername(authentication)));
         return mav;
     }
 

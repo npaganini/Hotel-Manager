@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfaces.daos.ChargeDao;
 import ar.edu.itba.paw.interfaces.daos.ProductDao;
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
 import ar.edu.itba.paw.interfaces.daos.UserDao;
+import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.charge.Charge;
 import ar.edu.itba.paw.models.help.Help;
@@ -16,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.*;
 
 @Component
@@ -43,8 +43,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Reservation> findActiveReservation(String userEmail) {
-        return reservationDao.findActiveReservationByEmail(userEmail);
+    public List<Reservation> findActiveReservations(String userEmail) {
+        return reservationDao.findActiveReservationsByEmail(userEmail);
     }
 
     @Override
@@ -54,9 +54,11 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public Charge addCharge(long productId, long reservationId) {
-        Product product = productDao.findById(Math.toIntExact(productId)).orElseThrow(EntityNotFoundException::new);
-        Reservation reservation = reservationDao.findById(Math.toIntExact(reservationId)).orElseThrow(EntityNotFoundException::new);
+    public Charge addCharge(long productId, long reservationId) throws EntityNotFoundException {
+        Product product = productDao.findById(productId).orElseThrow(
+                () -> new EntityNotFoundException("Cant find product with id " + productId));
+        Reservation reservation = reservationDao.findById(reservationId).orElseThrow(
+                () -> new EntityNotFoundException("Cant find reservation with id " + reservationId));
         return chargeDao.save(new Charge(product, reservation));
     }
 

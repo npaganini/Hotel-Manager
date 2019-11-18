@@ -59,7 +59,7 @@
 //    }
 //
 //    @Override
-//    public List<RoomReservationDTO> findActiveReservationByEmail(String userEmail) {
+//    public List<RoomReservationDTO> findActiveReservationsByEmail(String userEmail) {
 //        return findAllReservationsByUserEmail(userEmail);
 //    }
 //

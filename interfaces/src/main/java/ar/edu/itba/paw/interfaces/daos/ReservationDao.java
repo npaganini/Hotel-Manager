@@ -14,7 +14,7 @@ public interface ReservationDao extends SimpleDao<Reservation> {
 
     int updateActive(long reservationId, boolean b);
 
-    List<Reservation> findActiveReservationByEmail(String userEmail);
+    List<Reservation> findActiveReservationsByEmail(String userEmail);
 
     boolean isRoomFreeOnDate(long roomId, Calendar startDate, Calendar endDate);
 
