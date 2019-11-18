@@ -32,11 +32,13 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home"><spring:message code="logo"/></a>
+                        <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home"><spring:message
+                                code="logo"/></a>
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse navbar-right" id="bs-sidebar-navbar-collapse-1">
                         <ul class="nav navbar-nav">
+                            <li><a href="${pageContext.request.contextPath}/rooms/registration">Registration</a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/checkin"><spring:message
                                     code="reservation.checkin"/></a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/checkout"><spring:message
@@ -48,13 +50,13 @@
                             <li><a href="${pageContext.request.contextPath}/rooms/orders"><spring:message
                                     code="reservation.order.plural"/></a></li>
                             <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> <spring:message code="user.account"/><span class="caret"></span></a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span
+                                        class="glyphicon glyphicon-user"></span> <spring:message
+                                        code="user.account"/><span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-
                                     <li><a href="${pageContext.request.contextPath}/logout"><span
                                             class="glyphicon glyphicon-log-in"></span> <spring:message
                                             code="user.logout"/></a></li>
-
                                 </ul>
                             </li>
                         </ul>

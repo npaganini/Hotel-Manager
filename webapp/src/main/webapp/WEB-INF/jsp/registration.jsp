@@ -19,7 +19,7 @@
 </head>
 <body class="container cont"
       style="height: 100vh !important; width: 100vw !important;margin-left: 0 !important; margin-right: 0 !important">
-<div >
+<div>
     <div class="row">
         <div class="col">
             <nav class="navbar navbar-inverse sidebar" style="z-index: initial !important;" role="navigation">
@@ -33,20 +33,31 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home"><spring:message code="logo"/></a>
+                        <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home"><spring:message
+                                code="logo"/></a>
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse navbar-right" id="bs-sidebar-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="${pageContext.request.contextPath}/rooms/checkin"><spring:message code="reservation.checkin"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/checkout"><spring:message code="reservation.checkout"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/reservations"><spring:message code="reservation.plural"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/products"><spring:message code="product.plural"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/orders"><spring:message code="reservation.order.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/registration">Registration</a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/checkin"><spring:message
+                                    code="reservation.checkin"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/checkout"><spring:message
+                                    code="reservation.checkout"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/reservations"><spring:message
+                                    code="reservation.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/products"><spring:message
+                                    code="product.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/orders"><spring:message
+                                    code="reservation.order.plural"/></a></li>
                             <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> <spring:message code="user.account"/><span class="caret"></span></a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span
+                                        class="glyphicon glyphicon-user"></span> <spring:message
+                                        code="user.account"/><span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="${pageContext.request.contextPath}/logout"><span class="glyphicon glyphicon-log-in"></span> <spring:message code="user.logout"/></a></li>
+                                    <li><a href="${pageContext.request.contextPath}/logout"><span
+                                            class="glyphicon glyphicon-log-in"></span> <spring:message
+                                            code="user.logout"/></a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -55,114 +66,160 @@
             </nav>
         </div>
     </div>
-    <div class="row myheader vertical-align">
-        <div class="col-xs-6" style="text-align: left">
-            <div><spring:message code="reservation.plural"/></div>
+    <c:url value="/rooms/registrationPost" var="postPath"/>
+    <form:form modelAttribute="registrationForm" id="myForm" action="${postPath}" method="post">
+        <div class="row myheader vertical-align">
+            <div class="col-xs-6" style="text-align: left">
+                <div>Registration</div>
+            </div>
+
         </div>
 
-    </div>
-
-    <br>
-    <br>
-    <form>
+        <br>
+        <br>
         <div class="row">
             <div class="col-xs-6">
-                <div class="form-question">
-                    <div class="form-question__title">
-                        <label class="items" path="startDate"><spring:message code="room.from"/>:</label>
-
-                    </div>
-
-                    <div class="input-container">
-                        <input id="from_date" path="startDate" type="date" name="effective-date" minlength="1"
-                               maxlength="64" placeholder=" " autocomplete="nope" required="required"
-                               value='${pageContext.request.getParameter('startDate')}'>
-                        <span class="bar"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-6">
-                <div class="form-question">
-                    <div class="form-question__title">
-                        <label class="items" path="endDate"><spring:message code="room.until"/>: </label>
-                    </div>
-                    <div class="input-container">
-                        <input id="to_date" path="endDate" type="date" name="effective-date" minlength="1"
-                               maxlength="64" placeholder=" " autocomplete="nope" required="required"
-                               value='${pageContext.request.getParameter('endDate')}'>
-                        <span class="bar"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-6">
-                <label class="items" path="userEmail"><spring:message code="room.owner"/>: </label>
+                <label class="items" path="nama_1">Nombre: </label>
                 <div class="input-group">
                     <span class="input-group-addon"></span>
-                    <input id="IDres" path="userEmail" type="text" class="form-control" name="IDres"
-                           placeholder="Email del titular" value='${pageContext.request.getParameter('userEmail')}'>
+                    <form:input id="name" path="name_1" type="text" class="form-control" name="name"
+                                placeholder="ID de reserva" required="required"/>
                 </div>
             </div>
             <div class="col-xs-6">
-                <label class="items" path="people">Huesped: </label>
+                <label class="items" path="last_name_1">Apellido: </label>
                 <div class="input-group">
                     <span class="input-group-addon"></span>
-                    <input id="guest" path="guest" type="text" class="form-control" name="guest" placeholder="Apellido del huesped"
-                           value='${pageContext.request.getParameter('guest')}'>
+                    <form:input id="name" path="last_name_1" type="text" class="form-control" name="name"
+                                placeholder="ID de reserva" required="required"/>
                 </div>
             </div>
         </div>
         <br>
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-xs-6">
+                <label class="items" path="name_2">Nombre: </label>
+                <div class="input-group">
+                    <span class="input-group-addon"></span>
+                    <form:input id="name" path="name_2" type="text" class="form-control" name="name"
+                                placeholder="ID de reserva" required="required"/>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <label class="items" path="last_name_2">Apellido: </label>
+                <div class="input-group">
+                    <span class="input-group-addon"></span>
+                    <form:input id="name" path="last_name_2" type="text" class="form-control" name="name"
+                                placeholder="ID de reserva" required="required"/>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-xs-6">
+                <label class="items" path="name_3">Nombre: </label>
+                <div class="input-group">
+                    <span class="input-group-addon"></span>
+                    <form:input id="name" path="name_3" type="text" class="form-control" name="name"
+                                placeholder="ID de reserva" required="required"/>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <label class="items" path="last_name_3">Apellido: </label>
+                <div class="input-group">
+                    <span class="input-group-addon"></span>
+                    <form:input id="name" path="last_name_3" type="text" class="form-control" name="name"
+                                placeholder="ID de reserva" required="required"/>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-xs-6">
+                <label class="items" path="name_4">Nombre: </label>
+                <div class="input-group">
+                    <span class="input-group-addon"></span>
+                    <form:input id="name" path="name_4" type="text" class="form-control" name="name"
+                                placeholder="ID de reserva" required="required"/>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <label class="items" path="last_name_4">Apellido: </label>
+                <div class="input-group">
+                    <span class="input-group-addon"></span>
+                    <form:input id="name" path="last_name_4" type="text" class="form-control" name="name"
+                                placeholder="ID de reserva" required="required"/>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-xs-6">
+                <label class="items" path="name_5">Nombre: </label>
+                <div class="input-group">
+                    <span class="input-group-addon"></span>
+                    <form:input id="name" path="name_5" type="text" class="form-control" name="name"
+                                placeholder="ID de reserva" required="required"/>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <label class="items" path="last_name_5">Apellido: </label>
+                <div class="input-group">
+                    <span class="input-group-addon"></span>
+                    <form:input id="name" path="last_name_5" type="text" class="form-control" name="name"
+                                placeholder="ID de reserva" required="required"/>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-xs-6">
+                <label class="items" path="name_6">Nombre: </label>
+                <div class="input-group">
+                    <span class="input-group-addon"></span>
+                    <form:input id="name" path="name_6" type="text" class="form-control" name="name"
+                                placeholder="ID de reserva" required="required"/>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <label class="items" path="last_name_6">Apellido: </label>
+                <div class="input-group">
+                    <span class="input-group-addon"></span>
+                    <form:input id="name" path="last_name_6" type="text" class="form-control" name="name"
+                                placeholder="ID de reserva" required="required"/>
+                </div>
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
+                <div class="col-xs-6">
+                    <label class="items" path="room_number">Habitacion: </label>
+                    <div class="input-group">
+                        <span class="input-group-addon"></span>
+                        <form:input id="rommNumber" path="room_number" type="text" class="form-control" name="room_number"
+                                    placeholder="Numero de habitacion" required="required"/>
+                    </div>
+                </div>
+                <br>
                 <div>
-                    <div class="col-xs-6" style="text-align: right">
-                        <button id="search" type="button" class="btn btn-success btn-lg">
-                            <div style="color: white"><spring:message code="search"/></div>
+                    <div class="col-xs-3" style="text-align:center">
+                        <button id="regist" type="submit" class="btn btn-success btn-lg">
+                            <div style="color: white">Registrar</div>
                         </button>
                     </div>
-                    <div class="col-xs-6" style="text-align: left">
-                        <button type="button" onclick="location.href='${pageContext.request.contextPath}/rooms/home'" class="btn btn-default btn-lg"><a
+                    <div class="col-xs-3">
+                        <button type="button" onclick="location.href='${pageContext.request.contextPath}/rooms/home'"
+                                class="btn btn-default btn-lg"><a
                                 style="color: black"><spring:message code="cancel"/></a>
                         </button>
                     </div>
 
                 </div>
-            </div>
         </div>
         <br>
         <br>
-    </form>
-    <c:url value="/rooms/reservation" var="postPath"/>
-    <div class="row">
-        <div class="col-xs-12 form-group" style="z-index:9999;grid-auto-columns: auto">
-            <table id="myTable" class="display" style="width:100%;  border: 1px solid black !important;">
-                <thead>
-                <tr>
-                    <th><spring:message code="room.singular"/></th>
-                    <th><spring:message code="room.owner"/></th>
-                    <th><spring:message code="room.from"/></th>
-                    <th><spring:message code="room.until"/></th>
-                    <th><spring:message code="reservation.isActive"/></th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach var="reservation" items="${reservations}">
-                    <tr>
-                        <td style="text-align: left">${reservation.room.number}</td>
-                        <td style="text-align: left">${reservation.userEmail}</td>
-                        <td style="text-align: left"><fmt:formatDate value="${reservation.startDate.time}"
-                                                                     pattern="yyyy-MM-dd"/></td>
-                        <td style="text-align: left"><fmt:formatDate value="${reservation.endDate.time}"
-                                                                     pattern="yyyy-MM-dd"/></td>
-                        <td style="text-align: left">${reservation.active ? 'TRUE' : 'FALSE'}</td>
-                    </tr>
-                </c:forEach>
-                </tbody>
-            </table>
-        </div>
-    </div>
+    </form:form>
+
 
 </div>
 

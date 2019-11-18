@@ -149,4 +149,10 @@ public class RoomController extends SimpleController {
         return mav;
     }
 
+    @GetMapping("/registrationPost")
+    public ModelAndView registrationPost(@ModelAttribute("registrationForm") final RegistrationForm form){
+        final ModelAndView mav = new ModelAndView("registration");
+        return mav;
+    }
+
 }
