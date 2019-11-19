@@ -8,6 +8,7 @@ import ar.edu.itba.paw.models.help.Help;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -34,6 +35,7 @@ public class HelpServiceImpl implements HelpService {
         return helpDao.findAllHelpRequestsNotSentFor();
     }
 
+    @Transactional
     @Override
     public boolean setRequestToResolved(long helpId) throws RequestInvalidException {
         Help helpRequest = helpDao.findById(Math.toIntExact(helpId)).orElseThrow(EntityNotFoundException::new);
@@ -43,6 +45,7 @@ public class HelpServiceImpl implements HelpService {
         throw new RequestInvalidException();
     }
 
+    @Transactional
     @Override
     public boolean setRequestToRequiresFurtherAction(long helpId) throws RequestInvalidException {
         Help helpRequest = helpDao.findById(Math.toIntExact(helpId)).orElseThrow(EntityNotFoundException::new);
@@ -52,6 +55,7 @@ public class HelpServiceImpl implements HelpService {
         throw new RequestInvalidException();
     }
 
+    @Transactional
     @Override
     public String requestHelp(String text, long reservationId) {
         Reservation reservation = reservationDao.findById(Math.toIntExact(reservationId)).orElseThrow(EntityNotFoundException::new);

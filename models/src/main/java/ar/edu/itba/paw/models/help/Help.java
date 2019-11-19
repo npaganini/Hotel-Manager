@@ -18,7 +18,7 @@ public class Help {
     public final static String KEY_ID = "id";
     public static final String KEY_HELP_STEP = "help_step";
     public final static String KEY_RESERVATIONID = "reservation_id";
-    public final static String KEY_DELIVERED = "delivered";
+    public final static String KEY_HELP_TEXT = "help_text";
 
     public final static String TABLE_NAME = "charge";
 
@@ -31,7 +31,7 @@ public class Help {
     @Column(name = KEY_HELP_STEP)
     private HelpStep helpStep;
 
-    @Column(nullable = false, length = 140) // tweet length, short brief message
+    @Column(name = KEY_HELP_TEXT, nullable = false, length = 140) // tweet length, short brief message
     private String helpText;
 
     @ManyToOne
