@@ -9,6 +9,8 @@ public interface HelpDao extends SimpleDao<ar.edu.itba.paw.models.help.Help> {
 
     List<Help> findAllHelpRequestsNotSentFor();
 
+    List<Help> findAllHelpRequestsNotResolved();
+
     boolean updateToHelpRequestResolved(long helpId);
 
     boolean updateRequestToRequiresFurtherAction(long helpId);
