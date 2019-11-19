@@ -9,6 +9,7 @@ import ar.edu.itba.paw.models.dtos.CheckoutDTO;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import form.CheckinForm;
 import form.CheckoutForm;
+import form.RegistrationForm;
 import form.ReservationForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.jws.WebParam;
 import java.text.ParseException;
 import java.time.LocalDate;
 
@@ -116,7 +118,8 @@ public class RoomController extends SimpleController {
     @GetMapping("/reservations")
     public ModelAndView reservations(@RequestParam(value = "startDate", required = false) String startDate,
                                      @RequestParam(value = "endDate", required = false) String endDate,
-                                     @RequestParam(value = "userEmail", required = false) String userEmail) throws ParseException {
+                                     @RequestParam(value = "userEmail", required = false) String userEmail,
+                                     @RequestParam(value = "guest",required = false) String guest) throws ParseException {
         final ModelAndView mav = new ModelAndView("reservations");
         mav.addObject("reservations",
                 roomService.findAllBetweenDatesAndEmail(
@@ -137,6 +140,18 @@ public class RoomController extends SimpleController {
     public ModelAndView sendOrder(@RequestParam(value = "chargeId", required = false) long chargeId) throws Exception {
         final ModelAndView mav = new ModelAndView("orderFinished");
         chargeService.setChargeToDelivered(chargeId);
+        return mav;
+    }
+
+    @GetMapping("/registration")
+    public ModelAndView registration(@ModelAttribute("registrationForm") final RegistrationForm form){
+        final ModelAndView mav = new ModelAndView("registration");
+        return mav;
+    }
+
+    @GetMapping("/registrationPost")
+    public ModelAndView registrationPost(@ModelAttribute("registrationForm") final RegistrationForm form){
+        final ModelAndView mav = new ModelAndView("registration");
         return mav;
     }
 

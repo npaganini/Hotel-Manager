@@ -39,6 +39,7 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse navbar-right" id="bs-sidebar-navbar-collapse-1">
                         <ul class="nav navbar-nav">
+                            <li><a href="${pageContext.request.contextPath}/rooms/registration">Registration</a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/checkin"><spring:message
                                     code="reservation.checkin"/></a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/checkout"><spring:message

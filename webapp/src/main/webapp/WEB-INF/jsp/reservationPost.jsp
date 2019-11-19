@@ -39,6 +39,7 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse navbar-right" id="bs-sidebar-navbar-collapse-1">
                         <ul class="nav navbar-nav">
+                            <li><a href="${pageContext.request.contextPath}/rooms/registration">Registration</a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/checkin"><spring:message
                                     code="reservation.checkin"/></a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/checkout"><spring:message
@@ -95,8 +96,7 @@
     <br>
     <div class="row">
         <div class="col" style="margin-left: 25px">
-            <button type="button" class="btn btn-success btn-lg"><a href="${pageContext.request.contextPath}/rooms/home"
-                                                                    style="color: white"><spring:message
+            <button type="button" class="btn btn-success btn-lg" onclick="location.href='${pageContext.request.contextPath}/rooms/home'"><a style="color: white"><spring:message
                     code="user.home"/></a></button>
         </div>
     </div>

@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 
@@ -19,7 +18,7 @@
 </head>
 <body class="container cont"
       style="height: 100vh !important; width: 100vw !important;margin-left: 0 !important; margin-right: 0 !important">
-<div>
+<div >
     <div class="row">
         <div class="col">
             <nav class="navbar navbar-inverse sidebar" style="z-index: initial !important;" role="navigation">
@@ -68,74 +67,24 @@
     </div>
     <div class="row myheader vertical-align">
         <div class="col-xs-12" style="text-align: left">
-            <div><spring:message code="product.add"/></div>
+            <div><spring:message code="reservation.checkin.successful"/></div>
         </div>
     </div>
     <br>
     <br>
-
-    <form:form modelAttribute="productForm" action='${pageContext.request.contextPath}/products/addProduct'
-               method="post" enctype="multipart/form-data"
-               id="myForm">
-        <div class="row">
-            <div class="col-xs-6">
-                <label for="description"><spring:message code="product.description"/>: </label>
-                <form:input id="description" path="description" required="required"/>
-            </div>
-            <div class="col-xs-6">
-                <label for="price"><spring:message code="user.product.price"/>: </label>
-                <form:input id="price" path="price" type="number" min="0" required="required"/>
-            </div>
-
+    <div class="row" style="font-size:x-large ">
+        <div class="col" style="margin-left: 25px">
+            <spring:message code="success"/>
         </div>
-        <br><br>
-        <div class="row">
-            <div class="col-xs-4">
-                <label for="img"><spring:message code="product.img"/>: </label>
-                <input type="file" name="img" required="required"/>
-            </div>
-            <div class="col-xs-8">
-                <div class="col-xs-2">
-                    <input id="submit" class="btn btn-success btn-lg" type="submit" tabindex="5" value="Add">
-                </div>
-                <div class="col-xs-2">
-                    <input id="reset" type="reset" class="btn btn-primary btn-lg" tabindex="4">
-                </div>
-                <div class="col-xs-2">
-
-                    <button type="button" href="${pageContext.request.contextPath}/products" id="back"
-                            class="btn btn-danger btn-lg"><a
-                            style="color: white"><spring:message
-                            code="user.home"/></a></button>
-
-                </div>
-            </div>
-        </div>
-    </form:form>
+    </div>
     <br>
-</div>
+    <div class="row">
+        <div class="col" style="margin-left: 25px">
+            <button type="button" onclick="location.href='${pageContext.request.contextPath}/rooms/home'" class="btn btn-success btn-lg"><a style="color: white">Se ha registrado exitosamente!</a></button>
+        </div>
+    </div>
 
 
 </div>
 </body>
 </html>
-
-<script>
-
-    $(document).ready(function () {
-
-        $('#myForm').submit(function () {
-
-                //disable the submit button
-                $("#submit").attr("disabled", true);
-
-                //disable a normal button
-                $("#reset").attr("disabled", true);
-
-                $("#back").attr("disabled", true);
-
-                return true;
-
-        });
-    });
-</script>

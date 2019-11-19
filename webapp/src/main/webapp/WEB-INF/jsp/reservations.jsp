@@ -33,20 +33,31 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home"><spring:message code="logo"/></a>
+                        <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home"><spring:message
+                                code="logo"/></a>
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse navbar-right" id="bs-sidebar-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="${pageContext.request.contextPath}/rooms/checkin"><spring:message code="reservation.checkin"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/checkout"><spring:message code="reservation.checkout"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/reservations"><spring:message code="reservation.plural"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/products"><spring:message code="product.plural"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/orders"><spring:message code="reservation.order.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/registration">Registration</a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/checkin"><spring:message
+                                    code="reservation.checkin"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/checkout"><spring:message
+                                    code="reservation.checkout"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/reservations"><spring:message
+                                    code="reservation.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/products"><spring:message
+                                    code="product.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/orders"><spring:message
+                                    code="reservation.order.plural"/></a></li>
                             <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> <spring:message code="user.account"/><span class="caret"></span></a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span
+                                        class="glyphicon glyphicon-user"></span> <spring:message
+                                        code="user.account"/><span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="${pageContext.request.contextPath}/logout"><span class="glyphicon glyphicon-log-in"></span> <spring:message code="user.logout"/></a></li>
+                                    <li><a href="${pageContext.request.contextPath}/logout"><span
+                                            class="glyphicon glyphicon-log-in"></span> <spring:message
+                                            code="user.logout"/></a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -65,7 +76,7 @@
     <br>
     <br>
     <form id="filter"
-          action="<c:url value="/rooms/reservations?startDate=${pageContext.request.getParameter('startDate')}&endDate=${pageContext.request.getParameter('endDate')}&userMail=${pageContext.request.getParameter('userEmail')}"/>"
+          action="<c:url value="/rooms/reservations?startDate=${pageContext.request.getParameter('startDate')}&endDate=${pageContext.request.getParameter('endDate')}&userMail=${pageContext.request.getParameter('userEmail')}&guest=${pageContext.request.getParameter('guest')}"/>"
           method="get">
         <div class="row">
             <div class="col-xs-6">
@@ -107,15 +118,26 @@
                 </div>
             </div>
             <div class="col-xs-6">
+                <label class="items" path="people">Huesped: </label>
+                <div class="input-group">
+                    <span class="input-group-addon"></span>
+                    <input id="guest" path="guest" type="text" class="form-control" name="guest" placeholder="Apellido del huesped"
+                           value='${pageContext.request.getParameter('guest')}'>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-xs-12">
                 <div>
-                    <div class="col-xs-2">
+                    <div class="col-xs-6" style="text-align: right">
                         <button id="search" type="button" class="btn btn-success btn-lg">
                             <div style="color: white"><spring:message code="search"/></div>
                         </button>
                     </div>
-                    <div class="col-xs-2">
+                    <div class="col-xs-6" style="text-align: left">
                         <button type="button" onclick="location.href='${pageContext.request.contextPath}/rooms/home'" class="btn btn-default btn-lg"><a
-                                 style="color: black"><spring:message code="cancel"/></a>
+                                style="color: black"><spring:message code="cancel"/></a>
                         </button>
                     </div>
 
@@ -176,8 +198,9 @@
             var startDate = $('#from_date').val();
             var endDate = $('#to_date').val();
             var userEmail = $('#IDres').val();
+            var guest = $('#guest').val();
 
-            basePath = "${pageContext.request.contextPath}" + "/rooms/reservations?startDate=" + startDate + "&endDate=" + endDate + "&userEmail=" + userEmail;
+            basePath = "${pageContext.request.contextPath}" + "/rooms/reservations?startDate=" + startDate + "&endDate=" + endDate + "&userEmail=" + userEmail + "&guest=" + guest;
             event.preventDefault();
             location.href = basePath;
             return false;
