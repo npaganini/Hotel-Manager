@@ -116,7 +116,7 @@
 }
 
 .product-card {
-    width: 256px !important;
+    max-width: 206px !important;
     height: 256px !important;
 }
 

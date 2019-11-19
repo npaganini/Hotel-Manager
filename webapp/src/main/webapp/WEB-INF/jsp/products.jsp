@@ -131,8 +131,8 @@
             <div class="col-xs-4">
                 <div class="row" style="height: 45px;text-align: center">
                     <div class="col-xs-2">
-                        <button onclick="disableButtons();location.href='${pageContext.request.contextPath}/products/addProduct'" type="button" id="add" class="btn btn-success btn-lg">
-                            <a style="color: white">
+                        <button onclick="disableButtons()" type="button" id="add" class="btn btn-success btn-lg">
+                            <a href="${pageContext.request.contextPath}/products/addProduct" style="color: white">
                                 <spring:message code="add"/>
                             </a>
                         </button>
@@ -141,8 +141,8 @@
                 <br><br>
                 <div class="row">
                     <div class="col-xs-2">
-                        <button type="button" onclick="disableButtons();location.href='${pageContext.request.contextPath}/rooms/home'" id="back" class="btn btn-danger btn-lg">
-                            <a style="color: white">
+                        <button type="button" onclick="disableButtons()" id="back" class="btn btn-danger btn-lg">
+                            <a href="${pageContext.request.contextPath}/rooms/home" style="color: white">
                                 <spring:message code="user.home"/>
                             </a>
                         </button>

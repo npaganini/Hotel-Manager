@@ -1,7 +1,9 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.services.HelpService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import form.BuyProductForm;
+import form.HelpForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +55,7 @@ public class UserController extends SimpleController {
     @PostMapping("/buyProducts")
     public ModelAndView buyProduct(@ModelAttribute("buyProductForm") BuyProductForm buyProductForm, @RequestParam(value = "reservationId") long reservationId) {
         LOGGER.debug("Request received to buy products on reservation with id " + reservationId);
-        if (buyProductForm != null) {
+        if(buyProductForm != null) {
             final ModelAndView mav = new ModelAndView("buyProducts");
             mav.addObject("charge", userService.addCharge(buyProductForm.getProductId(), reservationId));
             return mav;
@@ -61,4 +63,22 @@ public class UserController extends SimpleController {
         return new ModelAndView("redirect:/products");
     }
 
+    @GetMapping("/needHelp")
+    public ModelAndView getHelpPage(@ModelAttribute("getHelpForm") HelpForm helpForm,
+                                    @RequestParam(value = "reservationId") long reservationId) {
+        final ModelAndView mav = new ModelAndView("askHelpPage");
+        LOGGER.debug("Request received to get help page");
+        return mav;
+    }
+
+    @PostMapping("/helpUser")
+    public ModelAndView requestHelp(@ModelAttribute("getHelpForm") HelpForm helpForm, @RequestParam(value = "reservationId") long reservationId) {
+        LOGGER.debug("Help request made on reservation with id " + reservationId);
+        if(helpForm != null) {
+            final ModelAndView mav = new ModelAndView("requestHelp");
+            mav.addObject("helpRequest", userService.requestHelp(helpForm.getText(), reservationId));
+            return mav;
+        }
+        return new ModelAndView("redirect:/needHelp");
+    }
 }

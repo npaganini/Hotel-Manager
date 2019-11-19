@@ -16,4 +16,6 @@ public interface UserService {
     List<Product> getProducts();
 
     Charge addCharge(long productId, long reservationId);
+
+    String requestHelp(String text, long reservationId);
 }
