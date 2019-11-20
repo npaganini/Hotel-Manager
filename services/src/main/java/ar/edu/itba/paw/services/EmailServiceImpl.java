@@ -33,13 +33,13 @@ public class EmailServiceImpl implements EmailService {
         this.servletContext = servletContext;
     }
 
-    public void sendConfirmationOfReservation(String to, String subject, String hash) {
+    public void sendConfirmationOfReservation(String to, String subject, String hash, String password) {
         LOGGER.debug("About to send email notifying the confirmation of reservation to " + to);
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
 
         try {
-            helper.setText(getHtmlMessageForReservation(to, hash), true);
+            helper.setText(getHtmlMessageForReservation(to, hash, password), true);
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setFrom("paw.hotel.manager@gmail.com");
@@ -177,11 +177,11 @@ public class EmailServiceImpl implements EmailService {
                 "<p> <b>username:</b> " + userEmail + " <br> <b>password</b>: " + userEmail + "</p>";
     }
 
-    private String getHtmlMessageForReservation(String to, String hash) {
+    private String getHtmlMessageForReservation(String to, String hash, String password) {
         return "<h3> Welcome to hotelManager, your reservation has been confirmed! </h3> <br> " +
                 "<h4>These are your credentials for you to log into the web and manage your minibar. Keep track of this identification: " + hash +
                 ", you will need it to do the checking. <b>Remember that you will see your reservation, once you check-in into the hotel.</b></h4> <br>" +
-                "<p> <b>username:</b> " + to + " <br> <b>password</b>: " + to + "</p>";
+                "<p> <b>username:</b> " + to + " <br> <b>password</b>: " + password + "</p>";
     }
 
 }

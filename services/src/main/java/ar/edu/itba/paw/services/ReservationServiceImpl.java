@@ -118,7 +118,7 @@ public class ReservationServiceImpl implements ReservationService {
         Reservation reservation = reservationDao.save(new Reservation(room, userEmail, startDate, endDate, user));
         LOGGER.debug("Sending email with confirmation of reservation to user");
         emailService.sendConfirmationOfReservation(userEmail, "Reserva confirmada",
-                reservation.getHash());
+                reservation.getHash(), user.getPassword());
         return reservation;
     }
 
