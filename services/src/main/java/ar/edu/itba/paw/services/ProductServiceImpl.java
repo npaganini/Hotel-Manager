@@ -7,11 +7,9 @@ import ar.edu.itba.paw.interfaces.services.ProductService;
 import ar.edu.itba.paw.models.product.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import sun.misc.Request;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
 import java.util.List;
 
 @Service
@@ -25,36 +23,35 @@ public class ProductServiceImpl implements ProductService {
         this.productDao = productDao;
     }
 
+    @Transactional
     @Override
     public Product saveProduct(Product product) {
         LOGGER.debug("About to save product with description " + product.getDescription() + " and price " + product.getPrice());
         return productDao.save(product);
     }
 
+    @Transactional
     @Override
-    public boolean unableProduct(long productId) throws RequestInvalidException {
+    public boolean unableProduct(long productId) throws EntityNotFoundException {
         LOGGER.debug("About to unable product for visibility with id " + productId);
-        productDao.findById(productId).orElseThrow(RequestInvalidException::new);
+        productDao.findById(productId).orElseThrow(() -> new EntityNotFoundException("Cant find product with id " + productId));
         return productDao.updateProductEnable(productId, false) > 0;
     }
 
+    @Transactional
     @Override
-    public boolean enableProduct(long productId) throws RequestInvalidException {
+    public boolean enableProduct(long productId) throws EntityNotFoundException {
         LOGGER.debug("About to enable product for visibility with id " + productId);
-        productDao.findById(productId).orElseThrow(RequestInvalidException::new);
+        productDao.findById(productId).orElseThrow(() -> new EntityNotFoundException("Cant find product with id " + productId));
         return productDao.updateProductEnable(productId, true) > 0;
     }
 
     @Override
     public List<Product> getAll() {
-        return productDao.getAllProducts();
+        return productDao.findAll();
     }
 
-    @Override
-    public List<Product> getAllProductsForTable() {
-        return productDao.getAllProductsForTable();
-    }
-
+    @Transactional
     @Override
     public Product findProductById(long productId) throws EntityNotFoundException {
         return productDao.findById(productId).orElseThrow(() ->

@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.persistence;
+/*package ar.edu.itba.paw.persistence.jdbc;
 
 import ar.edu.itba.paw.interfaces.daos.SimpleDao;
 import ar.edu.itba.paw.models.SqlObject;
@@ -18,12 +18,12 @@ import java.util.Optional;
 
 import static ar.edu.itba.paw.models.SqlObject.KEY_ID;
 
-public abstract class SimpleRepository<T extends SqlObject> implements SimpleDao<T> {
+public abstract class SimpleRepositoryJDBC<T extends SqlObject> implements SimpleDao<T> {
 
     final NamedParameterJdbcTemplate jdbcTemplateWithNamedParameter;
     final SimpleJdbcInsert simpleJdbcInsert;
 
-    SimpleRepository(NamedParameterJdbcTemplate jdbcTemplateWithNamedParameter) {
+    SimpleRepositoryJDBC(NamedParameterJdbcTemplate jdbcTemplateWithNamedParameter) {
         this.jdbcTemplateWithNamedParameter = jdbcTemplateWithNamedParameter;
         this.simpleJdbcInsert =
                 new SimpleJdbcInsert(jdbcTemplateWithNamedParameter.getJdbcTemplate())
@@ -59,3 +59,4 @@ public abstract class SimpleRepository<T extends SqlObject> implements SimpleDao
 
     abstract SimpleJdbcInsert getJdbcInsert();
 }
+*/

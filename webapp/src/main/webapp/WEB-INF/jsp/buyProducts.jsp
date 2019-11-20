@@ -26,16 +26,18 @@
 </head>
 <body class="cont">
 <div class="container-fluid">
+    <nav class="container-fluid message">
+        <span>
+            <a href="${pageContext.request.contextPath}/logout" class="btn btn-primary user-logout align-self-end">
+                <spring:message code="user.logout"/>
+            </a>
+        </span>
+    </nav>
 <c:choose>
     <c:when test="${!charge.delivered}">
         <div class="modal-title row navbar-default my-card-title message">
                 <span class="user-navbar">
                     &nbsp;<spring:message code="user.product.bought"/>
-                </span>
-                <span>
-                    <a href="${pageContext.request.contextPath}/logout" class="btn btn-primary user-logout align-self-end">
-                        <spring:message code="user.logout"/>
-                    </a>
                 </span>
         </div>
         <div class="container">
@@ -45,19 +47,19 @@
             <div class="message row confirTable"><spring:message code="user.product.error"/></div>
     </c:otherwise>
 </c:choose>
-            <div class="row message my-card-title">
-                <span class="col" style="padding-right: 25px;">
-                    <a href="./products?reservationId=${pageContext.request.getParameter("reservationId")}" class="btn btn-primary">
-                        <spring:message code="user.product.list.browse"/>
-                    </a>
-                </span>
-                <span class="col">
-                    <a href="./expenses?reservationId=${pageContext.request.getParameter("reservationId")}" class="btn btn-primary">
-                        <spring:message code="user.product.list.expenses"/>
-                    </a>
-                </span>
-            </div>
+        <div class="row message my-card-title">
+            <span class="col" style="padding-right: 25px;">
+                <a href="./products?reservationId=${pageContext.request.getParameter("reservationId")}" class="btn btn-primary">
+                    <spring:message code="user.product.list.browse"/>
+                </a>
+            </span>
+            <span class="col">
+                <a href="./expenses?reservationId=${pageContext.request.getParameter("reservationId")}" class="btn btn-primary">
+                    <spring:message code="user.product.list.expenses"/>
+                </a>
+            </span>
         </div>
+    </div>
 </div>
 </body>
 </html>

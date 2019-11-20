@@ -3,21 +3,24 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
 import ar.edu.itba.paw.interfaces.daos.RoomDao;
 import ar.edu.itba.paw.interfaces.daos.UserDao;
-import ar.edu.itba.paw.interfaces.services.EmailService;
-import ar.edu.itba.paw.interfaces.services.RoomService;
-import ar.edu.itba.paw.models.dtos.RoomReservationDTO;
+import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
+import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
+import ar.edu.itba.paw.interfaces.services.*;
+import ar.edu.itba.paw.models.charge.Charge;
+import ar.edu.itba.paw.models.dtos.CheckoutDTO;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
 import ar.edu.itba.paw.models.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sun.misc.Request;
 
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,52 +32,26 @@ public class RoomServiceImpl implements RoomService {
     private final RoomDao roomDao;
     private final UserDao userDao;
     private final EmailService emailService;
-
+    private final ReservationService reservationService;
+    private final ChargeService chargeService;
+    private final UserService userService;
 
     @Autowired
-    public RoomServiceImpl(RoomDao roomDao, UserDao userDao, ReservationDao reservationDao, EmailService emailService) {
+    public RoomServiceImpl(RoomDao roomDao, UserDao userDao, ReservationDao reservationDao, EmailService emailService,
+                           ReservationService reservationService, ChargeService chargeService, UserService userService) {
         this.reservationDao = reservationDao;
         this.roomDao = roomDao;
         this.userDao = userDao;
 
         this.emailService = emailService;
+        this.reservationService = reservationService;
+        this.chargeService = chargeService;
+        this.userService = userService;
     }
 
     @Override
-    public List<Room> getRoomsList() {
-        return roomDao.findAllFree();
-    }
-
-    @Override
-    public Room getRoom(long roomID) {
-        return roomDao.findById(roomID).orElse(null);
-    }
-
-    @Transactional
-    @Override
-    public void doReservation(Reservation reserva) {
-        LOGGER.debug("About to do reservation with hash " + reserva.getHash());
-        LOGGER.debug("Looking if there is already a user created with email " + reserva.getUserEmail());
-        Optional<User> user = userDao.findByEmail(reserva.getUserEmail());
-        if (user.isPresent()) {
-            LOGGER.debug("There is already an user created with email " + reserva.getUserEmail());
-            reserva.setUserId(user.get().getId());
-        } else {
-            LOGGER.debug("There is not an user created with email " + reserva.getUserEmail() + ". So we create one");
-            reserva.setUserId(userDao.save(new User(reserva.getUserEmail(),
-                    reserva.getUserEmail(),
-                    new BCryptPasswordEncoder().encode(reserva.getUserEmail()))).getId());
-        }
-        LOGGER.debug("Saving reservation with hash " + reserva.getHash());
-        reservationDao.save(reserva);
-        LOGGER.debug("Sending email with confirmation of reservation to user");
-        emailService.sendConfirmationOfReservation(reserva.getUserEmail(), "Reserva confirmada",
-                reserva.getHash());
-    }
-
-    @Override
-    public void reservateRoom(long roomID, Reservation reservation) {
-        roomDao.reservateRoom(roomID);
+    public void reserveRoom(long roomID, Reservation reservation) {
+        roomDao.reserveRoom(roomID);
         emailService.sendCheckinEmail(reservation);
     }
 
@@ -84,25 +61,36 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<RoomReservationDTO> findAllBetweenDatesAndEmail(String startDate, String endDate, String email) {
-        return roomDao.findAllBetweenDatesAndEmail(startDate, endDate, email);
-    }
-
-    @Override
-    public List<Room> findAllFreeBetweenDates(String startDate, String endDate) {
+    public List<Room> findAllFreeBetweenDates(Calendar startDate, Calendar endDate) {
         return roomDao.findAllFreeBetweenDates(startDate, endDate);
     }
 
     @Override
-    public List<RoomReservationDTO> getRoomsReservedActive() {
-        return roomDao.getRoomsReservedActive();
+    @Transactional
+    public CheckoutDTO doCheckout(String reservationHash) throws ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException, RequestInvalidException {
+        Reservation reservation = reservationService.getReservationByHash(reservationHash.trim());
+        if (!reservation.isActive()) {
+            throw new RequestInvalidException();
+        }
+        LOGGER.debug("Request received to do the check-out on reservation with hash: " + reservationHash);
+        freeRoom(reservation.getRoom().getId());
+        List<Charge> charges = chargeService.getAllChargesByReservationId(reservation.getId());
+        CheckoutDTO checkoutDTO = new CheckoutDTO(charges,
+                charges.size() > 0 ? chargeService.sumCharge(reservation.getId()) : 0d);
+        reservationService.inactiveReservation(reservation.getId());
+        emailService.sendRateStayEmail(reservationHash);
+        return checkoutDTO;
     }
 
     @Override
-    public boolean isRoomFreeOnDate(long roomId, String startDate, String endDate) {
-        List<Room> rooms = roomDao.findAllFreeBetweenDates(startDate, endDate)
-                .parallelStream().filter(room -> room.getId() == roomId).collect(Collectors.toList());
-        return rooms.size() == 1 && rooms.get(0).getId() == roomId;
+    @Transactional
+    public void doCheckin(String reservationHash) throws RequestInvalidException, ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException {
+        Reservation reservation = reservationService.getReservationByHash(reservationHash.trim());
+        if (reservation.isActive()) {
+            throw new RequestInvalidException();
+        }
+        reserveRoom(reservation.getRoom().getId(), reservation);
+        reservationService.activeReservation(reservation.getId());
     }
 
 }

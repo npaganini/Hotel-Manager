@@ -3,13 +3,13 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.daos.ChargeDao;
 import ar.edu.itba.paw.interfaces.daos.ProductDao;
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
+import ar.edu.itba.paw.interfaces.daos.UserDao;
+import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.models.charge.Charge;
-import ar.edu.itba.paw.models.dtos.RoomReservationDTO;
 import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.models.reservation.Reservation;
-import ar.edu.itba.paw.models.room.Room;
-import ar.edu.itba.paw.models.room.RoomType;
-import org.junit.Assert;
+import ar.edu.itba.paw.models.user.User;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -17,29 +17,17 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.time.LocalDate;
-import java.sql.Date;
-import java.util.*;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceImplTest {
-    private static final String PRODUCT_NAME_1 = "Coca-Cola";
-    private static final String PRODUCT_NAME_2 = "Lays";
-    private static final String PRODUCT_NAME_3 = "Snickers";
-    private static final float PRODUCT_PRICE_1 = 15.99f;
-    private static final float PRODUCT_PRICE_2 = 13.99f;
-    private static final int AMOUNT_SINGLE = 1;
-    private static final int AMOUNT_TWO = 2;
-    private static final int PRODUCT_ARRAY_LIST_SIZE = 3;
-    private static final int RESERVATIONS_ARRAY_LIST_SIZE = 1;
-    private static final int DELTA_DIFFERENCE = 0;
-    private static final long ID_1 = 1L;
-    private static final String FAKE_VALID_EMAIL = "email@email.com";
-    private static final String START_DATE = "2019-09-30";
-    private static final String END_DATE = "2019-10-10";
-    private static final int ROOM_NUMBER = 105;
-    private static final boolean FALSE = false;
-    private static final boolean TRUE = true;
 
     @Mock
     private ProductDao productDao;
@@ -47,85 +35,81 @@ public class UserServiceImplTest {
     private ChargeDao chargeDao;
     @Mock
     private ReservationDao reservationDao;
+    @Mock
+    private UserDao userDao;
 
     @InjectMocks
     private UserServiceImpl userService;
 
-    /**
-     * @function_to_test List<Product> getProducts()
-     * uses productDao.getAllProducts()
-     */
-    @Test
-    public void testGetProducts() {
-        // 1. Setup!
-        Product product1 = new Product(PRODUCT_NAME_1, PRODUCT_PRICE_1);
-        Product product2 = new Product(PRODUCT_NAME_2, PRODUCT_PRICE_2);
-        Product product3 = new Product(PRODUCT_NAME_3, PRODUCT_PRICE_1);
-        Mockito.when(productDao.getAllProducts()).thenReturn(new LinkedList<>(Arrays.asList(product1, product2, product3)));
-        // 2. SUT
-        List<Product> list = userService.getProducts();
-        // 3. Asserts
-        Assert.assertNotNull(list);
-        Assert.assertEquals(PRODUCT_ARRAY_LIST_SIZE, list.size());
-        Assert.assertEquals(PRODUCT_PRICE_2, list.get(1).getPrice(), DELTA_DIFFERENCE);
+    private Product product = new Product("coke", 2D);
+    private Reservation reservation = new Reservation(null, "email", Calendar.getInstance(), Calendar.getInstance(), null);
+    private Charge charge = new Charge(product, reservation);
+    private User user = new User("email@email.com", "email", "email");
+    private User newUser = new User("newEmail@email.com", "newEmail", "newEmail");
+
+    @Before
+    public void init() {
+        product.setId(1L);
+        reservation.setId(1L);
+        Map<Product, Integer> productIntegerMap = new HashMap<>();
+        productIntegerMap.put(product, 4);
+        Mockito.when(chargeDao.getAllChargesByUser("email", 1L)).thenReturn(productIntegerMap);
+        Mockito.when(chargeDao.getAllChargesByUser("invalidEmail", 2L)).thenReturn(new HashMap<>());
+        Mockito.when(chargeDao.save(any(Charge.class))).thenReturn(charge);
+        Mockito.when(productDao.findById(1L)).thenReturn(Optional.ofNullable(product));
+        Mockito.when(productDao.findById(2L)).thenReturn(Optional.empty());
+        Mockito.when(reservationDao.findById(1L)).thenReturn(Optional.ofNullable(reservation));
+        Mockito.when(reservationDao.findById(2L)).thenReturn(Optional.empty());
+        Mockito.when(userDao.findByEmail("email")).thenReturn(Optional.ofNullable(user));
+        Mockito.when(userDao.findByEmail("newEmail")).thenReturn(Optional.empty());
+        Mockito.when(userDao.save(any(User.class))).thenReturn(newUser);
     }
 
-    /**
-     * @function_to_test List<RoomReservationDTO> findActiveReservation(String userEmail)
-     * uses reservationDao.findActiveReservation(String email)
-     */
     @Test
-    public void testFindActiveReservation() {
-        // 1. Setup!
-        Room room = new Room(ID_1, RoomType.DOUBLE, FALSE, ROOM_NUMBER);
-        Reservation reservationValid = new Reservation(ID_1, FAKE_VALID_EMAIL, Date.valueOf(START_DATE).toLocalDate(), Date.valueOf(END_DATE).toLocalDate(), ID_1);
-        RoomReservationDTO reservationDTO = new RoomReservationDTO(room, reservationValid);
-        List<RoomReservationDTO> list = new LinkedList<>();
-        list.add(reservationDTO);
-        Mockito.when(reservationDao.findActiveReservation(FAKE_VALID_EMAIL)).thenReturn(list);
-        // 2. SUT
-        List<RoomReservationDTO> reservationList = userService.findActiveReservation(FAKE_VALID_EMAIL);
-        // 3. Asserts
-        Assert.assertNotNull(reservationList);
-        Assert.assertEquals(RESERVATIONS_ARRAY_LIST_SIZE, reservationList.size());
-        Assert.assertFalse(reservationList.get(0).getRoom().isFreeNow());
+    public void getProductsBoughtByValidReservationIdTest() {
+        Map<Product, Integer> productToPrice = userService.checkProductsPurchasedByUserByReservationId("email", 1L);
+        assertEquals("Product should have one element", 1, productToPrice.size());
+        assertNotNull(productToPrice.get(product));
     }
 
-    /**
-     * @function_to_test Map<Product, Integer> checkProductsPurchasedByUserByReservationId(String userEmail, long reservationId)
-     * uses chargeDao.getAllChargesByUser(String email, long reservationId)
-     */
     @Test
-    public void testCheckProductsPurchasedByUserByReservationId() {
-        // 1. Setup!
-        Product product1 = new Product(PRODUCT_NAME_1, PRODUCT_PRICE_1);
-        Product product2 = new Product(PRODUCT_NAME_2, PRODUCT_PRICE_2);
-        Integer i1 = AMOUNT_SINGLE;
-        Integer i2 = AMOUNT_TWO;
-        Map<Product, Integer> productsMap = new HashMap<>();
-        productsMap.put(product1, i1);
-        productsMap.put(product2, i2);
-        Mockito.when(chargeDao.getAllChargesByUser(FAKE_VALID_EMAIL, ID_1)).thenReturn(productsMap);
-        // 2. SUT
-        Map<Product, Integer> expenses = userService.checkProductsPurchasedByUserByReservationId(FAKE_VALID_EMAIL, ID_1);
-        // 3. Asserts
-        Assert.assertNotNull(expenses);
-        Assert.assertTrue(expenses.containsKey(product1));
-        Assert.assertTrue(expenses.containsValue(AMOUNT_TWO));
+    public void getProductsBoughtByNonValidReservationIdTest() {
+        Map<Product, Integer> productToPrice = userService.checkProductsPurchasedByUserByReservationId("invalidEmail", 2L);
+        assertEquals("Product should have no element", 0, productToPrice.size());
     }
 
-    /**
-    * @function_to_test boolean addCharge(Charge product)
-    * uses chargeDao.addCharge()
-    */
     @Test
-    public void testAddCharge() {
-        // 1. Setup!
-        Charge charge = new Charge(ID_1, ID_1);
-        Mockito.when(chargeDao.save(charge)).thenReturn(charge);
-        // 2. SUT
-        Charge chargeAdded = userService.addCharge(charge);
-        // 3. Asserts
-        Assert.assertNotNull(chargeAdded);
+    public void addChargeWithValidProductAndValidReservationId() throws EntityNotFoundException {
+        Charge charge = userService.addCharge(1L, 1L);
+        assertEquals("Charge's product should have same id", 1L, charge.getProduct().getId());
+        assertEquals("Charge's reservation should have same id", 1L, charge.getReservation().getId());
     }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void addChargeWithInvalidProductAndValidReservationId() throws EntityNotFoundException {
+        userService.addCharge(2L, 1L);
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void addChargeWithInvalidProductAndInvalidReservationId() throws EntityNotFoundException {
+        userService.addCharge(2L, 2L);
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void addChargeWithValidProductAndInvalidReservationId() throws EntityNotFoundException {
+        userService.addCharge(1L, 2L);
+    }
+
+    @Test
+    public void getUserForReservationWithAlreadyExistentUser() {
+        User user = userService.getUserForReservation("email");
+        assertEquals("User already exists, it should have email: email@email.com", "email@email.com", user.getEmail());
+    }
+
+    @Test
+    public void getUserForReservationWithNonExistentUser() {
+        User user = userService.getUserForReservation("newEmail");
+        assertEquals("User didnt exist, it should now be a new user with email: newEmail@email.com", "newEmail@email.com", user.getEmail());
+    }
+
 }

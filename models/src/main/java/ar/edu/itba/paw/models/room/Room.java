@@ -1,20 +1,23 @@
 package ar.edu.itba.paw.models.room;
 
-import ar.edu.itba.paw.models.SqlObject;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @Getter
 @Setter
+@Entity
+@NoArgsConstructor
 @AllArgsConstructor
-public class Room implements SqlObject {
+@Table(name = "room")
+public class Room {
 
     public static final String KEY_ID = "id";
     public static final String KEY_ROOM_TYPE = "room_type";
@@ -23,31 +26,29 @@ public class Room implements SqlObject {
 
     public static final String TABLE_NAME = "room";
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", columnDefinition = "NUMERIC(19,0)")
     private long id;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = KEY_ROOM_TYPE)
     private RoomType roomType;
+
+    @Column(nullable = false, name = KEY_FREE_NOW)
     private boolean freeNow;
+
+    @Column(nullable = false)
     private int number; // > 0
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "room")
+    private List<Reservation> reservations;
+
     public Room(ResultSet resultSet) throws SQLException {
-        this.id = resultSet.getLong(KEY_ID);
+        this.id = resultSet.getInt(KEY_ID);
         this.roomType = RoomType.valueOf(resultSet.getString(KEY_ROOM_TYPE));
         this.freeNow = resultSet.getBoolean(KEY_FREE_NOW);
         this.number = resultSet.getInt(KEY_NUMBER);
-    }
-
-    @Override
-    public Map<String, Object> toMap() {
-        Map<String, Object> roomToMap = new HashMap<>();
-        roomToMap.put(KEY_ID, getId());
-        roomToMap.put(KEY_ROOM_TYPE, getRoomType().toString());
-        roomToMap.put(KEY_FREE_NOW, isFreeNow());
-        roomToMap.put(KEY_NUMBER, getNumber());
-        return roomToMap;
-    }
-
-    @Override
-    public void setId(long id) {
-        this.id = id;
     }
 
 }

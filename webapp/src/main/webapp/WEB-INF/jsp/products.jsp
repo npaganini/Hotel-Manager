@@ -38,6 +38,7 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse navbar-right" id="bs-sidebar-navbar-collapse-1">
                         <ul class="nav navbar-nav">
+                            <li><a href="${pageContext.request.contextPath}/rooms/registration">Registration</a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/checkin"><spring:message
                                     code="reservation.checkin"/></a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/checkout"><spring:message
@@ -48,6 +49,11 @@
                                     code="product.plural"/></a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/orders"><spring:message
                                     code="reservation.order.plural"/></a></li>
+                            <li>
+                                <a href="${pageContext.request.contextPath}/helpList">
+                                    <spring:message code="help.request.plural"/>
+                                </a>
+                            </li>
                             <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span
                                         class="glyphicon glyphicon-user"></span> <spring:message
@@ -98,22 +104,25 @@
 
                             <c:if test="${prod.enable == true}">
                                 <td style="text-align: left">
-                                    <button onclick="disableButtons()" id="disable" value="${prod.id}" type="button"
-                                            class="btn btn-default btn-lg">
-                                        <div style="color: black"><a
-                                                href="${pageContext.request.contextPath}/products/disable"
-                                                style="color: black"><spring:message code="disable"/></a></div>
+                                    <button onclick="disableButtons(this, false)" id="disable" value="${prod.id}" type="button" class="btn btn-default btn-lg">
+                                        <div style="color: black">
+                                            <a style="color: black">
+                                                <spring:message code="disable"/>
+                                            </a>
+                                        </div>
                                     </button>
                                 </td>
                             </c:if>
 
                             <c:if test="${prod.enable == false}">
                                 <td style="text-align: left">
-                                    <button onclick="disableButtons()" id="available" value="${prod.id}" type="button"
+                                    <button onclick="disableButtons(this, true)" id="available" value="${prod.id}" type="button"
                                             class="btn btn-primary btn-lg">
-                                        <div style="color: black"><a
-                                                href="${pageContext.request.contextPath}/products/available"
-                                                style="color: white"><spring:message code="enable"/></a></div>
+                                        <div style="color: black">
+                                            <a style="color: white">
+                                                <spring:message code="enable"/>
+                                            </a>
+                                        </div>
                                     </button>
                                 </td>
                             </c:if>
@@ -127,16 +136,20 @@
             <div class="col-xs-4">
                 <div class="row" style="height: 45px;text-align: center">
                     <div class="col-xs-2">
-                        <button onclick="location.href='${pageContext.request.contextPath}/products/addProduct';disableButtons()" type="button" id="add" class="btn btn-success btn-lg"><a
-                                style="color: white"><spring:message code="add"/></a>
+                        <button type="button" onclick="location.href='${pageContext.request.contextPath}/products/addProduct'"  id="add" class="btn btn-success btn-lg">
+                            <a style="color: white">
+                                <spring:message code="add"/>
+                            </a>
                         </button>
                     </div>
                 </div>
                 <br><br>
                 <div class="row">
                     <div class="col-xs-2">
-                        <button type="button" onclick="location.href='${pageContext.request.contextPath}/rooms/home';disableButtons()" id="back" class="btn btn-danger btn-lg"><a
-                                style="color: white"><spring:message code="user.home"/></a>
+                        <button type="button" onclick="location.href='${pageContext.request.contextPath}/rooms/home'" id="back" class="btn btn-danger btn-lg">
+                            <a style="color: white">
+                                <spring:message code="user.home"/>
+                            </a>
                         </button>
                     </div>
                 </div>
@@ -144,8 +157,6 @@
         </div>
     </form>
 
-
-</div>
 </div>
 </body>
 </html>
@@ -189,12 +200,16 @@
 
     });
 
-    function disableButtons() {
-        document.getElementById("available").disabled = true;
-        document.getElementById("add").disabled = true;
-        document.getElementById("back").disabled = true;
-        document.getElementById("disable").disabled = true;
-
+    function disableButtons(event, isEnable) {
+        event.disabled = true
+        if (event) {
+            if (isEnable) {
+                location.href = "${pageContext.request.contextPath}" + "/products/available?productId=" + event.value;
+            }
+            else {
+                location.href = "${pageContext.request.contextPath}" + "/products/disable?productId=" + event.value;
+            }
+        }
     }
 
 

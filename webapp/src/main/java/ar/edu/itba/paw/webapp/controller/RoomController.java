@@ -5,25 +5,28 @@ import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.ChargeService;
 import ar.edu.itba.paw.interfaces.services.ReservationService;
 import ar.edu.itba.paw.interfaces.services.RoomService;
-import ar.edu.itba.paw.models.reservation.Reservation;
+import ar.edu.itba.paw.models.dtos.CheckoutDTO;
+import ar.edu.itba.paw.models.occupant.Occupant;
 import form.CheckinForm;
 import form.CheckoutForm;
+import form.RegistrationForm;
 import form.ReservationForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.sql.Date;
+import java.text.ParseException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("rooms")
-public class RoomController {
+public class RoomController extends SimpleController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RoomController.class);
 
@@ -42,35 +45,23 @@ public class RoomController {
     public ModelAndView getAllRooms() {
         final ModelAndView mav = new ModelAndView("index");
         LOGGER.debug("Request received to retrieve whole roomsList");
-        mav.addObject("RoomList", roomService.getRoomsReservedActive());
-        return mav;
-    }
-
-    @GetMapping("/room/{id}")
-    public ModelAndView getRoom(@PathVariable long id) {
-        final ModelAndView mav = new ModelAndView("room");
-        mav.addObject("RoomSelected", roomService.getRoom(id));
+        mav.addObject("ReservationsList", reservationService.getRoomsReservedActive());
         return mav;
     }
 
     @PostMapping("/reservationPost")
     @Transactional
-    public ModelAndView reservationPost(@ModelAttribute("reservationForm") final ReservationForm form) throws EntityNotFoundException, RequestInvalidException {
+    public ModelAndView reservationPost(@ModelAttribute("reservationForm") final ReservationForm form) throws RequestInvalidException, ParseException {
         final ModelAndView mav = new ModelAndView("reservationPost");
         LOGGER.debug("Request received to do a reservation on room with id: " + form.getRoomId());
-        if (!roomService.isRoomFreeOnDate(form.getRoomId(), form.getStartDate(), form.getEndDate()))
-            throw new RequestInvalidException();
-        Reservation reserva = new Reservation(form.getRoomId(),
-                form.getUserEmail(), Date.valueOf(form.getStartDate()).toLocalDate(),
-                Date.valueOf(form.getEndDate()).toLocalDate(), 0L);
-        roomService.doReservation(reserva);
-        LOGGER.debug("Response about to be sent, reservation made, with hash: " + reserva.getHash());
-        mav.addObject("reserva", reserva);
+        mav.addObject("reserva", reservationService.doReservation(form.getRoomId(),
+                form.getUserEmail(), fromStringToCalendar(form.getStartDate()),
+                fromStringToCalendar(form.getEndDate())));
         return mav;
     }
 
     @GetMapping("/checkin")
-    public ModelAndView chackin(@ModelAttribute("checkinForm") final CheckinForm form) {
+    public ModelAndView checkin(@ModelAttribute("checkinForm") final CheckinForm form) {
         return new ModelAndView("checkin");
     }
 
@@ -79,12 +70,7 @@ public class RoomController {
     public ModelAndView checkinPost(@ModelAttribute("checkinForm") final CheckinForm form) throws RequestInvalidException, EntityNotFoundException {
         final ModelAndView mav = new ModelAndView("checkinPost");
         LOGGER.debug("Request received to do the check-in on reservation with hash: " + form.getId_reservation());
-        Reservation reservation = reservationService.getReservationByHash(form.getId_reservation());
-        if (reservation.isActive()) {
-            throw new RequestInvalidException();
-        }
-        roomService.reservateRoom(reservation.getRoomId(), reservation);
-        reservationService.activeReservation(reservation.getId());
+        roomService.doCheckin(form.getId_reservation());
         return mav;
     }
 
@@ -97,25 +83,27 @@ public class RoomController {
     @Transactional
     public ModelAndView checkoutPost(@ModelAttribute("checkoutForm") final CheckoutForm form) throws RequestInvalidException, EntityNotFoundException {
         final ModelAndView mav = new ModelAndView("checkoutPost");
-        Reservation reservation = reservationService.getReservationByHash(form.getId_reservation().trim());
-        if (!reservation.isActive()) {
-            throw new RequestInvalidException();
-        }
-        LOGGER.debug("Request received to do the check-out on reservation with hash: " + form.getId_reservation());
-        mav.addObject("charges", chargeService.getAllChargesByReservationId(reservation.getId()));
-        mav.addObject("totalCharge", chargeService.sumCharge(reservation.getId()));
-        roomService.freeRoom(reservation.getRoomId());
-        reservationService.inactiveReservation(reservation.getId());
+        CheckoutDTO checkoutDTO = roomService.doCheckout(form.getId_reservation());
+
+        mav.addObject("charges", checkoutDTO.getCharges());
+        mav.addObject("totalCharge", checkoutDTO.getSumCharges());
         return mav;
     }
 
     @GetMapping("/reservation")
     public ModelAndView reservation(@RequestParam(value = "startDate", required = false) String startDate,
                                     @RequestParam(value = "endDate", required = false) String endDate,
-                                    @ModelAttribute("reservationForm") final ReservationForm form) {
+                                    @ModelAttribute("reservationForm") final ReservationForm form) throws ParseException {
         final ModelAndView mav = new ModelAndView("reservation");
-        if (!(startDate == null || endDate == null) && !(startDate.isEmpty() || endDate.isEmpty()) && LocalDate.parse(startDate).isBefore(LocalDate.parse(endDate)))
-            mav.addObject("allRooms", roomService.findAllFreeBetweenDates(startDate, endDate));
+        if (!(startDate == null || endDate == null) && !(startDate.isEmpty() ||
+                endDate.isEmpty()) && LocalDate.parse(startDate).isBefore(LocalDate.parse(endDate))) {
+            mav.addObject("allRooms", roomService.findAllFreeBetweenDates(
+                    fromStringToCalendar(startDate), fromStringToCalendar(endDate))
+            );
+            mav.addObject("ListState","visible");
+        }
+        else
+            mav.addObject("ListState","hidden");
         return mav;
     }
 
@@ -123,11 +111,14 @@ public class RoomController {
     @GetMapping("/reservations")
     public ModelAndView reservations(@RequestParam(value = "startDate", required = false) String startDate,
                                      @RequestParam(value = "endDate", required = false) String endDate,
-                                     @RequestParam(value = "userEmail", required = false) String userEmail) {
+                                     @RequestParam(value = "userEmail", required = false) String userEmail,
+                                     @RequestParam(value = "guest", required = false) String guest) throws ParseException {
         final ModelAndView mav = new ModelAndView("reservations");
-        if (!(startDate == null || endDate == null) && !(startDate.isEmpty() || endDate.isEmpty()) && LocalDate.parse(startDate).isBefore(LocalDate.parse(endDate)))
-            mav.addObject("reservations", roomService.findAllBetweenDatesAndEmail(startDate,
-                    endDate, userEmail));
+        mav.addObject("reservations",
+                reservationService.findAllBetweenDatesOrEmailAndSurname(
+                        startDate == null || startDate.length() == 0 ? null : fromStringToCalendar(startDate),
+                        endDate == null || endDate.length() == 0 ? null : fromStringToCalendar(endDate), userEmail, guest)
+        );
         return mav;
     }
 
@@ -143,6 +134,55 @@ public class RoomController {
         final ModelAndView mav = new ModelAndView("orderFinished");
         chargeService.setChargeToDelivered(chargeId);
         return mav;
+    }
+
+    @GetMapping("/registration")
+    public ModelAndView registration(@ModelAttribute("registrationForm") final RegistrationForm form) {
+        ModelAndView mav = new ModelAndView("registration");
+        mav.addObject("registered", false);
+        return mav;
+    }
+
+    @PostMapping("/registrationPost")
+    public ModelAndView registrationPost(@ModelAttribute("registrationForm") final RegistrationForm form) throws EntityNotFoundException {
+        ModelAndView mav = new ModelAndView("registration");
+        LOGGER.debug("Attempted to access registration form");
+        if(form != null) {
+            LOGGER.debug("Attempted to register occupants on reservation hash " + form.getReservation_hash());
+            reservationService.registerOccupants(form.getReservation_hash().trim(), getListOfOccupantsFromForm(form));
+            mav.addObject("registered", true);
+        }
+        return mav;
+    }
+
+    // FIXME this is disgusting but we couldnt crate a list from jsp
+    private List<Occupant> getListOfOccupantsFromForm(RegistrationForm form) {
+        List<Occupant> occupants = new ArrayList<>();
+        if (form.getName_1() != null && form.getName_1().length() > 0
+                && form.getLast_name_1() != null && form.getLast_name_1().length() > 0)
+            occupants.add(new Occupant(form.getName_1(), form.getLast_name_1().toLowerCase()));
+
+        if (form.getName_2() != null && form.getName_2().length() > 0
+                && form.getLast_name_2() != null && form.getLast_name_2().length() > 0)
+            occupants.add(new Occupant(form.getName_2(), form.getLast_name_2().toLowerCase()));
+
+        if (form.getName_3() != null && form.getName_3().length() > 0
+                && form.getLast_name_3() != null && form.getLast_name_3().length() > 0)
+            occupants.add(new Occupant(form.getName_3(), form.getLast_name_3().toLowerCase()));
+
+        if (form.getName_4() != null && form.getName_4().length() > 0
+                && form.getLast_name_4() != null && form.getLast_name_4().length() > 0)
+            occupants.add(new Occupant(form.getName_4(), form.getLast_name_4().toLowerCase()));
+
+        if (form.getName_5() != null && form.getName_5().length() > 0
+                && form.getLast_name_5() != null && form.getLast_name_5().length() > 0)
+            occupants.add(new Occupant(form.getName_5(), form.getLast_name_5().toLowerCase()));
+
+        if (form.getName_6() != null && form.getName_6().length() > 0
+                && form.getLast_name_6() != null && form.getLast_name_6().length() > 0)
+            occupants.add(new Occupant(form.getName_6(), form.getLast_name_6().toLowerCase()));
+
+       return occupants;
     }
 
 }

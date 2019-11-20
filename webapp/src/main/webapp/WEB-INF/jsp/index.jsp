@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <html>
 
@@ -32,11 +33,13 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home"><spring:message code="logo"/></a>
+                        <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home"><spring:message
+                                code="logo"/></a>
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse navbar-right" id="bs-sidebar-navbar-collapse-1">
                         <ul class="nav navbar-nav">
+                            <li><a href="${pageContext.request.contextPath}/rooms/registration">Registration</a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/checkin"><spring:message
                                     code="reservation.checkin"/></a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/checkout"><spring:message
@@ -47,6 +50,11 @@
                                     code="product.plural"/></a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/orders"><spring:message
                                     code="reservation.order.plural"/></a></li>
+                            <li>
+                                <a href="${pageContext.request.contextPath}/helpList">
+                                    <spring:message code="help.request.plural"/>
+                                </a>
+                            </li>
                             <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span
                                         class="glyphicon glyphicon-user"></span> <spring:message
@@ -89,20 +97,17 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="room" items="${RoomList}">
+                <c:forEach var="reservation" items="${ReservationsList}">
                     <tr>
-
-                        <c:if test="${room.reservation.active == true}">
-
-                            <td style="text-align: left">${room.room.number}</td>
-                            <td style="text-align: left">${room.room.roomType}</td>
-                            <td style="text-align: left">${room.reservation.startDate}</td>
-                            <td style="text-align: left">${room.reservation.endDate}</td>
-                            <td style="text-align: left">${room.reservation.userEmail}</td>
-
+                        <c:if test="${reservation.active == true}">
+                            <td style="text-align: left">${reservation.room.number}</td>
+                            <td style="text-align: left">${reservation.room.roomType}</td>
+                            <td style="text-align: left"><fmt:formatDate value="${reservation.startDate.time}"
+                                                                         pattern="yyyy-MM-dd"/></td>
+                            <td style="text-align: left"><fmt:formatDate value="${reservation.endDate.time}"
+                                                                         pattern="yyyy-MM-dd"/></td>
+                            <td style="text-align: left">${reservation.userEmail}</td>
                         </c:if>
-
-
                     </tr>
                 </c:forEach>
                 </tbody>

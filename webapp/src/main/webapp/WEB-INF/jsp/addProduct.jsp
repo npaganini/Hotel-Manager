@@ -39,6 +39,7 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse navbar-right" id="bs-sidebar-navbar-collapse-1">
                         <ul class="nav navbar-nav">
+                            <li><a href="${pageContext.request.contextPath}/rooms/registration">Registration</a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/checkin"><spring:message
                                     code="reservation.checkin"/></a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/checkout"><spring:message
@@ -49,15 +50,19 @@
                                     code="product.plural"/></a></li>
                             <li><a href="${pageContext.request.contextPath}/rooms/orders"><spring:message
                                     code="reservation.order.plural"/></a></li>
+                            <li>
+                                <a href="${pageContext.request.contextPath}/helpList">
+                                    <spring:message code="help.request.plural"/>
+                                </a>
+                            </li>
                             <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span
-                                        class="glyphicon glyphicon-user"></span><spring:message
+                                        class="glyphicon glyphicon-user"></span> <spring:message
                                         code="user.account"/><span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="${pageContext.request.contextPath}/logout"><span
-                                            class="glyphicon glyphicon-log-in"></span><spring:message
+                                            class="glyphicon glyphicon-log-in"></span> <spring:message
                                             code="user.logout"/></a></li>
-
                                 </ul>
                             </li>
                         </ul>
@@ -103,10 +108,9 @@
                 </div>
                 <div class="col-xs-2">
 
-                    <button type="button" href="${pageContext.request.contextPath}/products" id="back"
+                    <button type="button" onclick="location.href='${pageContext.request.contextPath}/products'" id="back"
                             class="btn btn-danger btn-lg"><a
-                            style="color: white"><spring:message
-                            code="user.home"/></a></button>
+                            style="color: white">Back</a></button>
 
                 </div>
             </div>

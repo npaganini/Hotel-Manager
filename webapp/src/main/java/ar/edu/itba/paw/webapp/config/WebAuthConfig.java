@@ -2,8 +2,9 @@ package ar.edu.itba.paw.webapp.config;
 
 import ar.edu.itba.paw.models.user.UserRole;
 import ar.edu.itba.paw.webapp.auth.CustomUserDetailsService;
-
 import ar.edu.itba.paw.webapp.auth.MyUserPrincipal;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +28,8 @@ import java.util.concurrent.TimeUnit;
 @PropertySource("classpath:key.properties")
 @ComponentScan("ar.edu.itba.paw.webapp.auth")
 public class WebAuthConfig extends WebSecurityConfigurerAdapter {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(WebAuthConfig.class);
 
     @Value(value = "${key}")
     private String key;
@@ -63,7 +66,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                             httpServletResponse.sendRedirect(servletContext.getContextPath() + "/rooms/home");
                         }
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        LOGGER.error(e.toString());
                     }
                 }))
                 .loginPage("/login")

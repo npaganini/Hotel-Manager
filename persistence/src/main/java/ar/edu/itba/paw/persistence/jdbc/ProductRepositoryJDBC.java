@@ -1,25 +1,22 @@
-package ar.edu.itba.paw.persistence;
+/*package ar.edu.itba.paw.persistence.jdbc;
 
 import ar.edu.itba.paw.interfaces.daos.ProductDao;
 import ar.edu.itba.paw.models.product.Product;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
-import java.util.Map;
 
-@Repository
-public class ProductRepository extends SimpleRepository<Product> implements ProductDao {
+//@Repository
+public class ProductRepositoryJDBC extends SimpleRepositoryJDBC<Product> implements ProductDao {
 
     private final static RowMapper<Product> ROW_MAPPER = (resultSet, i) -> new Product(resultSet);
 
-    @Autowired
-    public ProductRepository(DataSource dataSource) {
+//    @Autowired
+    public ProductRepositoryJDBC(DataSource dataSource) {
         super(new NamedParameterJdbcTemplate(dataSource));
     }
 
@@ -65,3 +62,4 @@ public class ProductRepository extends SimpleRepository<Product> implements Prod
         return jdbcTemplateWithNamedParameter.query("SELECT * FROM product WHERE description=:description", parameters, getRowMapper());
     }
 }
+*/

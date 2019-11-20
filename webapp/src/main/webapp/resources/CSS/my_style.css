@@ -7,6 +7,10 @@
     font-size: 25px;
 }
 
+.checked {
+    color: orange;
+}
+
 .confirTable{
     background-color: white;
     margin-left: 25px;
@@ -112,7 +116,7 @@
 }
 
 .product-card {
-    width: 256px !important;
+    max-width: 206px !important;
     height: 256px !important;
 }
 

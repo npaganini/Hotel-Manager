@@ -1,29 +1,23 @@
 package ar.edu.itba.paw.interfaces.services;
 
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
-import ar.edu.itba.paw.models.dtos.RoomReservationDTO;
+import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
+import ar.edu.itba.paw.models.dtos.CheckoutDTO;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
 
+import java.util.Calendar;
 import java.util.List;
 
 public interface RoomService {
 
-    List<Room> getRoomsList();
-
-    Room getRoom(long roomID);
-
-    void doReservation(Reservation reserva) throws EntityNotFoundException;
-
-    void reservateRoom(long roomId, Reservation reservation);
+    void reserveRoom(long roomId, Reservation reservation) throws RequestInvalidException, EntityNotFoundException;
 
     void freeRoom(long roomId);
 
-    List<Room> findAllFreeBetweenDates(String startDate, String endDate);
+    List<Room> findAllFreeBetweenDates(Calendar startDate, Calendar endDate);
 
-    List<RoomReservationDTO> findAllBetweenDatesAndEmail(String startDate, String endDate, String email);
+    CheckoutDTO doCheckout(String reservationHash) throws EntityNotFoundException, RequestInvalidException;
 
-    List<RoomReservationDTO> getRoomsReservedActive();
-
-    boolean isRoomFreeOnDate(long roomId, String startDate, String endDate);
+    void doCheckin(String reservationHash) throws RequestInvalidException, EntityNotFoundException;
 }

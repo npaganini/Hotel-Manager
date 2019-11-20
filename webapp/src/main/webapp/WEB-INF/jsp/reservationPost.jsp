@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <html>
 
 <head>
@@ -17,7 +19,7 @@
 </head>
 <body class="container cont"
       style="height: 100vh !important; width: 100vw !important;margin-left: 0 !important; margin-right: 0 !important">
-<div >
+<div>
     <div class="row">
         <div class="col">
             <nav class="navbar navbar-inverse sidebar" style="z-index: initial !important;" role="navigation">
@@ -31,20 +33,36 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home"><spring:message code="logo"/></a>
+                        <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home"><spring:message
+                                code="logo"/></a>
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse navbar-right" id="bs-sidebar-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="${pageContext.request.contextPath}/rooms/checkin"><spring:message code="reservation.checkin"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/checkout"><spring:message code="reservation.checkout"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/reservations"><spring:message code="reservation.plural"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/products"><spring:message code="product.plural"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/orders"><spring:message code="reservation.order.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/registration">Registration</a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/checkin"><spring:message
+                                    code="reservation.checkin"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/checkout"><spring:message
+                                    code="reservation.checkout"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/reservations"><spring:message
+                                    code="reservation.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/products"><spring:message
+                                    code="product.plural"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/rooms/orders"><spring:message
+                                    code="reservation.order.plural"/></a></li>
+                            <li>
+                                <a href="${pageContext.request.contextPath}/helpList">
+                                    <spring:message code="help.request.plural"/>
+                                </a>
+                            </li>
                             <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> <spring:message code="user.account"/><span class="caret"></span></a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span
+                                        class="glyphicon glyphicon-user"></span> <spring:message
+                                        code="user.account"/><span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="${pageContext.request.contextPath}/logout"><span class="glyphicon glyphicon-log-in"></span> <spring:message code="user.logout"/></a></li>
+                                    <li><a href="${pageContext.request.contextPath}/logout"><span
+                                            class="glyphicon glyphicon-log-in"></span> <spring:message
+                                            code="user.logout"/></a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -53,37 +71,38 @@
             </nav>
         </div>
     </div>
-<div class="row myheader vertical-align">
-    <div class="col-xs-12" style="text-align: left">
-        <div><spring:message code="success"/></div>
+    <div class="row myheader vertical-align">
+        <div class="col-xs-12" style="text-align: left">
+            <div><spring:message code="success"/></div>
+        </div>
     </div>
-</div>
-<br>
-<br>
-<div class="row">
-    <table class="confirTable">
-        <tr>
-            <th><spring:message code="reservation.id"/>:</th>
-            <th>${reserva.hash}</th>
-        </tr>
-        <tr>
-            <th><spring:message code="room.owner"/>:</th>
-            <th>${reserva.userEmail}</th>
-        </tr>
-        <tr>
-            <th><spring:message code="room.from"/>:</th>
-            <th>${reserva.startDate}</th>
-        </tr>
-        <tr>
-            <th><spring:message code="room.until"/>:</th>
-            <th>${reserva.endDate}</th>
-        </tr>
-    </table>
-</div>
+    <br>
+    <br>
+    <div class="row">
+        <table class="confirTable">
+            <tr>
+                <th><spring:message code="reservation.id"/>:</th>
+                <th>${reserva.hash}</th>
+            </tr>
+            <tr>
+                <th><spring:message code="room.owner"/>:</th>
+                <th>${reserva.userEmail}</th>
+            </tr>
+            <tr>
+                <th><spring:message code="room.from"/>:</th>
+                <th><fmt:formatDate value="${reserva.startDate.time}" pattern="yyyy-MM-dd"/></th>
+            </tr>
+            <tr>
+                <th><spring:message code="room.until"/>:</th>
+                <th><fmt:formatDate value="${reserva.endDate.time}" pattern="yyyy-MM-dd"/></th>
+            </tr>
+        </table>
+    </div>
     <br>
     <div class="row">
         <div class="col" style="margin-left: 25px">
-            <button type="button" onclick="location.href='${pageContext.request.contextPath}/rooms/home'" class="btn btn-success btn-lg"><a style="color: white"><spring:message code="user.home"/></a></button>
+            <button type="button" class="btn btn-success btn-lg" onclick="location.href='${pageContext.request.contextPath}/rooms/home'"><a style="color: white"><spring:message
+                    code="user.home"/></a></button>
         </div>
     </div>
 </div>
