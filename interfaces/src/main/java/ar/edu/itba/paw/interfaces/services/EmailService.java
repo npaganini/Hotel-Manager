@@ -7,4 +7,6 @@ public interface EmailService {
     void sendConfirmationOfReservation(String to, String subject, String text);
 
     void sendCheckinEmail(Reservation reservation);
+
+    void sendRateStayEmail(String reservationHash);
 }
