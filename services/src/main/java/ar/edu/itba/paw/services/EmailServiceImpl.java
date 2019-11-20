@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityNotFoundException;
+import javax.servlet.ServletContext;
 
 @Service
 public class EmailServiceImpl implements EmailService {
@@ -21,11 +22,15 @@ public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender javaMailSender;
     private final ReservationDao reservationDao;
+    private final ServletContext servletContext;
+
+
 
     @Autowired
-    public EmailServiceImpl(JavaMailSender javaMailSender, ReservationDao reservationDao) {
+    public EmailServiceImpl(JavaMailSender javaMailSender, ReservationDao reservationDao, ServletContext servletContext) {
         this.javaMailSender = javaMailSender;
         this.reservationDao = reservationDao;
+        this.servletContext = servletContext;
     }
 
     public void sendConfirmationOfReservation(String to, String subject, String hash) {
@@ -62,12 +67,14 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendRateStayEmail(String reservationHash) {
-        String userEmail =reservationDao
+        String userEmail = reservationDao
                 .findReservationByHash(reservationHash.trim())
                 .orElseThrow(() -> new EntityNotFoundException("Cant find reservation with"))
                 .getUserEmail();
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+        String contextPath = servletContext.getContextPath();
+//        "    <input type=\"button\" class=\"btn btn-lg\" value=\"Excelent\" onclick=\"window.location='" + contextPath + "/reservations/" + reservationHash + "rate?rate=EXCELENT';\">\n" +
         try {
             helper.setText("<!DOCTYPE html>\n" +
                     "<html>\n" +
@@ -83,6 +90,7 @@ public class EmailServiceImpl implements EmailService {
                     "</div>\n" +
                     "<br><br>\n" +
                     "<div>\n" +
+                    "    <a href=\"http://localhost:8080/reservations/" + reservationHash.trim() + "/rate?rate=EXCELENT\" target=\"_blank\">\n" +
                     "    <button type=\"submit\" class=\"btn btn-lg\">\n" +
                     "        <span>5</span>\n" +
                     "        <span style=\'color:orange\'>&#9733;</span>\n"+
@@ -91,9 +99,11 @@ public class EmailServiceImpl implements EmailService {
                     "        <span style=\'color:orange\'>&#9733;</span>\n"+
                     "        <span style=\'color:orange\'>&#9733;</span>\n"+
                     "    </button>\n" +
+                    "</a>\n" +
                     "</div>\n" +
                     "<br>\n" +
                     "<div>\n" +
+                    "    <a href=\"http://localhost:8080/reservations/" + reservationHash.trim() + "/rate?rate=GOOD\" target=\"_blank\">\n" +
                     "    <button type=\"submit\" class=\"btn btn-lg\">\n" +
                     "        <span>4</span>\n" +
                     "        <span style=\'color:orange\'>&#9733;</span>\n"+
@@ -102,9 +112,11 @@ public class EmailServiceImpl implements EmailService {
                     "        <span style=\'color:orange\'>&#9733;</span>\n"+
                     "        <span style=\'\'>&#9733;</span>\n"+
                     "    </button>\n" +
+                    "</a>\n" +
                     "</div>\n" +
                     "<br>\n" +
                     "<div>\n" +
+                    "    <a href=\"http://localhost:8080/reservations/" + reservationHash.trim() + "/rate?rate=NORMAL\" target=\"_blank\">\n" +
                     "    <button type=\"submit\" class=\"btn btn-lg\">\n" +
                     "        <span>3</span>\n" +
                     "        <span style=\'color:orange\'>&#9733;</span>\n"+
@@ -113,9 +125,12 @@ public class EmailServiceImpl implements EmailService {
                     "        <span style=\'\'>&#9733;</span>\n"+
                     "        <span style=\'\'>&#9733;</span>\n"+
                     "    </button>\n" +
+                    "</a>\n" +
                     "</div>\n" +
                     "<br>\n" +
                     "<div>\n" +
+                    "    <a href=\"http://localhost:8080/reservations/" + reservationHash.trim() + "/rate?rate=BAD\" target=\"_blank\">\n" +
+
                     "    <button type=\"submit\" class=\"btn btn-lg\">\n" +
                     "        <span>2</span>\n" +
                     "        <span style=\'color:orange\'>&#9733;</span>\n"+
@@ -124,9 +139,11 @@ public class EmailServiceImpl implements EmailService {
                     "        <span style=\'\'>&#9733;</span>\n"+
                     "        <span style=\'\'>&#9733;</span>\n"+
                     "    </button>\n" +
+                    "</a>\n" +
                     "</div>\n" +
                     "<br>\n" +
                     "<div>\n" +
+                    "    <a href=\"http://localhost:8080/reservations/" + reservationHash.trim() + "/rate?rate=AWFUL\" target=\"_blank\">\n" +
                     "    <button type=\"submit\" class=\"btn btn-lg\">\n" +
                     "        <span>1</span>\n" +
                     "        <span style=\'color:orange\'>&#9733;</span>\n"+
@@ -136,13 +153,14 @@ public class EmailServiceImpl implements EmailService {
                     "        <span style=\'\'>&#9733;</span>\n"+
 
                     "    </button>\n" +
+                    "</a>\n" +
                     "</div>\n" +
                     "<br>\n" +
                     "<div>\n" +
                     "    <h3>Muchas gracias!</h3>\n" +
                     "</div>\n" +
                     "</body>\n" +
-                    "</html>", true); //TODO ADD HTML
+                    "</html>", true);
             helper.setTo(userEmail);
             helper.setSubject("Rate your stay!");
             helper.setFrom("paw.hotel.manager@gmail.com");

@@ -23,8 +23,8 @@
 </div>
 <br><br>
 <div>
-    <button type="button" class="btn btn-lg">
-        <span>5</span>
+    <button type="button" class="btn btn-lg" onclick="window.location.href = 'http://pawserver.it.itba.edu.ar/paw-2019b-2/reservations/rate/'">
+        <span>Excelent</span>
         <span class="fa fa-star checked"></span>
         <span class="fa fa-star checked"></span>
         <span class="fa fa-star checked"></span>
@@ -32,10 +32,9 @@
         <span class="fa fa-star checked"></span>
     </button>
 </div>
-<br>
 <div>
-    <button type="button" class="btn btn-lg">
-        <span>4</span>
+    <button type="button" class="btn btn-lg" onclick="window.location.href = 'link'">
+        <span>Good</span>
         <span class="fa fa-star checked"></span>
         <span class="fa fa-star checked"></span>
         <span class="fa fa-star checked"></span>
@@ -43,10 +42,9 @@
         <span class="fa fa-star"></span>
     </button>
 </div>
-<br>
 <div>
-    <button type="button" class="btn btn-lg">
-        <span>3</span>
+    <button type="button" class="btn btn-lg" onclick="window.location.href = 'link'">
+        <span>Normal</span>
         <span class="fa fa-star checked"></span>
         <span class="fa fa-star checked"></span>
         <span class="fa fa-star checked"></span>
@@ -54,10 +52,9 @@
         <span class="fa fa-star"></span>
     </button>
 </div>
-<br>
 <div>
-    <button type="button" class="btn btn-lg">
-        <span>2</span>
+    <button type="button" class="btn btn-lg" onclick="window.location.href = 'link'">
+        <span>Bad</span>
         <span class="fa fa-star checked"></span>
         <span class="fa fa-star checked"></span>
         <span class="fa fa-star"></span>
@@ -65,10 +62,9 @@
         <span class="fa fa-star"></span>
     </button>
 </div>
-<br>
 <div>
-    <button type="button" class="btn btn-lg">
-        <span>1</span>
+    <button type="button" class="btn btn-lg" onclick="window.location.href = 'link'">
+        <span>AWFUL</span>
         <span class="fa fa-star checked"></span>
         <span class="fa fa-star"></span>
         <span class="fa fa-star"></span>
