@@ -20,6 +20,13 @@ public class HelpRepositoryHibernate extends SimpleRepositoryHibernate<Help> imp
     }
 
     @Override
+    public List<Help> findAllHelpRequestsNotResolved() {
+        return em.createQuery(
+                "SELECT h FROM Help AS h WHERE h.helpStep = 'UNATTENDED' OR h.helpStep = 'REQUIRES_FURTHER_ACTION'",
+        Help.class).getResultList();
+    }
+
+    @Override
     public boolean updateToHelpRequestResolved(long helpId) {
         final TypedQuery<Help> query = em.createQuery("SELECT h FROM Help AS h WHERE h.id = :helpId", Help.class);
         query.setParameter("helpId", helpId);

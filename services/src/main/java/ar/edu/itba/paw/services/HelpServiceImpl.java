@@ -5,12 +5,14 @@ import ar.edu.itba.paw.interfaces.daos.ReservationDao;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.HelpService;
 import ar.edu.itba.paw.models.help.Help;
+import ar.edu.itba.paw.models.help.HelpStep;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.LinkedList;
 import java.util.List;
 
 @Component
@@ -35,10 +37,30 @@ public class HelpServiceImpl implements HelpService {
         return helpDao.findAllHelpRequestsNotSentFor();
     }
 
+    @Override
+    public List<Help> getAllRequestsThatRequireAction() {
+        List<Help> ans = new LinkedList<>(helpDao.findAllHelpRequestsNotResolved());
+        return ans;
+    }
+
+    @Transactional
+    @Override
+    public boolean updateStatus(long helpId, HelpStep status) throws RequestInvalidException {
+        Help helpRequest = helpDao.findById(helpId).orElseThrow(EntityNotFoundException::new);
+        if(helpRequest != null) {
+            if (status == HelpStep.REQUIRES_FURTHER_ACTION) {
+                return this.setRequestToRequiresFurtherAction(helpId);
+            } else if (status == HelpStep.RESOLVED) {
+                return this.setRequestToResolved(helpId);
+            }
+        }
+        return false;
+    }
+
     @Transactional
     @Override
     public boolean setRequestToResolved(long helpId) throws RequestInvalidException {
-        Help helpRequest = helpDao.findById(Math.toIntExact(helpId)).orElseThrow(EntityNotFoundException::new);
+        Help helpRequest = helpDao.findById(helpId).orElseThrow(EntityNotFoundException::new);
         if(helpRequest != null) {
             return helpDao.updateToHelpRequestResolved(helpId);
         }
