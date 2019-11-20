@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <html>
 
 <head>
@@ -91,17 +92,15 @@
                 <tbody>
                 <c:forEach var="charge" items="${charges}">
                     <tr>
-
                         <td style="text-align: left">${charge.product.description}</td>
-                        <td style="text-align: left">${charge.product.price}</td>
-
+                        <td style="text-align: left"><fmt:formatNumber type="currency" maxFractionDigits="2" minFractionDigits="2" value="${charge.product.price}"/></td>
                     </tr>
                 </c:forEach>
                 </tbody>
                 <tfoot>
                 <tr>
                     <th><spring:message code="user.product.total"/></th>
-                    <th>${totalCharge}</th>
+                    <th><fmt:formatNumber type="currency" maxFractionDigits="2" minFractionDigits="2" value="${totalCharge}"/></th>
                 </tr>
                 </tfoot>
             </table>
@@ -109,8 +108,11 @@
     </div>
 
     <div class="col-xs-6" style="margin-left: 25px">
-        <button type="button" onclick="location.href='${pageContext.request.contextPath}/rooms/home'" class="btn btn-success btn-lg"><a style="color: white"><spring:message
-                code="user.home"/></a></button>
+        <button type="button" onclick="location.href='${pageContext.request.contextPath}/rooms/home'" class="btn btn-success btn-lg">
+            <a style="color: white">
+                <spring:message code="user.home"/>
+            </a>
+        </button>
     </div>
 
 
