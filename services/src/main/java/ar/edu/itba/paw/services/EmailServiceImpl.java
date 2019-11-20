@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.interfaces.daos.ReservationDao;
 import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.persistence.EntityNotFoundException;
 
 @Service
 public class EmailServiceImpl implements EmailService {
@@ -18,14 +20,12 @@ public class EmailServiceImpl implements EmailService {
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailServiceImpl.class);
 
     private final JavaMailSender javaMailSender;
-
-    EmailServiceImpl() {
-        this(null);
-    }
+    private final ReservationDao reservationDao;
 
     @Autowired
-    public EmailServiceImpl(JavaMailSender javaMailSender) {
+    public EmailServiceImpl(JavaMailSender javaMailSender, ReservationDao reservationDao) {
         this.javaMailSender = javaMailSender;
+        this.reservationDao = reservationDao;
     }
 
     public void sendConfirmationOfReservation(String to, String subject, String hash) {
@@ -53,6 +53,108 @@ public class EmailServiceImpl implements EmailService {
             helper.setText(getHtmlMessageForCheckin(reservation.getUserEmail(), reservation.getHash()), true);
             helper.setTo(reservation.getUserEmail());
             helper.setSubject("Check-in confirmation");
+            helper.setFrom("paw.hotel.manager@gmail.com");
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        javaMailSender.send(mimeMessage);
+    }
+
+    @Override
+    public void sendRateStayEmail(String reservationHash) {
+        String userEmail = reservationDao
+                .findReservationByHash(reservationHash.trim())
+                .orElseThrow(() -> new EntityNotFoundException("Cant find reservation with"))
+                .getUserEmail();
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+        try {
+            helper.setText("<!DOCTYPE html>\n" +
+                    "<html>\n" +
+                    "<head>\n" +
+                    "    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css\">\n" +
+                    "    <style>\n" +
+                    "        .checked {\n" +
+                    "            color: orange;\n" +
+                    "        }\n" +
+                    "    </style>\n" +
+                    "    <meta charset=\"utf-8\">\n" +
+                    "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n" +
+                    "    <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css\">\n" +
+                    "    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js\"></script>\n" +
+                    "    <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js\"></script>\n" +
+                    "</head>\n" +
+                    "<body style=\"margin-left: 15px\">\n" +
+                    "<div style=\"font-family: Arial\">\n" +
+                    "    <h1>Esperamos que haya disfrutado su estadía</h1>\n" +
+                    "</div>\n" +
+                    "<br>\n" +
+                    "<div style=\"font-family: Arial\">\n" +
+                    "    <h2>¿Nos podrías decir que tal te pareció nuestro servicio?</h2>\n" +
+                    "</div>\n" +
+                    "<br><br>\n" +
+                    "<div>\n" +
+                    "    <button type=\"button\" class=\"btn btn-lg\">\n" +
+                    "        <span>5</span>\n" +
+                    "        <span class=\"fa fa-star checked\"></span>\n" +
+                    "        <span class=\"fa fa-star checked\"></span>\n" +
+                    "        <span class=\"fa fa-star checked\"></span>\n" +
+                    "        <span class=\"fa fa-star checked\"></span>\n" +
+                    "        <span class=\"fa fa-star checked\"></span>\n" +
+                    "    </button>\n" +
+                    "</div>\n" +
+                    "<br>\n" +
+                    "<div>\n" +
+                    "    <button type=\"button\" class=\"btn btn-lg\">\n" +
+                    "        <span>4</span>\n" +
+                    "        <span class=\"fa fa-star checked\"></span>\n" +
+                    "        <span class=\"fa fa-star checked\"></span>\n" +
+                    "        <span class=\"fa fa-star checked\"></span>\n" +
+                    "        <span class=\"fa fa-star checked\"></span>\n" +
+                    "        <span class=\"fa fa-star\"></span>\n" +
+                    "    </button>\n" +
+                    "</div>\n" +
+                    "<br>\n" +
+                    "<div>\n" +
+                    "    <button type=\"button\" class=\"btn btn-lg\">\n" +
+                    "        <span>3</span>\n" +
+                    "        <span class=\"fa fa-star checked\"></span>\n" +
+                    "        <span class=\"fa fa-star checked\"></span>\n" +
+                    "        <span class=\"fa fa-star checked\"></span>\n" +
+                    "        <span class=\"fa fa-star\"></span>\n" +
+                    "        <span class=\"fa fa-star\"></span>\n" +
+                    "    </button>\n" +
+                    "</div>\n" +
+                    "<br>\n" +
+                    "<div>\n" +
+                    "    <button type=\"button\" class=\"btn btn-lg\">\n" +
+                    "        <span>2</span>\n" +
+                    "        <span class=\"fa fa-star checked\"></span>\n" +
+                    "        <span class=\"fa fa-star checked\"></span>\n" +
+                    "        <span class=\"fa fa-star\"></span>\n" +
+                    "        <span class=\"fa fa-star\"></span>\n" +
+                    "        <span class=\"fa fa-star\"></span>\n" +
+                    "    </button>\n" +
+                    "</div>\n" +
+                    "<br>\n" +
+                    "<div>\n" +
+                    "    <button type=\"button\" class=\"btn btn-lg\">\n" +
+                    "        <span>1</span>\n" +
+                    "        <span class=\"fa fa-star checked\"></span>\n" +
+                    "        <span class=\"fa fa-star\"></span>\n" +
+                    "        <span class=\"fa fa-star\"></span>\n" +
+                    "        <span class=\"fa fa-star\"></span>\n" +
+                    "        <span class=\"fa fa-star\"></span>\n" +
+                    "    </button>\n" +
+                    "</div>\n" +
+                    "<br>\n" +
+                    "<div>\n" +
+                    "    <h3>Muchas gracias!</h3>\n" +
+                    "</div>\n" +
+                    "</body>\n" +
+                    "</html>", true); //TODO ADD HTML
+            helper.setTo(userEmail);
+            helper.setSubject("Rate your stay!");
             helper.setFrom("paw.hotel.manager@gmail.com");
         } catch (MessagingException e) {
             e.printStackTrace();

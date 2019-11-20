@@ -6,6 +6,7 @@ import ar.edu.itba.paw.interfaces.daos.UserDao;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.*;
+import ar.edu.itba.paw.models.charge.Charge;
 import ar.edu.itba.paw.models.dtos.CheckoutDTO;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
@@ -65,6 +66,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    @Transactional
     public CheckoutDTO doCheckout(String reservationHash) throws ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException, RequestInvalidException {
         Reservation reservation = reservationService.getReservationByHash(reservationHash.trim());
         if (!reservation.isActive()) {
@@ -72,12 +74,16 @@ public class RoomServiceImpl implements RoomService {
         }
         LOGGER.debug("Request received to do the check-out on reservation with hash: " + reservationHash);
         freeRoom(reservation.getRoom().getId());
+        List<Charge> charges = chargeService.getAllChargesByReservationId(reservation.getId());
+        CheckoutDTO checkoutDTO = new CheckoutDTO(charges,
+                charges.size() > 0 ? chargeService.sumCharge(reservation.getId()) : 0d);
         reservationService.inactiveReservation(reservation.getId());
-        return new CheckoutDTO(chargeService.getAllChargesByReservationId(reservation.getId()),
-                chargeService.sumCharge(reservation.getId()));
+        emailService.sendRateStayEmail(reservationHash);
+        return checkoutDTO;
     }
 
     @Override
+    @Transactional
     public void doCheckin(String reservationHash) throws RequestInvalidException, ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException {
         Reservation reservation = reservationService.getReservationByHash(reservationHash.trim());
         if (reservation.isActive()) {
