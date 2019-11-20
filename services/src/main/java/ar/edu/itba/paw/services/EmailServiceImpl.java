@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityNotFoundException;
+import javax.servlet.ServletContext;
 
 @Service
 public class EmailServiceImpl implements EmailService {
