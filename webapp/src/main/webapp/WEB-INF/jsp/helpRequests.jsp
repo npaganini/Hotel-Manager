@@ -92,6 +92,13 @@
         </div>
     </div>
     <br>
+    <c:if test="${updated != null && updated == true}">
+        <div class="alert alert-success message" style="size: 45px" role="alert">
+            <strong>
+                <spring:message code="help.status.update"/>
+            </strong>
+        </div>
+    </c:if>
     <br>
     <div class="row">
         <div class="col-xs-8 form-group" style="z-index:9999;grid-auto-columns: auto">
