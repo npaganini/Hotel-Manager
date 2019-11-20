@@ -24,7 +24,7 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
     }
 
     @Override
-    public List<Reservation> findAllBetweenDatesAndEmail(Calendar startDate, Calendar endDate, String email) {
+    public List<Reservation> findAllBetweenDatesOrEmail(Calendar startDate, Calendar endDate, String email) {
         final TypedQuery<Reservation> query;
         if (startDate == null && endDate == null && (email == null || email.length() == 0)) return new ArrayList<>();
         else if (email == null || email.length() == 0) {
@@ -58,10 +58,19 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
     }
 
     @Override
-    public List<Reservation> findActiveReservationByEmail(String userEmail) {
+    public List<Reservation> findActiveReservationsByEmail(String userEmail) {
         return em.createQuery("SELECT r FROM " + getTableName() + " r WHERE r.userEmail = :userEmail AND r.isActive = true", getModelClass())
                 .setParameter("userEmail", userEmail)
                 .getResultList();
+    }
+
+    @Override
+    public boolean isRoomFreeOnDate(long roomId, Calendar startDate, Calendar endDate) {
+        return em.createQuery("SELECT r FROM Reservation r " +
+                "WHERE r.room_id = :roomId AND (:startDate >= r.start_date OR :endDate <= r.end_date)")
+                .setParameter("roomId", roomId)
+                .setParameter("startDate", startDate)
+                .setParameter("endDate", endDate).getResultList().size() == 0;
     }
 
     @Override

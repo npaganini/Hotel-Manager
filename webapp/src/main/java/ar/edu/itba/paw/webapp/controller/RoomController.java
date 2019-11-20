@@ -7,6 +7,7 @@ import ar.edu.itba.paw.interfaces.services.ReservationService;
 import ar.edu.itba.paw.interfaces.services.RoomService;
 import ar.edu.itba.paw.models.dtos.CheckoutDTO;
 import ar.edu.itba.paw.models.occupant.Occupant;
+import ar.edu.itba.paw.models.reservation.Reservation;
 import form.CheckinForm;
 import form.CheckoutForm;
 import form.RegistrationForm;
@@ -22,7 +23,6 @@ import org.springframework.web.servlet.ModelAndView;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -46,24 +46,16 @@ public class RoomController extends SimpleController {
     public ModelAndView getAllRooms() {
         final ModelAndView mav = new ModelAndView("index");
         LOGGER.debug("Request received to retrieve whole roomsList");
-        mav.addObject("ReservationsList", roomService.getRoomsReservedActive());
+        mav.addObject("ReservationsList", reservationService.getRoomsReservedActive());
         return mav;
     }
-
-    @GetMapping("/room/{id}")
-    public ModelAndView getRoom(@PathVariable long id) {
-        final ModelAndView mav = new ModelAndView("room");
-        mav.addObject("RoomSelected", roomService.getRoom(id));
-        return mav;
-    }
-
 
     @PostMapping("/reservationPost")
     @Transactional
     public ModelAndView reservationPost(@ModelAttribute("reservationForm") final ReservationForm form) throws RequestInvalidException, ParseException {
         final ModelAndView mav = new ModelAndView("reservationPost");
         LOGGER.debug("Request received to do a reservation on room with id: " + form.getRoomId());
-        mav.addObject("reserva", roomService.doReservation(form.getRoomId(),
+        mav.addObject("reserva", reservationService.doReservation(form.getRoomId(),
                 form.getUserEmail(), fromStringToCalendar(form.getStartDate()),
                 fromStringToCalendar(form.getEndDate())));
         return mav;
@@ -105,10 +97,14 @@ public class RoomController extends SimpleController {
                                     @ModelAttribute("reservationForm") final ReservationForm form) throws ParseException {
         final ModelAndView mav = new ModelAndView("reservation");
         if (!(startDate == null || endDate == null) && !(startDate.isEmpty() ||
-                endDate.isEmpty()) && LocalDate.parse(startDate).isBefore(LocalDate.parse(endDate)))
+                endDate.isEmpty()) && LocalDate.parse(startDate).isBefore(LocalDate.parse(endDate))) {
             mav.addObject("allRooms", roomService.findAllFreeBetweenDates(
                     fromStringToCalendar(startDate), fromStringToCalendar(endDate))
             );
+            mav.addObject("ListState","visible");
+        }
+        else
+            mav.addObject("ListState","hidden");
         return mav;
     }
 
@@ -116,11 +112,10 @@ public class RoomController extends SimpleController {
     @GetMapping("/reservations")
     public ModelAndView reservations(@RequestParam(value = "startDate", required = false) String startDate,
                                      @RequestParam(value = "endDate", required = false) String endDate,
-                                     @RequestParam(value = "userEmail", required = false) String userEmail,
-                                     @RequestParam(value = "guest",required = false) String guest) throws ParseException {
+                                     @RequestParam(value = "userEmail", required = false) String userEmail) throws ParseException {
         final ModelAndView mav = new ModelAndView("reservations");
         mav.addObject("reservations",
-                roomService.findAllBetweenDatesAndEmail(
+                reservationService.findAllBetweenDatesOrEmail(
                         startDate == null || startDate.length() == 0 ? null : fromStringToCalendar(startDate),
                         endDate == null || endDate.length() == 0 ? null : fromStringToCalendar(endDate), userEmail)
         );

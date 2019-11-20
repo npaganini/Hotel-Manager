@@ -2,16 +2,24 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.daos.OccupantDao;
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
+import ar.edu.itba.paw.interfaces.daos.RoomDao;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
+import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.ReservationService;
+import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.occupant.Occupant;
 import ar.edu.itba.paw.models.reservation.Reservation;
+import ar.edu.itba.paw.models.room.Room;
+import ar.edu.itba.paw.models.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.List;
 
 @Service
@@ -21,11 +29,18 @@ public class ReservationServiceImpl implements ReservationService {
 
     private final OccupantDao occupantDao;
     private final ReservationDao reservationDao;
+    private final RoomDao roomDao;
+    private final UserService userService;
+    private final EmailService emailService;
 
     @Autowired
-    public ReservationServiceImpl(OccupantDao occupantDao, ReservationDao reservationDao) {
+    public ReservationServiceImpl(OccupantDao occupantDao, ReservationDao reservationDao, RoomDao roomDao, UserService userService, EmailService emailService) {
         this.occupantDao = occupantDao;
         this.reservationDao = reservationDao;
+        this.roomDao = roomDao;
+        this.userService = userService;
+        this.emailService = emailService;
+	
     }
 
     @Override
@@ -58,6 +73,15 @@ public class ReservationServiceImpl implements ReservationService {
         LOGGER.debug("About to get all the confirmed reservations");
         return reservationDao.findAll();
     }
+ 
+    private boolean isValidDate(Calendar startDate, Calendar endDate) {
+        return LocalDate.ofEpochDay(startDate.getTimeInMillis()).isBefore(LocalDate.ofEpochDay(endDate.getTimeInMillis()));
+    }
+
+    @Override
+    public boolean isRoomFreeOnDate(long roomId, Calendar startDate, Calendar endDate) {
+        return isValidDate(startDate, endDate) && reservationDao.isRoomFreeOnDate(roomId, startDate, endDate);
+    }
 
     @Override
     public void registerOccupants(String reservationHash, List<Occupant> listOfOccupantsFromForm) throws EntityNotFoundException {
@@ -68,5 +92,33 @@ public class ReservationServiceImpl implements ReservationService {
                 .peek(occupant -> occupant.setReservation(reservation))
                 .forEach(occupantDao::save);
     }
+
+    @Transactional
+    @Override
+    public Reservation doReservation(long roomId, String userEmail, Calendar startDate, Calendar endDate) throws RequestInvalidException {
+        if (isValidDate(startDate, endDate) && !isRoomFreeOnDate(roomId, startDate, endDate))
+            throw new RequestInvalidException();
+        LOGGER.debug("Looking if there is already a user created with email " + userEmail);
+        User user = userService.getUserForReservation(userEmail);
+        LOGGER.debug("Getting room...");
+        Room room = roomDao.findById(roomId).orElseThrow(javax.persistence.EntityNotFoundException::new);
+        LOGGER.debug("Saving reservation...");
+        Reservation reservation = reservationDao.save(new Reservation(room, userEmail, startDate, endDate, user));
+        LOGGER.debug("Sending email with confirmation of reservation to user");
+        emailService.sendConfirmationOfReservation(userEmail, "Reserva confirmada",
+                reservation.getHash());
+        return reservation;
+    }
+
+    @Override
+    public List<Reservation> findAllBetweenDatesOrEmail(Calendar startDate, Calendar endDate, String email) {
+        return reservationDao.findAllBetweenDatesOrEmail(startDate, endDate, email);
+    }
+
+    @Override
+    public List<Reservation> getRoomsReservedActive() {
+        return roomDao.getRoomsReservedActive();
+    }
+
 
 }

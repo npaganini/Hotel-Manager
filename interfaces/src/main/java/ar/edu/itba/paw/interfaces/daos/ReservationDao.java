@@ -10,10 +10,12 @@ public interface ReservationDao extends SimpleDao<Reservation> {
 
     Optional<Reservation> findReservationByHash(String hash);
 
-    List<Reservation> findAllBetweenDatesAndEmail(Calendar startDate, Calendar endDate, String email);
+    List<Reservation> findAllBetweenDatesOrEmail(Calendar startDate, Calendar endDate, String email);
 
     int updateActive(long reservationId, boolean b);
 
-    List<Reservation> findActiveReservationByEmail(String userEmail);
+    List<Reservation> findActiveReservationsByEmail(String userEmail);
+
+    boolean isRoomFreeOnDate(long roomId, Calendar startDate, Calendar endDate);
 
 }

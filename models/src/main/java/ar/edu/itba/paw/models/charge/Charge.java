@@ -45,4 +45,5 @@ public class Charge {
     public void setProductDelivered() {
         this.delivered = true;
     }
+
 }

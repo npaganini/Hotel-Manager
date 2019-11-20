@@ -2,6 +2,7 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.daos.ChargeDao;
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
+import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.ChargeService;
 import ar.edu.itba.paw.models.charge.Charge;
@@ -34,7 +35,7 @@ public class ChargeServiceImpl implements ChargeService {
         if (!reservationOptional.isPresent() || !reservationOptional.get().isActive()) {
             throw new RequestInvalidException();
         }
-        return chargeDao.findChargeByReservationHash(reservationId);
+        return chargeDao.findChargeByReservationId(reservationId);
     }
 
     @Override
@@ -50,10 +51,12 @@ public class ChargeServiceImpl implements ChargeService {
 
     @Override
     @Transactional
-    public void setChargeToDelivered(long chargeId) throws RequestInvalidException {
-        if (chargeDao.findById(Math.toIntExact(chargeId)).orElseThrow(RequestInvalidException::new).isDelivered()) {
+    public int setChargeToDelivered(long chargeId) throws RequestInvalidException, EntityNotFoundException {
+        Charge charge = chargeDao.findById(chargeId).orElseThrow(() ->
+                new EntityNotFoundException("Cant find charge with id " + chargeId));
+        if (charge.isDelivered()) {
             throw new RequestInvalidException();
         }
-        chargeDao.updateChargeToDelivered(chargeId);
+        return chargeDao.updateChargeToDelivered(chargeId);
     }
 }

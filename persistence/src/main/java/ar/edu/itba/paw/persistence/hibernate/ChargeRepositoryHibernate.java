@@ -40,7 +40,7 @@ public class ChargeRepositoryHibernate extends SimpleRepositoryHibernate<Charge>
     }
 
     @Override
-    public List<Charge> findChargeByReservationHash(long reservationId) {
+    public List<Charge> findChargeByReservationId(long reservationId) {
         return em.createQuery("SELECT c FROM Charge AS c WHERE c.reservation.id = :reservationId",
                 Charge.class).getResultList();
     }

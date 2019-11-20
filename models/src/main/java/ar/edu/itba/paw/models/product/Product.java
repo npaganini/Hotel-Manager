@@ -62,17 +62,9 @@ public class Product {
         this.enable = true;
     }
 
-    /*
     @Override
-    public Map<String, Object> toMap() {
-        Map<String, Object> productToMap = new HashMap<>();
-        productToMap.put(KEY_ID, getId());
-        productToMap.put(KEY_DESCRIPTION, getDescription());
-        productToMap.put(KEY_PRICE, getPrice());
-        productToMap.put(KEY_FILE, getFile());
-        productToMap.put(KEY_ENABLE, isEnable());
-        return productToMap;
+    public int hashCode() {
+        return Math.toIntExact(id);
     }
-*/
 
 }

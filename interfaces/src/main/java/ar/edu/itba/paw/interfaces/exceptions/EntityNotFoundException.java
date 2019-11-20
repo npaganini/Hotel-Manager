@@ -1,7 +1,15 @@
 package ar.edu.itba.paw.interfaces.exceptions;
 
+import lombok.Getter;
+
+@Getter
 public class EntityNotFoundException extends Exception {
-    public EntityNotFoundException(String msg) {
-        super(msg);
+
+    private String description;
+
+    public EntityNotFoundException(String description) {
+        super("The entity you were trying to look was not found");
+        this.description = description;
     }
+
 }
