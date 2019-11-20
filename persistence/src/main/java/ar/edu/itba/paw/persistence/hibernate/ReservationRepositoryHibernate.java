@@ -11,10 +11,8 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
+import java.lang.reflect.Array;
 import java.util.*;
 
 @Repository
@@ -29,63 +27,45 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
         );
     }
 
-  /*  CriteriaBuilder builder = em.getCriteriaBuilder();
-    CriteriaQuery<Reservation> query = builder.createQuery(Reservation.class);
-    Root<Reservation> root = query.from(Reservation.class);
-    Predicate predicateDates = null;
-    Predicate predicateEmail = null;
-    Predicate predicateOccupant = null;
-
-    CriteriaQuery<Occupant> queryOccupant = builder.createQuery(Occupant.class);
-    Root<Occupant> occupantRoot = query.from(Occupant.class);
-
-        if (startDate != null && endDate != null) {
-        predicateDates = builder.and(builder.greaterThanOrEqualTo(root.get("startDate"),
-                startDate), builder.lessThanOrEqualTo(root.get("endDate"), endDate);
-    }
-        if (email != null) {
-        predicateEmail = builder.equal(root.get("userEmail"), email);
-    }
-        if (occupantSurname != null) {
-        predicateOccupant = builder.in();
-    }*/
-
-    //this should be done with criteria, but joins are awfull
     @Override
-    public List<Reservation> findAllBetweenDatesOrEmailAndSurname(Calendar startDate, Calendar endDate, String email, String occupantSurname){
-        TypedQuery<Reservation> query = null;
-        String andDatesClause = "AND ";
-        String emailClause = "";
-        String occupantClause = "";
-        boolean withParameters = false;
+    public List<Reservation> findAllBetweenDatesOrEmailAndSurname(Calendar startDate, Calendar endDate, String email, String occupantSurname) {
+        CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaQuery<Reservation> query = builder.createQuery(Reservation.class);
+        Root<Reservation> root = query.from(Reservation.class);
+        Predicate datePredicate = null;
+        Predicate emailPredicate = null;
+        Predicate occupantPredicate = null;
+        int predicatesCount = 0;
 
         if (startDate != null && endDate != null) {
-            withParameters = true;
-            andDatesClause = andDatesClause.concat("(res.startDate >= :startDate AND res.endDate <= :endDate)");
+            datePredicate = builder.and(builder.greaterThanOrEqualTo(root.get("startDate"),
+                    startDate), builder.lessThanOrEqualTo(root.get("endDate"), endDate));
+            predicatesCount++;
         }
         if (email != null && email.length() > 0) {
-            withParameters = true;
-            emailClause = "AND res.userEmail = :email";
+           emailPredicate = builder.equal(root.get("userEmail"), email);
+           predicatesCount++;
         }
-        if (occupantSurname != null && occupantSurname.length() > 0){
-            withParameters = true;
-            occupantClause = "AND EXISTS (SELECT o FROM Occupant o WHERE o.surname = :surname)";
-        }
-        if (!withParameters) {
-            return em.createQuery("Select r from Reservation r").getResultList();
-        }
-        Query queryWithNoParameters = em.createQuery("SELECT r FROM Reservation r WHERE " + andDatesClause + emailClause + occupantClause);
-        if (startDate != null && endDate != null) {
-            query = (TypedQuery<Reservation>) queryWithNoParameters.setParameter("startDate", startDate).setParameter("endDate", endDate);
-        }
-        if (email != null && email.length()>0) {
-            query = query.setParameter("email", email);
-        }
-        if (occupantSurname != null && occupantSurname.length()>0) {
-            query = query.setParameter("surname", occupantSurname);
+        if (occupantSurname != null && occupantSurname.length() > 0) {
+            List occupantsList = em
+                    .createQuery("SELECT o.reservation.id FROM Occupant o WHERE o.surname = :surname")
+                    .setParameter("surname", occupantSurname.toLowerCase()).getResultList();
+            if (occupantsList.size() > 0) {
+                occupantPredicate = builder.in(root.get("id"))
+                        .value(occupantsList);
+                predicatesCount++;
+            }
         }
 
-        return query.getResultList();
+        Predicate[] array = new Predicate[predicatesCount];
+        int current=0;
+        if (datePredicate != null) array[current++] = datePredicate;
+        if (emailPredicate != null) array[current++] = emailPredicate;
+        if (occupantPredicate != null) array[current++] = occupantPredicate;
+
+        return predicatesCount > 0 ? em.createQuery(query.select(root)
+                .where(builder.and(array)))
+                .getResultList() : em.createQuery("SELECT r FROM Reservation r").getResultList();
     }
 
     @Override

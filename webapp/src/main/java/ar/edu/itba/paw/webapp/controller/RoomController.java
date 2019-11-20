@@ -160,27 +160,27 @@ public class RoomController extends SimpleController {
         List<Occupant> occupants = new ArrayList<>();
         if (form.getName_1() != null && form.getName_1().length() > 0
                 && form.getLast_name_1() != null && form.getLast_name_1().length() > 0)
-            occupants.add(new Occupant(form.getName_1(), form.getLast_name_1()));
+            occupants.add(new Occupant(form.getName_1(), form.getLast_name_1().toLowerCase()));
 
         if (form.getName_2() != null && form.getName_2().length() > 0
                 && form.getLast_name_2() != null && form.getLast_name_2().length() > 0)
-            occupants.add(new Occupant(form.getName_2(), form.getLast_name_2()));
+            occupants.add(new Occupant(form.getName_2(), form.getLast_name_2().toLowerCase()));
 
         if (form.getName_3() != null && form.getName_3().length() > 0
                 && form.getLast_name_3() != null && form.getLast_name_3().length() > 0)
-            occupants.add(new Occupant(form.getName_3(), form.getLast_name_3()));
+            occupants.add(new Occupant(form.getName_3(), form.getLast_name_3().toLowerCase()));
 
         if (form.getName_4() != null && form.getName_4().length() > 0
                 && form.getLast_name_4() != null && form.getLast_name_4().length() > 0)
-            occupants.add(new Occupant(form.getName_4(), form.getLast_name_4()));
+            occupants.add(new Occupant(form.getName_4(), form.getLast_name_4().toLowerCase()));
 
         if (form.getName_5() != null && form.getName_5().length() > 0
                 && form.getLast_name_5() != null && form.getLast_name_5().length() > 0)
-            occupants.add(new Occupant(form.getName_5(), form.getLast_name_5()));
+            occupants.add(new Occupant(form.getName_5(), form.getLast_name_5().toLowerCase()));
 
         if (form.getName_6() != null && form.getName_6().length() > 0
                 && form.getLast_name_6() != null && form.getLast_name_6().length() > 0)
-            occupants.add(new Occupant(form.getName_6(), form.getLast_name_6()));
+            occupants.add(new Occupant(form.getName_6(), form.getLast_name_6().toLowerCase()));
 
        return occupants;
     }

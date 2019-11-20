@@ -22,7 +22,7 @@ public class ChargeRepositoryHibernate extends SimpleRepositoryHibernate<Charge>
     @Override
     public Map<Product, Integer> getAllChargesByUser(String userEmail, long reservationId) {
         CriteriaBuilder builder = em.getCriteriaBuilder();
-        CriteriaQuery<ProductAmountDTO> query = builder.createQuery(ProductAmountDTO.class);
+            CriteriaQuery<ProductAmountDTO> query = builder.createQuery(ProductAmountDTO.class);
         Root<Charge> charge = query.from(Charge.class);
         Predicate predicateForEmail = builder.equal(charge.get("reservation").get("userEmail"), userEmail);
         Predicate predicateForId = builder.equal(charge.get("reservation").get("id"), reservationId);
