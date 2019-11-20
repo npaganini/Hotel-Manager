@@ -93,6 +93,14 @@ public class ReservationServiceImpl implements ReservationService {
                 .forEach(occupantDao::save);
     }
 
+    @Override
+    public void rateStay(String rate, String hash) throws EntityNotFoundException {
+        Reservation reservation = reservationDao
+                .findReservationByHash(hash)
+                .orElseThrow(() -> new EntityNotFoundException("Reservation was not found"));
+        reservationDao.rateStay(reservation.getId(), rate);
+    }
+
     @Transactional
     @Override
     public Reservation doReservation(long roomId, String userEmail, Calendar startDate, Calendar endDate) throws RequestInvalidException {

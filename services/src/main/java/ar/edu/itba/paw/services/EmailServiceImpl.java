@@ -21,11 +21,13 @@ public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender javaMailSender;
     private final ReservationDao reservationDao;
+    private final ServletContext servletContext;
 
     @Autowired
-    public EmailServiceImpl(JavaMailSender javaMailSender, ReservationDao reservationDao) {
+    public EmailServiceImpl(JavaMailSender javaMailSender, ReservationDao reservationDao, ServletContext servletContext) {
         this.javaMailSender = javaMailSender;
         this.reservationDao = reservationDao;
+        this.servletContext = servletContext;
     }
 
     public void sendConfirmationOfReservation(String to, String subject, String hash) {
@@ -62,16 +64,28 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendRateStayEmail(String reservationHash) {
-        String userEmail =reservationDao
+        String userEmail = reservationDao
                 .findReservationByHash(reservationHash.trim())
                 .orElseThrow(() -> new EntityNotFoundException("Cant find reservation with"))
                 .getUserEmail();
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+        String contextPath = servletContext.getContextPath();
         try {
             helper.setText("<!DOCTYPE html>\n" +
                     "<html>\n" +
                     "<head>\n" +
+                    "    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css\">\n" +
+                    "    <style>\n" +
+                    "        .checked {\n" +
+                    "            color: orange;\n" +
+                    "        }\n" +
+                    "    </style>\n" +
+                    "    <meta charset=\"utf-8\">\n" +
+                    "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n" +
+                    "    <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css\">\n" +
+                    "    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js\"></script>\n" +
+                    "    <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js\"></script>\n" +
                     "</head>\n" +
                     "<body style=\"margin-left: 15px;color:black\">\n" +
                     "<div style=\"font-family: Arial\">\n" +

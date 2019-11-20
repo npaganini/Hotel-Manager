@@ -70,7 +70,7 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
 
     @Override
     public int updateActive(long reservationId, boolean active) {
-        Reservation reservation = findById(Math.toIntExact(reservationId)).orElseThrow(EntityNotFoundException::new);
+        Reservation reservation = findById(reservationId).orElseThrow(EntityNotFoundException::new);
         reservation.setActive(active);
         em.merge(reservation);
         return 1;
@@ -90,6 +90,13 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
                 .setParameter("roomId", roomId)
                 .setParameter("startDate", startDate)
                 .setParameter("endDate", endDate).getResultList().size() == 0;
+    }
+
+    @Override
+    public void rateStay(long id, String rate) {
+        Reservation reservation = findById(id).orElseThrow(EntityNotFoundException::new);
+        reservation.setCalification(Calification.valueOf(rate));
+        em.merge(reservation);
     }
 
     @Override
