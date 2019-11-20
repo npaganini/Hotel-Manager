@@ -44,7 +44,7 @@ public class EmailServiceImpl implements EmailService {
             helper.setSubject(subject);
             helper.setFrom("paw.hotel.manager@gmail.com");
         } catch (MessagingException e) {
-            e.printStackTrace();
+            LOGGER.error(e.toString());
         }
         javaMailSender.send(mimeMessage);
     }
@@ -60,7 +60,7 @@ public class EmailServiceImpl implements EmailService {
             helper.setSubject("Check-in confirmation");
             helper.setFrom("paw.hotel.manager@gmail.com");
         } catch (MessagingException e) {
-            e.printStackTrace();
+            LOGGER.error(e.toString());
         }
         javaMailSender.send(mimeMessage);
     }
@@ -165,7 +165,7 @@ public class EmailServiceImpl implements EmailService {
             helper.setSubject("Rate your stay!");
             helper.setFrom("paw.hotel.manager@gmail.com");
         } catch (MessagingException e) {
-            e.printStackTrace();
+            LOGGER.error(e.toString());
         }
         javaMailSender.send(mimeMessage);
     }

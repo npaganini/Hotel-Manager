@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
             LOGGER.debug("There is not an user created with email " + userEmail + ". So we create one");
             user = userDao.save(new User(userEmail,
                     userEmail,
-                    new BCryptPasswordEncoder().encode(userEmail)));
+                    new BCryptPasswordEncoder().encode(Arrays.toString(Base64.getEncoder().encode(userEmail.getBytes())))));
         }
         return user;
     }
