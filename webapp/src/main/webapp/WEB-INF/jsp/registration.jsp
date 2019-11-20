@@ -99,6 +99,13 @@
             </div>
         </div>
         <br>
+        <c:if test="${registered != null && registered == true}">
+            <div class="alert alert-success message" style="size: 45px" role="alert">
+                <strong>
+                        <spring:message code="registered"/>!
+                </strong>
+            </div>
+        </c:if>
         <br>
         <div class="row">
             <div class="col-xs-6">

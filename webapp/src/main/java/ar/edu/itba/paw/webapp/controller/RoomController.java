@@ -137,14 +137,21 @@ public class RoomController extends SimpleController {
     }
 
     @GetMapping("/registration")
-    public ModelAndView registration(@ModelAttribute("registrationForm") final RegistrationForm form){
-        return new ModelAndView("registration");
+    public ModelAndView registration(@ModelAttribute("registrationForm") final RegistrationForm form) {
+        ModelAndView mav = new ModelAndView("registration");
+        mav.addObject("registered", false);
+        return mav;
     }
 
-    @GetMapping("/registrationPost")
+    @PostMapping("/registrationPost")
     public ModelAndView registrationPost(@ModelAttribute("registrationForm") final RegistrationForm form) throws EntityNotFoundException {
-        final ModelAndView mav = new ModelAndView("registration");
-        reservationService.registerOccupants(form.getReservation_hash(), getListOfOccupantsFromForm(form));
+        ModelAndView mav = new ModelAndView("registration");
+        LOGGER.debug("Attempted to access registration form");
+        if(form != null) {
+            LOGGER.debug("Attempted to register occupants on reservation hash " + form.getReservation_hash());
+            reservationService.registerOccupants(form.getReservation_hash(), getListOfOccupantsFromForm(form));
+            mav.addObject("registered", true);
+        }
         return mav;
     }
 
