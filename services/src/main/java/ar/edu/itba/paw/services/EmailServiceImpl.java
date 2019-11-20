@@ -73,7 +73,7 @@ public class EmailServiceImpl implements EmailService {
                     "<html>\n" +
                     "<head>\n" +
                     "</head>\n" +
-                    "<body style=\"margin-left: 15px\">\n" +
+                    "<body style=\"margin-left: 15px;color:black\">\n" +
                     "<div style=\"font-family: Arial\">\n" +
                     "    <h1>Esperamos que haya disfrutado su estadía</h1>\n" +
                     "</div>\n" +
@@ -85,55 +85,55 @@ public class EmailServiceImpl implements EmailService {
                     "<div>\n" +
                     "    <button type=\"submit\" class=\"btn btn-lg\">\n" +
                     "        <span>5</span>\n" +
-                    "        <span style=\'font-size:100px;color:orange\'>&#9733;</span>\n"+
-                    "        <span style=\'font-size:100px;color:orange\'>&#9733;</span>\n"+
-                    "        <span style=\'font-size:100px;color:orange\'>&#9733;</span>\n"+
-                    "        <span style=\'font-size:100px;color:orange\'>&#9733;</span>\n"+
-                    "        <span style=\'font-size:100px;color:orange\'>&#9733;</span>\n"+
+                    "        <span style=\'color:orange\'>&#9733;</span>\n"+
+                    "        <span style=\'color:orange\'>&#9733;</span>\n"+
+                    "        <span style=\'color:orange\'>&#9733;</span>\n"+
+                    "        <span style=\'color:orange\'>&#9733;</span>\n"+
+                    "        <span style=\'color:orange\'>&#9733;</span>\n"+
                     "    </button>\n" +
                     "</div>\n" +
                     "<br>\n" +
                     "<div>\n" +
                     "    <button type=\"submit\" class=\"btn btn-lg\">\n" +
                     "        <span>4</span>\n" +
-                    "        <span style=\'font-size:100px;color:orange\'>&#9733;</span>\n"+
-                    "        <span style=\'font-size:100px;color:orange\'>&#9733;</span>\n"+
-                    "        <span style=\'font-size:100px;color:orange\'>&#9733;</span>\n"+
-                    "        <span style=\'font-size:100px;color:orange\'>&#9733;</span>\n"+
-                    "        <span style=\'font-size:100px;\'>&#9733;</span>\n"+
+                    "        <span style=\'color:orange\'>&#9733;</span>\n"+
+                    "        <span style=\'color:orange\'>&#9733;</span>\n"+
+                    "        <span style=\'color:orange\'>&#9733;</span>\n"+
+                    "        <span style=\'color:orange\'>&#9733;</span>\n"+
+                    "        <span style=\'\'>&#9733;</span>\n"+
                     "    </button>\n" +
                     "</div>\n" +
                     "<br>\n" +
                     "<div>\n" +
                     "    <button type=\"submit\" class=\"btn btn-lg\">\n" +
                     "        <span>3</span>\n" +
-                    "        <span style=\'font-size:100px;color:orange\'>&#9733;</span>\n"+
-                    "        <span style=\'font-size:100px;color:orange\'>&#9733;</span>\n"+
-                    "        <span style=\'font-size:100px;color:orange\'>&#9733;</span>\n"+
-                    "        <span style=\'font-size:100px;\'>&#9733;</span>\n"+
-                    "        <span style=\'font-size:100px;\'>&#9733;</span>\n"+
+                    "        <span style=\'color:orange\'>&#9733;</span>\n"+
+                    "        <span style=\'color:orange\'>&#9733;</span>\n"+
+                    "        <span style=\'color:orange\'>&#9733;</span>\n"+
+                    "        <span style=\'\'>&#9733;</span>\n"+
+                    "        <span style=\'\'>&#9733;</span>\n"+
                     "    </button>\n" +
                     "</div>\n" +
                     "<br>\n" +
                     "<div>\n" +
                     "    <button type=\"submit\" class=\"btn btn-lg\">\n" +
                     "        <span>2</span>\n" +
-                    "        <span style=\'font-size:100px;color:orange\'>&#9733;</span>\n"+
-                    "        <span style=\'font-size:100px;color:orange\'>&#9733;</span>\n"+
-                    "        <span style=\'font-size:100px;\'>&#9733;</span>\n"+
-                    "        <span style=\'font-size:100px;\'>&#9733;</span>\n"+
-                    "        <span style=\'font-size:100px;\'>&#9733;</span>\n"+
+                    "        <span style=\'color:orange\'>&#9733;</span>\n"+
+                    "        <span style=\'color:orange\'>&#9733;</span>\n"+
+                    "        <span style=\'\'>&#9733;</span>\n"+
+                    "        <span style=\'\'>&#9733;</span>\n"+
+                    "        <span style=\'\'>&#9733;</span>\n"+
                     "    </button>\n" +
                     "</div>\n" +
                     "<br>\n" +
                     "<div>\n" +
                     "    <button type=\"submit\" class=\"btn btn-lg\">\n" +
                     "        <span>1</span>\n" +
-                    "        <span style=\'font-size:100px;color:orange\'>&#9733;</span>\n"+
-                    "        <span style=\'font-size:100px;\'>&#9733;</span>\n"+
-                    "        <span style=\'font-size:100px;\'>&#9733;</span>\n"+
-                    "        <span style=\'font-size:100px;\'>&#9733;</span>\n"+
-                    "        <span style=\'font-size:100px;\'>&#9733;</span>\n"+
+                    "        <span style=\'color:orange\'>&#9733;</span>\n"+
+                    "        <span style=\'\'>&#9733;</span>\n"+
+                    "        <span style=\'\'>&#9733;</span>\n"+
+                    "        <span style=\'\'>&#9733;</span>\n"+
+                    "        <span style=\'\'>&#9733;</span>\n"+
 
                     "    </button>\n" +
                     "</div>\n" +
