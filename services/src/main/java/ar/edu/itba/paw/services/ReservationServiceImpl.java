@@ -8,6 +8,7 @@ import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.ReservationService;
 import ar.edu.itba.paw.interfaces.services.UserService;
+import ar.edu.itba.paw.models.occupant.Occupant;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
 import ar.edu.itba.paw.models.user.User;
@@ -20,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
@@ -34,7 +34,8 @@ public class ReservationServiceImpl implements ReservationService {
     private final EmailService emailService;
 
     @Autowired
-    public ReservationServiceImpl(ReservationDao reservationDao, RoomDao roomDao, UserService userService, EmailService emailService) {
+    public ReservationServiceImpl(OccupantDao occupantDao, ReservationDao reservationDao, RoomDao roomDao, UserService userService, EmailService emailService) {
+        this.occupantDao = occupantDao;
         this.reservationDao = reservationDao;
         this.roomDao = roomDao;
         this.userService = userService;

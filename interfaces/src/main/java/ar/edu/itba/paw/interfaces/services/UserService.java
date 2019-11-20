@@ -21,5 +21,5 @@ public interface UserService {
 
     User getUserForReservation(String userEmail);
     
-    String requestHelp(String text, long reservationId);
+    String requestHelp(String text, long reservationId) throws EntityNotFoundException;
 }

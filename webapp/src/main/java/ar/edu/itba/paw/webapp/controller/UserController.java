@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.services.HelpService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import form.BuyProductForm;
@@ -53,7 +54,7 @@ public class UserController extends SimpleController {
     }
 
     @PostMapping("/buyProducts")
-    public ModelAndView buyProduct(@ModelAttribute("buyProductForm") BuyProductForm buyProductForm, @RequestParam(value = "reservationId") long reservationId) {
+    public ModelAndView buyProduct(@ModelAttribute("buyProductForm") BuyProductForm buyProductForm, @RequestParam(value = "reservationId") long reservationId) throws EntityNotFoundException {
         LOGGER.debug("Request received to buy products on reservation with id " + reservationId);
         if(buyProductForm != null) {
             final ModelAndView mav = new ModelAndView("buyProducts");
@@ -72,7 +73,7 @@ public class UserController extends SimpleController {
     }
 
     @PostMapping("/helpUser")
-    public ModelAndView requestHelp(@ModelAttribute("getHelpForm") HelpForm helpForm, @RequestParam(value = "reservationId") long reservationId) {
+    public ModelAndView requestHelp(@ModelAttribute("getHelpForm") HelpForm helpForm, @RequestParam(value = "reservationId") long reservationId) throws EntityNotFoundException {
         LOGGER.debug("Help request made on reservation with id " + reservationId);
         if(helpForm != null) {
             final ModelAndView mav = new ModelAndView("requestHelp");

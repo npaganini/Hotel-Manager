@@ -6,9 +6,11 @@ import ar.edu.itba.paw.interfaces.services.ChargeService;
 import ar.edu.itba.paw.interfaces.services.ReservationService;
 import ar.edu.itba.paw.interfaces.services.RoomService;
 import ar.edu.itba.paw.models.dtos.CheckoutDTO;
+import ar.edu.itba.paw.models.occupant.Occupant;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import form.CheckinForm;
 import form.CheckoutForm;
+import form.RegistrationForm;
 import form.ReservationForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +22,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("rooms")
@@ -45,14 +49,6 @@ public class RoomController extends SimpleController {
         mav.addObject("ReservationsList", reservationService.getRoomsReservedActive());
         return mav;
     }
-
-    @GetMapping("/room/{id}")
-    public ModelAndView getRoom(@PathVariable long id) {
-        final ModelAndView mav = new ModelAndView("room");
-        mav.addObject("RoomSelected", roomService.getRoom(id));
-        return mav;
-    }
-
 
     @PostMapping("/reservationPost")
     @Transactional

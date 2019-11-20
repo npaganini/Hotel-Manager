@@ -1,9 +1,6 @@
 package ar.edu.itba.paw.services;
 
-import ar.edu.itba.paw.interfaces.daos.ChargeDao;
-import ar.edu.itba.paw.interfaces.daos.ProductDao;
-import ar.edu.itba.paw.interfaces.daos.ReservationDao;
-import ar.edu.itba.paw.interfaces.daos.UserDao;
+import ar.edu.itba.paw.interfaces.daos.*;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.charge.Charge;
@@ -31,10 +28,12 @@ public class UserServiceImpl implements UserService {
     private final HelpDao helpDao;
 
     @Autowired
-    public UserServiceImpl(ProductDao productDao, ChargeDao chargeDao, ReservationDao reservationDao) {
+    public UserServiceImpl(ProductDao productDao, ChargeDao chargeDao, ReservationDao reservationDao, UserDao userDao, HelpDao helpDao) {
         this.productDao = productDao;
         this.chargeDao = chargeDao;
         this.reservationDao = reservationDao;
+        this.userDao = userDao;
+        this.helpDao = helpDao;
     }
 
     @Override
@@ -79,8 +78,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String requestHelp(String text, long reservationId) {
-        Reservation reservation = reservationDao.findById(Math.toIntExact(reservationId)).orElseThrow(EntityNotFoundException::new);
+    public String requestHelp(String text, long reservationId) throws EntityNotFoundException {
+        Reservation reservation = reservationDao.findById(Math.toIntExact(reservationId)).orElseThrow(() -> new EntityNotFoundException("Cant find reservation"));
         if(text.length() > 0 && isValidString(text)) {
             return helpDao.save(new Help(text, reservation)).getHelpText();
         }
