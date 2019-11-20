@@ -18,7 +18,7 @@ public interface ReservationService {
 
     List<Reservation> getAll();
 
-    List<Reservation> findAllBetweenDatesOrEmail(Calendar startDate, Calendar endDate, String email);
+    List<Reservation> findAllBetweenDatesOrEmailAndSurname(Calendar startDate, Calendar endDate, String email, String occupantSurname);
 
     List<Reservation> getRoomsReservedActive();
 

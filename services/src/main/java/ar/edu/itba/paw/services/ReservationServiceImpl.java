@@ -111,8 +111,8 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<Reservation> findAllBetweenDatesOrEmail(Calendar startDate, Calendar endDate, String email) {
-        return reservationDao.findAllBetweenDatesOrEmail(startDate, endDate, email);
+    public List<Reservation> findAllBetweenDatesOrEmailAndSurname(Calendar startDate, Calendar endDate, String email, String occupantSurname) {
+        return reservationDao.findAllBetweenDatesOrEmailAndSurname(startDate, endDate, email, occupantSurname);
     }
 
     @Override

@@ -1,15 +1,21 @@
 package ar.edu.itba.paw.persistence.hibernate;
 
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
+import ar.edu.itba.paw.models.charge.Charge;
+import ar.edu.itba.paw.models.dtos.ProductAmountDTO;
+import ar.edu.itba.paw.models.occupant.Occupant;
+import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Optional;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.*;
 
 @Repository
 public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Reservation> implements ReservationDao {
@@ -23,29 +29,62 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
         );
     }
 
+  /*  CriteriaBuilder builder = em.getCriteriaBuilder();
+    CriteriaQuery<Reservation> query = builder.createQuery(Reservation.class);
+    Root<Reservation> root = query.from(Reservation.class);
+    Predicate predicateDates = null;
+    Predicate predicateEmail = null;
+    Predicate predicateOccupant = null;
+
+    CriteriaQuery<Occupant> queryOccupant = builder.createQuery(Occupant.class);
+    Root<Occupant> occupantRoot = query.from(Occupant.class);
+
+        if (startDate != null && endDate != null) {
+        predicateDates = builder.and(builder.greaterThanOrEqualTo(root.get("startDate"),
+                startDate), builder.lessThanOrEqualTo(root.get("endDate"), endDate);
+    }
+        if (email != null) {
+        predicateEmail = builder.equal(root.get("userEmail"), email);
+    }
+        if (occupantSurname != null) {
+        predicateOccupant = builder.in();
+    }*/
+
+    //this should be done with criteria, but joins are awfull
     @Override
-    public List<Reservation> findAllBetweenDatesOrEmail(Calendar startDate, Calendar endDate, String email) {
-        final TypedQuery<Reservation> query;
-        if (startDate == null && endDate == null && (email == null || email.length() == 0)) return new ArrayList<>();
-        else if (email == null || email.length() == 0) {
-            query = em.createQuery(
-                    "SELECT res FROM Reservation as res WHERE" +
-                            " (res.startDate >= :startDate AND res.endDate <= :endDate)",
-                    Reservation.class);
-        } else if (startDate == null && endDate == null) {
-            query = em.createQuery(
-                    "SELECT res FROM Reservation as res WHERE" +
-                            " res.userEmail = :email",
-                    Reservation.class);
-        } else {
-            query = em.createQuery(
-                    "SELECT res FROM Reservation as res WHERE" +
-                            " (res.startDate >= :startDate AND res.endDate <= :endDate AND res.userEmail = :email)",
-                    Reservation.class);
+    public List<Reservation> findAllBetweenDatesOrEmailAndSurname(Calendar startDate, Calendar endDate, String email, String occupantSurname){
+        TypedQuery<Reservation> query = null;
+        String andDatesClause = "AND ";
+        String emailClause = "";
+        String occupantClause = "";
+        boolean withParameters = false;
+
+        if (startDate != null && endDate != null) {
+            withParameters = true;
+            andDatesClause = andDatesClause.concat("(res.startDate >= :startDate AND res.endDate <= :endDate)");
         }
-        if (startDate != null && endDate != null)
-            query.setParameter("startDate", startDate).setParameter("endDate", endDate);
-        if (email != null && email.length() > 0) query.setParameter("email", email);
+        if (email != null && email.length() > 0) {
+            withParameters = true;
+            emailClause = "AND res.userEmail = :email";
+        }
+        if (occupantSurname != null && occupantSurname.length() > 0){
+            withParameters = true;
+            occupantClause = "AND EXISTS (SELECT o FROM Occupant o WHERE o.surname = :surname)";
+        }
+        if (!withParameters) {
+            return em.createQuery("Select r from Reservation r").getResultList();
+        }
+        Query queryWithNoParameters = em.createQuery("SELECT r FROM Reservation r WHERE " + andDatesClause + emailClause + occupantClause);
+        if (startDate != null && endDate != null) {
+            query = (TypedQuery<Reservation>) queryWithNoParameters.setParameter("startDate", startDate).setParameter("endDate", endDate);
+        }
+        if (email != null && email.length()>0) {
+            query = query.setParameter("email", email);
+        }
+        if (occupantSurname != null && occupantSurname.length()>0) {
+            query = query.setParameter("surname", occupantSurname);
+        }
+
         return query.getResultList();
     }
 

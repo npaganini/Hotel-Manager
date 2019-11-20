@@ -26,7 +26,6 @@ public class ReservationController {
     @GetMapping("/reservation")
     public ResponseEntity<?> getReservation(@RequestParam("hash") String hash) throws EntityNotFoundException {
         LOGGER.debug("Reservation with hash " + hash + " was requested");
-        return new ResponseEntity<>(reservationService.getReservationByHash(hash).toString()
-                , HttpStatus.OK);
+        return new ResponseEntity<>(reservationService.getReservationByHash(hash).toString(), HttpStatus.OK);
     }
 }

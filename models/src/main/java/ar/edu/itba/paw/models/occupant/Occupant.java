@@ -29,4 +29,9 @@ public class Occupant {
         this.name = name;
         this.surname = surname;
     }
+
+    public boolean equals(Object object) {
+        if (!(object instanceof Occupant)) return false;
+        return id == ((Occupant) object).getId();
+    }
 }
