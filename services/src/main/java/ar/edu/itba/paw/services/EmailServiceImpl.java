@@ -62,7 +62,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendRateStayEmail(String reservationHash) {
-        String userEmail = reservationDao
+        String userEmail =reservationDao
                 .findReservationByHash(reservationHash.trim())
                 .orElseThrow(() -> new EntityNotFoundException("Cant find reservation with"))
                 .getUserEmail();
@@ -72,17 +72,6 @@ public class EmailServiceImpl implements EmailService {
             helper.setText("<!DOCTYPE html>\n" +
                     "<html>\n" +
                     "<head>\n" +
-                    "    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css\">\n" +
-                    "    <style>\n" +
-                    "        .checked {\n" +
-                    "            color: orange;\n" +
-                    "        }\n" +
-                    "    </style>\n" +
-                    "    <meta charset=\"utf-8\">\n" +
-                    "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n" +
-                    "    <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css\">\n" +
-                    "    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js\"></script>\n" +
-                    "    <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js\"></script>\n" +
                     "</head>\n" +
                     "<body style=\"margin-left: 15px\">\n" +
                     "<div style=\"font-family: Arial\">\n" +
@@ -94,57 +83,58 @@ public class EmailServiceImpl implements EmailService {
                     "</div>\n" +
                     "<br><br>\n" +
                     "<div>\n" +
-                    "    <button type=\"button\" class=\"btn btn-lg\">\n" +
+                    "    <button type=\"submit\" class=\"btn btn-lg\">\n" +
                     "        <span>5</span>\n" +
-                    "        <span class=\"fa fa-star checked\"></span>\n" +
-                    "        <span class=\"fa fa-star checked\"></span>\n" +
-                    "        <span class=\"fa fa-star checked\"></span>\n" +
-                    "        <span class=\"fa fa-star checked\"></span>\n" +
-                    "        <span class=\"fa fa-star checked\"></span>\n" +
+                    "        <span style=\'font-size:100px;color:orange\'>&#9733;</span>\n"+
+                    "        <span style=\'font-size:100px;color:orange\'>&#9733;</span>\n"+
+                    "        <span style=\'font-size:100px;color:orange\'>&#9733;</span>\n"+
+                    "        <span style=\'font-size:100px;color:orange\'>&#9733;</span>\n"+
+                    "        <span style=\'font-size:100px;color:orange\'>&#9733;</span>\n"+
                     "    </button>\n" +
                     "</div>\n" +
                     "<br>\n" +
                     "<div>\n" +
-                    "    <button type=\"button\" class=\"btn btn-lg\">\n" +
+                    "    <button type=\"submit\" class=\"btn btn-lg\">\n" +
                     "        <span>4</span>\n" +
-                    "        <span class=\"fa fa-star checked\"></span>\n" +
-                    "        <span class=\"fa fa-star checked\"></span>\n" +
-                    "        <span class=\"fa fa-star checked\"></span>\n" +
-                    "        <span class=\"fa fa-star checked\"></span>\n" +
-                    "        <span class=\"fa fa-star\"></span>\n" +
+                    "        <span style=\'font-size:100px;color:orange\'>&#9733;</span>\n"+
+                    "        <span style=\'font-size:100px;color:orange\'>&#9733;</span>\n"+
+                    "        <span style=\'font-size:100px;color:orange\'>&#9733;</span>\n"+
+                    "        <span style=\'font-size:100px;color:orange\'>&#9733;</span>\n"+
+                    "        <span style=\'font-size:100px;\'>&#9733;</span>\n"+
                     "    </button>\n" +
                     "</div>\n" +
                     "<br>\n" +
                     "<div>\n" +
-                    "    <button type=\"button\" class=\"btn btn-lg\">\n" +
+                    "    <button type=\"submit\" class=\"btn btn-lg\">\n" +
                     "        <span>3</span>\n" +
-                    "        <span class=\"fa fa-star checked\"></span>\n" +
-                    "        <span class=\"fa fa-star checked\"></span>\n" +
-                    "        <span class=\"fa fa-star checked\"></span>\n" +
-                    "        <span class=\"fa fa-star\"></span>\n" +
-                    "        <span class=\"fa fa-star\"></span>\n" +
+                    "        <span style=\'font-size:100px;color:orange\'>&#9733;</span>\n"+
+                    "        <span style=\'font-size:100px;color:orange\'>&#9733;</span>\n"+
+                    "        <span style=\'font-size:100px;color:orange\'>&#9733;</span>\n"+
+                    "        <span style=\'font-size:100px;\'>&#9733;</span>\n"+
+                    "        <span style=\'font-size:100px;\'>&#9733;</span>\n"+
                     "    </button>\n" +
                     "</div>\n" +
                     "<br>\n" +
                     "<div>\n" +
-                    "    <button type=\"button\" class=\"btn btn-lg\">\n" +
+                    "    <button type=\"submit\" class=\"btn btn-lg\">\n" +
                     "        <span>2</span>\n" +
-                    "        <span class=\"fa fa-star checked\"></span>\n" +
-                    "        <span class=\"fa fa-star checked\"></span>\n" +
-                    "        <span class=\"fa fa-star\"></span>\n" +
-                    "        <span class=\"fa fa-star\"></span>\n" +
-                    "        <span class=\"fa fa-star\"></span>\n" +
+                    "        <span style=\'font-size:100px;color:orange\'>&#9733;</span>\n"+
+                    "        <span style=\'font-size:100px;color:orange\'>&#9733;</span>\n"+
+                    "        <span style=\'font-size:100px;\'>&#9733;</span>\n"+
+                    "        <span style=\'font-size:100px;\'>&#9733;</span>\n"+
+                    "        <span style=\'font-size:100px;\'>&#9733;</span>\n"+
                     "    </button>\n" +
                     "</div>\n" +
                     "<br>\n" +
                     "<div>\n" +
-                    "    <button type=\"button\" class=\"btn btn-lg\">\n" +
+                    "    <button type=\"submit\" class=\"btn btn-lg\">\n" +
                     "        <span>1</span>\n" +
-                    "        <span class=\"fa fa-star checked\"></span>\n" +
-                    "        <span class=\"fa fa-star\"></span>\n" +
-                    "        <span class=\"fa fa-star\"></span>\n" +
-                    "        <span class=\"fa fa-star\"></span>\n" +
-                    "        <span class=\"fa fa-star\"></span>\n" +
+                    "        <span style=\'font-size:100px;color:orange\'>&#9733;</span>\n"+
+                    "        <span style=\'font-size:100px;\'>&#9733;</span>\n"+
+                    "        <span style=\'font-size:100px;\'>&#9733;</span>\n"+
+                    "        <span style=\'font-size:100px;\'>&#9733;</span>\n"+
+                    "        <span style=\'font-size:100px;\'>&#9733;</span>\n"+
+
                     "    </button>\n" +
                     "</div>\n" +
                     "<br>\n" +
