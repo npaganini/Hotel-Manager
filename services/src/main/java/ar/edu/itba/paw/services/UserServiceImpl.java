@@ -72,13 +72,9 @@ public class UserServiceImpl implements UserService {
             LOGGER.debug("There is not an user created with email " + userEmail + ". So we create one");
             user = userDao.save(new User(userEmail,
                     userEmail,
-                    new BCryptPasswordEncoder().encode(userEmail.concat(".hotelManager_").concat(getRandomString()))));
+                    new BCryptPasswordEncoder().encode(userEmail)));
         }
         return user;
-    }
-
-    private String getRandomString() {
-        return String.format("%02d", new Random().nextInt(999999));
     }
 
     @Override

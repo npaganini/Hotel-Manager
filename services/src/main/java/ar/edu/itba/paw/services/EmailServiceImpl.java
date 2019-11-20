@@ -73,8 +73,6 @@ public class EmailServiceImpl implements EmailService {
                 .getUserEmail();
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
-        String contextPath = servletContext.getContextPath();
-//        "    <input type=\"button\" class=\"btn btn-lg\" value=\"Excelent\" onclick=\"window.location='" + contextPath + "/reservations/" + reservationHash + "rate?rate=EXCELENT';\">\n" +
         try {
             helper.setText("<!DOCTYPE html>\n" +
                     "<html>\n" +
