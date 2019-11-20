@@ -6,7 +6,7 @@ import ar.edu.itba.paw.interfaces.services.ChargeService;
 import ar.edu.itba.paw.interfaces.services.ReservationService;
 import ar.edu.itba.paw.interfaces.services.RoomService;
 import ar.edu.itba.paw.models.dtos.CheckoutDTO;
-import ar.edu.itba.paw.models.reservation.Reservation;
+import ar.edu.itba.paw.models.occupant.Occupant;
 import form.CheckinForm;
 import form.CheckoutForm;
 import form.RegistrationForm;
@@ -19,9 +19,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.jws.WebParam;
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Controller
 @RequestMapping("rooms")
@@ -141,14 +143,43 @@ public class RoomController extends SimpleController {
 
     @GetMapping("/registration")
     public ModelAndView registration(@ModelAttribute("registrationForm") final RegistrationForm form){
-        final ModelAndView mav = new ModelAndView("registration");
-        return mav;
+        return new ModelAndView("registration");
     }
 
     @GetMapping("/registrationPost")
-    public ModelAndView registrationPost(@ModelAttribute("registrationForm") final RegistrationForm form){
+    public ModelAndView registrationPost(@ModelAttribute("registrationForm") final RegistrationForm form) throws EntityNotFoundException {
         final ModelAndView mav = new ModelAndView("registration");
+        reservationService.registerOccupants(form.getReservation_hash(), getListOfOccupantsFromForm(form));
         return mav;
+    }
+
+    private List<Occupant> getListOfOccupantsFromForm(RegistrationForm form) {
+        List<Occupant> occupants = new ArrayList<>();
+        if (form.getName_1() != null && form.getName_1().length() > 0
+                && form.getLast_name_1() != null && form.getLast_name_1().length() > 0)
+            occupants.add(new Occupant(form.getName_1(), form.getLast_name_1()));
+
+        if (form.getName_2() != null && form.getName_2().length() > 0
+                && form.getLast_name_2() != null && form.getLast_name_2().length() > 0)
+            occupants.add(new Occupant(form.getName_2(), form.getLast_name_2()));
+
+        if (form.getName_3() != null && form.getName_3().length() > 0
+                && form.getLast_name_3() != null && form.getLast_name_3().length() > 0)
+            occupants.add(new Occupant(form.getName_3(), form.getLast_name_3()));
+
+        if (form.getName_4() != null && form.getName_4().length() > 0
+                && form.getLast_name_4() != null && form.getLast_name_4().length() > 0)
+            occupants.add(new Occupant(form.getName_4(), form.getLast_name_4()));
+
+        if (form.getName_5() != null && form.getName_5().length() > 0
+                && form.getLast_name_5() != null && form.getLast_name_5().length() > 0)
+            occupants.add(new Occupant(form.getName_5(), form.getLast_name_5()));
+
+        if (form.getName_6() != null && form.getName_6().length() > 0
+                && form.getLast_name_6() != null && form.getLast_name_6().length() > 0)
+            occupants.add(new Occupant(form.getName_6(), form.getLast_name_6()));
+
+       return occupants;
     }
 
 }
