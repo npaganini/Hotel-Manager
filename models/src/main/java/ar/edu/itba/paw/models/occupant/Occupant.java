@@ -22,7 +22,7 @@ public class Occupant {
     private String name;
     private String surname;
 
-    @ManyToMany
+    @ManyToOne
     private Reservation reservation;
 
     public Occupant(String name, String surname) {
