@@ -9,6 +9,8 @@ import lombok.Setter;
 public class RegistrationForm {
     String room_number;
 
+    String reservation_hash;
+
     String name_1;
     String last_name_1;
     String name_2;
