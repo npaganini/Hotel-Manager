@@ -1,15 +1,19 @@
 package ar.edu.itba.paw.persistence.hibernate;
 
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
+import ar.edu.itba.paw.models.charge.Charge;
+import ar.edu.itba.paw.models.dtos.ProductAmountDTO;
+import ar.edu.itba.paw.models.occupant.Occupant;
+import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Optional;
+import javax.persistence.criteria.*;
+import java.lang.reflect.Array;
+import java.util.*;
 
 @Repository
 public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Reservation> implements ReservationDao {
@@ -24,29 +28,44 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
     }
 
     @Override
-    public List<Reservation> findAllBetweenDatesOrEmail(Calendar startDate, Calendar endDate, String email) {
-        final TypedQuery<Reservation> query;
-        if (startDate == null && endDate == null && (email == null || email.length() == 0)) return new ArrayList<>();
-        else if (email == null || email.length() == 0) {
-            query = em.createQuery(
-                    "SELECT res FROM Reservation as res WHERE" +
-                            " (res.startDate >= :startDate AND res.endDate <= :endDate)",
-                    Reservation.class);
-        } else if (startDate == null && endDate == null) {
-            query = em.createQuery(
-                    "SELECT res FROM Reservation as res WHERE" +
-                            " res.userEmail = :email",
-                    Reservation.class);
-        } else {
-            query = em.createQuery(
-                    "SELECT res FROM Reservation as res WHERE" +
-                            " (res.startDate >= :startDate AND res.endDate <= :endDate AND res.userEmail = :email)",
-                    Reservation.class);
+    public List<Reservation> findAllBetweenDatesOrEmailAndSurname(Calendar startDate, Calendar endDate, String email, String occupantSurname) {
+        CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaQuery<Reservation> query = builder.createQuery(Reservation.class);
+        Root<Reservation> root = query.from(Reservation.class);
+        Predicate datePredicate = null;
+        Predicate emailPredicate = null;
+        Predicate occupantPredicate = null;
+        int predicatesCount = 0;
+
+        if (startDate != null && endDate != null) {
+            datePredicate = builder.and(builder.greaterThanOrEqualTo(root.get("startDate"),
+                    startDate), builder.lessThanOrEqualTo(root.get("endDate"), endDate));
+            predicatesCount++;
         }
-        if (startDate != null && endDate != null)
-            query.setParameter("startDate", startDate).setParameter("endDate", endDate);
-        if (email != null && email.length() > 0) query.setParameter("email", email);
-        return query.getResultList();
+        if (email != null && email.length() > 0) {
+           emailPredicate = builder.equal(root.get("userEmail"), email);
+           predicatesCount++;
+        }
+        if (occupantSurname != null && occupantSurname.length() > 0) {
+            List occupantsList = em
+                    .createQuery("SELECT o.reservation.id FROM Occupant o WHERE o.surname = :surname")
+                    .setParameter("surname", occupantSurname.toLowerCase()).getResultList();
+            if (occupantsList.size() > 0) {
+                occupantPredicate = builder.in(root.get("id"))
+                        .value(occupantsList);
+                predicatesCount++;
+            }
+        }
+
+        Predicate[] array = new Predicate[predicatesCount];
+        int current=0;
+        if (datePredicate != null) array[current++] = datePredicate;
+        if (emailPredicate != null) array[current++] = emailPredicate;
+        if (occupantPredicate != null) array[current++] = occupantPredicate;
+
+        return predicatesCount > 0 ? em.createQuery(query.select(root)
+                .where(builder.and(array)))
+                .getResultList() : em.createQuery("SELECT r FROM Reservation r").getResultList();
     }
 
     @Override

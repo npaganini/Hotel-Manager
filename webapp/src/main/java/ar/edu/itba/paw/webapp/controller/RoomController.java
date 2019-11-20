@@ -7,7 +7,6 @@ import ar.edu.itba.paw.interfaces.services.ReservationService;
 import ar.edu.itba.paw.interfaces.services.RoomService;
 import ar.edu.itba.paw.models.dtos.CheckoutDTO;
 import ar.edu.itba.paw.models.occupant.Occupant;
-import ar.edu.itba.paw.models.reservation.Reservation;
 import form.CheckinForm;
 import form.CheckoutForm;
 import form.RegistrationForm;
@@ -112,12 +111,13 @@ public class RoomController extends SimpleController {
     @GetMapping("/reservations")
     public ModelAndView reservations(@RequestParam(value = "startDate", required = false) String startDate,
                                      @RequestParam(value = "endDate", required = false) String endDate,
-                                     @RequestParam(value = "userEmail", required = false) String userEmail) throws ParseException {
+                                     @RequestParam(value = "userEmail", required = false) String userEmail,
+                                     @RequestParam(value = "guest", required = false) String guest) throws ParseException {
         final ModelAndView mav = new ModelAndView("reservations");
         mav.addObject("reservations",
-                reservationService.findAllBetweenDatesOrEmail(
+                reservationService.findAllBetweenDatesOrEmailAndSurname(
                         startDate == null || startDate.length() == 0 ? null : fromStringToCalendar(startDate),
-                        endDate == null || endDate.length() == 0 ? null : fromStringToCalendar(endDate), userEmail)
+                        endDate == null || endDate.length() == 0 ? null : fromStringToCalendar(endDate), userEmail, guest)
         );
         return mav;
     }
@@ -155,31 +155,32 @@ public class RoomController extends SimpleController {
         return mav;
     }
 
+    // FIXME this is disgusting but we couldnt crate a list from jsp
     private List<Occupant> getListOfOccupantsFromForm(RegistrationForm form) {
         List<Occupant> occupants = new ArrayList<>();
         if (form.getName_1() != null && form.getName_1().length() > 0
                 && form.getLast_name_1() != null && form.getLast_name_1().length() > 0)
-            occupants.add(new Occupant(form.getName_1(), form.getLast_name_1()));
+            occupants.add(new Occupant(form.getName_1(), form.getLast_name_1().toLowerCase()));
 
         if (form.getName_2() != null && form.getName_2().length() > 0
                 && form.getLast_name_2() != null && form.getLast_name_2().length() > 0)
-            occupants.add(new Occupant(form.getName_2(), form.getLast_name_2()));
+            occupants.add(new Occupant(form.getName_2(), form.getLast_name_2().toLowerCase()));
 
         if (form.getName_3() != null && form.getName_3().length() > 0
                 && form.getLast_name_3() != null && form.getLast_name_3().length() > 0)
-            occupants.add(new Occupant(form.getName_3(), form.getLast_name_3()));
+            occupants.add(new Occupant(form.getName_3(), form.getLast_name_3().toLowerCase()));
 
         if (form.getName_4() != null && form.getName_4().length() > 0
                 && form.getLast_name_4() != null && form.getLast_name_4().length() > 0)
-            occupants.add(new Occupant(form.getName_4(), form.getLast_name_4()));
+            occupants.add(new Occupant(form.getName_4(), form.getLast_name_4().toLowerCase()));
 
         if (form.getName_5() != null && form.getName_5().length() > 0
                 && form.getLast_name_5() != null && form.getLast_name_5().length() > 0)
-            occupants.add(new Occupant(form.getName_5(), form.getLast_name_5()));
+            occupants.add(new Occupant(form.getName_5(), form.getLast_name_5().toLowerCase()));
 
         if (form.getName_6() != null && form.getName_6().length() > 0
                 && form.getLast_name_6() != null && form.getLast_name_6().length() > 0)
-            occupants.add(new Occupant(form.getName_6(), form.getLast_name_6()));
+            occupants.add(new Occupant(form.getName_6(), form.getLast_name_6().toLowerCase()));
 
        return occupants;
     }

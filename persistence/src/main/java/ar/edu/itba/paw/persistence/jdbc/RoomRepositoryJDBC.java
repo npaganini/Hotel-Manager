@@ -26,7 +26,7 @@
 //    }
 //
 //    @Override
-//    public List<RoomReservationDTO> findAllBetweenDatesOrEmail(String startDate, String endDate, String email) {
+//    public List<RoomReservationDTO> findAllBetweenDatesOrEmailAndSurname(String startDate, String endDate, String email) {
 //        String andCriteria = getAndCriteriaToFindRooms(startDate, endDate, email);
 //        return jdbcTemplateWithNamedParameter.query("SELECT * FROM " + Reservation.TABLE_NAME + " res JOIN "
 //                        + Room.TABLE_NAME + " r ON res.room_id = r.id " + andCriteria,

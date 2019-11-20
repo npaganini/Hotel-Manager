@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.models.reservation;
 
 import ar.edu.itba.paw.models.charge.Charge;
+import ar.edu.itba.paw.models.occupant.Occupant;
 import ar.edu.itba.paw.models.room.Room;
 import ar.edu.itba.paw.models.user.User;
 import lombok.AllArgsConstructor;
@@ -57,6 +58,9 @@ public class Reservation {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "reservation")
     private List<Charge> charges = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "reservation")
+    private List<Occupant> occupants = new ArrayList<>();
 
     @Column(nullable = false)
     private String hash = getRandomString();
