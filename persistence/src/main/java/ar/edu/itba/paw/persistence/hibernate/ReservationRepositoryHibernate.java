@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.charge.Charge;
 import ar.edu.itba.paw.models.dtos.ProductAmountDTO;
 import ar.edu.itba.paw.models.occupant.Occupant;
 import ar.edu.itba.paw.models.product.Product;
+import ar.edu.itba.paw.models.reservation.Calification;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import org.springframework.stereotype.Repository;
 

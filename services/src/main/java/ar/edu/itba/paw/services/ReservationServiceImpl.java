@@ -94,10 +94,14 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public void rateStay(String rate, String hash) throws EntityNotFoundException {
+    @Transactional
+    public void rateStay(String rate, String hash) throws EntityNotFoundException, RequestInvalidException {
         Reservation reservation = reservationDao
                 .findReservationByHash(hash)
                 .orElseThrow(() -> new EntityNotFoundException("Reservation was not found"));
+        if (reservation.getCalification() != null) {
+            throw new RequestInvalidException();
+        }
         reservationDao.rateStay(reservation.getId(), rate);
     }
 
