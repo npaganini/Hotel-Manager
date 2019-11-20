@@ -96,7 +96,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Transactional
     @Override
     public Reservation doReservation(long roomId, String userEmail, Calendar startDate, Calendar endDate) throws RequestInvalidException {
-        if (isValidDate(startDate, endDate) && !isRoomFreeOnDate(roomId, startDate, endDate))
+        if(!isValidDate(startDate, endDate) && !isRoomFreeOnDate(roomId, startDate, endDate))
             throw new RequestInvalidException();
         LOGGER.debug("Looking if there is already a user created with email " + userEmail);
         User user = userService.getUserForReservation(userEmail);
