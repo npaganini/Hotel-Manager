@@ -152,14 +152,14 @@
                 <label class="items"><spring:message code="firstname"/>: </label>
                 <div class="input-group">
                     <span class="input-group-addon"></span>
-                    <form:input path="name_2" type="text" class="form-control" name="name_2" required="required"/>
+                    <form:input path="name_2" type="text" class="form-control" name="name_2" />
                 </div>
             </div>
             <div class="col-xs-6">
                 <label class="items"><spring:message code="lastname"/>: </label>
                 <div class="input-group">
                     <span class="input-group-addon"></span>
-                    <form:input path="last_name_2" type="text" class="form-control" name="last_name_2" required="required"/>
+                    <form:input path="last_name_2" type="text" class="form-control" name="last_name_2"/>
                 </div>
             </div>
         </div>
@@ -169,14 +169,14 @@
                 <label class="items"><spring:message code="firstname"/>: </label>
                 <div class="input-group">
                     <span class="input-group-addon"></span>
-                    <form:input path="name_3" type="text" class="form-control" name="name_3" required="required"/>
+                    <form:input path="name_3" type="text" class="form-control" name="name_3"/>
                 </div>
             </div>
             <div class="col-xs-6">
                 <label class="items"><spring:message code="lastname"/>: </label>
                 <div class="input-group">
                     <span class="input-group-addon"></span>
-                    <form:input path="last_name_3" type="text" class="form-control" name="last_name_3" required="required"/>
+                    <form:input path="last_name_3" type="text" class="form-control" name="last_name_3"/>
                 </div>
             </div>
         </div>
@@ -186,14 +186,14 @@
                 <label class="items"><spring:message code="firstname"/>: </label>
                 <div class="input-group">
                     <span class="input-group-addon"></span>
-                    <form:input path="name_4" type="text" class="form-control" name="name_4" required="required"/>
+                    <form:input path="name_4" type="text" class="form-control" name="name_4"/>
                 </div>
             </div>
             <div class="col-xs-6">
                 <label class="items"><spring:message code="lastname"/>: </label>
                 <div class="input-group">
                     <span class="input-group-addon"></span>
-                    <form:input path="last_name_4" type="text" class="form-control" name="last_name_4" required="required"/>
+                    <form:input path="last_name_4" type="text" class="form-control" name="last_name_4"/>
                 </div>
             </div>
         </div>
@@ -203,14 +203,14 @@
                 <label class="items"><spring:message code="firstname"/>: </label>
                 <div class="input-group">
                     <span class="input-group-addon"></span>
-                    <form:input path="name_5" type="text" class="form-control" name="name_5" required="required"/>
+                    <form:input path="name_5" type="text" class="form-control" name="name_5"/>
                 </div>
             </div>
             <div class="col-xs-6">
                 <label class="items"><spring:message code="lastname"/>: </label>
                 <div class="input-group">
                     <span class="input-group-addon"></span>
-                    <form:input path="last_name_5" type="text" class="form-control" name="last_name_5" required="required"/>
+                    <form:input path="last_name_5" type="text" class="form-control" name="last_name_5"/>
                 </div>
             </div>
         </div>
@@ -220,25 +220,18 @@
                 <label class="items"><spring:message code="firstname"/>: </label>
                 <div class="input-group">
                     <span class="input-group-addon"></span>
-                    <form:input path="name_6" type="text" class="form-control" name="name_6" required="required"/>
+                    <form:input path="name_6" type="text" class="form-control" name="name_6"/>
                 </div>
             </div>
             <div class="col-xs-6">
                 <label class="items"><spring:message code="lastname"/>: </label>
                 <div class="input-group">
                     <span class="input-group-addon"></span>
-                    <form:input path="last_name_6" type="text" class="form-control" name="last_name_6" required="required"/>
+                    <form:input path="last_name_6" type="text" class="form-control" name="last_name_6"/>
                 </div>
             </div>
-        </div>        <br><br>
-        <div class="row">
-            <br>
-            <div>
+        </div>
 
-            </div>
-        </div>
-        <br>
-        <br>
     </form:form>
 </div>
 </body>
