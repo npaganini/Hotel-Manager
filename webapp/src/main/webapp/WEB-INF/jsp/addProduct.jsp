@@ -108,10 +108,9 @@
                 </div>
                 <div class="col-xs-2">
 
-                    <button type="button" href="${pageContext.request.contextPath}/products" id="back"
+                    <button type="button" onclick="location.href='${pageContext.request.contextPath}/products'" id="back"
                             class="btn btn-danger btn-lg"><a
-                            style="color: white"><spring:message
-                            code="user.home"/></a></button>
+                            style="color: white">Back</a></button>
 
                 </div>
             </div>
