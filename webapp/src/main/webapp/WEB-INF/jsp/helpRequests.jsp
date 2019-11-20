@@ -65,6 +65,11 @@
                                     <spring:message code="reservation.order.plural"/>
                                 </a>
                             </li>
+                            <li>
+                                <a href="${pageContext.request.contextPath}/helpList">
+                                    <spring:message code="help.request.plural"/>
+                                </a>
+                            </li>
                             <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                     <span class="glyphicon glyphicon-user"></span>

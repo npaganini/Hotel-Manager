@@ -38,6 +38,7 @@ public class HelpController {
         LOGGER.debug("Attempted to update status on help request.");
         if(helpService.updateStatus(helpForm.getHelpId(), helpForm.getStatus())) {
             mav.addObject("updated", true);
+            mav.addObject("helpList", helpService.getAllRequestsThatRequireAction());
             return mav;
         }
         throw new RequestInvalidException();
