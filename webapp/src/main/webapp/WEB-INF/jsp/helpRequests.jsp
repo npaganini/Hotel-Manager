@@ -65,6 +65,11 @@
                                     <spring:message code="reservation.order.plural"/>
                                 </a>
                             </li>
+                            <li>
+                                <a href="${pageContext.request.contextPath}/helpList">
+                                    <spring:message code="help.request.plural"/>
+                                </a>
+                            </li>
                             <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                     <span class="glyphicon glyphicon-user"></span>
@@ -92,6 +97,13 @@
         </div>
     </div>
     <br>
+    <c:if test="${updated != null && updated == true}">
+        <div class="alert alert-success message" style="size: 45px" role="alert">
+            <strong>
+                <spring:message code="help.status.update"/>
+            </strong>
+        </div>
+    </c:if>
     <br>
     <div class="row">
         <div class="col-xs-8 form-group" style="z-index:9999;grid-auto-columns: auto">

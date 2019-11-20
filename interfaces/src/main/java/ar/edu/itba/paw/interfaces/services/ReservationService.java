@@ -28,4 +28,6 @@ public interface ReservationService {
 
 
     void registerOccupants(String reservation_hash, List<Occupant> listOfOccupantsFromForm) throws EntityNotFoundException;
+
+    void rateStay(String rate, String hash) throws EntityNotFoundException, RequestInvalidException;
 }

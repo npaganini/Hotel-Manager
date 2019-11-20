@@ -27,15 +27,19 @@ public class HelpController {
     public ModelAndView help(@ModelAttribute("getHelpForm") HelpStatusForm helpForm) {
         final ModelAndView mav = new ModelAndView("helpRequests");
         LOGGER.debug("Request attempted to get the list of help requests.");
+        mav.addObject("updated", false);
         mav.addObject("helpList", helpService.getAllRequestsThatRequireAction());
         return mav;
     }
 
     @PostMapping("/updateHelpStep")
     public ModelAndView updateHelpStep(@ModelAttribute("getHelpForm") HelpStatusForm helpForm) throws RequestInvalidException {
+        final ModelAndView mav = new ModelAndView("helpRequests");
         LOGGER.debug("Attempted to update status on help request.");
         if(helpService.updateStatus(helpForm.getHelpId(), helpForm.getStatus())) {
-            return new ModelAndView("redirect:/helpList");
+            mav.addObject("updated", true);
+            mav.addObject("helpList", helpService.getAllRequestsThatRequireAction());
+            return mav;
         }
         throw new RequestInvalidException();
     }

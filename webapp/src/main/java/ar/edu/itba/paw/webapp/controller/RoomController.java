@@ -149,7 +149,7 @@ public class RoomController extends SimpleController {
         LOGGER.debug("Attempted to access registration form");
         if(form != null) {
             LOGGER.debug("Attempted to register occupants on reservation hash " + form.getReservation_hash());
-            reservationService.registerOccupants(form.getReservation_hash(), getListOfOccupantsFromForm(form));
+            reservationService.registerOccupants(form.getReservation_hash().trim(), getListOfOccupantsFromForm(form));
             mav.addObject("registered", true);
         }
         return mav;

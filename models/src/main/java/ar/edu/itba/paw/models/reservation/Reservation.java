@@ -65,6 +65,9 @@ public class Reservation {
     @Column(nullable = false)
     private String hash = getRandomString();
 
+    @Enumerated(EnumType.STRING)
+    private Calification calification;
+
     public Reservation(Room room, String userEmail, Calendar startDate, Calendar endDate, User user) {
         this.room = room;
         this.userEmail = userEmail;
