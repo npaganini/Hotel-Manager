@@ -155,15 +155,15 @@
             <div class="row" style="height: 45px;text-align: center">
                 <div class="col-xs-2">
                     <button type="button" onclick="location.href='${pageContext.request.contextPath}/helpList'" id="refresh" class="btn btn-success btn-lg">
-                        <a><spring:message code="refresh"/></a>
+                        <a style="color: white"><spring:message code="refresh"/></a>
                     </button>
                 </div>
             </div>
             <br><br>
             <div class="row">
                 <div class="col-xs-2">
-                    <button type="button" onclick="location.href='${pageContext.request.contextPath}/rooms/home'" id="back" class="btn btn-danger btn-lg">
-                        <a><spring:message code="user.home"/></a>
+                    <button type="button" onclick="location.href='${pageContext.request.contextPath}/rooms/home'" id="back" class="btn btn-default btn-lg">
+                        <a style="color: black"><spring:message code="user.home"/></a>
                     </button>
                 </div>
             </div>
