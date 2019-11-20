@@ -90,7 +90,7 @@ public class EmailServiceImpl implements EmailService {
                     "</div>\n" +
                     "<br><br>\n" +
                     "<div>\n" +
-                    "    <a href=\"http://localhost:8080/reservations/" + reservationHash.trim() + "/rate?rate=EXCELENT\" target=\"_blank\">\n" +
+                    "    <a href=\"http://pawserver.it.itba.edu.ar/paw-2019b-2/reservations/" + reservationHash.trim() + "/rate?rate=EXCELENT\" target=\"_blank\">\n" +
                     "    <button type=\"submit\" class=\"btn btn-lg\">\n" +
                     "        <span>5</span>\n" +
                     "        <span style=\'color:orange\'>&#9733;</span>\n"+
@@ -103,7 +103,7 @@ public class EmailServiceImpl implements EmailService {
                     "</div>\n" +
                     "<br>\n" +
                     "<div>\n" +
-                    "    <a href=\"http://localhost:8080/reservations/" + reservationHash.trim() + "/rate?rate=GOOD\" target=\"_blank\">\n" +
+                    "    <a href=\"http://pawserver.it.itba.edu.ar/paw-2019b-2/reservations/" + reservationHash.trim() + "/rate?rate=GOOD\" target=\"_blank\">\n" +
                     "    <button type=\"submit\" class=\"btn btn-lg\">\n" +
                     "        <span>4</span>\n" +
                     "        <span style=\'color:orange\'>&#9733;</span>\n"+
@@ -116,7 +116,7 @@ public class EmailServiceImpl implements EmailService {
                     "</div>\n" +
                     "<br>\n" +
                     "<div>\n" +
-                    "    <a href=\"http://localhost:8080/reservations/" + reservationHash.trim() + "/rate?rate=NORMAL\" target=\"_blank\">\n" +
+                    "    <a href=\"http://pawserver.it.itba.edu.ar/paw-2019b-2/reservations/" + reservationHash.trim() + "/rate?rate=NORMAL\" target=\"_blank\">\n" +
                     "    <button type=\"submit\" class=\"btn btn-lg\">\n" +
                     "        <span>3</span>\n" +
                     "        <span style=\'color:orange\'>&#9733;</span>\n"+
@@ -129,7 +129,7 @@ public class EmailServiceImpl implements EmailService {
                     "</div>\n" +
                     "<br>\n" +
                     "<div>\n" +
-                    "    <a href=\"http://localhost:8080/reservations/" + reservationHash.trim() + "/rate?rate=BAD\" target=\"_blank\">\n" +
+                    "    <a href=\"http://pawserver.it.itba.edu.ar/paw-2019b-2/reservations/" + reservationHash.trim() + "/rate?rate=BAD\" target=\"_blank\">\n" +
 
                     "    <button type=\"submit\" class=\"btn btn-lg\">\n" +
                     "        <span>2</span>\n" +
@@ -143,7 +143,7 @@ public class EmailServiceImpl implements EmailService {
                     "</div>\n" +
                     "<br>\n" +
                     "<div>\n" +
-                    "    <a href=\"http://localhost:8080/reservations/" + reservationHash.trim() + "/rate?rate=AWFUL\" target=\"_blank\">\n" +
+                    "    <a href=\"http://pawserver.it.itba.edu.ar/paw-2019b-2/reservations/" + reservationHash.trim() + "/rate?rate=AWFUL\" target=\"_blank\">\n" +
                     "    <button type=\"submit\" class=\"btn btn-lg\">\n" +
                     "        <span>1</span>\n" +
                     "        <span style=\'color:orange\'>&#9733;</span>\n"+
