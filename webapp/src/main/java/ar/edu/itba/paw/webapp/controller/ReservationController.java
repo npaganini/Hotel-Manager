@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -24,7 +24,7 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
-    @PostMapping("/reservations/{hash}/rate")
+    @RequestMapping("/reservations/{hash}/rate")
     public ModelAndView rateStay(@RequestParam("rate") String rate, @PathVariable("hash") String hash) throws EntityNotFoundException, RequestInvalidException {
         reservationService.rateStay(rate, hash);
         return new ModelAndView("thanksMessage");
