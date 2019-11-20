@@ -115,6 +115,18 @@
                     <form:input id="reservation_hash" path="reservation_hash" type="text" class="form-control" name="reservation_hash" required="required"/>
                 </div>
             </div>
+            <br>
+            <div>
+                <div class="col-xs-3" style="text-align:center">
+                    <input id="regist" type="submit" class="btn btn-success btn-lg" value="<spring:message code="register"/>"/>
+                </div>
+                <div class="col-xs-3">
+                    <button type="button" onclick="location.href='${pageContext.request.contextPath}/rooms/home'"
+                            class="btn btn-default btn-lg"><a
+                            style="color: black"><spring:message code="cancel"/></a>
+                    </button>
+                </div>
+            </div>
         </div>
         <br>
         <br>
@@ -218,20 +230,11 @@
                     <form:input path="last_name_6" type="text" class="form-control" name="last_name_6" required="required"/>
                 </div>
             </div>
-        </div>
-        <br><br>
+        </div>        <br><br>
         <div class="row">
             <br>
             <div>
-                <div class="col-xs-3" style="text-align:center">
-                    <input id="regist" type="submit" class="btn btn-success btn-lg" value="<spring:message code="register"/>"/>
-                </div>
-                <div class="col-xs-3">
-                    <button type="button" onclick="location.href='${pageContext.request.contextPath}/rooms/home'"
-                            class="btn btn-default btn-lg"><a
-                            style="color: black"><spring:message code="cancel"/></a>
-                    </button>
-                </div>
+
             </div>
         </div>
         <br>
