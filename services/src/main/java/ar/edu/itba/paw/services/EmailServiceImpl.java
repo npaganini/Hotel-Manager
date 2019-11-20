@@ -63,7 +63,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendRateStayEmail(String reservationHash) {
         String userEmail = reservationDao
-                .findReservationByHash(reservationHash)
+                .findReservationByHash(reservationHash.trim())
                 .orElseThrow(() -> new EntityNotFoundException("Cant find reservation with"))
                 .getUserEmail();
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();

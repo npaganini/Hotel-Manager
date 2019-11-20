@@ -6,6 +6,7 @@ import ar.edu.itba.paw.models.dtos.ProductAmountDTO;
 import ar.edu.itba.paw.models.product.Product;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -42,14 +43,15 @@ public class ChargeRepositoryHibernate extends SimpleRepositoryHibernate<Charge>
     @Override
     public List<Charge> findChargeByReservationId(long reservationId) {
         return em.createQuery("SELECT c FROM Charge AS c WHERE c.reservation.id = :reservationId",
-                Charge.class).getResultList();
+                Charge.class).setParameter("reservationId", reservationId).getResultList();
     }
 
     @Override
     public double sumCharge(long reservationId) {
         final TypedQuery<Double> query = em.createQuery("SELECT SUM(c.product.price) FROM Charge AS c WHERE c.reservation.id = :reservationId", Double.class);
         query.setParameter("reservationId", reservationId);
-        return query.getSingleResult();
+        List<Double> resultList = query.getResultList();
+        return resultList.size() > 0 && resultList.get(0) != null ? resultList.get(0) : 0d;
     }
 
     @Override

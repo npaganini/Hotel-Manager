@@ -75,7 +75,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
  
     private boolean isValidDate(Calendar startDate, Calendar endDate) {
-        return LocalDate.ofEpochDay(startDate.getTimeInMillis()).isBefore(LocalDate.ofEpochDay(endDate.getTimeInMillis()));
+        return startDate.getTimeInMillis() < endDate.getTimeInMillis();
     }
 
     @Override
