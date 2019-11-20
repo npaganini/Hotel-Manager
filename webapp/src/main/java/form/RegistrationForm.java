@@ -7,8 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RegistrationForm {
-    String room_number;
-
     String reservation_hash;
 
     String name_1;
