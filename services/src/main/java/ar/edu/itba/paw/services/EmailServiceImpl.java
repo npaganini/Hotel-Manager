@@ -69,96 +69,12 @@ public class EmailServiceImpl implements EmailService {
     public void sendRateStayEmail(String reservationHash) {
         String userEmail = reservationDao
                 .findReservationByHash(reservationHash.trim())
-                .orElseThrow(() -> new EntityNotFoundException("Cant find reservation with"))
+                .orElseThrow(() -> new EntityNotFoundException("Can't find reservation with"))
                 .getUserEmail();
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
         try {
-            helper.setText("<!DOCTYPE html>\n" +
-                    "<html>\n" +
-                    "<head>\n" +
-                    "</head>\n" +
-                    "<body style=\"margin-left: 15px;color:black\">\n" +
-                    "<div style=\"font-family: Arial\">\n" +
-                    "    <h1>Esperamos que haya disfrutado su estadía</h1>\n" +
-                    "</div>\n" +
-                    "<br>\n" +
-                    "<div style=\"font-family: Arial\">\n" +
-                    "    <h2>¿Nos podrías decir que tal te pareció nuestro servicio?</h2>\n" +
-                    "</div>\n" +
-                    "<br><br>\n" +
-                    "<div>\n" +
-                    "    <a href=\"http://pawserver.it.itba.edu.ar/paw-2019b-2/reservations/" + reservationHash.trim() + "/rate?rate=EXCELENT\" target=\"_blank\">\n" +
-                    "    <button type=\"submit\" class=\"btn btn-lg\">\n" +
-                    "        <span>5</span>\n" +
-                    "        <span style=\'color:orange\'>&#9733;</span>\n"+
-                    "        <span style=\'color:orange\'>&#9733;</span>\n"+
-                    "        <span style=\'color:orange\'>&#9733;</span>\n"+
-                    "        <span style=\'color:orange\'>&#9733;</span>\n"+
-                    "        <span style=\'color:orange\'>&#9733;</span>\n"+
-                    "    </button>\n" +
-                    "</a>\n" +
-                    "</div>\n" +
-                    "<br>\n" +
-                    "<div>\n" +
-                    "    <a href=\"http://pawserver.it.itba.edu.ar/paw-2019b-2/reservations/" + reservationHash.trim() + "/rate?rate=GOOD\" target=\"_blank\">\n" +
-                    "    <button type=\"submit\" class=\"btn btn-lg\">\n" +
-                    "        <span>4</span>\n" +
-                    "        <span style=\'color:orange\'>&#9733;</span>\n"+
-                    "        <span style=\'color:orange\'>&#9733;</span>\n"+
-                    "        <span style=\'color:orange\'>&#9733;</span>\n"+
-                    "        <span style=\'color:orange\'>&#9733;</span>\n"+
-                    "        <span style=\'\'>&#9733;</span>\n"+
-                    "    </button>\n" +
-                    "</a>\n" +
-                    "</div>\n" +
-                    "<br>\n" +
-                    "<div>\n" +
-                    "    <a href=\"http://pawserver.it.itba.edu.ar/paw-2019b-2/reservations/" + reservationHash.trim() + "/rate?rate=NORMAL\" target=\"_blank\">\n" +
-                    "    <button type=\"submit\" class=\"btn btn-lg\">\n" +
-                    "        <span>3</span>\n" +
-                    "        <span style=\'color:orange\'>&#9733;</span>\n"+
-                    "        <span style=\'color:orange\'>&#9733;</span>\n"+
-                    "        <span style=\'color:orange\'>&#9733;</span>\n"+
-                    "        <span style=\'\'>&#9733;</span>\n"+
-                    "        <span style=\'\'>&#9733;</span>\n"+
-                    "    </button>\n" +
-                    "</a>\n" +
-                    "</div>\n" +
-                    "<br>\n" +
-                    "<div>\n" +
-                    "    <a href=\"http://pawserver.it.itba.edu.ar/paw-2019b-2/reservations/" + reservationHash.trim() + "/rate?rate=BAD\" target=\"_blank\">\n" +
-
-                    "    <button type=\"submit\" class=\"btn btn-lg\">\n" +
-                    "        <span>2</span>\n" +
-                    "        <span style=\'color:orange\'>&#9733;</span>\n"+
-                    "        <span style=\'color:orange\'>&#9733;</span>\n"+
-                    "        <span style=\'\'>&#9733;</span>\n"+
-                    "        <span style=\'\'>&#9733;</span>\n"+
-                    "        <span style=\'\'>&#9733;</span>\n"+
-                    "    </button>\n" +
-                    "</a>\n" +
-                    "</div>\n" +
-                    "<br>\n" +
-                    "<div>\n" +
-                    "    <a href=\"http://pawserver.it.itba.edu.ar/paw-2019b-2/reservations/" + reservationHash.trim() + "/rate?rate=AWFUL\" target=\"_blank\">\n" +
-                    "    <button type=\"submit\" class=\"btn btn-lg\">\n" +
-                    "        <span>1</span>\n" +
-                    "        <span style=\'color:orange\'>&#9733;</span>\n"+
-                    "        <span style=\'\'>&#9733;</span>\n"+
-                    "        <span style=\'\'>&#9733;</span>\n"+
-                    "        <span style=\'\'>&#9733;</span>\n"+
-                    "        <span style=\'\'>&#9733;</span>\n"+
-
-                    "    </button>\n" +
-                    "</a>\n" +
-                    "</div>\n" +
-                    "<br>\n" +
-                    "<div>\n" +
-                    "    <h3>Muchas gracias!</h3>\n" +
-                    "</div>\n" +
-                    "</body>\n" +
-                    "</html>", true);
+            helper.setText(createEmailText(reservationHash.trim()), true);
             helper.setTo(userEmail);
             helper.setSubject("Rate your stay!");
             helper.setFrom("paw.hotel.manager@gmail.com");
@@ -182,4 +98,50 @@ public class EmailServiceImpl implements EmailService {
                 "<p> <b>username:</b> " + to + " <br> <b>password</b>: " + password + "</p>";
     }
 
+    private String createEmailText(String reservation) {
+        return getHtmlBeginning() + getHtmlRating(reservation) + getHtmlEnd();
+    }
+
+    private String getHtmlBeginning() {
+        return "<!DOCTYPE html>\n" +
+            "<html>\n" +
+                "<head>\n" + "</head>\n" +
+                "<body style=\"margin-left: 15px;color:black\">\n" +
+                "<div style=\"font-family: Arial\">\n" +
+                "    <h1>Esperamos que haya disfrutado su estadía</h1>\n" +
+                "</div>\n" +
+                "<br>\n" +
+                "<div style=\"font-family: Arial\">\n" +
+                "    <h2>¿Nos podrías decir que tal te pareció nuestro servicio?</h2>\n" +
+                "</div>\n" +
+                "<br><br>\n";
+    }
+
+    private String getHtmlRating(String reservation) {
+        return getHtmlStars(reservation, "EXCELENTE") + getHtmlStars(reservation, "GOOD") + getHtmlStars(reservation, "NORMAL") + getHtmlStars(reservation, "BAD") + getHtmlStars(reservation, "AWFUL");
+    }
+
+    private String getHtmlStars(String reservation, String stars) {
+        return "<div>\n" +
+                "    <a href=\"http://pawserver.it.itba.edu.ar/paw-2019b-2/reservations/" + reservation + "/rate?rate=" + stars + "\" target=\"_blank\">\n" +
+                "        <button type=\"submit\" class=\"btn btn-lg\">\n" +
+                "            <span>5</span>\n" +
+                "            <span style=\'color:orange\'>&#9733;</span>\n" +
+                "            <span style=\'color:orange\'>&#9733;</span>\n" +
+                "            <span style=\'color:orange\'>&#9733;</span>\n" +
+                "            <span style=\'color:orange\'>&#9733;</span>\n" +
+                "            <span style=\'color:orange\'>&#9733;</span>\n" +
+                "        </button>\n" +
+                "    </a>\n" +
+                "</div>\n" +
+                "<br>\n";
+    }
+
+    private String getHtmlEnd() {
+        return  "<div>\n" +
+                    "<h3>Muchas gracias!</h3>\n" +
+                "</div>\n" +
+            "</body>\n" +
+        "</html>";
+    }
 }
