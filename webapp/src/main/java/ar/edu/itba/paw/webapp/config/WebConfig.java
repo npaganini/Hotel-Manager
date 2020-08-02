@@ -104,7 +104,7 @@ public class WebConfig implements WebMvcConfigurer {
 //        properties.setProperty("hibernate.hbm2ddl.auto", "update");
 
         // FIXME TODO create-drop for development only
-        properties.setProperty("hibernate.hbm2ddl.auto", "create-drop"); // poner create en vez de update BORRA todos los datos guardados, cuidado
+        properties.setProperty("hibernate.hbm2ddl.auto", "update"); // poner create en vez de update BORRA todos los datos guardados, cuidado
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL92Dialect");
 
         // TODO: BORRAR ANTES DE MANDAR A PROD
