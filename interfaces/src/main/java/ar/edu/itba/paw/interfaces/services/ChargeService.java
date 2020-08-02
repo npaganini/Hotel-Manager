@@ -14,4 +14,6 @@ public interface ChargeService {
     List<Charge> getAllChargesNotDelivered();
 
     int setChargeToDelivered(long chargeId) throws RequestInvalidException, EntityNotFoundException;
+
+    int setChargesToDelivered(List<Long> chargeId) throws RequestInvalidException, EntityNotFoundException;
 }

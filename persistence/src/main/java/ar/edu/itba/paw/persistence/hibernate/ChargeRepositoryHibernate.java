@@ -56,7 +56,7 @@ public class ChargeRepositoryHibernate extends SimpleRepositoryHibernate<Charge>
 
     @Override
     public List<Charge> findAllChargesNotDelivered() {
-        return em.createQuery("SELECT c FROM Charge AS c WHERE c.delivered = FALSE", Charge.class).getResultList();
+        return em.createQuery("SELECT c FROM Charge AS c WHERE c.delivered = FALSE ORDER BY c.reservation.id", Charge.class).getResultList();
     }
 
     @Override
@@ -72,6 +72,13 @@ public class ChargeRepositoryHibernate extends SimpleRepositoryHibernate<Charge>
         return 0;
     }
 
+    @Override
+    public int updateChargesToDelivered(List<Long> chargeIds) {
+        for (Long id: chargeIds) {
+            updateChargeToDelivered(id);
+        }
+        return 0;
+    }
 
     @Override
     String getTableName() {
