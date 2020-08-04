@@ -73,9 +73,14 @@ public class ChargeRepositoryHibernate extends SimpleRepositoryHibernate<Charge>
     }
 
     @Override
-    public int updateChargesToDelivered(List<Long> chargeIds) {
-        for (Long id: chargeIds) {
-            updateChargeToDelivered(id);
+    public List<Charge> findChargesByRoomNumber(long roomNumber) {
+        return em.createQuery("SELECT c FROM Charge AS c WHERE c.delivered = FALSE AND c.reservation.room.number = :roomNumber", Charge.class).getResultList();
+    }
+
+    @Override
+    public int updateChargesToDelivered(List<Charge> chargeList) {
+        for (Charge charge: chargeList) {
+            updateChargeToDelivered(charge.getId());
         }
         return 0;
     }

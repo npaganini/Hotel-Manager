@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,19 +61,14 @@ public class ChargeServiceImpl implements ChargeService {
     }
 
     @Override
-    public int setChargesToDelivered(List<Long> chargeId) throws RequestInvalidException, EntityNotFoundException {
-        for (Long id: chargeId) {
-            Optional<Charge> possibleCharge = chargeDao.findById(id);
-            if (possibleCharge.isPresent()) {
-                Charge chargeFound = possibleCharge.get();
-                if (chargeFound.isDelivered()) {
-                    LOGGER.debug("Charge with ID: " + id + " was already delivered.");
-                    throw new RequestInvalidException();
-                }
-            } else {
-                throw new EntityNotFoundException("Can't find charge with id " + chargeId);
+    public int setChargesToDelivered(long roomNumber) throws RequestInvalidException {
+        List<Charge> chargeList = chargeDao.findChargesByRoomNumber(roomNumber);
+        for (Charge c: chargeList) {
+            if (c.isDelivered()) {
+                LOGGER.debug("Charge with ID: " + c.getId() + " was already delivered.");
+                throw new RequestInvalidException();
             }
         }
-        return chargeDao.updateChargesToDelivered(chargeId);
+        return chargeDao.updateChargesToDelivered(chargeList);
     }
 }
