@@ -131,10 +131,10 @@ public class RoomController extends SimpleController {
         return mav;
     }
 
-    @GetMapping("/orders/sendOrder")
-    public ModelAndView sendOrder(@RequestParam(value = "chargeId", required = false) long chargeId) throws Exception {
+    @GetMapping("/orders/sendOrders")
+    public ModelAndView sendOrder(@RequestParam(value = "roomNumber", required = false) long roomNumber) throws Exception {
         final ModelAndView mav = new ModelAndView("orderFinished");
-        chargeService.setChargeToDelivered(chargeId);
+        chargeService.setChargesToDelivered(roomNumber);
         return mav;
     }
 

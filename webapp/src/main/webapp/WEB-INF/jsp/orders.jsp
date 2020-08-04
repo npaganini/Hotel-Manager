@@ -99,43 +99,39 @@
     <br>
     <br>
     <div class="row">
-        <div class="col-xs-8 form-group" style="z-index:9999;grid-auto-columns: auto">
+        <div class="col-xs-4 form-group" style="z-index:9999;grid-auto-columns: auto">
             <table id="myTable" class="display" style="width:100%;  border: 1px solid black !important;">
-                <thead>
-                <tr>
-                    <th><spring:message code="product.singular"/></th>
-                    <th><spring:message code="room.singular"/></th>
-                    <th><spring:message code="room.state"/></th>
-                </tr>
+                <thead class="thead-dark">
+                    <tr>
+                        <th><spring:message code="room.singular"/></th>
+                        <th><spring:message code="product.plural"/></th>
+                    </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="order" items="${orders}">
-                    <tr>
-
+                    <c:set var="latestNumber" value="0"/>
+                    <c:forEach var="order" items="${orders}">
+                        <tr>
+                            <c:if test="${order.reservation.room.number != latestNumber}">
+                                <th class="thead-light" style="text-align: center">
+                                    ${order.reservation.room.number}
+                                </th>
+                                <th class="thead-light">
+                                    <button style="text-align: center" onclick="disableButtons(this)" id="deliver"
+                                            value="${order.reservation.room.number}"
+                                            type="button" class="btn btn-default btn-lg">
+                                        <div style="color: black">
+                                            <a style="color: black">
+                                                <spring:message code="send"/>
+                                            </a>
+                                        </div>
+                                    </button>
+                                </th>
+                            </c:if>
+                        </tr>
+                        <td></td>
                         <td style="text-align: left">${order.product.description}</td>
-                        <td style="text-align: left">${order.reservation.room.number}</td>
-
-                        <c:if test="${order.delivered == false}">
-                            <td style="text-align: left">
-                                <button onclick="disableButtons(this)" id="finished" value="${order.id}" type="button"
-                                        class="btn btn-default btn-lg">
-                                    <div style="color: black">
-                                        <a style="color: black">
-                                            <spring:message code="send"/>
-                                        </a>
-                                    </div>
-                                </button>
-                            </td>
-                        </c:if>
-
-                        <c:if test="${order.delivered == true}">
-                            <td style="text-align: left">
-                                <div><spring:message code="done"/></div>
-                            </td>
-                        </c:if>
-
-                    </tr>
-                </c:forEach>
+                        <c:set var="latestNumber" value="${order.reservation.room.number}"/>
+                    </c:forEach>
                 </tbody>
             </table>
         </div>
@@ -181,9 +177,9 @@
 
         $('#finished').off().on('click', function (event) {
             var basePath;
-            var chargeId = $('#finished').val();
+            var roomNumber = $('#deliver').val();
 
-            basePath = "${pageContext.request.contextPath}" + "/rooms/orders/sendOrder?chargeId=" + chargeId;
+            basePath = "${pageContext.request.contextPath}" + "/rooms/orders/sendOrders?roomNumber=" + roomNumber;
             event.preventDefault();
             location.href = basePath;
             return false;
@@ -196,7 +192,7 @@
         document.getElementById("finished").disabled = true;
         document.getElementById("refresh").disabled = true;
         document.getElementById("back").disabled = true;
-        location.href = "${pageContext.request.contextPath}" + "/rooms/orders/sendOrder?chargeId=" + event.value;
+        <%--location.href = "${pageContext.request.contextPath}" + "/rooms/orders/sendOrder?chargeId=" + event.value;--%>
     }
 </script>
 
