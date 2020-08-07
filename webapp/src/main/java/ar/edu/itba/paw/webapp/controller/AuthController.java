@@ -28,4 +28,9 @@ public class AuthController {
         }
         return "redirect:/" + home + "/home";
     }
+
+    @RequestMapping("/index")
+    public String redirectIndex(Authentication authentication) {
+        return redirect(authentication);
+    }
 }
