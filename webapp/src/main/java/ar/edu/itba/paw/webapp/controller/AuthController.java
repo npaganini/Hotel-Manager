@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.models.user.UserRole;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -18,7 +20,12 @@ public class AuthController {
     }
 
     @RequestMapping("/")
-    public String redirect() {
-        return "redirect:/login";
+    public String redirect(Authentication authentication) {
+        String role = authentication.getAuthorities().toString();
+        String home = "user";
+        if (!role.contains(UserRole.CLIENT.toString())) {
+            home = "rooms";
+        }
+        return "redirect:/" + home + "/home";
     }
 }
