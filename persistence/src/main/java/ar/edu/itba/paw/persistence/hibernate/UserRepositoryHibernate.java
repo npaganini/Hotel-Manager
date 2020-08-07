@@ -28,8 +28,8 @@ public class UserRepositoryHibernate extends SimpleRepositoryHibernate<User> imp
     }
 
     @Override
-    String getTableName() {
-        return "User ";
+    String getModelName() {
+        return User.NAME + " ";
     }
 
     @Override

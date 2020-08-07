@@ -15,7 +15,7 @@ public class RoomRepositoryHibernate extends SimpleRepositoryHibernate<Room> imp
 
     @Override
     public List<Room> findAllFreeBetweenDates(Calendar startDate, Calendar endDate) {
-        final TypedQuery<Room> query = em.createQuery("SELECT ro FROM " + getTableName() + " as ro WHERE NOT EXISTS (" +
+        final TypedQuery<Room> query = em.createQuery("SELECT ro FROM " + getModelName() + " as ro WHERE NOT EXISTS (" +
                 "SELECT res FROM Reservation as res WHERE ((:startDate <= res.endDate " +
                 "AND :startDate >= res.startDate) OR (:endDate >= res.startDate AND :endDate <= res.endDate)) AND res.room.id = ro.id" +
                 ")", Room.class);
@@ -45,8 +45,8 @@ public class RoomRepositoryHibernate extends SimpleRepositoryHibernate<Room> imp
     }
 
     @Override
-    String getTableName() {
-        return "Room ";
+    String getModelName() {
+        return Room.NAME + " ";
     }
 
     @Override

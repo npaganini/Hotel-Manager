@@ -24,7 +24,7 @@ public class Room {
     public static final String KEY_FREE_NOW = "is_free_now";
     public static final String KEY_NUMBER = "number";
 
-    public static final String TABLE_NAME = "room";
+    public static final String NAME = "room";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
