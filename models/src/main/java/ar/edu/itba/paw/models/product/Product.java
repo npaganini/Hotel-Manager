@@ -34,7 +34,7 @@ public class Product {
     private String description;
 
     @Column(nullable = false)
-    private Double price;
+    private double price;
 
     private byte[] file;
 
