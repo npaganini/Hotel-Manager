@@ -116,9 +116,8 @@
                                     ${order.reservation.room.number}
                                 </th>
                                 <th class="thead-light">
-                                    <button style="text-align: center" onclick="disableButtons(this)" id="deliver"
-                                            value="${order.reservation.room.number}"
-                                            type="button" class="btn btn-default btn-lg">
+                                    <button onclick="disableButtons(this)" id="deliver" value="${order.reservation.room.number}" type="button"
+                                            class="btn btn-default btn-lg">
                                         <div style="color: black">
                                             <a style="color: black">
                                                 <spring:message code="send"/>
@@ -174,8 +173,7 @@
     });
 
     $(document).ready(function () {
-
-        $('#finished').off().on('click', function (event) {
+        $('#deliver').off().on('click', function (event) {
             var basePath;
             var roomNumber = $('#deliver').val();
 
@@ -183,16 +181,14 @@
             event.preventDefault();
             location.href = basePath;
             return false;
-
         })
-
     });
 
     function disableButtons(event) {
-        document.getElementById("finished").disabled = true;
+        document.getElementById("deliver").disabled = true;
         document.getElementById("refresh").disabled = true;
         document.getElementById("back").disabled = true;
-        <%--location.href = "${pageContext.request.contextPath}" + "/rooms/orders/sendOrder?chargeId=" + event.value;--%>
+        location.href = "${pageContext.request.contextPath}" + "/rooms/orders/sendOrders?roomNumber=" + event.value;
     }
 </script>
 
