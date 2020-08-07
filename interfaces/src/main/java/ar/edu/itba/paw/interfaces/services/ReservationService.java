@@ -12,7 +12,7 @@ public interface ReservationService {
 
     Reservation getReservationByHash(String hash) throws EntityNotFoundException;
 
-    void activeReservation(long reservationId) throws RequestInvalidException;
+    boolean activeReservation(long reservationId) throws RequestInvalidException;
 
     void inactiveReservation(long reservationId) throws RequestInvalidException;
 

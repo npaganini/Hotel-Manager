@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
@@ -51,12 +52,16 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public void activeReservation(long reservationId) throws RequestInvalidException {
+    public boolean activeReservation(long reservationId) throws RequestInvalidException {
         LOGGER.debug("About to set reservation with id " + reservationId + " to active");
-        if (reservationDao.findById(Math.toIntExact(reservationId)).orElseThrow(RequestInvalidException::new).isActive()) {
+        Optional<Reservation> possibleReservation = reservationDao.findById(Math.toIntExact(reservationId));
+        if (!possibleReservation.isPresent()) {
+            return false;
+        }
+        if (possibleReservation.get().isActive()) {
             throw new RequestInvalidException();
         }
-        reservationDao.updateActive(reservationId, true);
+        return reservationDao.updateActive(reservationId, true);
     }
 
     @Override

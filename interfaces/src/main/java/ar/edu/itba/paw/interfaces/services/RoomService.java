@@ -19,5 +19,5 @@ public interface RoomService {
 
     CheckoutDTO doCheckout(String reservationHash) throws EntityNotFoundException, RequestInvalidException;
 
-    void doCheckin(String reservationHash) throws RequestInvalidException, EntityNotFoundException;
+    boolean doCheckin(String reservationHash) throws RequestInvalidException, EntityNotFoundException;
 }

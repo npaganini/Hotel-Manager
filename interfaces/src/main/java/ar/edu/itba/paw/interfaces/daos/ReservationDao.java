@@ -10,7 +10,7 @@ public interface ReservationDao extends SimpleDao<Reservation> {
 
     Optional<Reservation> findReservationByHash(String hash);
 
-    int updateActive(long reservationId, boolean b);
+    boolean updateActive(long reservationId, boolean b);
 
     List<Reservation> findActiveReservationsByEmail(String userEmail);
 

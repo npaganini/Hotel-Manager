@@ -84,13 +84,13 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional
-    public void doCheckin(String reservationHash) throws RequestInvalidException, ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException {
+    public boolean doCheckin(String reservationHash) throws RequestInvalidException, ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException {
         Reservation reservation = reservationService.getReservationByHash(reservationHash.trim());
         if (reservation.isActive()) {
             throw new RequestInvalidException();
         }
         reserveRoom(reservation.getRoom().getId(), reservation);
-        reservationService.activeReservation(reservation.getId());
+        return reservationService.activeReservation(reservation.getId());
     }
 
 }

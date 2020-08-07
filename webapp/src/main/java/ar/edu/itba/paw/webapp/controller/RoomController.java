@@ -70,7 +70,9 @@ public class RoomController extends SimpleController {
     public ModelAndView checkinPost(@ModelAttribute("checkinForm") final CheckinForm form) throws RequestInvalidException, EntityNotFoundException {
         final ModelAndView mav = new ModelAndView("checkinPost");
         LOGGER.debug("Request received to do the check-in on reservation with hash: " + form.getId_reservation());
-        roomService.doCheckin(form.getId_reservation());
+        if (!roomService.doCheckin(form.getId_reservation())) {
+            mav.addObject("error");
+        }
         return mav;
     }
 
