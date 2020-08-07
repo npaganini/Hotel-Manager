@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class OccupantRepositoryHibernate extends SimpleRepositoryHibernate<Occupant> implements OccupantDao {
     @Override
-    String getTableName() {
+    String getModelName() {
         return "Occupant";
     }
 

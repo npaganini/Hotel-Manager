@@ -53,8 +53,8 @@ public class HelpRepositoryHibernate extends SimpleRepositoryHibernate<Help> imp
     }
 
     @Override
-    String getTableName() {
-        return "Help ";
+    String getModelName() {
+        return Help.NAME + " ";
     }
 
     @Override
