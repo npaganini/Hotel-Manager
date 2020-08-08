@@ -94,6 +94,37 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
     }
 
     @Override
+    public double getHotelRating() {
+        return em.createQuery("SELECT AVG(r.calification) FROM Reservation r", Double.class).getSingleResult();
+    }
+
+    @Override
+    public List<Calification> getAllRatings() {
+        return em.createQuery(
+                "SELECT r.calification FROM Reservation r WHERE r.calification IS NOT NULL",
+                Calification.class)
+                .getResultList();
+    }
+
+    @Override
+    public double getRoomRating(long roomId) {
+        return em.createQuery(
+                "SELECT AVG(r.calification) FROM Reservation r WHERE r.room.id = :roomId",
+                Double.class)
+                .setParameter("roomId", roomId)
+                .getSingleResult();
+    }
+
+    @Override
+    public List<Calification> getRatingsByRoom(long roomId) {
+        return em.createQuery(
+                "SELECT r.calification FROM Reservation r WHERE r.room.id = :roomId AND r.calification IS NOT NULL",
+                Calification.class)
+                .setParameter("roomId", roomId)
+                .getResultList();
+    }
+
+    @Override
     String getModelName() {
         return Reservation.NAME + " ";
     }
