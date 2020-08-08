@@ -21,21 +21,25 @@ public class RatingsServiceImpl implements RatingsService {
 
     @Override
     public double getHotelRating() {
+        LOGGER.debug("About to get the general hotel rating.");
         return reservationDao.getHotelRating();
     }
 
     @Override
     public List<Calification> getAllHotelRatings() {
+        LOGGER.debug("Getting a list of all hotel ratings...");
         return reservationDao.getAllRatings();
     }
 
     @Override
     public double getRoomRating(long roomId) {
+        LOGGER.debug("Getting the room's rating for room with id: " + roomId);
         return reservationDao.getRoomRating(roomId);
     }
 
     @Override
     public List<Calification> getAllRoomRatings(long roomId) {
+        LOGGER.debug("Getting a list of all the room's ratings for room with id: " + roomId);
         return reservationDao.getRatingsByRoom(roomId);
     }
 }
