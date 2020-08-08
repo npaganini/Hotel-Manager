@@ -2,7 +2,6 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.daos.ProductDao;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
-import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.ProductService;
 import ar.edu.itba.paw.models.product.Product;
 import org.slf4j.Logger;
