@@ -53,10 +53,22 @@ public class ChargeServiceImpl implements ChargeService {
     @Transactional
     public int setChargeToDelivered(long chargeId) throws RequestInvalidException, EntityNotFoundException {
         Charge charge = chargeDao.findById(chargeId).orElseThrow(() ->
-                new EntityNotFoundException("Cant find charge with id " + chargeId));
+                new EntityNotFoundException("Can't find charge with id " + chargeId));
         if (charge.isDelivered()) {
             throw new RequestInvalidException();
         }
         return chargeDao.updateChargeToDelivered(chargeId);
+    }
+
+    @Override
+    public int setChargesToDelivered(long roomNumber) throws RequestInvalidException {
+        List<Charge> chargeList = chargeDao.findChargesByRoomNumber(roomNumber);
+        for (Charge c: chargeList) {
+            if (c.isDelivered()) {
+                LOGGER.debug("Charge with ID: " + c.getId() + " was already delivered.");
+                throw new RequestInvalidException();
+            }
+        }
+        return chargeDao.updateChargesToDelivered(chargeList);
     }
 }

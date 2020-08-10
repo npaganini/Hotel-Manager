@@ -7,6 +7,7 @@ import ar.edu.itba.paw.interfaces.services.ReservationService;
 import ar.edu.itba.paw.interfaces.services.RoomService;
 import ar.edu.itba.paw.models.dtos.CheckoutDTO;
 import ar.edu.itba.paw.models.occupant.Occupant;
+import ar.edu.itba.paw.models.product.Product;
 import form.CheckinForm;
 import form.CheckoutForm;
 import form.RegistrationForm;
@@ -18,7 +19,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -131,11 +134,11 @@ public class RoomController extends SimpleController {
         return mav;
     }
 
-    @GetMapping("/orders/sendOrder")
-    public ModelAndView sendOrder(@RequestParam(value = "chargeId", required = false) long chargeId) throws Exception {
-        final ModelAndView mav = new ModelAndView("orderFinished");
-        chargeService.setChargeToDelivered(chargeId);
-        return mav;
+    @GetMapping("/orders/sendOrders")
+    public ModelAndView sendOrder(@RequestParam(value = "roomNumber") long roomNumber) throws Exception {
+        LOGGER.debug("Order request sent for room number: " + roomNumber);
+        chargeService.setChargesToDelivered(roomNumber);
+        return new ModelAndView("orderFinished");
     }
 
     @GetMapping("/registration")
@@ -157,7 +160,7 @@ public class RoomController extends SimpleController {
         return mav;
     }
 
-    // FIXME this is disgusting but we couldnt crate a list from jsp
+    // FIXME:  this is disgusting but we couldn't create a list from jsp
     private List<Occupant> getListOfOccupantsFromForm(RegistrationForm form) {
         List<Occupant> occupants = new ArrayList<>();
         if (form.getName_1() != null && form.getName_1().length() > 0
