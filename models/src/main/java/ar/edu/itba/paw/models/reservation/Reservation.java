@@ -32,7 +32,7 @@ public class Reservation {
     public final static String KEY_IS_ACTIVE = "is_active";
     public final static String KEY_USER_ID = "user_id";
 
-    public final static String TABLE_NAME = "reservation";
+    public final static String NAME = "reservation";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -23,7 +23,7 @@ public class Product {
     public final static String KEY_FILE = "file";
     public final static String KEY_ENABLE = "enable";
 
-    public final static String TABLE_NAME = "product";
+    public final static String NAME = "product";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

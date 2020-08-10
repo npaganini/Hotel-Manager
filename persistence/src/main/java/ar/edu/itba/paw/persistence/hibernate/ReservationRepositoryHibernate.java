@@ -1,19 +1,12 @@
 package ar.edu.itba.paw.persistence.hibernate;
 
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
-import ar.edu.itba.paw.models.charge.Charge;
-import ar.edu.itba.paw.models.dtos.ProductAmountDTO;
-import ar.edu.itba.paw.models.occupant.Occupant;
-import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.models.reservation.Calification;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
-import java.lang.reflect.Array;
 import java.util.*;
 
 @Repository
@@ -22,7 +15,7 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
     @Override
     public Optional<Reservation> findReservationByHash(String hash) {
         return Optional.of(
-                em.createQuery("SELECT r FROM " + getTableName() + " r WHERE r.hash = :hash", getModelClass())
+                em.createQuery("SELECT r FROM " + getModelName() + " r WHERE r.hash = :hash", getModelClass())
                         .setParameter("hash", hash)
                         .getSingleResult()
         );
@@ -79,7 +72,7 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
 
     @Override
     public List<Reservation> findActiveReservationsByEmail(String userEmail) {
-        return em.createQuery("SELECT r FROM " + getTableName() + " r WHERE r.userEmail = :userEmail AND r.isActive = true", getModelClass())
+        return em.createQuery("SELECT r FROM " + getModelName() + " r WHERE r.userEmail = :userEmail AND r.isActive = true", getModelClass())
                 .setParameter("userEmail", userEmail)
                 .getResultList();
     }
@@ -101,8 +94,8 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
     }
 
     @Override
-    String getTableName() {
-        return "Reservation ";
+    String getModelName() {
+        return Reservation.NAME + " ";
     }
 
     @Override
