@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 @Getter
@@ -44,14 +42,6 @@ public class User implements Serializable    {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
     private List<Reservation> reservations;
-
-    public User(ResultSet resultSet) throws SQLException {
-        this.id = resultSet.getInt(KEY_ID);
-        this.email = resultSet.getString(KEY_EMAIL);
-        this.role = UserRole.valueOf(resultSet.getString(KEY_ROLE));
-        this.password = resultSet.getString(KEY_PASSWORD);
-        this.username = resultSet.getString(KEY_USERNAME);
-    }
 
     public User(String email, String username, String password) {
         this.email = email;
