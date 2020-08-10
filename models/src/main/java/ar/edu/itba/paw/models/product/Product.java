@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 @Getter
 @Setter
@@ -40,14 +38,6 @@ public class Product {
 
     @Column(nullable = false)
     private boolean enable;
-
-    public Product(ResultSet resultSet) throws SQLException {
-        this.id = resultSet.getInt(KEY_ID);
-        this.description = resultSet.getString(KEY_DESCRIPTION);
-        this.price = resultSet.getDouble(KEY_PRICE);
-        this.file = resultSet.getBytes(KEY_FILE);
-        this.enable = resultSet.getBoolean(KEY_ENABLE);
-    }
 
     public Product(String description, double price) {
         this.description = description;

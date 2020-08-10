@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 @Getter
@@ -43,12 +41,4 @@ public class Room {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "room")
     private List<Reservation> reservations;
-
-    public Room(ResultSet resultSet) throws SQLException {
-        this.id = resultSet.getInt(KEY_ID);
-        this.roomType = RoomType.valueOf(resultSet.getString(KEY_ROOM_TYPE));
-        this.freeNow = resultSet.getBoolean(KEY_FREE_NOW);
-        this.number = resultSet.getInt(KEY_NUMBER);
-    }
-
 }
