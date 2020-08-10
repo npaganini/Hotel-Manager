@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
@@ -122,8 +121,7 @@ public class ReservationServiceImpl implements ReservationService {
         LOGGER.debug("Saving reservation...");
         Reservation reservation = reservationDao.save(new Reservation(room, userEmail, startDate, endDate, user));
         LOGGER.debug("Sending email with confirmation of reservation to user");
-        emailService.sendConfirmationOfReservation(userEmail, "Reserva confirmada",
-                reservation.getHash(), user.getPassword());
+        emailService.sendConfirmationOfReservation(userEmail, reservation.getHash(), user.getPassword());
         return reservation;
     }
 
