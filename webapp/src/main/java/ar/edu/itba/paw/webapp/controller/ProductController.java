@@ -4,7 +4,7 @@ import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.ProductService;
 import ar.edu.itba.paw.models.product.Product;
-import ar.edu.itba.paw.webapp.form.ProductForm;
+import ar.edu.itba.paw.webapp.form.AddProductForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,23 +51,23 @@ public class ProductController {
     }
 
     @PostMapping("/products/addProduct")
-    public String addProduct(@ModelAttribute ProductForm productForm,
+    public String addProduct(@ModelAttribute AddProductForm addProductForm,
                              RedirectAttributes redirectAttributes) throws IOException, RequestInvalidException {
-        if (productForm.getPrice() < 0) {
+        if (addProductForm.getPrice() < 0) {
             throw new RequestInvalidException();
         }
         LOGGER.debug("Request to add product to DB received");
-        productService.saveProduct(new Product(productForm.getDescription(),
-                productForm.getPrice(), productForm.getImg().getBytes()));
+        productService.saveProduct(new Product(addProductForm.getDescription(),
+                addProductForm.getPrice(), addProductForm.getImg().getBytes()));
         LOGGER.debug("Product was saved succesfully");
         redirectAttributes.addFlashAttribute("message",
-                "You successfully uploaded " + productForm.getImg().getOriginalFilename() + "!");
+                "You successfully uploaded " + addProductForm.getImg().getOriginalFilename() + "!");
         return "redirect:/products";
     }
 
     @GetMapping(value = "/products/addProduct")
     public String inputProduct(Model model) {
-        model.addAttribute("productForm", new ProductForm());
+        model.addAttribute("productForm", new AddProductForm());
         return "addProduct";
     }
 
