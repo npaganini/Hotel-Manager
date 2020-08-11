@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Setter
 @NoArgsConstructor
 @Getter
-public class ProductForm {
+public class AddProductForm {
     private MultipartFile img;
     private String description;
     private double price;
