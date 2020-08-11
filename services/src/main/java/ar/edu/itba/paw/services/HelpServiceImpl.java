@@ -27,8 +27,8 @@ public class HelpServiceImpl implements HelpService {
     }
 
     @Override
-    public List<Help> getAllHelpRequestsByReservationId(long reservationId) throws RequestInvalidException {
-        Reservation reservation = reservationDao.findById(Math.toIntExact(reservationId)).orElseThrow(EntityNotFoundException::new);
+    public List<Help> getAllHelpRequestsByReservationId(long reservationId) {
+        Reservation reservation = reservationDao.findById(reservationId).orElseThrow(EntityNotFoundException::new);
         return helpDao.findHelpRequestByReservationHash(reservation.getId());
     }
 
@@ -70,7 +70,7 @@ public class HelpServiceImpl implements HelpService {
     @Transactional
     @Override
     public boolean setRequestToRequiresFurtherAction(long helpId) throws RequestInvalidException {
-        Help helpRequest = helpDao.findById(Math.toIntExact(helpId)).orElseThrow(EntityNotFoundException::new);
+        Help helpRequest = helpDao.findById(helpId).orElseThrow(EntityNotFoundException::new);
         if(helpRequest != null) {
             return helpDao.updateRequestToRequiresFurtherAction(helpId);
         }
@@ -80,7 +80,7 @@ public class HelpServiceImpl implements HelpService {
     @Transactional
     @Override
     public String requestHelp(String text, long reservationId) {
-        Reservation reservation = reservationDao.findById(Math.toIntExact(reservationId)).orElseThrow(EntityNotFoundException::new);
+        Reservation reservation = reservationDao.findById(reservationId).orElseThrow(EntityNotFoundException::new);
         if(text.length() > 0 && isValidString(text)) {
             return helpDao.save(new Help(text, reservation)).getHelpText();
         }

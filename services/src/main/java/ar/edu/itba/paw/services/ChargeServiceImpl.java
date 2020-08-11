@@ -31,7 +31,7 @@ public class ChargeServiceImpl implements ChargeService {
     @Override
     public List<Charge> getAllChargesByReservationId(long reservationId) throws RequestInvalidException {
         LOGGER.debug("Getting all current charges for reservation with id " + reservationId);
-        Optional<Reservation> reservationOptional = reservationDao.findById(Math.toIntExact(reservationId));
+        Optional<Reservation> reservationOptional = reservationDao.findById(reservationId);
         if (!reservationOptional.isPresent() || !reservationOptional.get().isActive()) {
             throw new RequestInvalidException();
         }

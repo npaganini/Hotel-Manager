@@ -53,7 +53,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public boolean activeReservation(long reservationId) throws RequestInvalidException {
         LOGGER.debug("About to set reservation with id " + reservationId + " to active");
-        Optional<Reservation> possibleReservation = reservationDao.findById(Math.toIntExact(reservationId));
+        Optional<Reservation> possibleReservation = reservationDao.findById(reservationId);
         if (!possibleReservation.isPresent()) {
             return false;
         }
@@ -66,7 +66,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public void inactiveReservation(long reservationId) throws RequestInvalidException {
         LOGGER.debug("About to set reservation with id " + reservationId + " to unactivated");
-        if (!reservationDao.findById(Math.toIntExact(reservationId)).orElseThrow(RequestInvalidException::new).isActive()) {
+        if (!reservationDao.findById(reservationId).orElseThrow(RequestInvalidException::new).isActive()) {
             throw new RequestInvalidException();
         }
         reservationDao.updateActive(reservationId, false);

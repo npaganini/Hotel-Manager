@@ -21,7 +21,7 @@ public class User implements Serializable    {
     public final static String KEY_PASSWORD = "password";
     public final static String KEY_ROLE = "role";
 
-    public final static String NAME = "users";
+    public final static String NAME = "Users";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

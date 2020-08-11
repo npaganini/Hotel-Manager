@@ -21,7 +21,7 @@ public class Product {
     public final static String KEY_FILE = "file";
     public final static String KEY_ENABLE = "enable";
 
-    public final static String NAME = "product";
+    public final static String NAME = "Product";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

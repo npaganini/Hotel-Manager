@@ -21,7 +21,7 @@ public class Charge {
     public final static String KEY_RESERVATIONID = "reservation_id";
     public final static String KEY_DELIVERED = "delivered";
 
-    public final static String NAME = "charge";
+    public final static String NAME = "Charge";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
