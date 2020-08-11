@@ -6,10 +6,12 @@ import ar.edu.itba.paw.webapp.form.HelpStatusForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.ModelAndView;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.Response;
 
 @Controller
 public class HelpController {
@@ -21,24 +23,22 @@ public class HelpController {
         this.helpService = helpService;
     }
 
-    @GetMapping("/helpList")
-    public ModelAndView help(@ModelAttribute("getHelpForm") HelpStatusForm helpForm) {
-        final ModelAndView mav = new ModelAndView("helpRequests");
+    @GET
+    @Path("/helpList")
+    public Response help(@ModelAttribute("getHelpForm") HelpStatusForm helpForm) {
+        // todo: mav was "helpRequests.jsp"
         LOGGER.debug("Request attempted to get the list of help requests.");
-        mav.addObject("updated", false);
-        mav.addObject("helpList", helpService.getAllRequestsThatRequireAction());
-        return mav;
+        return Response.ok(helpService.getAllRequestsThatRequireAction()).build();
     }
 
-    @PostMapping("/updateHelpStep")
-    public ModelAndView updateHelpStep(@ModelAttribute("getHelpForm") HelpStatusForm helpForm) throws RequestInvalidException {
-        final ModelAndView mav = new ModelAndView("helpRequests");
+    @POST
+    @Path("/updateHelpStep")
+    public Response updateHelpStep(@ModelAttribute("getHelpForm") HelpStatusForm helpForm) throws RequestInvalidException {
+        // todo: mav was "helpRequests.jsp"
         LOGGER.debug("Attempted to update status on help request.");
         if(helpService.updateStatus(helpForm.getHelpId(), helpForm.getStatus())) {
-            mav.addObject("updated", true);
-            mav.addObject("helpList", helpService.getAllRequestsThatRequireAction());
-            return mav;
+            return Response.ok(helpService.getAllRequestsThatRequireAction()).build();
         }
-        throw new RequestInvalidException();
+        return Response.status(Response.Status.BAD_REQUEST).build();
     }
 }

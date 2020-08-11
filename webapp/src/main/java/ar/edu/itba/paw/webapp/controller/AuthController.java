@@ -4,22 +4,30 @@ import ar.edu.itba.paw.models.user.UserRole;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.Response;
 
 @Controller
 public class AuthController {
 
-    @RequestMapping("/login")
-    public ModelAndView login() {
-        return new ModelAndView("login");
+    @GET
+    @Path("/login")
+    public Response login() {
+        // todo: mav was "login.jsp"
+        return Response.ok().build();
     }
 
-    @RequestMapping("/403")
-    public ModelAndView forbidden() {
-        return new ModelAndView("403");
+    @GET
+    @Path("/403")
+    public Response forbidden() {
+        // todo: mav was "403.jsp"
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
-    @RequestMapping("/")
+    @GET
+    @Path("/")
     public String redirect(Authentication authentication) {
         String role = authentication.getAuthorities().toString();
         String home = "user";
@@ -29,7 +37,8 @@ public class AuthController {
         return "redirect:/" + home + "/home";
     }
 
-    @RequestMapping("/index")
+    @GET
+    @Path("/index")
     public String redirectIndex(Authentication authentication) {
         return redirect(authentication);
     }
