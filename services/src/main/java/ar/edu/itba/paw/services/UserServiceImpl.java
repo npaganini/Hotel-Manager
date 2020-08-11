@@ -55,9 +55,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public Charge addCharge(long productId, long reservationId) throws EntityNotFoundException {
         Product product = productDao.findById(productId).orElseThrow(
-                () -> new EntityNotFoundException("Cant find product with id " + productId));
+                () -> new EntityNotFoundException("Can't find product with id " + productId));
         Reservation reservation = reservationDao.findById(reservationId).orElseThrow(
-                () -> new EntityNotFoundException("Cant find reservation with id " + reservationId));
+                () -> new EntityNotFoundException("Can't find reservation with id " + reservationId));
         return chargeDao.save(new Charge(product, reservation));
     }
 
@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
             user = userOptional.get();
             LOGGER.debug("There is already an user created with email " + userEmail);
         } else {
-            LOGGER.debug("There is not an user created with email " + userEmail + ". So we create one");
+            LOGGER.debug("There is no user created with email " + userEmail + ". So we'll create one");
             user = userDao.save(new User(userEmail,
                     userEmail,
                     new BCryptPasswordEncoder().encode(userEmail)));
@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String requestHelp(String text, long reservationId) throws EntityNotFoundException {
-        Reservation reservation = reservationDao.findById(Math.toIntExact(reservationId)).orElseThrow(() -> new EntityNotFoundException("Cant find reservation"));
+        Reservation reservation = reservationDao.findById(reservationId).orElseThrow(() -> new EntityNotFoundException("Can't find reservation"));
         if(text.length() > 0 && isValidString(text)) {
             return helpDao.save(new Help(text, reservation)).getHelpText();
         }
