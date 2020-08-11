@@ -39,20 +39,20 @@ public class EmailServiceImpl implements EmailService {
 
     public void sendConfirmationOfReservation(String to, String hash, String password) {
         LOGGER.debug("About to send email notifying the confirmation of reservation to " + to);
-        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
-        String subject = messageSourceExternalizer.getMessage("email.reservationConfirmationSubject");
-        LOGGER.debug("Got the following message from message source " + subject);
-
-        try {
-            helper.setText(getHtmlMessageForReservation(to, hash, password), true);
-            helper.setTo(to);
-            helper.setSubject(subject);
-            helper.setFrom("paw.hotel.manager@gmail.com");
-        } catch (MessagingException e) {
-            LOGGER.error(e.toString());
-        }
-        javaMailSender.send(mimeMessage);
+//        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+//        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+//        String subject = messageSourceExternalizer.getMessage("email.reservationConfirmationSubject");
+//        LOGGER.debug("Got the following message from message source " + subject);
+//
+//        try {
+//            helper.setText(getHtmlMessageForReservation(to, hash, password), true);
+//            helper.setTo(to);
+//            helper.setSubject(subject);
+//            helper.setFrom("paw.hotel.manager@gmail.com");
+//        } catch (MessagingException e) {
+//            LOGGER.error(e.toString());
+//        }
+//        javaMailSender.send(mimeMessage);
     }
 
     @Override

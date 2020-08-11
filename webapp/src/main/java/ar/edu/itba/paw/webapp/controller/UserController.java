@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/user")
 public class UserController extends SimpleController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RoomController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
 
