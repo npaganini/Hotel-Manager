@@ -1,4 +1,4 @@
-package form;
+package ar.edu.itba.paw.webapp.form;
 
 import lombok.Getter;
 import lombok.Setter;
