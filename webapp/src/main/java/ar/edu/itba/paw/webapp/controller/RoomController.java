@@ -7,6 +7,7 @@ import ar.edu.itba.paw.interfaces.services.ReservationService;
 import ar.edu.itba.paw.interfaces.services.RoomService;
 import ar.edu.itba.paw.models.dtos.CheckoutDTO;
 import ar.edu.itba.paw.models.occupant.Occupant;
+import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.webapp.form.CheckinForm;
 import ar.edu.itba.paw.webapp.form.CheckoutForm;
 import ar.edu.itba.paw.webapp.form.RegistrationForm;
@@ -17,15 +18,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+import java.net.URI;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("rooms")
+@Path("rooms")
 public class RoomController extends SimpleController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RoomController.class);
@@ -34,6 +43,9 @@ public class RoomController extends SimpleController {
     private final ReservationService reservationService;
     private final ChargeService chargeService;
 
+    @Context
+    private UriInfo uriInfo;
+
     @Autowired
     public RoomController(RoomService roomService, ReservationService reservationService, ChargeService chargeService) {
         this.roomService = roomService;
@@ -41,120 +53,123 @@ public class RoomController extends SimpleController {
         this.chargeService = chargeService;
     }
 
-    @GetMapping("/home")
-    public ModelAndView getAllRooms() {
-        final ModelAndView mav = new ModelAndView("index");
+    @GET
+    @Path("/home")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getAllRooms() {
         LOGGER.debug("Request received to retrieve whole roomsList");
-        mav.addObject("ReservationsList", reservationService.getRoomsReservedActive());
-        return mav;
+        final List<Reservation> roomsReserved = reservationService.getRoomsReservedActive();
+        return Response.ok(roomsReserved).build();
     }
 
-    @PostMapping("/reservationPost")
+    @POST
+    @Path("/reservationPost")
     @Transactional
-    public ModelAndView reservationPost(@ModelAttribute("reservationForm") final ReservationForm form) throws RequestInvalidException, ParseException {
-        final ModelAndView mav = new ModelAndView("reservationPost");
+    public Response reservationPost(@ModelAttribute("reservationForm") final ReservationForm form) throws RequestInvalidException, ParseException {
         LOGGER.debug("Request received to do a reservation on room with id: " + form.getRoomId());
-        mav.addObject("reserva", reservationService.doReservation(form.getRoomId(),
+        final Reservation reservation = reservationService.doReservation(form.getRoomId(),
                 form.getUserEmail(), fromStringToCalendar(form.getStartDate()),
-                fromStringToCalendar(form.getEndDate())));
-        return mav;
+                fromStringToCalendar(form.getEndDate()));
+        final URI uri = uriInfo.getAbsolutePathBuilder().path(String.valueOf(reservation.getId())).build();
+        return Response.created(uri).build();
     }
 
-    @GetMapping("/checkin")
-    public ModelAndView checkin(@ModelAttribute("checkinForm") final CheckinForm form) {
-        return new ModelAndView("checkin");
+    @GET
+    @Path("/checkin")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response checkin(@ModelAttribute("checkinForm") final CheckinForm form) {
+        return Response.ok().build();
     }
 
-    @PostMapping("/checkinPost")
+    @POST
+    @Path("/checkinPost")
     @Transactional
-    public ModelAndView checkinPost(@ModelAttribute("checkinForm") final CheckinForm form) throws RequestInvalidException, EntityNotFoundException {
-        final ModelAndView mav = new ModelAndView("checkinPost");
+    public Response checkinPost(@ModelAttribute("checkinForm") final CheckinForm form) throws RequestInvalidException, EntityNotFoundException {
         LOGGER.debug("Request received to do the check-in on reservation with hash: " + form.getId_reservation());
-        if (!roomService.doCheckin(form.getId_reservation())) {
-            mav.addObject("error");
-        }
-        return mav;
+        boolean checkedIn = roomService.doCheckin(form.getId_reservation());
+        return Response.ok(checkedIn).build();
     }
 
-    @GetMapping("/checkout")
-    public ModelAndView checkout(@ModelAttribute("checkoutForm") final CheckoutForm form) {
-        return new ModelAndView("checkout");
+    @GET
+    @Path("/checkout")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response checkout(@ModelAttribute("checkoutForm") final CheckoutForm form) {
+        return Response.ok().build();
     }
 
-    @PostMapping("/checkoutPost")
+    @POST
+    @Path("/checkoutPost")
     @Transactional
-    public ModelAndView checkoutPost(@ModelAttribute("checkoutForm") final CheckoutForm form) throws RequestInvalidException, EntityNotFoundException {
-        final ModelAndView mav = new ModelAndView("checkoutPost");
+    public Response checkoutPost(@ModelAttribute("checkoutForm") final CheckoutForm form) throws RequestInvalidException, EntityNotFoundException {
         CheckoutDTO checkoutDTO = roomService.doCheckout(form.getId_reservation());
-
-        mav.addObject("charges", checkoutDTO.getCharges());
-        mav.addObject("totalCharge", checkoutDTO.getSumCharges());
-        return mav;
+        // TODO: make front end show total to pay
+        return Response.ok(checkoutDTO.getCharges()).build();
     }
 
-    @GetMapping("/reservation")
-    public ModelAndView reservation(@RequestParam(value = "startDate", required = false) String startDate,
+    @GET
+    @Path("/reservation")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response reservation(@RequestParam(value = "startDate", required = false) String startDate,
                                     @RequestParam(value = "endDate", required = false) String endDate,
                                     @ModelAttribute("reservationForm") final ReservationForm form) throws ParseException {
-        final ModelAndView mav = new ModelAndView("reservation");
         if (!(startDate == null || endDate == null) && !(startDate.isEmpty() ||
                 endDate.isEmpty()) && LocalDate.parse(startDate).isBefore(LocalDate.parse(endDate))) {
-            mav.addObject("allRooms", roomService.findAllFreeBetweenDates(
-                    fromStringToCalendar(startDate), fromStringToCalendar(endDate))
-            );
-            mav.addObject("ListState","visible");
+            return Response
+                .ok(roomService.findAllFreeBetweenDates(fromStringToCalendar(startDate), fromStringToCalendar(endDate)))
+                .build();
         }
-        else
-            mav.addObject("ListState","hidden");
-        return mav;
+        return Response.status(Response.Status.NOT_FOUND).build();
     }
 
 
-    @GetMapping("/reservations")
-    public ModelAndView reservations(@RequestParam(value = "startDate", required = false) String startDate,
+    @GET
+    @Path("/reservations")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response reservations(@RequestParam(value = "startDate", required = false) String startDate,
                                      @RequestParam(value = "endDate", required = false) String endDate,
                                      @RequestParam(value = "userEmail", required = false) String userEmail,
                                      @RequestParam(value = "guest", required = false) String guest) throws ParseException {
-        final ModelAndView mav = new ModelAndView("reservations");
-        mav.addObject("reservations",
+        return Response.ok(
                 reservationService.findAllBetweenDatesOrEmailAndSurname(
-                        startDate == null || startDate.length() == 0 ? null : fromStringToCalendar(startDate),
-                        endDate == null || endDate.length() == 0 ? null : fromStringToCalendar(endDate), userEmail, guest)
-        );
-        return mav;
+                    startDate == null || startDate.length() == 0 ? null : fromStringToCalendar(startDate),
+                    endDate == null || endDate.length() == 0 ? null : fromStringToCalendar(endDate), userEmail, guest)
+        ).build();
     }
 
-    @GetMapping("/orders")
-    public ModelAndView orders() {
-        final ModelAndView mav = new ModelAndView("orders");
-        mav.addObject("orders", chargeService.getAllChargesNotDelivered());
-        return mav;
+    @GET
+    @Path("/orders")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response orders() {
+        return Response.ok(chargeService.getAllChargesNotDelivered()).build();
     }
 
-    @GetMapping("/orders/sendOrders")
-    public ModelAndView sendOrder(@RequestParam(value = "roomNumber") long roomNumber) throws Exception {
+    @GET
+    @Path("/orders/sendOrders")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response sendOrder(@RequestParam(value = "roomNumber") long roomNumber) throws Exception {
         LOGGER.debug("Order request sent for room number: " + roomNumber);
         chargeService.setChargesToDelivered(roomNumber);
-        return new ModelAndView("orderFinished");
+        return Response.ok().build();
     }
 
-    @GetMapping("/registration")
-    public ModelAndView registration(@ModelAttribute("registrationForm") final RegistrationForm form) {
-        ModelAndView mav = new ModelAndView("registration");
-        mav.addObject("registered", false);
-        return mav;
+    @GET
+    @Path("/registration")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response registration(@ModelAttribute("registrationForm") final RegistrationForm form) {
+        return Response.ok(Boolean.FALSE).build();
     }
 
-    @PostMapping("/registrationPost")
-    public ModelAndView registrationPost(@ModelAttribute("registrationForm") final RegistrationForm form) throws EntityNotFoundException {
-        ModelAndView mav = new ModelAndView("registration");
+    @POST
+    @Path("/registrationPost")
+    public Response registrationPost(@ModelAttribute("registrationForm") final RegistrationForm form) throws EntityNotFoundException {
         LOGGER.debug("Attempted to access registration form");
         if(form != null) {
             LOGGER.debug("Attempted to register occupants on reservation hash " + form.getReservation_hash());
             reservationService.registerOccupants(form.getReservation_hash().trim(), getListOfOccupantsFromForm(form));
-            mav.addObject("registered", true);
+
+            return Response.status(Response.Status.CREATED).build();
         }
-        return mav;
+        return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
     // FIXME:  this is disgusting but we couldn't create a list from jsp
@@ -186,5 +201,4 @@ public class RoomController extends SimpleController {
 
        return occupants;
     }
-
 }
