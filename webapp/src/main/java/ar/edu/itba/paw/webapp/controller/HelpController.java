@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Controller
@@ -24,6 +25,7 @@ public class HelpController {
 
     @GET
     @Path("/help")
+    @Produces(value = {MediaType.APPLICATION_JSON})
     public Response help(@ModelAttribute("getHelpForm") HelpStatusForm helpForm) {
         // todo: mav was "helpRequests.jsp"
         LOGGER.debug("Request attempted to get the list of help requests.");
@@ -31,8 +33,9 @@ public class HelpController {
     }
 
     @PUT
-    @Path("/help/{helpRequestId}")
-    public Response updateHelpStep(@PathParam("helpRequestId") final long helpRequestId, HelpStep status) throws RequestInvalidException {
+    @Path("/help/{id}")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response updateHelpStep(@PathParam("id") final long helpRequestId, HelpStep status) throws RequestInvalidException {
         // todo: mav was "helpRequests.jsp"
         LOGGER.debug("Attempted to update status on help request.");
         if(helpService.updateStatus(helpRequestId, status)) {

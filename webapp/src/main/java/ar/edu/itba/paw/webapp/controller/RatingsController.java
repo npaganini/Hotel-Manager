@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Controller
@@ -30,24 +32,28 @@ public class RatingsController extends SimpleController {
 
     @GET
     @Path("/")
+    @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getHotelRatings() {
         return Response.ok(ratingsService.getHotelRating()).build();
     }
 
     @GET
     @Path("/hotel")
+    @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getAllHotelRatings() {
         return Response.ok(ratingsService.getAllHotelRatings()).build();
     }
 
     @GET
     @Path("/rooms/{id}")
+    @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getRoomRating(@PathParam(value = "id") long roomId) {
         return Response.ok(ratingsService.getRoomRating(roomId)).build();
     }
 
     @GET
     @Path("/rooms")
+    @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getRoomRatings(@RequestParam(value = "roomId") long roomId) {
         return Response.ok(ratingsService.getAllRoomRatings(roomId)).build();
     }

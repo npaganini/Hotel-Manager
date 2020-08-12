@@ -14,13 +14,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 
@@ -41,6 +39,7 @@ public class UserController extends SimpleController {
 
     @GET
     @Path("/")
+    @Produces(value = {MediaType.APPLICATION_JSON})
     public Response redirectToLanding(Authentication authentication) {
         final URI uri = uriInfo.getAbsolutePathBuilder().path("/home").build();
         return Response.temporaryRedirect(uri).build();
@@ -48,6 +47,7 @@ public class UserController extends SimpleController {
 
     @GET
     @Path("/home")
+    @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getLandingPage(Authentication authentication) {
         // todo: mav was "userIndex.jsp"
         LOGGER.debug("Request received to user's landing page");
@@ -56,6 +56,7 @@ public class UserController extends SimpleController {
 
     @GET
     @Path("/expenses")
+    @Produces(value = {MediaType.APPLICATION_JSON})
     public Response boughtProducts(Authentication authentication, @RequestParam(value = "reservationId") long reservationId) {
         // todo: mav was "expenses.jsp"
         LOGGER.debug("Request received to retrieve all expenses on reservation with id " + reservationId);
@@ -64,6 +65,7 @@ public class UserController extends SimpleController {
 
     @GET
     @Path("/products")
+    @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getAllProducts(@ModelAttribute("buyProductForm") BuyProductForm productForm,
                                        @RequestParam(value = "reservationId") long reservationId) {
         // todo: mav was "browseProducts.jsp"
@@ -73,6 +75,7 @@ public class UserController extends SimpleController {
 
     @POST
     @Path("/products")
+    @Produces(value = {MediaType.APPLICATION_JSON})
     public Response buyProduct(@ModelAttribute("buyProductForm") BuyProductForm buyProductForm, @RequestParam(value = "reservationId") long reservationId) throws EntityNotFoundException {
         LOGGER.debug("Request received to buy products on reservation with id " + reservationId);
         if(buyProductForm != null) {
@@ -86,6 +89,7 @@ public class UserController extends SimpleController {
 
     @GET
     @Path("/help")
+    @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getHelpPage(@ModelAttribute("getHelpForm") HelpForm helpForm, @RequestParam(value = "reservationId") long reservationId) {
         // todo: mav was "askHelpPage.jsp"
         LOGGER.debug("Request received to get help page");
@@ -94,6 +98,7 @@ public class UserController extends SimpleController {
 
     @POST
     @Path("/help")
+    @Produces(value = {MediaType.APPLICATION_JSON})
     public Response requestHelp(@ModelAttribute("getHelpForm") HelpForm helpForm, @RequestParam(value = "reservationId") long reservationId) throws EntityNotFoundException {
         LOGGER.debug("Help request made on reservation with id " + reservationId);
         if(helpForm != null) {
@@ -107,7 +112,8 @@ public class UserController extends SimpleController {
 
     @PUT
     @Path("/ratings/{hash}/rate")
-    public Response rateStay(@RequestParam("rate") String rate, @PathVariable("hash") String hash) throws RequestInvalidException, EntityNotFoundException {
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response rateStay(@RequestParam("rate") String rate, @PathParam("hash") String hash) throws RequestInvalidException, EntityNotFoundException {
         // todo: mav was "thanksMessage.jsp"
         userService.rateStay(rate, hash);
         return Response.ok().build();
