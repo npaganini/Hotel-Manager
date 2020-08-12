@@ -6,7 +6,6 @@ import ar.edu.itba.paw.models.dtos.ProductAmountDTO;
 import ar.edu.itba.paw.models.product.Product;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -73,8 +72,9 @@ public class ChargeRepositoryHibernate extends SimpleRepositoryHibernate<Charge>
     }
 
     @Override
-    public List<Charge> findChargesByRoomNumber(long roomNumber) {
-        return em.createQuery("SELECT c FROM Charge AS c WHERE c.delivered = FALSE AND c.reservation.room.number = :roomNumber", Charge.class).getResultList();
+    public List<Charge> findChargesByRoomNumber(int roomNumber) {
+        return em.createQuery("SELECT c FROM Charge AS c WHERE c.delivered = FALSE AND c.reservation.room.number = :roomNumber", Charge.class)
+                .setParameter("roomNumber", roomNumber).getResultList();
     }
 
     @Override

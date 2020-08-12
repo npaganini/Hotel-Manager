@@ -78,7 +78,7 @@ public class RoomController extends SimpleController {
     @Path("/checkin")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response checkin(@ModelAttribute("checkinForm") final CheckinForm form) {
-        return Response.ok().build();
+        return Response.ok(form).build();
     }
 
     @POST
@@ -86,15 +86,14 @@ public class RoomController extends SimpleController {
     @Transactional
     public Response checkinPost(@ModelAttribute("checkinForm") final CheckinForm form) throws RequestInvalidException, EntityNotFoundException {
         LOGGER.debug("Request received to do the check-in on reservation with hash: " + form.getId_reservation());
-        boolean checkedIn = roomService.doCheckin(form.getId_reservation());
-        return Response.ok(checkedIn).build();
+        return Response.ok(roomService.doCheckin(form.getId_reservation())).build();
     }
 
     @GET
     @Path("/checkout")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response checkout(@ModelAttribute("checkoutForm") final CheckoutForm form) {
-        return Response.ok().build();
+        return Response.ok(form).build();
     }
 
     @POST
@@ -118,7 +117,7 @@ public class RoomController extends SimpleController {
                 .ok(roomService.findAllFreeBetweenDates(fromStringToCalendar(startDate), fromStringToCalendar(endDate)))
                 .build();
         }
-        return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
 
@@ -143,12 +142,12 @@ public class RoomController extends SimpleController {
         return Response.ok(chargeService.getAllChargesNotDelivered()).build();
     }
 
-    @GET
-    @Path("/orders/sendOrders")
+    @POST
+    @Path("/orders/{roomId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response sendOrder(@RequestParam(value = "roomNumber") long roomNumber) throws Exception {
-        LOGGER.debug("Order request sent for room number: " + roomNumber);
-        chargeService.setChargesToDelivered(roomNumber);
+    public Response sendOrder(@RequestParam(value = "roomId") long roomId) throws Exception {
+        LOGGER.debug("Order request sent for room with id: " + roomId);
+        chargeService.setChargesToDelivered(roomId);
         return Response.ok().build();
     }
 
@@ -156,11 +155,11 @@ public class RoomController extends SimpleController {
     @Path("/registration")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response registration(@ModelAttribute("registrationForm") final RegistrationForm form) {
-        return Response.ok(Boolean.FALSE).build();
+        return Response.ok(form).build();
     }
 
     @POST
-    @Path("/registrationPost")
+    @Path("/registration")
     public Response registrationPost(@ModelAttribute("registrationForm") final RegistrationForm form) throws EntityNotFoundException {
         LOGGER.debug("Attempted to access registration form");
         if(form != null) {
