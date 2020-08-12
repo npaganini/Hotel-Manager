@@ -3,14 +3,18 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.models.user.UserRole;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+import java.net.URI;
 
 @Controller
 public class AuthController {
+    @Context
+    private UriInfo uriInfo;
 
     @GET
     @Path("/login")
@@ -28,18 +32,18 @@ public class AuthController {
 
     @GET
     @Path("/")
-    public String redirect(Authentication authentication) {
+    public Response redirect(Authentication authentication) {
         String role = authentication.getAuthorities().toString();
         String home = "user";
         if (!role.contains(UserRole.CLIENT.toString())) {
             home = "rooms";
         }
-        return "redirect:/" + home + "/home";
+        return Response.temporaryRedirect(uriInfo.getAbsolutePathBuilder().path(home + "/home").build()).build();
     }
 
     @GET
     @Path("/index")
-    public String redirectIndex(Authentication authentication) {
+    public Response redirectIndex(Authentication authentication) {
         return redirect(authentication);
     }
 }

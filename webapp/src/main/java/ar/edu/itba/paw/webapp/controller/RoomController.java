@@ -19,10 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -63,7 +60,8 @@ public class RoomController extends SimpleController {
     }
 
     @POST
-    @Path("/reservationPost")
+    @Path("/reservation")
+    @Produces(value = {MediaType.APPLICATION_JSON})
     @Transactional
     public Response reservationPost(@ModelAttribute("reservationForm") final ReservationForm form) throws RequestInvalidException, ParseException {
         LOGGER.debug("Request received to do a reservation on room with id: " + form.getRoomId());
@@ -82,7 +80,8 @@ public class RoomController extends SimpleController {
     }
 
     @POST
-    @Path("/checkinPost")
+    @Path("/checkin")
+    @Produces(value = {MediaType.APPLICATION_JSON})
     @Transactional
     public Response checkinPost(@ModelAttribute("checkinForm") final CheckinForm form) throws RequestInvalidException, EntityNotFoundException {
         LOGGER.debug("Request received to do the check-in on reservation with hash: " + form.getId_reservation());
@@ -97,7 +96,8 @@ public class RoomController extends SimpleController {
     }
 
     @POST
-    @Path("/checkoutPost")
+    @Path("/checkout")
+    @Produces(value = {MediaType.APPLICATION_JSON})
     @Transactional
     public Response checkoutPost(@ModelAttribute("checkoutForm") final CheckoutForm form) throws RequestInvalidException, EntityNotFoundException {
         CheckoutDTO checkoutDTO = roomService.doCheckout(form.getId_reservation());
@@ -106,7 +106,7 @@ public class RoomController extends SimpleController {
     }
 
     @GET
-    @Path("/reservation")
+    @Path("/free")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response reservation(@RequestParam(value = "startDate", required = false) String startDate,
                                     @RequestParam(value = "endDate", required = false) String endDate,
@@ -122,7 +122,7 @@ public class RoomController extends SimpleController {
 
 
     @GET
-    @Path("/reservations")
+    @Path("/reservation")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response reservations(@RequestParam(value = "startDate", required = false) String startDate,
                                      @RequestParam(value = "endDate", required = false) String endDate,
@@ -142,7 +142,7 @@ public class RoomController extends SimpleController {
         return Response.ok(chargeService.getAllChargesNotDelivered()).build();
     }
 
-    @POST
+    @PUT
     @Path("/orders/{roomId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response sendOrder(@RequestParam(value = "roomId") long roomId) throws Exception {
@@ -152,14 +152,15 @@ public class RoomController extends SimpleController {
     }
 
     @GET
-    @Path("/registration")
+    @Path("/occupants")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response registration(@ModelAttribute("registrationForm") final RegistrationForm form) {
         return Response.ok(form).build();
     }
 
     @POST
-    @Path("/registration")
+    @Path("/occupants")
+    @Produces(value = {MediaType.APPLICATION_JSON})
     public Response registrationPost(@ModelAttribute("registrationForm") final RegistrationForm form) throws EntityNotFoundException {
         LOGGER.debug("Attempted to access registration form");
         if(form != null) {

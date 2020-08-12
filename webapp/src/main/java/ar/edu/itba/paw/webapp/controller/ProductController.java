@@ -7,15 +7,12 @@ import ar.edu.itba.paw.webapp.form.AddProductForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.io.IOException;
@@ -38,27 +35,31 @@ public class ProductController {
 
     @GET
     @Path("/products")
+    @Produces(value = {MediaType.APPLICATION_JSON})
     public Response products() {
         // todo: mav was "products.jsp"
         return Response.ok(productService.getAll()).build();
     }
 
     @PUT
-    @Path("/products/{productId}/disable")
-    public Response hideProduct(@RequestParam(value = "productId", required = false) long productId) throws Exception {
+    @Path("/products/{id}/disable")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response hideProduct(@RequestParam(value = "id", required = false) long productId) throws Exception {
         // todo: mav was "productDisable.jsp"
         return Response.ok(productService.unableProduct(productId)).build();
     }
 
     @PUT
-    @Path("/products/{productId}/enable")
-    public Response showProduct(@RequestParam(value = "productId", required = false) long productId) throws Exception {
+    @Path("/products/{id}/enable")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response showProduct(@RequestParam(value = "id", required = false) long productId) throws Exception {
         // todo: mav was "productAvailable.jsp"
         return Response.ok(productService.enableProduct(productId)).build();
     }
 
     @POST
-    @Path("/products/addProduct")
+    @Path("/products")
+    @Produces(value = {MediaType.APPLICATION_JSON})
     public Response addProduct(@ModelAttribute AddProductForm addProductForm) throws IOException, RequestInvalidException {
         if (addProductForm.getPrice() < 0) {
             return Response.status(Response.Status.BAD_REQUEST).build();
