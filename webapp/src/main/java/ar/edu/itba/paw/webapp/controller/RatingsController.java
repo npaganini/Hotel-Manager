@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ar.edu.itba.paw.interfaces.services.RatingsService;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Response;
+
 @Controller
 @RequestMapping("/ratings")
 public class RatingsController extends SimpleController {
@@ -23,31 +28,27 @@ public class RatingsController extends SimpleController {
         this.ratingsService = ratingsService;
     }
 
-    @GetMapping("/")
-    public ModelAndView getHotelRatings() {
-        final ModelAndView mav = new ModelAndView();
-        mav.addObject(ratingsService.getHotelRating());
-        return mav;
+    @GET
+    @Path("/")
+    public Response getHotelRatings() {
+        return Response.ok(ratingsService.getHotelRating()).build();
     }
 
-    @GetMapping("/all")
-    public ModelAndView getAllHotelRatings() {
-        final ModelAndView mav = new ModelAndView();
-        mav.addObject(ratingsService.getAllHotelRatings());
-        return mav;
+    @GET
+    @Path("/hotel")
+    public Response getAllHotelRatings() {
+        return Response.ok(ratingsService.getAllHotelRatings()).build();
     }
 
-    @GetMapping("/rooms")
-    public ModelAndView getRoomRating(@RequestParam(value = "roomId") long roomId) {
-        final ModelAndView mav = new ModelAndView();
-        mav.addObject(ratingsService.getRoomRating(roomId));
-        return mav;
+    @GET
+    @Path("/rooms/{id}")
+    public Response getRoomRating(@PathParam(value = "id") long roomId) {
+        return Response.ok(ratingsService.getRoomRating(roomId)).build();
     }
 
-    @GetMapping("/rooms/all")
-    public ModelAndView getRoomRatings(@RequestParam(value = "roomId") long roomId) {
-        final ModelAndView mav = new ModelAndView();
-        mav.addObject(ratingsService.getAllRoomRatings(roomId));
-        return mav;
+    @GET
+    @Path("/rooms")
+    public Response getRoomRatings(@RequestParam(value = "roomId") long roomId) {
+        return Response.ok(ratingsService.getAllRoomRatings(roomId)).build();
     }
 }
