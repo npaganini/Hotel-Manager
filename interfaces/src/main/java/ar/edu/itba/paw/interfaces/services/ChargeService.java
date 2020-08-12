@@ -15,5 +15,5 @@ public interface ChargeService {
 
     int setChargeToDelivered(long chargeId) throws RequestInvalidException, EntityNotFoundException;
 
-    int setChargesToDelivered(long roomNumber) throws RequestInvalidException;
+    int setChargesToDelivered(long roomId) throws RequestInvalidException, EntityNotFoundException;
 }
