@@ -1,15 +1,11 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
-import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ar.edu.itba.paw.interfaces.services.RatingsService;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -54,7 +50,7 @@ public class RatingsController extends SimpleController {
     @GET
     @Path("/rooms")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getRoomRatings(@RequestParam(value = "roomId") long roomId) {
+    public Response getRoomRatings(long roomId) {
         return Response.ok(ratingsService.getAllRoomRatings(roomId)).build();
     }
 }

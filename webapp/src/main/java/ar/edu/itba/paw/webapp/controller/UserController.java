@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -55,9 +54,9 @@ public class UserController extends SimpleController {
     }
 
     @GET
-    @Path("/expenses")
+    @Path("/expenses/{reservationId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response boughtProducts(Authentication authentication, @RequestParam(value = "reservationId") long reservationId) {
+    public Response boughtProducts(Authentication authentication, @PathParam(value = "reservationId") long reservationId) {
         // todo: mav was "expenses.jsp"
         LOGGER.debug("Request received to retrieve all expenses on reservation with id " + reservationId);
         return Response.ok(userService.checkProductsPurchasedByUserByReservationId(getUsername(authentication), reservationId)).build();
@@ -66,8 +65,7 @@ public class UserController extends SimpleController {
     @GET
     @Path("/products")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getAllProducts(BuyProductForm productForm,
-                                       @RequestParam(value = "reservationId") long reservationId) {
+    public Response getAllProducts(BuyProductForm productForm, long reservationId) {
         // todo: mav was "browseProducts.jsp"
         LOGGER.debug("Request received to retrieve all products list");
         return Response.ok(userService.getProducts()).build();
@@ -76,7 +74,7 @@ public class UserController extends SimpleController {
     @POST
     @Path("/products")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response buyProduct(BuyProductForm buyProductForm, @RequestParam(value = "reservationId") long reservationId) throws EntityNotFoundException {
+    public Response buyProduct(BuyProductForm buyProductForm, long reservationId) throws EntityNotFoundException {
         LOGGER.debug("Request received to buy products on reservation with id " + reservationId);
         if(buyProductForm != null) {
             // todo: mav was "buyProducts.jsp"
@@ -90,7 +88,7 @@ public class UserController extends SimpleController {
     @GET
     @Path("/help")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getHelpPage(HelpForm helpForm, @RequestParam(value = "reservationId") long reservationId) {
+    public Response getHelpPage(HelpForm helpForm, long reservationId) {
         // todo: mav was "askHelpPage.jsp"
         LOGGER.debug("Request received to get help page");
         return Response.ok(helpForm).build();
@@ -99,7 +97,7 @@ public class UserController extends SimpleController {
     @POST
     @Path("/help")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response requestHelp(HelpForm helpForm, @RequestParam(value = "reservationId") long reservationId) throws EntityNotFoundException {
+    public Response requestHelp(HelpForm helpForm, long reservationId) throws EntityNotFoundException {
         LOGGER.debug("Help request made on reservation with id " + reservationId);
         if(helpForm != null) {
             // todo: mav was "requestHelp.jsp"
@@ -113,7 +111,7 @@ public class UserController extends SimpleController {
     @PUT
     @Path("/ratings/{hash}/rate")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response rateStay(@RequestParam("rate") String rate, @PathParam("hash") String hash) throws RequestInvalidException, EntityNotFoundException {
+    public Response rateStay(String rate, @PathParam("hash") String hash) throws RequestInvalidException, EntityNotFoundException {
         // todo: mav was "thanksMessage.jsp"
         userService.rateStay(rate, hash);
         return Response.ok().build();

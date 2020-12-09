@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -108,26 +107,22 @@ public class RoomController extends SimpleController {
     @GET
     @Path("/free")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response reservation(@RequestParam(value = "startDate", required = false) String startDate,
-                                    @RequestParam(value = "endDate", required = false) String endDate,
-                                    final ReservationForm form) throws ParseException {
+    public Response reservation(String startDate, String endDate, final ReservationForm form) throws ParseException {
         if (!(startDate == null || endDate == null) && !(startDate.isEmpty() ||
                 endDate.isEmpty()) && LocalDate.parse(startDate).isBefore(LocalDate.parse(endDate))) {
             return Response
                 .ok(roomService.findAllFreeBetweenDates(fromStringToCalendar(startDate), fromStringToCalendar(endDate)))
                 .build();
         }
-        return Response.status(Response.Status.BAD_REQUEST).build();
+        String message = "Expected 'startDate' and 'endDate' in format yyyy-mm-dd.";
+        return Response.status(Response.Status.BAD_REQUEST).entity(message).build();
     }
 
 
     @GET
     @Path("/reservation")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response reservations(@RequestParam(value = "startDate", required = false) String startDate,
-                                     @RequestParam(value = "endDate", required = false) String endDate,
-                                     @RequestParam(value = "userEmail", required = false) String userEmail,
-                                     @RequestParam(value = "guest", required = false) String guest) throws ParseException {
+    public Response reservations(String startDate, String endDate, String userEmail, String guest) throws ParseException {
         return Response.ok(
                 reservationService.findAllBetweenDatesOrEmailAndSurname(
                     startDate == null || startDate.length() == 0 ? null : fromStringToCalendar(startDate),
@@ -145,7 +140,7 @@ public class RoomController extends SimpleController {
     @PUT
     @Path("/orders/{roomId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response sendOrder(@RequestParam(value = "roomId") long roomId) throws Exception {
+    public Response sendOrder(@PathParam(value = "roomId") long roomId) throws Exception {
         LOGGER.debug("Order request sent for room with id: " + roomId);
         chargeService.setChargesToDelivered(roomId);
         return Response.ok().build();
