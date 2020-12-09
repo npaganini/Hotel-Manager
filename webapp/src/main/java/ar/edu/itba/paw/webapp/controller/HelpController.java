@@ -7,7 +7,6 @@ import ar.edu.itba.paw.webapp.form.HelpStatusForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -26,7 +25,7 @@ public class HelpController {
     @GET
     @Path("/help")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response help(@ModelAttribute("getHelpForm") HelpStatusForm helpForm) {
+    public Response help(HelpStatusForm helpForm) {
         // todo: mav was "helpRequests.jsp"
         LOGGER.debug("Request attempted to get the list of help requests.");
         return Response.ok(helpService.getAllRequestsThatRequireAction()).build();

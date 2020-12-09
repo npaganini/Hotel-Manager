@@ -66,7 +66,7 @@ public class UserController extends SimpleController {
     @GET
     @Path("/products")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getAllProducts(@ModelAttribute("buyProductForm") BuyProductForm productForm,
+    public Response getAllProducts(BuyProductForm productForm,
                                        @RequestParam(value = "reservationId") long reservationId) {
         // todo: mav was "browseProducts.jsp"
         LOGGER.debug("Request received to retrieve all products list");
@@ -76,7 +76,7 @@ public class UserController extends SimpleController {
     @POST
     @Path("/products")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response buyProduct(@ModelAttribute("buyProductForm") BuyProductForm buyProductForm, @RequestParam(value = "reservationId") long reservationId) throws EntityNotFoundException {
+    public Response buyProduct(BuyProductForm buyProductForm, @RequestParam(value = "reservationId") long reservationId) throws EntityNotFoundException {
         LOGGER.debug("Request received to buy products on reservation with id " + reservationId);
         if(buyProductForm != null) {
             // todo: mav was "buyProducts.jsp"
@@ -90,7 +90,7 @@ public class UserController extends SimpleController {
     @GET
     @Path("/help")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getHelpPage(@ModelAttribute("getHelpForm") HelpForm helpForm, @RequestParam(value = "reservationId") long reservationId) {
+    public Response getHelpPage(HelpForm helpForm, @RequestParam(value = "reservationId") long reservationId) {
         // todo: mav was "askHelpPage.jsp"
         LOGGER.debug("Request received to get help page");
         return Response.ok(helpForm).build();
@@ -99,7 +99,7 @@ public class UserController extends SimpleController {
     @POST
     @Path("/help")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response requestHelp(@ModelAttribute("getHelpForm") HelpForm helpForm, @RequestParam(value = "reservationId") long reservationId) throws EntityNotFoundException {
+    public Response requestHelp(HelpForm helpForm, @RequestParam(value = "reservationId") long reservationId) throws EntityNotFoundException {
         LOGGER.debug("Help request made on reservation with id " + reservationId);
         if(helpForm != null) {
             // todo: mav was "requestHelp.jsp"
