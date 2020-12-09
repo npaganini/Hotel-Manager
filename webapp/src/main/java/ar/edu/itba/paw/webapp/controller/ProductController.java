@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.ProductService;
 import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.webapp.form.AddProductForm;
@@ -60,7 +59,7 @@ public class ProductController {
     @POST
     @Path("/products")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response addProduct(@ModelAttribute AddProductForm addProductForm) throws IOException, RequestInvalidException {
+    public Response addProduct(AddProductForm addProductForm) throws IOException {
         if (addProductForm.getPrice() < 0) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

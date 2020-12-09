@@ -63,7 +63,7 @@ public class RoomController extends SimpleController {
     @Path("/reservation")
     @Produces(value = {MediaType.APPLICATION_JSON})
     @Transactional
-    public Response reservationPost(@ModelAttribute("reservationForm") final ReservationForm form) throws RequestInvalidException, ParseException {
+    public Response reservationPost(final ReservationForm form) throws RequestInvalidException, ParseException {
         LOGGER.debug("Request received to do a reservation on room with id: " + form.getRoomId());
         final Reservation reservation = reservationService.doReservation(form.getRoomId(),
                 form.getUserEmail(), fromStringToCalendar(form.getStartDate()),
@@ -75,7 +75,7 @@ public class RoomController extends SimpleController {
     @GET
     @Path("/checkin")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response checkin(@ModelAttribute("checkinForm") final CheckinForm form) {
+    public Response checkin(final CheckinForm form) {
         return Response.ok(form).build();
     }
 
@@ -83,7 +83,7 @@ public class RoomController extends SimpleController {
     @Path("/checkin")
     @Produces(value = {MediaType.APPLICATION_JSON})
     @Transactional
-    public Response checkinPost(@ModelAttribute("checkinForm") final CheckinForm form) throws RequestInvalidException, EntityNotFoundException {
+    public Response checkinPost(final CheckinForm form) throws RequestInvalidException, EntityNotFoundException {
         LOGGER.debug("Request received to do the check-in on reservation with hash: " + form.getId_reservation());
         return Response.ok(roomService.doCheckin(form.getId_reservation())).build();
     }
@@ -91,7 +91,7 @@ public class RoomController extends SimpleController {
     @GET
     @Path("/checkout")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response checkout(@ModelAttribute("checkoutForm") final CheckoutForm form) {
+    public Response checkout(final CheckoutForm form) {
         return Response.ok(form).build();
     }
 
@@ -99,7 +99,7 @@ public class RoomController extends SimpleController {
     @Path("/checkout")
     @Produces(value = {MediaType.APPLICATION_JSON})
     @Transactional
-    public Response checkoutPost(@ModelAttribute("checkoutForm") final CheckoutForm form) throws RequestInvalidException, EntityNotFoundException {
+    public Response checkoutPost(final CheckoutForm form) throws RequestInvalidException, EntityNotFoundException {
         CheckoutDTO checkoutDTO = roomService.doCheckout(form.getId_reservation());
         // TODO: make front end show total to pay
         return Response.ok(checkoutDTO.getCharges()).build();
@@ -110,7 +110,7 @@ public class RoomController extends SimpleController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response reservation(@RequestParam(value = "startDate", required = false) String startDate,
                                     @RequestParam(value = "endDate", required = false) String endDate,
-                                    @ModelAttribute("reservationForm") final ReservationForm form) throws ParseException {
+                                    final ReservationForm form) throws ParseException {
         if (!(startDate == null || endDate == null) && !(startDate.isEmpty() ||
                 endDate.isEmpty()) && LocalDate.parse(startDate).isBefore(LocalDate.parse(endDate))) {
             return Response
@@ -154,14 +154,14 @@ public class RoomController extends SimpleController {
     @GET
     @Path("/occupants")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response registration(@ModelAttribute("registrationForm") final RegistrationForm form) {
+    public Response registration(final RegistrationForm form) {
         return Response.ok(form).build();
     }
 
     @POST
     @Path("/occupants")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response registrationPost(@ModelAttribute("registrationForm") final RegistrationForm form) throws EntityNotFoundException {
+    public Response registrationPost(final RegistrationForm form) throws EntityNotFoundException {
         LOGGER.debug("Attempted to access registration form");
         if(form != null) {
             LOGGER.debug("Attempted to register occupants on reservation hash " + form.getReservation_hash());
