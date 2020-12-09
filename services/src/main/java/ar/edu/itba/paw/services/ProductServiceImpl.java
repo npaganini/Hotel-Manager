@@ -31,7 +31,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public boolean unableProduct(long productId) throws EntityNotFoundException {
+    public boolean disableProduct(long productId) throws EntityNotFoundException {
         LOGGER.debug("About to unable product for visibility with id " + productId);
         productDao.findById(productId).orElseThrow(() -> new EntityNotFoundException("Cant find product with id " + productId));
         return productDao.updateProductEnable(productId, false) > 0;

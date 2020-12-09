@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.services.ProductService;
 import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.webapp.form.AddProductForm;
@@ -7,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.*;
@@ -43,15 +45,15 @@ public class ProductController {
     @PUT
     @Path("/products/{id}/disable")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response hideProduct(@RequestParam(value = "id", required = false) long productId) throws Exception {
+    public Response hideProduct(@PathParam(value = "id") long productId) throws Exception {
         // todo: mav was "productDisable.jsp"
-        return Response.ok(productService.unableProduct(productId)).build();
+        return Response.ok(productService.disableProduct(productId)).build();
     }
 
     @PUT
     @Path("/products/{id}/enable")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response showProduct(@RequestParam(value = "id", required = false) long productId) throws Exception {
+    public Response showProduct(@PathParam(value = "id") long productId) throws Exception {
         // todo: mav was "productAvailable.jsp"
         return Response.ok(productService.enableProduct(productId)).build();
     }
@@ -73,7 +75,7 @@ public class ProductController {
         return Response.created(uri).build();
     }
 
-    // todo: re-add this
+    // todo: what was this being used by?
 //    @GET
 //    @Path(value = "/products/addProduct")
 //    public String inputProduct(Model model) {
@@ -81,10 +83,10 @@ public class ProductController {
 //        return "addProduct";
 //    }
 
-    // todo: re-add this
-//    @GET
-//    @Path(value = "/product/img", produces = MediaType.IMAGE_PNG_VALUE)
-//    public @ResponseBody byte[] getImg(@RequestParam("productId") long productId) throws EntityNotFoundException {
-//        return productService.findProductById(productId).getFile();
-//    }
+    @GET
+    @Path(value = "/product/{productId}/img")
+    @Produces("image/png")
+    public @ResponseBody byte[] getImg(@PathParam("productId") long productId) throws EntityNotFoundException {
+        return productService.findProductById(productId).getFile();
+    }
 }
