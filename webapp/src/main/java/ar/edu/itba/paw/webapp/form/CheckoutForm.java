@@ -7,5 +7,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CheckoutForm {
-    private String id_reservation;
+    private String reservationId;
 }

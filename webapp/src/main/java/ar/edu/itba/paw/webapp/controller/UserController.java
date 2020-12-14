@@ -36,36 +36,35 @@ public class UserController extends SimpleController {
         this.userService = userService;
     }
 
-    @GET
-    @Path("/")
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response redirectToLanding(Authentication authentication) {
-        final URI uri = uriInfo.getAbsolutePathBuilder().path("/home").build();
-        return Response.temporaryRedirect(uri).build();
-    }
+//    @GET
+//    @Produces(value = {MediaType.APPLICATION_JSON})
+//    public Response redirectToLanding(Authentication authentication) {
+//        final URI uri = uriInfo.getAbsolutePathBuilder().path("/home").build();
+//        return Response.temporaryRedirect(uri).build();
+//    }
 
-    @GET
-    @Path("/home")
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getLandingPage(Authentication authentication) {
-        // todo: mav was "userIndex.jsp"
-        LOGGER.debug("Request received to user's landing page");
-        return Response.ok(userService.findActiveReservations(getUsername(authentication))).build();
-    }
+//    @GET
+//    @Path("/home")
+//    @Produces(value = {MediaType.APPLICATION_JSON})
+//    public Response getLandingPage(Authentication authentication) {
+//        // todo: mav was "userIndex.jsp"
+//        LOGGER.debug("Request received to user's landing page");
+//        return Response.ok(userService.findActiveReservations(getUsername(authentication))).build();
+//    }
 
-    @GET
-    @Path("/expenses/{reservationId}")
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response boughtProducts(Authentication authentication, @PathParam(value = "reservationId") long reservationId) {
-        // todo: mav was "expenses.jsp"
-        LOGGER.debug("Request received to retrieve all expenses on reservation with id " + reservationId);
-        return Response.ok(userService.checkProductsPurchasedByUserByReservationId(getUsername(authentication), reservationId)).build();
-    }
+//    @GET
+//    @Path("/expenses/{reservationId}")
+//    @Produces(value = {MediaType.APPLICATION_JSON})
+//    public Response boughtProducts(Authentication authentication, @PathParam(value = "reservationId") long reservationId) {
+//        // todo: mav was "expenses.jsp"
+//        LOGGER.debug("Request received to retrieve all expenses on reservation with id " + reservationId);
+//        return Response.ok(userService.checkProductsPurchasedByUserByReservationId(getUsername(authentication), reservationId)).build();
+//    }
 
     @GET
     @Path("/products")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getAllProducts(BuyProductForm productForm, long reservationId) {
+    public Response getAllProducts(@CookieParam("reservationId") long reservationId) {
         // todo: mav was "browseProducts.jsp"
         LOGGER.debug("Request received to retrieve all products list");
         return Response.ok(userService.getProducts()).build();
@@ -74,34 +73,37 @@ public class UserController extends SimpleController {
     @POST
     @Path("/products")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response buyProduct(BuyProductForm buyProductForm, long reservationId) throws EntityNotFoundException {
+    public Response buyProduct(@FormParam("productId") Long productId,
+                               @CookieParam("reservationId") long reservationId) throws EntityNotFoundException {
         LOGGER.debug("Request received to buy products on reservation with id " + reservationId);
-        if(buyProductForm != null) {
+        if(productId != null) {
             // todo: mav was "buyProducts.jsp"
-            Charge charge = userService.addCharge(buyProductForm.getProductId(), reservationId);
+            Charge charge = userService.addCharge(productId, reservationId);
             URI uri = uriInfo.getAbsolutePathBuilder().path("/" + charge.getId()).build();
             return Response.created(uri).build();
         }
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
-    @GET
-    @Path("/help")
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getHelpPage(HelpForm helpForm, long reservationId) {
-        // todo: mav was "askHelpPage.jsp"
-        LOGGER.debug("Request received to get help page");
-        return Response.ok(helpForm).build();
-    }
+//    @GET
+//    @Path("/help")
+//    @Produces(value = {MediaType.APPLICATION_JSON})
+//    public Response getHelpPage(@FormParam("helpFormText") String helpForm,
+//                                @CookieParam("reservationId") long reservationId) {
+//        // todo: mav was "askHelpPage.jsp"
+//        LOGGER.debug("Request received to get help page");
+//        return Response.ok(helpForm).build();
+//    }
 
     @POST
     @Path("/help")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response requestHelp(HelpForm helpForm, long reservationId) throws EntityNotFoundException {
+    public Response requestHelp(@FormParam("helpFormText") String helpForm,
+                                @CookieParam("reservationId") long reservationId) throws EntityNotFoundException {
         LOGGER.debug("Help request made on reservation with id " + reservationId);
         if(helpForm != null) {
             // todo: mav was "requestHelp.jsp"
-            Help helpRequested = userService.requestHelp(helpForm.getText(), reservationId);
+            Help helpRequested = userService.requestHelp(helpForm, reservationId);
             URI uri = uriInfo.getAbsolutePathBuilder().path("/" + helpRequested.getId()).build();
             return Response.created(uri).build();
         }
@@ -111,7 +113,7 @@ public class UserController extends SimpleController {
     @PUT
     @Path("/ratings/{hash}/rate")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response rateStay(String rate, @PathParam("hash") String hash) throws RequestInvalidException, EntityNotFoundException {
+    public Response rateStay(@FormParam("rating") String rate, @PathParam("hash") String hash) throws RequestInvalidException, EntityNotFoundException {
         // todo: mav was "thanksMessage.jsp"
         userService.rateStay(rate, hash);
         return Response.ok().build();

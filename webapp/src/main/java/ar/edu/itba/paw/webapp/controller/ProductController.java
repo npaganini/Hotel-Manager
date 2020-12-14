@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -20,8 +21,8 @@ import java.io.IOException;
 import java.net.URI;
 
 @Controller
+@Path("products")
 public class ProductController {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
 
     private final ProductService productService;
@@ -35,7 +36,6 @@ public class ProductController {
     }
 
     @GET
-    @Path("/products")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response products() {
         // todo: mav was "products.jsp"
@@ -43,7 +43,7 @@ public class ProductController {
     }
 
     @PUT
-    @Path("/products/{id}/disable")
+    @Path("/{id}/disable")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response hideProduct(@PathParam(value = "id") long productId) throws Exception {
         // todo: mav was "productDisable.jsp"
@@ -51,7 +51,7 @@ public class ProductController {
     }
 
     @PUT
-    @Path("/products/{id}/enable")
+    @Path("/{id}/enable")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response showProduct(@PathParam(value = "id") long productId) throws Exception {
         // todo: mav was "productAvailable.jsp"
@@ -59,17 +59,22 @@ public class ProductController {
     }
 
     @POST
-    @Path("/products")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response addProduct(AddProductForm addProductForm) throws IOException {
-        if (addProductForm.getPrice() < 0) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response addProduct(
+            // todo: FIXME multipart file
+//            @FormParam("productImg") MultipartFile img,
+            @FormParam("productImg") String img,
+            @FormParam("productDescription") String description,
+            @FormParam("productPrice") Double price) throws IOException {
+        if (price < 0) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Price must be valid.").build();
         }
         LOGGER.debug("Request to add product to DB received");
-        Product newProduct = new Product(addProductForm.getDescription(), addProductForm.getPrice(), addProductForm.getImg().getBytes());
+        Product newProduct = new Product(description, price, img.getBytes());
         productService.saveProduct(newProduct);
         LOGGER.debug("Product was saved successfully");
-        addProductForm.getImg().getOriginalFilename();
+//        ((MultipartFile) img).getOriginalFilename();
 //        return "redirect:/products";
         final URI uri = uriInfo.getAbsolutePathBuilder().path(String.valueOf(newProduct.getId())).build();
         return Response.created(uri).build();
@@ -77,14 +82,14 @@ public class ProductController {
 
     // todo: what was this being used by?
 //    @GET
-//    @Path(value = "/products/addProduct")
+//    @Path(value = "/addProduct")
 //    public String inputProduct(Model model) {
 //        model.addAttribute("productForm", new AddProductForm());
 //        return "addProduct";
 //    }
 
     @GET
-    @Path(value = "/product/{productId}/img")
+    @Path(value = "/{productId}/img")
     @Produces("image/png")
     public @ResponseBody byte[] getImg(@PathParam("productId") long productId) throws EntityNotFoundException {
         return productService.findProductById(productId).getFile();
