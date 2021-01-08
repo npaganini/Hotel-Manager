@@ -8,6 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { Table } from '@material-ui/core';
 
+import clases from './Navbar.css'
+
 
 const TabPanel = (props) => {
     const { children, value, index, ...other } = props;
@@ -47,7 +49,15 @@ const TabPanel = (props) => {
       flexGrow: 1,
       width: '100%',
       backgroundColor: theme.palette.background.paper,
+      height: '45px',
+      padding: '0px'
     },
+    rightAlign: {
+       marginLeft: 'auto',
+    },
+    tabPanel: {
+      padding: '0px'
+    }
   }));
   
 const Navbar = (props) => {
@@ -60,8 +70,8 @@ const Navbar = (props) => {
   
     return (
       <div className={classes.root}>
-        <AppBar position="static" color="default">
-          <Tabs
+        <AppBar position="static" color="default" >
+          <Tabs 
             value={value}
             onChange={handleChange}
             indicatorColor="primary"
@@ -70,35 +80,29 @@ const Navbar = (props) => {
             scrollButtons="auto"
             aria-label="scrollable auto tabs example"
           >
-            <Tab label="Item One" {...a11yProps(0)} />
-            <Tab label="Item Two" {...a11yProps(1)} />
-            <Tab label="Item Three" {...a11yProps(2)} />
-            <Tab label="Item Four" {...a11yProps(3)} />
-            <Tab label="Item Five" {...a11yProps(4)} />
-            <Tab label="Item Six" {...a11yProps(5)} />
-            <Tab label="Item Seven" {...a11yProps(6)} />
+            <Tab label="Registration" {...a11yProps(0)} />
+            <Tab label="Check-In" {...a11yProps(1)} />
+            <Tab label="Check-Out" {...a11yProps(2)} />
+            <Tab label="Reservations" {...a11yProps(3)} />
+            <Tab label="Products" {...a11yProps(4)} />
+            <Tab label="Orders" {...a11yProps(5)} />
+            <Tab label="Help Request" {...a11yProps(6)} />
+            <Tab label="Account" {...a11yProps(7)} className={classes.rightAlign}/>
           </Tabs>
         </AppBar>
-        <TabPanel value={value} index={0}>
-          Item One
+        <TabPanel value={value} className={classes.tabPanel} index={0}>
         </TabPanel>
-        <TabPanel value={value} index={1}>
-          Item Two
+        <TabPanel value={value} className={classes.tabPanel} index={1}>
         </TabPanel>
-        <TabPanel value={value} index={2}>
-          Item Three
+        <TabPanel value={value} className={classes.tabPanel} index={2}>
         </TabPanel>
-        <TabPanel value={value} index={3}>
-          Item Four
+        <TabPanel value={value} className={classes.tabPanel} index={3}>
         </TabPanel>
-        <TabPanel value={value} index={4}>
-          Item Five
+        <TabPanel value={value} className={classes.tabPanel} index={4}>
         </TabPanel>
-        <TabPanel value={value} index={5}>
-          Item Six
+        <TabPanel value={value} className={classes.tabPanel} index={5}>
         </TabPanel>
-        <TabPanel value={value} index={6}>
-          Item Seven
+        <TabPanel value={value} className={classes.tabPanel} index={6}>
         </TabPanel>
       </div>
     );

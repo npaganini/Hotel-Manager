@@ -7,7 +7,8 @@ import DatePicker from './components/DatePickers/DatePicker'
 import Button from './components/Button/Button'
 import Input from './components/Input/Input'
 import Dropdown from './components/Dropdown/Dropdown'
-import Login from './components/Login/Login'
+import Login from './containers/Login/Login'
+import Principal from './containers/Principal/Principal'
 
 class App extends Component {
   render() {
@@ -21,7 +22,10 @@ class App extends Component {
       //   <Button ButtonType="Back"></Button>
       // </div>
       // <Input type="text" label="test"></Input>
-      <Login></Login>
+
+      // <Login></Login>
+
+      <Principal></Principal>
     );
   }
 }

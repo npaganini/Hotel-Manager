@@ -60,11 +60,11 @@ const rows = [
 
 const useStyles = makeStyles({
   root: {
-    width: '50%',
+    width: '85%',
   },
-  container: {
-    maxHeight: 440,
-  },
+  space:{
+    marginRight : '0px !important'
+  }
 });
 
 const DataTable = (props) => {
@@ -84,9 +84,9 @@ const DataTable = (props) => {
   return (
       <div>
     <Paper className={classes.root}>
-      <TableContainer className={classes.container}>
+      <TableContainer className={classes.space}>
         <Table stickyHeader aria-label="sticky table">
-          <TableHead>
+          <TableHead className={classes.space}>
             <TableRow>
               {columns.map((column) => (
                 <TableCell
@@ -99,7 +99,7 @@ const DataTable = (props) => {
               ))}
             </TableRow>
           </TableHead>
-          <TableBody>
+          <TableBody className={classes.space}>
             {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>

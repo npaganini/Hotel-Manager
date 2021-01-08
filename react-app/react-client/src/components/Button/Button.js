@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 import BackIcon from '@material-ui/icons/Backspace';
 import SaveIcon from '@material-ui/icons/Save';
+import { PowerInputSharp } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -23,7 +24,7 @@ const IconLabelButtons = (props) => {
                     className={classes.button}
                     startIcon={<DeleteIcon />}
                 >
-                    Borrar
+                    <p>{props.ButtonText}</p>
                 </Button>
             );
 
@@ -36,27 +37,39 @@ const IconLabelButtons = (props) => {
                     className={classes.button}
                     startIcon={<SaveIcon />}
                 >
-                    Guardar
+                    <p>{props.ButtonText}</p>
                 </Button>
             );
-        
-            case "Back":
-                return (
 
-                    <Button
-                        variant="contained"
-                        color="default"
-                        className={classes.button}
-                        startIcon={<BackIcon />}
-                    >
-                        Volver
-                    </Button>
-                );
-                
-            default:
-                return (
-                    <div></div>
-                );
+        case "Back":
+            return (
+
+                <Button
+                    variant="contained"
+                    color="default"
+                    className={classes.button}
+                    startIcon={<BackIcon />}
+                >
+                    <p>{props.ButtonText}</p>
+                </Button>
+            );
+        case "Success":
+            return (
+
+                <Button
+                    variant="contained"
+                    color="green"
+                    size="large"
+                    className={classes.button}
+                >
+                    <p>{props.ButtonText}</p>
+                </Button>
+            );
+
+        default:
+            return (
+                <div></div>
+            );
     }
 }
 
