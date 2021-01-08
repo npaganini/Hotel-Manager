@@ -4,7 +4,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 import BackIcon from '@material-ui/icons/Backspace';
 import SaveIcon from '@material-ui/icons/Save';
-import { PowerInputSharp } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
     button: {

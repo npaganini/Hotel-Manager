@@ -6,11 +6,9 @@ import Navbar from '../../components/Navbar/Navbar'
 import Table from '../../components/Table/Table'
 import Button from '../../components/Button/Button'
 
-import classes from './Principal.css';
-
 const useStyles = makeStyles((theme) => ({
     container: {
-        background: '#EFDAFC ',
+        background: '#FAF6FC',
         height: '100vh'
     },
     tableRow: {

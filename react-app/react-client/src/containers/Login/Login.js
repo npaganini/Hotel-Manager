@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
   container: {
-    background: '#EFDAFC ',
+    background: '#FAF6FC',
     height: '100vh'
   },
   row: {
