@@ -61,9 +61,7 @@ const rows = [
 const useStyles = makeStyles({
   root: {
     width: '85%',
-  },
-  space:{
-    marginRight : '0px !important'
+    margin: '0 !important'
   }
 });
 
@@ -82,9 +80,8 @@ const DataTable = (props) => {
   };
 
   return (
-      <div>
-    <Paper className={classes.root}>
-      <TableContainer className={classes.space}>
+    <div>
+      <TableContainer className={classes.root}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead className={classes.space}>
             <TableRow>
@@ -126,7 +123,6 @@ const DataTable = (props) => {
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
       />
-    </Paper>
     </div>
   );
 }

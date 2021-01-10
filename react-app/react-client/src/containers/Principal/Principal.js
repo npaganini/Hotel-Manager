@@ -13,14 +13,14 @@ const useStyles = makeStyles((theme) => ({
     },
     tableRow: {
         marginTop: '40px',
-        marginRight: '0px'
     },
     tableCol:{
-        paddingLeft: '7.5%',
+        paddingRight: '7.5%',
+        paddingLeft: '7.5%'
     },
     buttonCol:{
         textAlign: 'right',
-        paddingRight: '10%'
+        paddingRight: '7.5%'
     },
     buttonRow:{
         marginTop: '40px',
@@ -46,7 +46,7 @@ const principal = (props) => {
                     <Button ButtonType="Success" ButtonText="New Reservation"></Button>
                     </Col>
                 </Row>
-                <Row className={classes.tableRow}>
+                <Row className="justify-content-sm-center">
                     <Col className={classes.tableCol}>
                         <Table></Table>
                     </Col>
