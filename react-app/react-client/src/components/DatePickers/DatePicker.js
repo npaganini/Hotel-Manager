@@ -3,14 +3,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles((theme) => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    width: 200,
+    display: 'flex',
+    flexWrap: 'wrap',
   },
 }));
 
@@ -19,9 +16,8 @@ const DatePickers = (props) => {
 
   console.log(props.Date);
   return (      
-    <form className={classes.container} noValidate>
       <TextField
-        id="date"
+        id={props.Id}
         label={props.label}
         type="date"
         className={classes.textField}
@@ -29,7 +25,6 @@ const DatePickers = (props) => {
           shrink: true,
         }}
       />
-    </form>
   );
 }
 

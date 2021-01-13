@@ -8,7 +8,12 @@ import SaveIcon from '@material-ui/icons/Save';
 const useStyles = makeStyles((theme) => ({
     button: {
         margin: theme.spacing(1),
+        borderRadius: '10px',
+        textAlign: 'center',
     },
+    text:{
+        margin: '0px !important'
+    }
 }));
 
 const IconLabelButtons = (props) => {
@@ -23,7 +28,7 @@ const IconLabelButtons = (props) => {
                     className={classes.button}
                     startIcon={<DeleteIcon />}
                 >
-                    <p>{props.ButtonText}</p>
+                    <p className={classes.text}>{props.ButtonText}</p>
                 </Button>
             );
 
@@ -32,11 +37,11 @@ const IconLabelButtons = (props) => {
 
                 <Button
                     variant="contained"
-                    color="primary"
+                   className={classes.text} color="primary"
                     className={classes.button}
                     startIcon={<SaveIcon />}
                 >
-                    <p>{props.ButtonText}</p>
+                    <p className={classes.text}>{props.ButtonText}</p>
                 </Button>
             );
 
@@ -49,7 +54,7 @@ const IconLabelButtons = (props) => {
                     className={classes.button}
                     startIcon={<BackIcon />}
                 >
-                    <p>{props.ButtonText}</p>
+                    <p className={classes.text}>{props.ButtonText}</p>
                 </Button>
             );
         case "Success":
@@ -61,7 +66,7 @@ const IconLabelButtons = (props) => {
                     size="large"
                     className={classes.button}
                 >
-                    <p>{props.ButtonText}</p>
+                    <p className={classes.text}>{props.ButtonText}</p>
                 </Button>
             );
 

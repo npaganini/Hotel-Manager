@@ -34,8 +34,8 @@ const principal = (props) => {
     const classes = useStyles();
 
     return (
-        <div className={classes.container}>
-            <Container fluid="md">
+        <div>
+            <Container fluid="md" className={classes.container}>
                 <Row>
                     <Col>
                         <Navbar></Navbar>

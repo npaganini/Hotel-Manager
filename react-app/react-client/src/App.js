@@ -9,6 +9,7 @@ import Input from './components/Input/Input'
 import Dropdown from './components/Dropdown/Dropdown'
 import Login from './containers/Login/Login'
 import Principal from './containers/Principal/Principal'
+import Reservation from './containers/Reservation/Reservation'
 
 class App extends Component {
   render() {
@@ -25,7 +26,9 @@ class App extends Component {
 
       // <Login></Login>
 
-      <Principal></Principal>
+      // <Principal></Principal>
+
+      <Reservation></Reservation>
     );
   }
 }

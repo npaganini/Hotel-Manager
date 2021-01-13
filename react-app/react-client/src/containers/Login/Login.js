@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     height: '100vh'
   },
   row: {
-    paddingTop: '150px'
+    paddingTop: '100px'
   },
   col:{
     textAlign: 'center'
@@ -52,7 +52,7 @@ export default function SignIn() {
 
   return (
     <div className={classes.container}>
-      <Container component="main" maxWidth="sm" >
+      <Container fluid="md" component="main" maxWidth="sm" >
         <Row className={classes.row}>
           <Col>
             <Card className={classes.root}>

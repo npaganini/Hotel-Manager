@@ -59,10 +59,6 @@ const rows = [
 ];
 
 const useStyles = makeStyles({
-  root: {
-    width: '85%',
-    margin: '0 !important'
-  }
 });
 
 const DataTable = (props) => {
@@ -81,7 +77,7 @@ const DataTable = (props) => {
 
   return (
     <div>
-      <TableContainer className={classes.root}>
+      <TableContainer>
         <Table stickyHeader aria-label="sticky table">
           <TableHead className={classes.space}>
             <TableRow>
