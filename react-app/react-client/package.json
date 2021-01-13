@@ -15,6 +15,7 @@
     "react-dom": "^17.0.1",
     "react-i18next": "^11.8.5",
     "react-scripts": "1.1.5",
+    "react-i18next": "11.8.5",
     "webpack-dev-server": "^2.11.3"
   },
   "scripts": {
