@@ -6,6 +6,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import {useTranslation, withTranslation} from 'react-i18next';
 
 
 const TabPanel = (props) => {
@@ -60,6 +61,7 @@ const TabPanel = (props) => {
 const Navbar = (props) => {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
+    const {t} = useTranslation();
   
     const handleChange = (event, newValue) => {
       setValue(newValue);
@@ -77,14 +79,14 @@ const Navbar = (props) => {
             scrollButtons="auto"
             aria-label="scrollable auto tabs example"
           >
-            <Tab label="Registration" {...a11yProps(0)} />
-            <Tab label="Check-In" {...a11yProps(1)} />
-            <Tab label="Check-Out" {...a11yProps(2)} />
-            <Tab label="Reservations" {...a11yProps(3)} />
-            <Tab label="Products" {...a11yProps(4)} />
-            <Tab label="Orders" {...a11yProps(5)} />
-            <Tab label="Help Request" {...a11yProps(6)} />
-            <Tab label="Account" {...a11yProps(7)} className={classes.rightAlign}/>
+            <Tab label={t('registration')} {...a11yProps(0)} />
+            <Tab label={t('reservation.checkin.message')} {...a11yProps(1)} />
+            <Tab label={t('reservation.checkout.message')} {...a11yProps(2)} />
+            <Tab label={t('reservation.plural')} {...a11yProps(3)} />
+            <Tab label={t('product.plural')} {...a11yProps(4)} />
+            <Tab label={t('reservation.order.plural')} {...a11yProps(5)} />
+            <Tab label={t('help.request.singular')} {...a11yProps(6)} />
+            <Tab label={t('user.account')} {...a11yProps(7)} className={classes.rightAlign}/>
           </Tabs>
         </AppBar>
         <TabPanel value={value} className={classes.tabPanel} index={0}>

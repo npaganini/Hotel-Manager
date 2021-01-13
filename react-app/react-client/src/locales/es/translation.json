@@ -1,0 +1,162 @@
+{
+  "user": {
+    "singular": "Usuario",
+    "plural": "Usuarios",
+    "landingMessage": "¡Bienvenido!",
+    "greeting": "¡Bienvenido! Su ID de la reserva es {0}.",
+    "home": "Volver Al Inicio",
+    "logout": "Cerrar Sesión",
+    "account": "Cuenta",
+    "actions": "Acciones",
+    "expenses": "Expensas",
+    "help": {
+      "assistance": "Ayuda",
+      "list": "Lista de pedidos de ayuda",
+      "me": "Ayuda",
+      "requested": "Pedido Registrado!",
+      "error": "Se generó un error en el pedido de ayuda. Por favor, intente de nuevo.",
+      "submit": "Pedir ayuda",
+      "yourMessage": "Su mensaje:"
+    },
+    "problem": "¿Problema?",
+    "product": {
+      "bought": " ¡Producto comprado!",
+      "itemsDelivered": "¡Ítems serán entregados a su cuarto dentro de poco!",
+      "error": "Se generó un error en la compra del producto. Por favor, intente de nuevo.",
+      "list": {
+        "browse": "Regresar a la lista productos",
+        "expenses": "Todas Mis Expensas"
+      },
+      "list.buy": "Comprar Productos",
+      "buy": "Comprar",
+      "offered": "Productos Ofrecidos:",
+      "expensesCheck": "Sus Expensas",
+      "expensesList": "Todas Sus Expensas:",
+      "product": "Producto",
+      "amount": "Cantidad",
+      "price": "Precio",
+      "total": "Total:"
+    },
+    "landing": {
+      "other": "Otras Acciones",
+      "history": "Historial"
+    },
+    "reservation": {
+      "currents": {
+        "active": "Sus Reservas Actuales",
+        "none": "No tiene reservas actuales!"
+      }
+    }
+  },
+
+  "product": {
+    "singular": "Producto",
+    "plural": "Productos",
+    "add": "¡Agregar Producto!",
+    "img": "Imagen Del Producto",
+    "enabled": "Producto Habilitado",
+    "enabled.success": "El producto se habilito exitosamente.",
+    "description": "Descripción",
+    "price.positive": "El precio debe ser mayor que cero."
+  },
+
+  "reservation": {
+    "singular": "Reserva",
+    "plural": "Reservas",
+    "date": {
+      "start": "Desde",
+      "end": "Hasta"
+    },
+    "room": {
+      "type": "Tipo de Habitación",
+      "number": "Número de Habitación"
+    },
+    "checkin": {
+      "message": "Check-In",
+      "successful": "¡Check-In exitoso!"
+    },
+    "checkout": {
+      "message": "Check-Out",
+      "successful": "¡Check-Out exitoso!"
+    },
+    "order": {
+      "singular": "Pedido",
+      "plural": "Pedidos"
+    },
+    "email": "Email del titular",
+    "id": "ID de la reserva",
+    "new": "Nueva Reserva",
+    "isActive": "Activa"
+  },
+
+  "order": {
+    "finish": "¡Pedido Terminado!",
+    "deliver": "El pedido ya se puede llevar a la habitacion."
+  },
+
+  "help": {
+    "request": {
+      "singular": "Asistencia",
+      "plural": "Asistencia"
+    },
+    "text": {
+      "singular": "Pedido",
+      "plural": "Pedidos"
+    },
+    "status": {
+      "message": "Estado",
+      "update": "Estado Cambiado!",
+      "mark": {
+        "message": "Marcar como",
+        "unattended": "No atendido",
+        "further": "Sin solucionar",
+        "resolved": "Resuelto"
+      }
+    }
+  },
+
+  "room": {
+    "singular": "Habitación",
+    "plural": "Habitaciones",
+    "type": "Tipo",
+    "from": "Desde",
+    "until": "Hasta",
+    "owner": "Titular",
+    "state": "Estado",
+    "filter": "Filtrar Habitaciones",
+    "occupied": {
+      "singular": "Habitación Ocupada",
+      "plural": "Habitaciones Ocupadas"
+    }
+  },
+
+  "login": "Login",
+  "email": "Dirección de e-mail",
+  "password": "Contraseña",
+  "rememberme": "Recuérdame",
+
+  "error": {
+    "error": "¡Oops!",
+    "500": "Hubo un problema procesando su pedido. Por favor, intente devuelta en unos minutos.",
+    "403": "Acceso denegado. Por favor, inicie sesión.",
+    "404": "Recurso no encontrado."
+  },
+
+  "accept": "Aceptar",
+  "cancel": "Cancelar",
+  "success": "La accion se realizo exitosamente.",
+  "services": "Servicios",
+  "send": "Enviar",
+  "done": "¡Terminado!",
+  "refresh": "Actualizar",
+  "enable": "Habilitar",
+  "disable": "Deshabilitar",
+  "add": "Agregar",
+  "reserve": "Reservar",
+  "register": "Registrar",
+  "registered": "Registrado",
+  "lastname": "Apellido",
+  "firstname": "Nombre",
+  "search": "Buscar",
+  "registration": "Registros"
+}

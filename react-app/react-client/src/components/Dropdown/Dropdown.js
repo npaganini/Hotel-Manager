@@ -4,6 +4,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import {useTranslation} from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -18,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
 const SimpleSelect = (props) => {
   const classes = useStyles();
   const [room, setRoom] = React.useState('');
+  const {t} = useTranslation();
 
   const handleChange = (event) => {
     setRoom(event.target.value);
@@ -25,7 +27,7 @@ const SimpleSelect = (props) => {
 
   return (
       <FormControl className={classes.formControl}>
-        <InputLabel id="demo-simple-select-label">Habitacion</InputLabel>
+        <InputLabel id="demo-simple-select-label">{t('room.singular')}</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
