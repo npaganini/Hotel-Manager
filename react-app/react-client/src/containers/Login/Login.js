@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -10,6 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Card from '@material-ui/core/Card';
 import { Row, Col } from 'react-bootstrap';
+import {useTranslation, withTranslation} from 'react-i18next';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn() {
   const classes = useStyles();
+  const {t} = useTranslation();
 
   return (
     <div className={classes.container}>
@@ -71,7 +72,7 @@ export default function SignIn() {
                     required
                     fullWidth
                     id="email"
-                    label="Usuario"
+                    label={t('user.singular')}
                     name="email"
                     autoComplete="email"
                     autoFocus
@@ -82,7 +83,7 @@ export default function SignIn() {
                     required
                     fullWidth
                     name="password"
-                    label="Contraseña"
+                    label={t('password')}
                     type="password"
                     id="password"
                     autoComplete="current-password"
