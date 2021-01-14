@@ -8,18 +8,18 @@ import ar.edu.itba.paw.models.room.Room;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.glassfish.jersey.server.JSONP;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.Calendar;
 import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement
 public class ReservationDTO {
     private Long id;
     private Calendar startDate;
@@ -29,7 +29,7 @@ public class ReservationDTO {
     private boolean isActive;
     private List<Charge> charges;
     private List<Occupant> occupants;
-//    private String hash;
+    private String hash;
     private Calification calification;
 
     public static ReservationDTO fromReservation(Reservation reservation) {
@@ -43,7 +43,7 @@ public class ReservationDTO {
         rDto.isActive = reservation.getRoom().isFreeNow();
         rDto.charges = reservation.getCharges();
         rDto.occupants = reservation.getOccupants();
-//        rDto.hash = reservation.getHash();
+        rDto.hash = reservation.getHash();
         rDto.calification = reservation.getCalification();
 
         System.out.println("\n");

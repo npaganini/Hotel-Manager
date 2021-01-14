@@ -100,7 +100,6 @@ public class WebConfig {
         // FIXME TODO create-drop for development only
         properties.setProperty("hibernate.hbm2ddl.auto", "update"); // poner create en vez de update BORRA todos los datos guardados, cuidado
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL92Dialect");
-
         // TODO: BORRAR ANTES DE MANDAR A PROD
         properties.setProperty("hibernate.show_sql", "true");
         properties.setProperty("format_sql", "true");
