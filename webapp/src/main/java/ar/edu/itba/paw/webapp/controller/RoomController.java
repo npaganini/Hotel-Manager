@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -49,11 +50,13 @@ public class RoomController extends SimpleController {
     }
 
     @GET
-    @Produces(value = {MediaType.APPLICATION_XML})
+    @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getAllRooms() {
         LOGGER.debug("Request received to retrieve whole roomsList");
-        final List<ReservationDTO> roomsReserved = reservationService.getRoomsReservedActive()
+        final List<Reservation> reservations = reservationService.getRoomsReservedActive();
+        final List<ReservationDTO> roomsReserved = reservations
                 .stream().map(ReservationDTO::fromReservation).collect(Collectors.toList());
+
         return Response.ok(new GenericEntity<List<ReservationDTO>>(roomsReserved) {}).build();
 //        List<String> l = new LinkedList<>();
 //        l.add("pepito1");

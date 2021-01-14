@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.List;
 
 @Getter
@@ -41,4 +43,9 @@ public class Room {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "room")
     private List<Reservation> reservations;
+
+    @XmlTransient
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
 }
