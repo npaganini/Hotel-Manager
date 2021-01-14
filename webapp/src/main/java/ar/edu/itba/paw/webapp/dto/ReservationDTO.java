@@ -14,13 +14,15 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class ReservationDTO {
+@XmlRootElement
+public class ReservationDTO implements Serializable {
     private Long id;
     private Calendar startDate;
     private Calendar endDate;

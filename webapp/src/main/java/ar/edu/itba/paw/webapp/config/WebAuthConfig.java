@@ -43,46 +43,48 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
         this.servletContext = servletContext;
     }
 
+    // FIXME
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http.userDetailsService(customUserDetailsService)
-                .sessionManagement()
-                .invalidSessionUrl("/login")
-                .and()
-                .authorizeRequests()
+                .csrf().disable();
+//                .sessionManagement()
+//                .invalidSessionUrl("/login")
+//                .and()
+//                .authorizeRequests()
 //                .antMatchers("/login").anonymous()
 //                .antMatchers("/user/**").hasAuthority(UserRole.CLIENT.toString())
 //                .antMatchers("/rooms/**", "/reservation/**", "/products/**", "/ratings/**").hasAnyAuthority(UserRole.EMPLOYEE.toString(), UserRole.MANAGER.toString())
 //                .antMatchers("/", "/index", "/product/**").hasAnyAuthority(UserRole.EMPLOYEE.toString(), UserRole.MANAGER.toString(), UserRole.CLIENT.toString())
-                // todo: erase permitAll and re-add the other antMatchers
-                .antMatchers("/**").permitAll()
-                .and().formLogin()
-                .usernameParameter("username")
-                .passwordParameter("password")
-                .successHandler((httpServletRequest, httpServletResponse, authentication)
-                        -> ((MyUserPrincipal) authentication.getPrincipal()).getAuthorities().parallelStream().forEach(authority -> {
-                    try {
-                        if (authority.getAuthority().equals(UserRole.CLIENT.toString())) {
-                            httpServletResponse.sendRedirect(servletContext.getContextPath() + "/user/home");
-                        } else {
-                            httpServletResponse.sendRedirect(servletContext.getContextPath() + "/rooms/home");
-                        }
-                    } catch (IOException e) {
-                        LOGGER.error(e.toString());
-                    }
-                }))
-                .loginPage("/login")
-                .and().rememberMe()
-                .rememberMeParameter("rememberMe")
-                .userDetailsService(customUserDetailsService)
-                .key(key)
-                .tokenValiditySeconds((int) TimeUnit.DAYS.toMinutes(60))
-                .and().logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login")
-                .and().exceptionHandling()
-                .accessDeniedPage("/403")
-                .and().csrf().disable();
+//                // todo: erase permitAll and re-add the other antMatchers
+//                .antMatchers("/**").permitAll()
+//                .and().formLogin()
+//                .usernameParameter("username")
+//                .passwordParameter("password")
+//                .successHandler((httpServletRequest, httpServletResponse, authentication)
+//                        -> ((MyUserPrincipal) authentication.getPrincipal()).getAuthorities().parallelStream().forEach(authority -> {
+//                    try {
+//                        if (authority.getAuthority().equals(UserRole.CLIENT.toString())) {
+//                            httpServletResponse.sendRedirect(servletContext.getContextPath() + "/user/home");
+//                        } else {
+//                            httpServletResponse.sendRedirect(servletContext.getContextPath() + "/rooms/home");
+//                        }
+//                    } catch (IOException e) {
+//                        LOGGER.error(e.toString());
+//                    }
+//                }))
+//                .loginPage("/login")
+//                .and().rememberMe()
+//                .rememberMeParameter("rememberMe")
+//                .userDetailsService(customUserDetailsService)
+//                .key(key)
+//                .tokenValiditySeconds((int) TimeUnit.DAYS.toMinutes(60))
+//                .and().logout()
+//                .logoutUrl("/logout")
+//                .logoutSuccessUrl("/login")
+//                .and().exceptionHandling()
+//                .accessDeniedPage("/403")
+//                .and().csrf().disable();
     }
 
     @Override
