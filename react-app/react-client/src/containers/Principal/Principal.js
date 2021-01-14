@@ -43,7 +43,7 @@ const principal = (props) => {
                 </Row>
                 <Row className={classes.buttonRow}>
                     <Col className={classes.buttonCol}>
-                    <Button ButtonType="Success" ButtonText="New Reservation"></Button>
+                    <Button ButtonType="Inherit" ButtonText="New Reservation"></Button>
                     </Col>
                 </Row>
                 <Row className="justify-content-sm-center">

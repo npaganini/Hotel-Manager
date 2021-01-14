@@ -27,6 +27,7 @@ const IconLabelButtons = (props) => {
                     color="secondary"
                     className={classes.button}
                     startIcon={<DeleteIcon />}
+                    id={props.Id}
                 >
                     <p className={classes.text}>{props.ButtonText}</p>
                 </Button>
@@ -40,6 +41,7 @@ const IconLabelButtons = (props) => {
                    className={classes.text} color="primary"
                     className={classes.button}
                     startIcon={<SaveIcon />}
+                    id={props.Id}
                 >
                     <p className={classes.text}>{props.ButtonText}</p>
                 </Button>
@@ -53,18 +55,20 @@ const IconLabelButtons = (props) => {
                     color="default"
                     className={classes.button}
                     startIcon={<BackIcon />}
+                    id={props.Id}
                 >
                     <p className={classes.text}>{props.ButtonText}</p>
                 </Button>
             );
-        case "Success":
+        case "Inherit":
             return (
 
                 <Button
                     variant="contained"
-                    color="green"
+                    color="default"
                     size="large"
                     className={classes.button}
+                    id={props.Id}
                 >
                     <p className={classes.text}>{props.ButtonText}</p>
                 </Button>
