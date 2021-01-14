@@ -2,11 +2,13 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.daos.ChargeDao;
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
+import ar.edu.itba.paw.interfaces.daos.RoomDao;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.ChargeService;
 import ar.edu.itba.paw.models.charge.Charge;
 import ar.edu.itba.paw.models.reservation.Reservation;
+import ar.edu.itba.paw.models.room.Room;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -22,10 +24,12 @@ public class ChargeServiceImpl implements ChargeService {
 
     private final ReservationDao reservationDao;
     private final ChargeDao chargeDao;
+    private final RoomDao roomDao;
 
-    public ChargeServiceImpl(ReservationDao reservationDao, ChargeDao chargeDao) {
+    public ChargeServiceImpl(ReservationDao reservationDao, ChargeDao chargeDao, RoomDao roomDao) {
         this.reservationDao = reservationDao;
         this.chargeDao = chargeDao;
+        this.roomDao = roomDao;
     }
 
     @Override
@@ -61,14 +65,18 @@ public class ChargeServiceImpl implements ChargeService {
     }
 
     @Override
-    public int setChargesToDelivered(long roomNumber) throws RequestInvalidException {
-        List<Charge> chargeList = chargeDao.findChargesByRoomNumber(roomNumber);
-        for (Charge c: chargeList) {
-            if (c.isDelivered()) {
-                LOGGER.debug("Charge with ID: " + c.getId() + " was already delivered.");
-                throw new RequestInvalidException();
+    public int setChargesToDelivered(long roomId) throws RequestInvalidException, EntityNotFoundException {
+        Optional<Room> room = roomDao.findById(roomId);
+        if (room.isPresent()) {
+            List<Charge> chargeList = chargeDao.findChargesByRoomNumber(room.get().getNumber());
+            for (Charge c : chargeList) {
+                if (c.isDelivered()) {
+                    LOGGER.debug("Charge with ID: " + c.getId() + " was already delivered.");
+                    throw new RequestInvalidException();
+                }
             }
+            return chargeDao.updateChargesToDelivered(chargeList);
         }
-        return chargeDao.updateChargesToDelivered(chargeList);
+        throw new EntityNotFoundException("Can't find room with id " + roomId);
     }
 }

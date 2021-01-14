@@ -1,17 +1,19 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.services.RatingsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import ar.edu.itba.paw.interfaces.services.RatingsService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Controller
-@RequestMapping("/ratings")
+@Path("/ratings")
 public class RatingsController extends SimpleController {
     private static final Logger LOGGER = LoggerFactory.getLogger(RatingsController.class);
 
@@ -22,31 +24,30 @@ public class RatingsController extends SimpleController {
         this.ratingsService = ratingsService;
     }
 
-    @GetMapping("/")
-    public ModelAndView getHotelRatings() {
-        final ModelAndView mav = new ModelAndView();
-        mav.addObject(ratingsService.getHotelRating());
-        return mav;
+    @GET
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getHotelRatings() {
+        return Response.ok(ratingsService.getHotelRating()).build();
     }
 
-    @GetMapping("/all")
-    public ModelAndView getAllHotelRatings() {
-        final ModelAndView mav = new ModelAndView();
-        mav.addObject(ratingsService.getAllHotelRatings());
-        return mav;
-    }
-
-    @GetMapping("/rooms")
-    public ModelAndView getRoomRating(@RequestParam(value = "roomId") long roomId) {
-        final ModelAndView mav = new ModelAndView();
-        mav.addObject(ratingsService.getRoomRating(roomId));
-        return mav;
-    }
-
-    @GetMapping("/rooms/all")
-    public ModelAndView getRoomRatings(@RequestParam(value = "roomId") long roomId) {
-        final ModelAndView mav = new ModelAndView();
-        mav.addObject(ratingsService.getAllRoomRatings(roomId));
-        return mav;
-    }
+//    @GET
+//    @Path("/hotel")
+//    @Produces(value = {MediaType.APPLICATION_JSON})
+//    public Response getAllHotelRatings() {
+//        return Response.ok(ratingsService.getAllHotelRatings()).build();
+//    }
+//
+//    @GET
+//    @Path("/rooms/{id}")
+//    @Produces(value = {MediaType.APPLICATION_JSON})
+//    public Response getRoomRating(@PathParam(value = "id") long roomId) {
+//        return Response.ok(ratingsService.getRoomRating(roomId)).build();
+//    }
+//
+//    @GET
+//    @Path("/rooms")
+//    @Produces(value = {MediaType.APPLICATION_JSON})
+//    public Response getRoomRatings(long roomId) {
+//        return Response.ok(ratingsService.getAllRoomRatings(roomId)).build();
+//    }
 }

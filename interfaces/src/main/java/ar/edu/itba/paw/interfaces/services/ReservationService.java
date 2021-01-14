@@ -26,8 +26,5 @@ public interface ReservationService {
 
     boolean isRoomFreeOnDate(long roomId, Calendar startDate, Calendar endDate) throws RequestInvalidException;
 
-
     void registerOccupants(String reservation_hash, List<Occupant> listOfOccupantsFromForm) throws EntityNotFoundException;
-
-    void rateStay(String rate, String hash) throws EntityNotFoundException, RequestInvalidException;
 }

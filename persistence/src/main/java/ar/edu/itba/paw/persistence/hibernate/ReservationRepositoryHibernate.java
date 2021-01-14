@@ -6,8 +6,13 @@ import ar.edu.itba.paw.models.reservation.Reservation;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.*;
-import java.util.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Reservation> implements ReservationDao {

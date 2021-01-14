@@ -3,7 +3,6 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.daos.ProductDao;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.models.product.Product;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,11 +10,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.security.core.parameters.P;
 
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -39,12 +36,12 @@ public class ProductServiceImplTest {
 
     @Test
     public void unableExistentProductTest() throws EntityNotFoundException {
-        assertTrue("Product should be unabled", productService.unableProduct(1L));
+        assertTrue("Product should be unabled", productService.disableProduct(1L));
     }
 
     @Test(expected = EntityNotFoundException.class)
     public void unableNonExistentProductTest() throws EntityNotFoundException {
-        productService.unableProduct(2L);
+        productService.disableProduct(2L);
     }
 
     @Test

@@ -3,34 +3,46 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.models.user.UserRole;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 @Controller
 public class AuthController {
+    @Context
+    private UriInfo uriInfo;
 
-    @RequestMapping("/login")
-    public ModelAndView login() {
-        return new ModelAndView("login");
+    @GET
+    @Path("/login")
+    public Response login() {
+        // todo: mav was "login.jsp"
+        return Response.ok().build();
     }
 
-    @RequestMapping("/403")
-    public ModelAndView forbidden() {
-        return new ModelAndView("403");
+    @GET
+    @Path("/403")
+    public Response forbidden() {
+        // todo: mav was "403.jsp"
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
-    @RequestMapping("/")
-    public String redirect(Authentication authentication) {
+    @GET
+    @Path("/")
+    public Response redirect(Authentication authentication) {
         String role = authentication.getAuthorities().toString();
         String home = "user";
         if (!role.contains(UserRole.CLIENT.toString())) {
             home = "rooms";
         }
-        return "redirect:/" + home + "/home";
+        return Response.temporaryRedirect(uriInfo.getAbsolutePathBuilder().path(home + "/home").build()).build();
     }
 
-    @RequestMapping("/index")
-    public String redirectIndex(Authentication authentication) {
+    @GET
+    @Path("/index")
+    public Response redirectIndex(Authentication authentication) {
         return redirect(authentication);
     }
 }

@@ -19,5 +19,5 @@ public interface ChargeDao extends SimpleDao<ar.edu.itba.paw.models.charge.Charg
 
     int updateChargesToDelivered(List<Charge> chargeList);
 
-    List<Charge> findChargesByRoomNumber(long roomNumber);
+    List<Charge> findChargesByRoomNumber(int roomNumber);
 }
