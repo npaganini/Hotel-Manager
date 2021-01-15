@@ -79,8 +79,13 @@ public class ChargeRepositoryHibernate extends SimpleRepositoryHibernate<Charge>
 
     @Override
     public int updateChargesToDelivered(List<Charge> chargeList) {
-        for (Charge charge: chargeList) {
-            updateChargeToDelivered(charge.getId());
+        if (chargeList != null) {
+            int count = 0;
+            for (Charge charge : chargeList) {
+                updateChargeToDelivered(charge.getId());
+                count++;
+            }
+            return count;
         }
         return 0;
     }
