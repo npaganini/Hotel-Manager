@@ -118,7 +118,6 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationDao.findAllBetweenDatesOrEmailAndSurname(startDate, endDate, email, occupantSurname);
     }
 
-    @Transactional
     @Override
     public List<Reservation> getRoomsReservedActive() {
         return roomDao.getRoomsReservedActive();

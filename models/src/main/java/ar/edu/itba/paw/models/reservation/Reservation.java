@@ -58,10 +58,10 @@ public class Reservation {
     @Column(nullable = false, name = KEY_IS_ACTIVE)
     private boolean isActive;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "reservation")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "reservation")
     private List<Charge> charges = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "reservation")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "reservation")
     private List<Occupant> occupants = new ArrayList<>();
 
     @Column(nullable = false)

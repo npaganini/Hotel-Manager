@@ -51,6 +51,7 @@ public class RoomController extends SimpleController {
 
     @GET
     @Produces(value = {MediaType.APPLICATION_JSON})
+    @Transactional
     public Response getAllRooms() {
         LOGGER.debug("Request received to retrieve whole roomsList");
         final List<Reservation> reservations = reservationService.getRoomsReservedActive();

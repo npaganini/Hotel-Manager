@@ -10,6 +10,8 @@ import Container from "@material-ui/core/Container";
 import Card from "@material-ui/core/Card";
 import { Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import { withRouter } from "react-router";
+
 import { login } from "../../api/loginApi";
 
 const useStyles = makeStyles((theme) => ({
@@ -49,18 +51,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const onLoginPerformed = (onSubmit, { user, password }) => () => {
-  const result = login(user, password);
-  console.log("result", result);
-  result
+  login(user, password)
     .then((result) => {
-      console.log("do something with this", result);
+      window.alert("Logeado pa");
+      onSubmit();
     })
     .catch((error) => {
       console.log("there was an error", error);
     });
 };
 
-export default function SignIn() {
+const Login = ({ history }) => {
   const classes = useStyles();
   const { t } = useTranslation();
 
@@ -72,7 +73,11 @@ export default function SignIn() {
   const changePassword = (newPassword) =>
     onChangePassword(newPassword.target.value);
 
-  console.log("hasLogged", hasLogged, "user", user, "password", password);
+  const submitLogin = () => {
+    onSubmit(true);
+    console.log("history", history);
+    history.push("/");
+  };
 
   return (
     <div className={classes.container}>
@@ -123,7 +128,10 @@ export default function SignIn() {
                         color="primary"
                         className={hasLogged ? classes.submit : classes.submit} // FIXME
                         disabled={hasLogged}
-                        onClick={onLoginPerformed(onSubmit, { user, password })}
+                        onClick={onLoginPerformed(submitLogin, {
+                          user,
+                          password,
+                        })}
                       >
                         Ingresar
                       </Button>
@@ -137,4 +145,6 @@ export default function SignIn() {
       </Container>
     </div>
   );
-}
+};
+
+export default withRouter(Login);
