@@ -97,6 +97,7 @@ public class ChargeServiceImplTest {
 
     @Test
     public void setAllValidChargesToDeliveredForOneRoomTest() throws RequestInvalidException, EntityNotFoundException {
-        chargeService.setChargesToDelivered(room.getId());
+        int chargesAffected = chargeService.setChargesToDelivered(room.getId());
+        assertEquals(charges.size(), chargesAffected);
     }
 }

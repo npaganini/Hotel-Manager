@@ -111,5 +111,4 @@ public class UserServiceImplTest {
         User user = userService.getUserForReservation("newEmail");
         assertEquals("User didnt exist, it should now be a new user with email: newEmail@email.com", "newEmail@email.com", user.getEmail());
     }
-
 }

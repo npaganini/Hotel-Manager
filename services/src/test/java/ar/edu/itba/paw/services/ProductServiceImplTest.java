@@ -50,10 +50,7 @@ public class ProductServiceImplTest {
     }
 
     @Test(expected = EntityNotFoundException.class)
-    public void enableNonExistentProducTest() throws EntityNotFoundException {
+    public void enableNonExistentProductTest() throws EntityNotFoundException {
         productService.enableProduct(2L);
     }
-
-
-
 }
