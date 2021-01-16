@@ -20,11 +20,12 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.*;
 
-import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ChargeServiceImplTest {
 
+    public static final int NOT_A_ROOM_NUMBER = 404;
     @Mock
     private ChargeDao chargeDao;
     @Mock
@@ -35,8 +36,8 @@ public class ChargeServiceImplTest {
     @InjectMocks
     private ChargeServiceImpl chargeService;
 
-    private final Product product = new Product("Product", 2d);
-    private final Product product2 = new Product("Producto", 3);
+    private final Product product = new Product("Product", 2.01);
+    private final Product product2 = new Product("Producto", 3.57);
     private final Room room = new Room(1L, RoomType.DOUBLE, true, 1, new ArrayList<>());
     private final Reservation reservation = new Reservation(room, "email", Calendar.getInstance(), Calendar.getInstance(), null);
     private final Charge charge = new Charge(product, reservation);
@@ -45,19 +46,19 @@ public class ChargeServiceImplTest {
     @Before
     public void init() {
         reservation.setActive(true);
-        Mockito.when(reservationDao.findById(1L)).thenReturn(Optional.ofNullable(reservation));
+        Mockito.when(reservationDao.findById(1L)).thenReturn(Optional.of(reservation));
         Mockito.when(reservationDao.findById(2L)).thenReturn(Optional.empty());
         Mockito.when(chargeDao.findById(1L)).thenReturn(Optional.of(charge));
         Mockito.when(chargeDao.findById(2L)).thenReturn(Optional.empty());
         Mockito.when(chargeDao.updateChargeToDelivered(1L)).thenReturn(1);
         Mockito.when(chargeDao.findChargeByReservationId(1L)).thenReturn(Collections.singletonList(charge));
-        Mockito.when(roomDao.findById(1L)).thenReturn(Optional.ofNullable(room));
+        Mockito.when(roomDao.findById(1L)).thenReturn(Optional.of(room));
         Charge charge1 = new Charge(product, reservation);
         Charge charge2 = new Charge(product2, reservation);
+        charge2.setDelivered(true);
         charges.add(charge1);
         charges.add(charge2);
-        Mockito.when(chargeDao.findChargesByRoomNumber(1)).thenReturn(charges);
-        Mockito.when(chargeDao.updateChargesToDelivered(charges)).thenReturn(charges.size());
+        Mockito.when(chargeDao.findChargesByRoomNumber(room.getNumber())).thenReturn(charges);
     }
 
     @Test
@@ -74,7 +75,7 @@ public class ChargeServiceImplTest {
     @Test(expected = RequestInvalidException.class)
     public void getAllChargesByValidReservationIdAndReservationInactiveTest() throws RequestInvalidException {
         reservation.setActive(false);
-        Mockito.when(reservationDao.findById(1L)).thenReturn(Optional.ofNullable(reservation));
+        Mockito.when(reservationDao.findById(1L)).thenReturn(Optional.of(reservation));
         chargeService.getAllChargesByReservationId(1L);
     }
 
@@ -95,9 +96,27 @@ public class ChargeServiceImplTest {
         chargeService.setChargeToDelivered(1L);
     }
 
-    @Test
-    public void setAllValidChargesToDeliveredForOneRoomTest() throws RequestInvalidException, EntityNotFoundException {
-        int chargesAffected = chargeService.setChargesToDelivered(room.getId());
-        assertEquals(charges.size(), chargesAffected);
+    @Test(expected = RequestInvalidException.class)
+    public void setAllValidChargesToDeliveredExceptOneIsAlreadyDeliveredTest() throws RequestInvalidException, EntityNotFoundException {
+        // GIVEN
+        // setup in init()
+
+        // WHEN
+        chargeService.setChargesToDelivered(room.getId());
+
+        // THEN
+        // throw exception
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void setAllValidChargesToDeliveredExceptRoomDoesNotExistTest() throws RequestInvalidException, EntityNotFoundException {
+        // GIVEN
+        // setup in init()
+
+        // WHEN
+        chargeService.setChargesToDelivered(NOT_A_ROOM_NUMBER);
+
+        // THEN
+        // throw exception
     }
 }

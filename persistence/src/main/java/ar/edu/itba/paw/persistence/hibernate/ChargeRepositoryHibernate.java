@@ -78,16 +78,12 @@ public class ChargeRepositoryHibernate extends SimpleRepositoryHibernate<Charge>
     }
 
     @Override
-    public int updateChargesToDelivered(List<Charge> chargeList) {
-        if (chargeList != null) {
-            int count = 0;
-            for (Charge charge : chargeList) {
-                updateChargeToDelivered(charge.getId());
-                count++;
-            }
-            return count;
-        }
-        return 0;
+    public int updateChargesToDelivered(long roomId) {
+        final TypedQuery<ar.edu.itba.paw.models.charge.Charge> query =
+                em.createQuery("UPDATE Charge AS c set delivered = true " +
+                        "WHERE c.reservation.room.id = :roomId", Charge.class);
+        query.setParameter("roomId", roomId);
+        return query.executeUpdate();
     }
 
     @Override

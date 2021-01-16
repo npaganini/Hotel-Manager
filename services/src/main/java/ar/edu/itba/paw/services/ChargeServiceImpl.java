@@ -75,7 +75,7 @@ public class ChargeServiceImpl implements ChargeService {
                     throw new RequestInvalidException();
                 }
             }
-            return chargeDao.updateChargesToDelivered(chargeList);
+            return chargeDao.updateChargesToDelivered(roomId);
         }
         throw new EntityNotFoundException("Can't find room with id " + roomId);
     }
