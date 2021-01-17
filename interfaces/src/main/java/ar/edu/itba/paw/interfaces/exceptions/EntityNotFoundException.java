@@ -4,12 +4,10 @@ import lombok.Getter;
 
 @Getter
 public class EntityNotFoundException extends Exception {
-
-    private String description;
+    private final String description;
 
     public EntityNotFoundException(String description) {
         super("The entity you were trying to look was not found");
         this.description = description;
     }
-
 }

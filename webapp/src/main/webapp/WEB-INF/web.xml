@@ -32,6 +32,12 @@
     </context-param>
 
     <listener>
+        <!-- need this one to get notified of requests, otherwise we get 404 NOT FOUND for all endpoints -->
+        <listener-class>
+            org.springframework.web.context.request.RequestContextListener
+        </listener-class>
+    </listener>
+    <listener>
         <listener-class>
             org.springframework.web.context.ContextLoaderListener
         </listener-class>
@@ -41,7 +47,6 @@
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>
-
     <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>

@@ -1,25 +1,50 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.webapp.dto.LoginRequest;
+import ar.edu.itba.paw.models.user.UserRole;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.GET;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
-@Controller
 @Component
-@Path("login")
+@Controller
+@Path("/")
 public class AuthController {
 
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response login(LoginRequest loginRequest) {
-        // todo: mav was "login.jsp"
-        System.out.println("RECIBIMOS REQUEST: " + loginRequest.getUser() + " " + loginRequest.getUser());
-        return Response.ok().build();
+    @Context
+    private UriInfo uriInfo;
+
+    @GET
+    @Path("/403")
+    public Response forbidden() {
+        return Response.status(Response.Status.FORBIDDEN).build();
+    }
+
+    @GET
+    public Response redirect() {
+        return redirectHome();
+    }
+
+    @GET
+    @Path("/index")
+    public Response redirectIndex() {
+        return redirectHome();
+    }
+
+    private Response redirectHome() {
+        String role = SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString();
+        if (role == null) {
+            return forbidden();
+        }
+        String home = "user";
+        if (!role.contains(UserRole.CLIENT.toString())) {
+            home = "rooms";
+        }
+        return Response.temporaryRedirect(uriInfo.getBaseUriBuilder().path(home).build()).build();
     }
 }

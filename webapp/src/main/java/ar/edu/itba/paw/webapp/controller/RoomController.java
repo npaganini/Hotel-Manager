@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 
 @Component
 @Controller
-@Path("rooms")
+@Path("/rooms")
 public class RoomController extends SimpleController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RoomController.class);
