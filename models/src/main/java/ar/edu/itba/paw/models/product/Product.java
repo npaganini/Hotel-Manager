@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 @Getter
 @Setter
@@ -23,7 +21,7 @@ public class Product {
     public final static String KEY_FILE = "file";
     public final static String KEY_ENABLE = "enable";
 
-    public final static String TABLE_NAME = "product";
+    public final static String NAME = "Product";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,20 +32,12 @@ public class Product {
     private String description;
 
     @Column(nullable = false)
-    private Double price;
+    private double price;
 
     private byte[] file;
 
     @Column(nullable = false)
     private boolean enable;
-
-    public Product(ResultSet resultSet) throws SQLException {
-        this.id = resultSet.getInt(KEY_ID);
-        this.description = resultSet.getString(KEY_DESCRIPTION);
-        this.price = resultSet.getDouble(KEY_PRICE);
-        this.file = resultSet.getBytes(KEY_FILE);
-        this.enable = resultSet.getBoolean(KEY_ENABLE);
-    }
 
     public Product(String description, double price) {
         this.description = description;

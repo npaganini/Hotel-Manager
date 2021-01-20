@@ -6,7 +6,6 @@ import ar.edu.itba.paw.models.dtos.ProductAmountDTO;
 import ar.edu.itba.paw.models.product.Product;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -56,7 +55,7 @@ public class ChargeRepositoryHibernate extends SimpleRepositoryHibernate<Charge>
 
     @Override
     public List<Charge> findAllChargesNotDelivered() {
-        return em.createQuery("SELECT c FROM Charge AS c WHERE c.delivered = FALSE", Charge.class).getResultList();
+        return em.createQuery("SELECT c FROM Charge AS c WHERE c.delivered = FALSE ORDER BY c.reservation.id", Charge.class).getResultList();
     }
 
     @Override
@@ -72,10 +71,23 @@ public class ChargeRepositoryHibernate extends SimpleRepositoryHibernate<Charge>
         return 0;
     }
 
+    @Override
+    public List<Charge> findChargesByRoomNumber(int roomNumber) {
+        return em.createQuery("SELECT c FROM Charge AS c WHERE c.delivered = FALSE AND c.reservation.room.number = :roomNumber", Charge.class)
+                .setParameter("roomNumber", roomNumber).getResultList();
+    }
 
     @Override
-    String getTableName() {
-        return "Charge ";
+    public int updateChargesToDelivered(List<Charge> chargeList) {
+        for (Charge charge: chargeList) {
+            updateChargeToDelivered(charge.getId());
+        }
+        return 0;
+    }
+
+    @Override
+    String getModelName() {
+        return Charge.NAME + " ";
     }
 
 

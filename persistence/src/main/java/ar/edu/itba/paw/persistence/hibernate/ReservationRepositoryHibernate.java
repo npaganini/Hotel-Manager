@@ -1,20 +1,18 @@
 package ar.edu.itba.paw.persistence.hibernate;
 
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
-import ar.edu.itba.paw.models.charge.Charge;
-import ar.edu.itba.paw.models.dtos.ProductAmountDTO;
-import ar.edu.itba.paw.models.occupant.Occupant;
-import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.models.reservation.Calification;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
-import java.lang.reflect.Array;
-import java.util.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Reservation> implements ReservationDao {
@@ -22,7 +20,7 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
     @Override
     public Optional<Reservation> findReservationByHash(String hash) {
         return Optional.of(
-                em.createQuery("SELECT r FROM " + getTableName() + " r WHERE r.hash = :hash", getModelClass())
+                em.createQuery("SELECT r FROM " + getModelName() + " r WHERE r.hash = :hash", getModelClass())
                         .setParameter("hash", hash)
                         .getSingleResult()
         );
@@ -79,7 +77,7 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
 
     @Override
     public List<Reservation> findActiveReservationsByEmail(String userEmail) {
-        return em.createQuery("SELECT r FROM " + getTableName() + " r WHERE r.userEmail = :userEmail AND r.isActive = true", getModelClass())
+        return em.createQuery("SELECT r FROM " + getModelName() + " r WHERE r.userEmail = :userEmail AND r.isActive = true", getModelClass())
                 .setParameter("userEmail", userEmail)
                 .getResultList();
     }
@@ -101,8 +99,39 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
     }
 
     @Override
-    String getTableName() {
-        return "Reservation ";
+    public double getHotelRating() {
+        return em.createQuery("SELECT AVG(r.calification) FROM Reservation r", Double.class).getSingleResult();
+    }
+
+    @Override
+    public List<Calification> getAllRatings() {
+        return em.createQuery(
+                "SELECT r.calification FROM Reservation r WHERE r.calification IS NOT NULL",
+                Calification.class)
+                .getResultList();
+    }
+
+    @Override
+    public double getRoomRating(long roomId) {
+        return em.createQuery(
+                "SELECT AVG(r.calification) FROM Reservation r WHERE r.room.id = :roomId",
+                Double.class)
+                .setParameter("roomId", roomId)
+                .getSingleResult();
+    }
+
+    @Override
+    public List<Calification> getRatingsByRoom(long roomId) {
+        return em.createQuery(
+                "SELECT r.calification FROM Reservation r WHERE r.room.id = :roomId AND r.calification IS NOT NULL",
+                Calification.class)
+                .setParameter("roomId", roomId)
+                .getResultList();
+    }
+
+    @Override
+    String getModelName() {
+        return Reservation.NAME + " ";
     }
 
     @Override

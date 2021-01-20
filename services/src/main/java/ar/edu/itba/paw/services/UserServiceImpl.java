@@ -2,6 +2,7 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.daos.*;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
+import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.charge.Charge;
 import ar.edu.itba.paw.models.help.Help;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -55,9 +57,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public Charge addCharge(long productId, long reservationId) throws EntityNotFoundException {
         Product product = productDao.findById(productId).orElseThrow(
-                () -> new EntityNotFoundException("Cant find product with id " + productId));
+                () -> new EntityNotFoundException("Can't find product with id " + productId));
         Reservation reservation = reservationDao.findById(reservationId).orElseThrow(
-                () -> new EntityNotFoundException("Cant find reservation with id " + reservationId));
+                () -> new EntityNotFoundException("Can't find reservation with id " + reservationId));
         return chargeDao.save(new Charge(product, reservation));
     }
 
@@ -69,7 +71,7 @@ public class UserServiceImpl implements UserService {
             user = userOptional.get();
             LOGGER.debug("There is already an user created with email " + userEmail);
         } else {
-            LOGGER.debug("There is not an user created with email " + userEmail + ". So we create one");
+            LOGGER.debug("There is no user created with email " + userEmail + ". So we'll create one");
             user = userDao.save(new User(userEmail,
                     userEmail,
                     new BCryptPasswordEncoder().encode(userEmail)));
@@ -78,12 +80,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String requestHelp(String text, long reservationId) throws EntityNotFoundException {
-        Reservation reservation = reservationDao.findById(Math.toIntExact(reservationId)).orElseThrow(() -> new EntityNotFoundException("Cant find reservation"));
+    public Help requestHelp(String text, long reservationId) throws EntityNotFoundException {
+        Reservation reservation = reservationDao.findById(reservationId).orElseThrow(() -> new EntityNotFoundException("Can't find reservation"));
         if(text.length() > 0 && isValidString(text)) {
-            return helpDao.save(new Help(text, reservation)).getHelpText();
+            return helpDao.save(new Help(text, reservation));
         }
         return null;
+    }
+
+    @Transactional
+    @Override
+    public void rateStay(String rate, String hash) throws EntityNotFoundException, RequestInvalidException {
+        Reservation reservation = reservationDao.findReservationByHash(hash)
+                .orElseThrow(() -> new EntityNotFoundException("Reservation was not found"));
+        if (reservation.getCalification() != null) {
+            throw new RequestInvalidException();
+        }
+        reservationDao.rateStay(reservation.getId(), rate);
     }
 
     private boolean isValidString(String text) {

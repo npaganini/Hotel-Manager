@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -32,7 +34,7 @@ public class Reservation {
     public final static String KEY_IS_ACTIVE = "is_active";
     public final static String KEY_USER_ID = "user_id";
 
-    public final static String TABLE_NAME = "reservation";
+    public final static String NAME = "Reservation";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

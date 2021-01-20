@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
@@ -54,7 +53,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public boolean activeReservation(long reservationId) throws RequestInvalidException {
         LOGGER.debug("About to set reservation with id " + reservationId + " to active");
-        Optional<Reservation> possibleReservation = reservationDao.findById(Math.toIntExact(reservationId));
+        Optional<Reservation> possibleReservation = reservationDao.findById(reservationId);
         if (!possibleReservation.isPresent()) {
             return false;
         }
@@ -67,7 +66,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public void inactiveReservation(long reservationId) throws RequestInvalidException {
         LOGGER.debug("About to set reservation with id " + reservationId + " to unactivated");
-        if (!reservationDao.findById(Math.toIntExact(reservationId)).orElseThrow(RequestInvalidException::new).isActive()) {
+        if (!reservationDao.findById(reservationId).orElseThrow(RequestInvalidException::new).isActive()) {
             throw new RequestInvalidException();
         }
         reservationDao.updateActive(reservationId, false);
@@ -98,18 +97,6 @@ public class ReservationServiceImpl implements ReservationService {
                 .forEach(occupantDao::save);
     }
 
-    @Override
-    @Transactional
-    public void rateStay(String rate, String hash) throws EntityNotFoundException, RequestInvalidException {
-        Reservation reservation = reservationDao
-                .findReservationByHash(hash)
-                .orElseThrow(() -> new EntityNotFoundException("Reservation was not found"));
-        if (reservation.getCalification() != null) {
-            throw new RequestInvalidException();
-        }
-        reservationDao.rateStay(reservation.getId(), rate);
-    }
-
     @Transactional
     @Override
     public Reservation doReservation(long roomId, String userEmail, Calendar startDate, Calendar endDate) throws RequestInvalidException {
@@ -122,8 +109,7 @@ public class ReservationServiceImpl implements ReservationService {
         LOGGER.debug("Saving reservation...");
         Reservation reservation = reservationDao.save(new Reservation(room, userEmail, startDate, endDate, user));
         LOGGER.debug("Sending email with confirmation of reservation to user");
-        emailService.sendConfirmationOfReservation(userEmail, "Reserva confirmada",
-                reservation.getHash(), user.getPassword());
+        emailService.sendConfirmationOfReservation(userEmail, reservation.getHash(), user.getPassword());
         return reservation;
     }
 

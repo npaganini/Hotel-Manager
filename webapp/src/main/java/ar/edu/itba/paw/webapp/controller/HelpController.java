@@ -3,19 +3,18 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.HelpService;
 import ar.edu.itba.paw.models.help.HelpStep;
-import form.HelpForm;
-import form.HelpStatusForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.ModelAndView;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Controller
+@Path("help")
 public class HelpController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HelpController.class);
 
     private final HelpService helpService;
 
@@ -23,24 +22,23 @@ public class HelpController {
         this.helpService = helpService;
     }
 
-    @GetMapping("/helpList")
-    public ModelAndView help(@ModelAttribute("getHelpForm") HelpStatusForm helpForm) {
-        final ModelAndView mav = new ModelAndView("helpRequests");
+    @GET
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response help() {
+        // todo: mav was "helpRequests.jsp"
         LOGGER.debug("Request attempted to get the list of help requests.");
-        mav.addObject("updated", false);
-        mav.addObject("helpList", helpService.getAllRequestsThatRequireAction());
-        return mav;
+        return Response.ok(helpService.getAllRequestsThatRequireAction()).build();
     }
 
-    @PostMapping("/updateHelpStep")
-    public ModelAndView updateHelpStep(@ModelAttribute("getHelpForm") HelpStatusForm helpForm) throws RequestInvalidException {
-        final ModelAndView mav = new ModelAndView("helpRequests");
+    @PUT
+    @Path("/{id}")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response updateHelpStep(@PathParam("id") final long helpRequestId, @QueryParam("getHelpFormStatus") HelpStep status) throws RequestInvalidException {
+        // todo: mav was "helpRequests.jsp"
         LOGGER.debug("Attempted to update status on help request.");
-        if(helpService.updateStatus(helpForm.getHelpId(), helpForm.getStatus())) {
-            mav.addObject("updated", true);
-            mav.addObject("helpList", helpService.getAllRequestsThatRequireAction());
-            return mav;
+        if(helpService.updateStatus(helpRequestId, status)) {
+            return Response.ok(helpService.getAllRequestsThatRequireAction()).build();
         }
-        throw new RequestInvalidException();
+        return Response.status(Response.Status.BAD_REQUEST).build();
     }
 }

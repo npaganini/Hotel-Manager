@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Getter
 @Setter
@@ -21,7 +22,7 @@ public class Charge {
     public final static String KEY_RESERVATIONID = "reservation_id";
     public final static String KEY_DELIVERED = "delivered";
 
-    public final static String TABLE_NAME = "charge";
+    public final static String NAME = "Charge";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

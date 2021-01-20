@@ -2,7 +2,6 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.daos.ProductDao;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
-import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.ProductService;
 import ar.edu.itba.paw.models.product.Product;
 import org.slf4j.Logger;
@@ -32,7 +31,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public boolean unableProduct(long productId) throws EntityNotFoundException {
+    public boolean disableProduct(long productId) throws EntityNotFoundException {
         LOGGER.debug("About to unable product for visibility with id " + productId);
         productDao.findById(productId).orElseThrow(() -> new EntityNotFoundException("Cant find product with id " + productId));
         return productDao.updateProductEnable(productId, false) > 0;

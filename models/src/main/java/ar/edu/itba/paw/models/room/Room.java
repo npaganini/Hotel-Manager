@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.List;
 
 @Getter
@@ -24,7 +24,7 @@ public class Room {
     public static final String KEY_FREE_NOW = "is_free_now";
     public static final String KEY_NUMBER = "number";
 
-    public static final String TABLE_NAME = "room";
+    public static final String NAME = "Room";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,13 +42,11 @@ public class Room {
     private int number; // > 0
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "room")
+    @XmlTransient
     private List<Reservation> reservations;
 
-    public Room(ResultSet resultSet) throws SQLException {
-        this.id = resultSet.getInt(KEY_ID);
-        this.roomType = RoomType.valueOf(resultSet.getString(KEY_ROOM_TYPE));
-        this.freeNow = resultSet.getBoolean(KEY_FREE_NOW);
-        this.number = resultSet.getInt(KEY_NUMBER);
+    @XmlTransient
+    public List<Reservation> getReservations() {
+        return reservations;
     }
-
 }
