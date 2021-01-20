@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Navbar from '../../components/Navbar/Navbar'
 import Button from '../../components/Button/Button'
 import DatePicker from '../../components/DatePickers/DatePicker'
+import Dropdown from '../../components/Dropdown/Dropdown';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -23,17 +24,24 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+
+
 const reservation = (props) => {
+
     const classes = useStyles();
 
-    const[showRooms, show] = useState(0);
+    const[showRooms, show] = useState(false);
 
-    showRoomsHandler = () => {
-        if(state.showRooms)
-            show({showRooms: true})
+    const showRoomsHandler = () => {
+        if({showRooms})
+            show({showRooms: true});
     }
 
-    
+    let availableRooms = null;
+
+    // if({showRooms}){
+    //     availableRooms = <Dropdown/>;
+    // }
 
     
     return (
@@ -54,12 +62,12 @@ const reservation = (props) => {
                 </Row>
                 <Row className={classes.row}>
                     <Col xs={12} md={12} className={classes.buttonCol}>
-                        <Button ButtonType="Inherit" Id="search-availability" ButtonText="Buscar Disponibles" onClick={this.showRoomsHandler}></Button>
+                        <Button ButtonType="Inherit" Id="search-availability" ButtonText="Buscar Disponibles" onClick={showRoomsHandler}></Button>
                     </Col>
                 </Row>
                 <Row className={classes.row}>
                     <Col xs={12} md={4}>
-
+                        {availableRooms}
                     </Col>
                 </Row>
             </Container>

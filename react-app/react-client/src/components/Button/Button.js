@@ -54,7 +54,6 @@ const IconLabelButtons = (props) => {
                     variant="contained"
                     color="default"
                     className={classes.button}
-                    startIcon={<BackIcon />}
                     id={props.Id}
                 >
                     <p className={classes.text}>{props.ButtonText}</p>

@@ -10,6 +10,7 @@ import Dropdown from './components/Dropdown/Dropdown'
 import Login from './containers/Login/Login'
 import Principal from './containers/Principal/Principal'
 import Reservation from './containers/Reservation/Reservation'
+import CheckIn from './containers/Check-In/Check-In'
 
 class App extends Component {
   render() {
@@ -29,6 +30,8 @@ class App extends Component {
       // <Principal></Principal>
 
       <Reservation></Reservation>
+
+      // <CheckIn></CheckIn>
     );
   }
 }
