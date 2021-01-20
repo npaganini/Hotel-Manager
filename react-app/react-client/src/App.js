@@ -25,7 +25,7 @@ class App extends Component {
   render() {
     return (
       <Router>
-        {/* // <Navbar></Navbar>
+        {/* 
         // <Table></Table>
         // <DatePicker label="Desde"></DatePicker>
         //{" "}
@@ -38,6 +38,7 @@ class App extends Component {
         // <Input type="text" label="test"></Input>
         // <Principal></Principal>
         // <Reservation></Reservation> */}
+        {/* <Navbar /> */}
         <Switch>
           <Route exact path="/">
             <Principal />

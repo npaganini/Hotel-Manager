@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -6,9 +6,13 @@ import TextField from "@material-ui/core/TextField";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
 import Card from "@material-ui/core/Card";
-import { Row, Col, Container } from "react-bootstrap";
-import { useTranslation, withTranslation } from "react-i18next";
+import { Row, Col } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
+import { withRouter } from "react-router";
+
+import { login } from "../../api/loginApi";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,9 +50,34 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+const onLoginPerformed = (onSubmit, { user, password }) => () => {
+  login(user, password)
+    .then((result) => {
+      window.alert("Logeado pa");
+      onSubmit();
+    })
+    .catch((error) => {
+      console.log("there was an error", error);
+    });
+};
+
+const Login = ({ history }) => {
   const classes = useStyles();
   const { t } = useTranslation();
+
+  const [hasLogged, onSubmit] = useState(false);
+  const [user, onChangeUser] = useState("");
+  const [password, onChangePassword] = useState("");
+
+  const changeUser = (newUser) => onChangeUser(newUser.target.value);
+  const changePassword = (newPassword) =>
+    onChangePassword(newPassword.target.value);
+
+  const submitLogin = () => {
+    onSubmit(true);
+    console.log("history", history);
+    history.push("/");
+  };
 
   return (
     <div className={classes.container}>
@@ -75,6 +104,8 @@ export default function SignIn() {
                     name="email"
                     autoComplete="email"
                     autoFocus
+                    value={user}
+                    onChange={changeUser}
                   />
                   <TextField
                     variant="outlined"
@@ -86,14 +117,21 @@ export default function SignIn() {
                     type="password"
                     id="password"
                     autoComplete="current-password"
+                    value={password}
+                    onChange={changePassword}
                   />
                   <Row>
                     <Col className={classes.col}>
                       <Button
-                        type="submit"
+                        type="button"
                         variant="contained"
                         color="primary"
-                        className={classes.submit}
+                        className={hasLogged ? classes.submit : classes.submit} // FIXME
+                        disabled={hasLogged}
+                        onClick={onLoginPerformed(submitLogin, {
+                          user,
+                          password,
+                        })}
                       >
                         Ingresar
                       </Button>
@@ -107,4 +145,6 @@ export default function SignIn() {
       </Container>
     </div>
   );
-}
+};
+
+export default withRouter(Login);
