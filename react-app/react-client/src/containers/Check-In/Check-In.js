@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap'
 import { makeStyles } from '@material-ui/core/styles';
+import { withRouter } from "react-router";
+
 
 import Navbar from '../../components/Navbar/Navbar'
 import Button from '../../components/Button/Button'
@@ -28,8 +30,26 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const checkIn = (props) => {
+const checkIn = ({ history }) => {
     const classes = useStyles();
+
+    const [checkIn, onCheckIn] = useState("");
+    const [submit, onSubmit] = useState(false);
+
+    const onChangeCheckIn = (newCheckIn) => {
+        onCheckIn(newCheckIn.target.value);
+    }
+
+    const checkInSubmit = () => {
+        onSubmit(true);
+        console.log("history", history);
+        console.log(checkIn);
+        history.push("/");
+    }
+
+    const checkInCancel = () => {
+        history.push("/");
+    }
 
     return (
         <div>
@@ -45,13 +65,13 @@ const checkIn = (props) => {
                     <Card className={classes.card}>
                         <Row className={classes.buttonRow}>
                             <Col style={{marginBottom: '5px'}}>
-                                <Input label="Reservation Id"></Input>
+                                <Input label="Reservation Id" onChange={onChangeCheckIn}></Input>
                             </Col>
                             <Col className={classes.buttonColLeft}>
-                                <Button ButtonType="Save" ButtonText="Accept"></Button>
+                                <Button ButtonType="Save" onClick={checkInSubmit} ButtonText="Accept"></Button>
                             </Col>
                             <Col className={classes.buttonColRight}>
-                                <Button ButtonType="Back" ButtonText="Cancel"></Button>
+                                <Button ButtonType="Back" onClick={checkInCancel} ButtonText="Cancel"></Button>
                             </Col>
                         </Row>
                     </Card>
@@ -63,4 +83,4 @@ const checkIn = (props) => {
     );
 }
 
-export default checkIn;
+export default withRouter(checkIn);

@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
 
 const DatePickers = (props) => {
   const classes = useStyles();
+  const {onChange} = props;
 
   console.log(props.Date);
   return (      
@@ -24,6 +25,7 @@ const DatePickers = (props) => {
         InputLabelProps={{
           shrink: true,
         }}
+        onChange={onChange}
       />
   );
 }

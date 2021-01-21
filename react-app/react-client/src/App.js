@@ -18,7 +18,7 @@ import Input from "./components/Input/Input";
 import Dropdown from "./components/Dropdown/Dropdown";
 import Login from "./containers/Login/Login";
 import Principal from "./containers/Principal/Principal";
-import { Reservation } from "./containers/Reservation/Reservation";
+import Reservation from "./containers/Reservation/Reservation";
 import CheckIn from "./containers/Check-In/Check-In";
 
 class App extends Component {
@@ -45,6 +45,12 @@ class App extends Component {
           </Route>
           <Route path="/login">
             <Login />
+          </Route>
+          <Route path="/checkin">
+            <CheckIn/>
+          </Route>
+          <Route path="/reservation">
+            <Reservation/>
           </Route>
         </Switch>
       </Router>

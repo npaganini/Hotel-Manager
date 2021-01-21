@@ -29,8 +29,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Principal = (props) => {
+const Principal = ({history}) => {
   const classes = useStyles();
+
+  const newReservationClick = () => {
+    history.push("/reservation")
+  }
 
   return (
     <div>
@@ -42,7 +46,7 @@ const Principal = (props) => {
         </Row>
         <Row className={classes.buttonRow}>
           <Col className={classes.buttonCol}>
-            <Button ButtonType="Inherit" ButtonText="New Reservation"></Button>
+            <Button ButtonType="Inherit" onClick={newReservationClick} ButtonText="New Reservation"></Button>
           </Col>
         </Row>
         <Row className="justify-content-sm-center">
