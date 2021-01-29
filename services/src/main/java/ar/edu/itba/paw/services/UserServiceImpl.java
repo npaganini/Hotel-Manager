@@ -16,10 +16,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.SecureRandom;
 import java.util.*;
 
 @Component
 public class UserServiceImpl implements UserService {
+    public static final int GENERATED_PASSWORD_LENGTH = 8;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -71,10 +73,10 @@ public class UserServiceImpl implements UserService {
             user = userOptional.get();
             LOGGER.debug("There is already an user created with email " + userEmail);
         } else {
-            LOGGER.debug("There is no user created with email " + userEmail + ". So we'll create one");
-            user = userDao.save(new User(userEmail,
-                    userEmail,
-                    new BCryptPasswordEncoder().encode(userEmail)));
+            LOGGER.debug("There is no user created with email " + userEmail + ". So we'll create one.");
+            String randomPassword = generatePassword();
+            System.out.println("Password for user is: " + randomPassword);  // TODO: ERASE THIS PRINT BEFORE SENDING TO PROD
+            user = userDao.save(new User(userEmail, userEmail, new BCryptPasswordEncoder().encode(randomPassword)));
         }
         return user;
     }
@@ -101,5 +103,24 @@ public class UserServiceImpl implements UserService {
 
     private boolean isValidString(String text) {
         return text.matches("^.*[a-zA-Z0-9áéíóúüñÁÉÍÓÚÑ ].*$");
+    }
+
+    private Integer[] generateRandomIntsArray() {
+        Random random = new SecureRandom();
+        Integer[] ints = new Integer[GENERATED_PASSWORD_LENGTH];
+        for (int i = 0; i < GENERATED_PASSWORD_LENGTH; i++) {
+            ints[i] = random.nextInt(26);
+        }
+        return ints;
+    }
+
+    protected String generatePassword() {
+        LOGGER.debug("Generating password...");
+        Integer[] ints = generateRandomIntsArray();
+        StringBuilder password = new StringBuilder(GENERATED_PASSWORD_LENGTH);
+        for (Integer i: ints) {
+            password.append(Character.toChars('a' + i));
+        }
+        return password.toString();
     }
 }

@@ -17,13 +17,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -110,5 +108,12 @@ public class UserServiceImplTest {
     public void getUserForReservationWithNonExistentUser() {
         User user = userService.getUserForReservation("newEmail");
         assertEquals("User didnt exist, it should now be a new user with email: newEmail@email.com", "newEmail@email.com", user.getEmail());
+    }
+
+    @Test
+    public void generatePasswordForNewUser() {
+        Optional<String> password = Optional.ofNullable(userService.generatePassword());
+        assertTrue("Password should be generated", password.isPresent());
+        assertEquals("Password should be of specified length", password.get().length(), UserServiceImpl.GENERATED_PASSWORD_LENGTH);
     }
 }
