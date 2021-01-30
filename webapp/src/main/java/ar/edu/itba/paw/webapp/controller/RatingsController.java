@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -30,24 +31,24 @@ public class RatingsController extends SimpleController {
         return Response.ok(ratingsService.getHotelRating()).build();
     }
 
-//    @GET
-//    @Path("/hotel")
-//    @Produces(value = {MediaType.APPLICATION_JSON})
-//    public Response getAllHotelRatings() {
-//        return Response.ok(ratingsService.getAllHotelRatings()).build();
-//    }
-//
-//    @GET
-//    @Path("/rooms/{id}")
-//    @Produces(value = {MediaType.APPLICATION_JSON})
-//    public Response getRoomRating(@PathParam(value = "id") long roomId) {
-//        return Response.ok(ratingsService.getRoomRating(roomId)).build();
-//    }
-//
-//    @GET
-//    @Path("/rooms")
-//    @Produces(value = {MediaType.APPLICATION_JSON})
-//    public Response getRoomRatings(long roomId) {
-//        return Response.ok(ratingsService.getAllRoomRatings(roomId)).build();
-//    }
+    @GET
+    @Path("/hotel")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getAllHotelRatings() {
+        return Response.ok(ratingsService.getAllHotelRatings()).build();
+    }
+
+    @GET
+    @Path("/rooms/{id}")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getRoomRating(@PathParam(value = "id") long roomId) {
+        return Response.ok(ratingsService.getRoomRating(roomId)).build();
+    }
+
+    @GET
+    @Path("/rooms")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getRoomRatings(long roomId) {
+        return Response.ok(ratingsService.getAllRoomRatings(roomId)).build();
+    }
 }

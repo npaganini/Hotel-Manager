@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.webapp.auth.MyUserPrincipal;
 import org.springframework.security.core.Authentication;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,6 +19,9 @@ public class SimpleController {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         cal.setTime(sdf.parse(date));
         return cal;
+    }
+    protected String getUserEmailFromJwt() {
+        throw new NotImplementedException();
     }
 
 }
