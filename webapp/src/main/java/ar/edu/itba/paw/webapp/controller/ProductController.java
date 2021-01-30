@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
+import ar.edu.itba.paw.interfaces.services.FileService;
 import ar.edu.itba.paw.interfaces.services.ProductService;
 import ar.edu.itba.paw.models.product.Product;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
@@ -10,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -26,13 +26,15 @@ public class ProductController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
 
     private final ProductService productService;
+    private final FileService fileService;
 
     @Context
     private UriInfo uriInfo;
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(final ProductService productService, final FileService fileService) {
         this.productService = productService;
+        this.fileService = fileService;
     }
 
     @GET
@@ -68,7 +70,7 @@ public class ProductController {
             return Response.status(Response.Status.BAD_REQUEST).entity("Price must be valid.").build();
         }
         LOGGER.debug("Request to add product to DB received");
-        Product newProduct = new Product(description, price, loadImg(imgPath));
+        Product newProduct = new Product(description, price, fileService.loadImg(imgPath));
         productService.saveProduct(newProduct);
         LOGGER.debug("Product was saved successfully");
         // TODO is this ok?
@@ -83,18 +85,9 @@ public class ProductController {
                                     @FormDataParam("file") FormDataContentDisposition fileDetail) {
         String fileName = fileDetail.getFileName();
 
-        saveFile(file, fileName);
+        fileService.saveFile(file, fileName);
 
         return Response.ok(fileName).build();
-    }
-
-    // TODO AND EXTRACT TO A FILE UTILS
-    private void saveFile(final InputStream file, final String fileName) {
-        throw new NotImplementedException();
-    }
-    // TODO AND EXTRACT TO A FILE UTILS
-    private byte[] loadImg(final String imgPath) {
-        throw new NotImplementedException();
     }
 
     @GET
