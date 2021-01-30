@@ -8,25 +8,23 @@ import ar.edu.itba.paw.interfaces.services.RoomService;
 import ar.edu.itba.paw.models.dtos.CheckoutDTO;
 import ar.edu.itba.paw.models.occupant.Occupant;
 import ar.edu.itba.paw.models.reservation.Reservation;
+import ar.edu.itba.paw.webapp.dto.OccupantsRequest;
 import ar.edu.itba.paw.webapp.dto.ReservationDTO;
-import ar.edu.itba.paw.webapp.form.CheckinForm;
-import ar.edu.itba.paw.webapp.form.CheckoutForm;
-import ar.edu.itba.paw.webapp.form.RegistrationForm;
+import ar.edu.itba.paw.webapp.dto.ReservationRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.net.URI;
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,59 +58,36 @@ public class RoomController extends SimpleController {
         final List<ReservationDTO> roomsReserved = reservations
                 .stream().map(ReservationDTO::fromReservation).collect(Collectors.toList());
 
-        return Response.ok(new GenericEntity<List<ReservationDTO>>(roomsReserved) {}).build();
-//        List<String> l = new LinkedList<>();
-//        l.add("pepito1");
-//        l.add("pepito2");
-//        GenericEntity<List<String>> entity = new GenericEntity<List<String>>(l) {};
-//        return Response.ok(entity).build();
+        return Response.ok(new GenericEntity<List<ReservationDTO>>(roomsReserved) {
+        }).build();
     }
 
     @POST
     @Path("/reservation")
     @Produces(value = {MediaType.APPLICATION_JSON})
-//    @Transactional
-    public Response reservationPost(@FormParam("startDate") final String startDate,
-                                    @FormParam("endDate") final String endDate,
-                                    @FormParam("userEmail") final String userEmail,
-                                    @FormParam("roomId") final Long roomId)
-            throws RequestInvalidException, ParseException {
-        LOGGER.debug("Request received to do a reservation on room with id: " + roomId);
-        final Reservation reservation = reservationService.doReservation(roomId,
-                userEmail, fromStringToCalendar(startDate), fromStringToCalendar(endDate));
+    public Response reservationPost(ReservationRequest reservationRequest)
+            throws RequestInvalidException {
+        LOGGER.debug("Request received to do a reservation on room with id: " + reservationRequest.getRoomId());
+        final Reservation reservation = reservationService.doReservation(reservationRequest.getRoomId(),
+                reservationRequest.getUserEmail(), reservationRequest.getStartDate(), reservationRequest.getEndDate());
         final URI uri = uriInfo.getAbsolutePathBuilder().path(String.valueOf(reservation.getId())).build();
+        // FIXME habría que devolver el id de la reservation o un par de cosas mas
         return Response.created(uri).build();
     }
 
-    @GET
-    @Path("/checkin")
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response checkin() {
-        return Response.ok(new CheckinForm()).build();
-    }
-
     @POST
-    @Path("/checkin")
+    @Path("/checkin/{reservationId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-//    @Transactional
-    public Response checkinPost(@FormParam("reservationId") final String reservationId) throws RequestInvalidException,
+    public Response checkinPost(@PathParam("reservationId") final String reservationId) throws RequestInvalidException,
             EntityNotFoundException {
         LOGGER.debug("Request received to do the check-in on reservation with hash: " + reservationId);
         return Response.ok(roomService.doCheckin(reservationId)).build();
     }
 
-    @GET
-    @Path("/checkout")
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response checkout() {
-        return Response.ok(new CheckoutForm()).build();
-    }
-
     @POST
-    @Path("/checkout")
+    @Path("/checkout/{reservationId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-//    @Transactional
-    public Response checkoutPost(@FormParam("reservationId") final String reservationId) throws RequestInvalidException, EntityNotFoundException {
+    public Response checkoutPost(@PathParam(value = "reservationId") final String reservationId) throws RequestInvalidException, EntityNotFoundException {
         CheckoutDTO checkoutDTO = roomService.doCheckout(reservationId);
         // TODO: make front end show total to pay
         return Response.ok(checkoutDTO.getCharges()).build();
@@ -122,39 +97,17 @@ public class RoomController extends SimpleController {
     @Path("/free")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response reservation(@QueryParam("startDate") String startDate, @QueryParam("endDate") String endDate) throws ParseException {
-        if (!(startDate == null || endDate == null) && !(startDate.isEmpty() ||
-                endDate.isEmpty()) && LocalDate.parse(startDate).isBefore(LocalDate.parse(endDate))) {
+        if (!StringUtils.isEmpty(startDate) && !StringUtils.isEmpty(endDate)
+                && LocalDate.parse(startDate).isBefore(LocalDate.parse(endDate))) {
             return Response
-                .ok(roomService.findAllFreeBetweenDates(fromStringToCalendar(startDate), fromStringToCalendar(endDate))
-                        // todo: add ReservationForm to send
-                ).build();
+                    .ok(roomService.findAllFreeBetweenDates(fromStringToCalendar(startDate), fromStringToCalendar(endDate)))
+                    .build();
         }
         String message = "Expected 'startDate' and 'endDate' in format yyyy-mm-dd.";
         return Response.status(Response.Status.BAD_REQUEST).entity(message).build();
     }
 
-//    @GET
-//    @Path("/reservation")
-//    @Produces(value = {MediaType.APPLICATION_JSON})
-//    public Response reservations(@FormParam("startDate") String startDate,
-//                                 @FormParam("endDate") String endDate,
-//                                 @FormParam("userEmail") String userEmail,
-//                                 @FormParam("guest") String guest) throws ParseException {
-//        return Response.ok(
-//                reservationService.findAllBetweenDatesOrEmailAndSurname(
-//                    startDate == null || startDate.length() == 0 ? null : fromStringToCalendar(startDate),
-//                    endDate == null || endDate.length() == 0 ? null : fromStringToCalendar(endDate), userEmail, guest)
-//        ).build();
-//    }
-
-    @GET
-    @Path("/orders")
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response orders() {
-        return Response.ok(chargeService.getAllChargesNotDelivered()).build();
-    }
-
-    @PUT
+    @POST
     @Path("/orders/{roomId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response sendOrder(@PathParam(value = "roomId") Long roomId) throws Exception {
@@ -163,40 +116,22 @@ public class RoomController extends SimpleController {
         return Response.ok().build();
     }
 
-    @GET
-    @Path("/occupants")
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response registration() {
-        return Response.ok(new RegistrationForm()).build();
-//        return Response.ok().build();
-    }
-
     @POST
-    @Path("/occupants")
+    @Path("/occupants/{reservationHash}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response registrationPost(@FormParam("reservationHash") String reservationHash, @FormParam("occupantsList") List<String> occupants) throws EntityNotFoundException {
+    public Response registrationPost(@PathParam("reservationHash") String reservationHash, OccupantsRequest occupantsRequest) throws EntityNotFoundException {
         LOGGER.debug("Attempted to access registration form");
-        if(reservationHash != null && occupants != null && !occupants.isEmpty()) {
+        if (reservationHash != null && !CollectionUtils.isEmpty(occupantsRequest.getOccupants())) {
             LOGGER.debug("Attempted to register occupants on reservation hash " + reservationHash);
-            reservationService.registerOccupants(reservationHash.trim(), getListOfOccupantsFromForm(occupants));
+            reservationService.registerOccupants(reservationHash.trim(),
+                    occupantsRequest.getOccupants()
+                            .stream()
+                            .map(occupantR -> new Occupant(occupantR.getName(), occupantR.getLastname()))
+                            .collect(Collectors.toList()));
 
             return Response.status(Response.Status.CREATED).build();
         }
         return Response.status(Response.Status.BAD_REQUEST).build();
-    }
-
-    private List<Occupant> getListOfOccupantsFromForm(List<String> occupants) {
-        List<Occupant> occupantsList = new LinkedList<>();
-        for (int i = 0; i < occupants.size(); i++) {
-            String name = occupants.get(i);
-            i++;
-            if (i >= occupants.size()) {
-                throw new IndexOutOfBoundsException();
-            }
-            String lastName = occupants.get(i);
-            occupantsList.add(new Occupant(name, lastName));
-        }
-        return occupantsList;
     }
 
 }
