@@ -42,6 +42,7 @@ public class Room {
     private int number; // > 0
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "room")
+    @XmlTransient
     private List<Reservation> reservations;
 
     @XmlTransient

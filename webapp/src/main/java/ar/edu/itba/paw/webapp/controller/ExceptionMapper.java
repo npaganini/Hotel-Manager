@@ -10,7 +10,7 @@ import javax.ws.rs.ext.Provider;
 public class ExceptionMapper implements javax.ws.rs.ext.ExceptionMapper<Exception> {
     @Override
     public Response toResponse(Exception exception) {
-        exception.printStackTrace();
+            exception.printStackTrace();
         return Response.status(500).build();
     }
 }

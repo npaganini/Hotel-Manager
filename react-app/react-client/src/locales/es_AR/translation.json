@@ -1,0 +1,16 @@
+{
+  "user": {
+    "greeting": "¡Bienvenido! Tu ID de la reserva es {0}.",
+    "product": {
+      "bought": " ¡Producto comprado!",
+      "itemsDelivered": "¡Ítems serán entregados a tu cuarto en poco tiempo!",
+      "error": "Se generó un error en la compra del producto. Por favor, intentalo de nuevo.",
+      "expenses": "Tus Expensas"
+    },
+    "product.expensesList": "Todas Tus Expensas:",
+    "reservation": {
+      "currents": "Tus Reservas Actuales",
+      "currents.none": "No tenés reservas actuales!"
+    }
+  }
+}

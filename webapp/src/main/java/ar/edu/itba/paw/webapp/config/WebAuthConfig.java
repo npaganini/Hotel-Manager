@@ -18,7 +18,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
+import javax.servlet.Filter;
 import javax.servlet.ServletContext;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -43,46 +47,30 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
         this.servletContext = servletContext;
     }
 
+    // FIXME
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
-        http.userDetailsService(customUserDetailsService)
-                .sessionManagement()
-                .invalidSessionUrl("/login")
-                .and()
+        // simple cors filter is used to add headers that axios needed
+        http.addFilterBefore(new SimpleCorsFilter(), AbstractPreAuthenticatedProcessingFilter.class)
                 .authorizeRequests()
+                .antMatchers("/**").permitAll()
 //                .antMatchers("/login").anonymous()
 //                .antMatchers("/user/**").hasAuthority(UserRole.CLIENT.toString())
-//                .antMatchers("/rooms/**", "/reservation/**", "/products/**", "/ratings/**").hasAnyAuthority(UserRole.EMPLOYEE.toString(), UserRole.MANAGER.toString())
-//                .antMatchers("/", "/index", "/product/**").hasAnyAuthority(UserRole.EMPLOYEE.toString(), UserRole.MANAGER.toString(), UserRole.CLIENT.toString())
-                // todo: erase permitAll and re-add the other antMatchers
-                .antMatchers("/**").permitAll()
-                .and().formLogin()
-                .usernameParameter("username")
-                .passwordParameter("password")
-                .successHandler((httpServletRequest, httpServletResponse, authentication)
-                        -> ((MyUserPrincipal) authentication.getPrincipal()).getAuthorities().parallelStream().forEach(authority -> {
-                    try {
-                        if (authority.getAuthority().equals(UserRole.CLIENT.toString())) {
-                            httpServletResponse.sendRedirect(servletContext.getContextPath() + "/user/home");
-                        } else {
-                            httpServletResponse.sendRedirect(servletContext.getContextPath() + "/rooms/home");
-                        }
-                    } catch (IOException e) {
-                        LOGGER.error(e.toString());
-                    }
-                }))
-                .loginPage("/login")
-                .and().rememberMe()
-                .rememberMeParameter("rememberMe")
-                .userDetailsService(customUserDetailsService)
-                .key(key)
-                .tokenValiditySeconds((int) TimeUnit.DAYS.toMinutes(60))
-                .and().logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login")
+//                .antMatchers("/rooms/**", "/reservation/**", "/products/**").hasAnyAuthority(UserRole.EMPLOYEE.toString(), UserRole.MANAGER.toString())
+//                .antMatchers("/product/**").hasAnyAuthority(UserRole.EMPLOYEE.toString(), UserRole.MANAGER.toString(), UserRole.CLIENT.toString())
+//                .and().rememberMe()
+//                .rememberMeParameter("rememberMe")
+//                .userDetailsService(customUserDetailsService)
+//                .key(key)
+//                .tokenValiditySeconds((int) TimeUnit.DAYS.toMinutes(60))
+//                .and().logout()
+//                .logoutUrl("/logout")
+//                .logoutSuccessUrl("/login")
                 .and().exceptionHandling()
                 .accessDeniedPage("/403")
-                .and().csrf().disable();
+                .and()
+                .csrf()
+                .disable();
     }
 
     @Override
