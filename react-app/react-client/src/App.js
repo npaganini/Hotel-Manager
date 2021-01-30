@@ -20,6 +20,7 @@ import Login from "./containers/Login/Login";
 import Principal from "./containers/Principal/Principal";
 import Reservation from "./containers/Reservation/Reservation";
 import CheckIn from "./containers/Check-In/Check-In";
+import Registration from './containers/Registration/Registration'
 
 class App extends Component {
   render() {
@@ -51,6 +52,9 @@ class App extends Component {
           </Route>
           <Route path="/reservation">
             <Reservation/>
+          </Route>
+          <Route path="/registration">
+            <Registration/>
           </Route>
         </Switch>
       </Router>
