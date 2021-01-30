@@ -2,6 +2,7 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
 import ar.edu.itba.paw.interfaces.services.RatingsService;
+import ar.edu.itba.paw.models.dtos.RatingDto;
 import ar.edu.itba.paw.models.reservation.Calification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +21,9 @@ public class RatingsServiceImpl implements RatingsService {
     }
 
     @Override
-    public double getHotelRating() {
+    public RatingDto getHotelRating() {
         LOGGER.debug("About to get the general hotel rating.");
-        return reservationDao.getHotelRating();
+        return new RatingDto(reservationDao.getHotelRating());
     }
 
     @Override
@@ -32,9 +33,9 @@ public class RatingsServiceImpl implements RatingsService {
     }
 
     @Override
-    public double getRoomRating(long roomId) {
+    public RatingDto getRoomRating(long roomId) {
         LOGGER.debug("Getting the room's rating for room with id: " + roomId);
-        return reservationDao.getRoomRating(roomId);
+        return new RatingDto(reservationDao.getRoomRating(roomId));
     }
 
     @Override

@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.services.RatingsService;
+import ar.edu.itba.paw.models.reservation.Calification;
+import ar.edu.itba.paw.webapp.dtos.RoomRatingsDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @Path("/ratings")
@@ -46,9 +50,11 @@ public class RatingsController extends SimpleController {
     }
 
     @GET
-    @Path("/rooms")
+    @Path("/rooms/{id}/all")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getRoomRatings(long roomId) {
-        return Response.ok(ratingsService.getAllRoomRatings(roomId)).build();
+    public Response getRoomRatings(@PathParam(value ="id") long roomId) {
+        List<Calification> ratings = ratingsService.getAllRoomRatings(roomId);
+        RoomRatingsDto roomRatingsDto = new RoomRatingsDto(ratings.stream().map(Enum::toString).collect(Collectors.toList()));
+        return Response.ok(roomRatingsDto).build();
     }
 }

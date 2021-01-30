@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Calendar;
@@ -18,7 +20,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @XmlRootElement
-public class ReservationDTO implements Serializable {
+@XmlAccessorType(XmlAccessType.FIELD)
+public class ReservationResponse implements Serializable {
     private Long id;
     private Calendar startDate;
     private Calendar endDate;
@@ -30,8 +33,8 @@ public class ReservationDTO implements Serializable {
     private String hash;
     private Calification calification;
 
-    public static ReservationDTO fromReservation(Reservation reservation) {
-        final ReservationDTO rDto = new ReservationDTO();
+    public static ReservationResponse fromReservation(Reservation reservation) {
+        final ReservationResponse rDto = new ReservationResponse();
 
         rDto.id = reservation.getId();
         rDto.startDate = reservation.getStartDate();

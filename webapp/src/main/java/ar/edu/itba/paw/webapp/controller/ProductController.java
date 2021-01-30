@@ -1,9 +1,10 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
-import ar.edu.itba.paw.interfaces.services.FileService;
 import ar.edu.itba.paw.interfaces.services.ProductService;
 import ar.edu.itba.paw.models.product.Product;
+import ar.edu.itba.paw.webapp.dtos.FileUploadResponse;
+import ar.edu.itba.paw.webapp.utils.FilesUtils;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 
@@ -26,15 +28,13 @@ public class ProductController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
 
     private final ProductService productService;
-    private final FileService fileService;
 
     @Context
     private UriInfo uriInfo;
 
     @Autowired
-    public ProductController(final ProductService productService, final FileService fileService) {
+    public ProductController(final ProductService productService) {
         this.productService = productService;
-        this.fileService = fileService;
     }
 
     @GET
@@ -70,7 +70,7 @@ public class ProductController {
             return Response.status(Response.Status.BAD_REQUEST).entity("Price must be valid.").build();
         }
         LOGGER.debug("Request to add product to DB received");
-        Product newProduct = new Product(description, price, fileService.loadImg(imgPath));
+        Product newProduct = new Product(description, price, FilesUtils.loadImg(imgPath));
         productService.saveProduct(newProduct);
         LOGGER.debug("Product was saved successfully");
         // TODO is this ok?
@@ -79,21 +79,23 @@ public class ProductController {
     }
 
     @POST
-    @Produces(value = {MediaType.APPLICATION_JSON})
+    @Path("/upload-file")
+    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response loadProductFile(@FormDataParam("file") InputStream file,
-                                    @FormDataParam("file") FormDataContentDisposition fileDetail) {
+                                    @FormDataParam("file") FormDataContentDisposition fileDetail) throws IOException {
         String fileName = fileDetail.getFileName();
 
-        fileService.saveFile(file, fileName);
+        String pathToFile = FilesUtils.saveFile(file, fileName);
 
-        return Response.ok(fileName).build();
+        return Response.ok(new FileUploadResponse(pathToFile)).build();
     }
 
     @GET
     @Path(value = "/{productId}/img")
     @Produces("image/png")
-    public @ResponseBody byte[] getImgForProduct(@PathParam("productId") long productId) throws EntityNotFoundException {
+    public @ResponseBody
+    byte[] getImgForProduct(@PathParam("productId") long productId) throws EntityNotFoundException {
         return productService.findProductById(productId).getFile();
     }
 }
