@@ -3,18 +3,21 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.services.ProductService;
 import ar.edu.itba.paw.models.product.Product;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 
 @Controller
@@ -39,7 +42,7 @@ public class ProductController {
         return Response.ok(productService.getAll()).build();
     }
 
-    @PUT
+    @POST
     @Path("/{id}/disable")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response hideProduct(@PathParam(value = "id") long productId) throws Exception {
@@ -47,7 +50,7 @@ public class ProductController {
         return Response.ok(productService.disableProduct(productId)).build();
     }
 
-    @PUT
+    @POST
     @Path("/{id}/enable")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response showProduct(@PathParam(value = "id") long productId) throws Exception {
@@ -57,38 +60,47 @@ public class ProductController {
 
     @POST
     @Produces(value = {MediaType.APPLICATION_JSON})
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response addProduct(
-            // todo: FIXME multipart file
-//            @FormParam("productImg") MultipartFile img,
-            @FormParam("productImg") String img,
+            @FormParam("productImg") String imgPath,
             @FormParam("productDescription") String description,
-            @FormParam("productPrice") Double price) throws IOException {
+            @FormParam("productPrice") Double price) {
         if (price < 0) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Price must be valid.").build();
         }
         LOGGER.debug("Request to add product to DB received");
-        Product newProduct = new Product(description, price, img.getBytes());
+        Product newProduct = new Product(description, price, loadImg(imgPath));
         productService.saveProduct(newProduct);
         LOGGER.debug("Product was saved successfully");
-//        ((MultipartFile) img).getOriginalFilename();
-//        return "redirect:/products";
+        // TODO is this ok?
         final URI uri = uriInfo.getAbsolutePathBuilder().path(String.valueOf(newProduct.getId())).build();
         return Response.created(uri).build();
     }
 
-    // todo: what was this being used by?
-//    @GET
-//    @Path(value = "/addProduct")
-//    public String inputProduct(Model model) {
-//        model.addAttribute("productForm", new AddProductForm());
-//        return "addProduct";
-//    }
+    @POST
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response loadProductFile(@FormDataParam("file") InputStream file,
+                                    @FormDataParam("file") FormDataContentDisposition fileDetail) {
+        String fileName = fileDetail.getFileName();
+
+        saveFile(file, fileName);
+
+        return Response.ok(fileName).build();
+    }
+
+    // TODO AND EXTRACT TO A FILE UTILS
+    private void saveFile(final InputStream file, final String fileName) {
+        throw new NotImplementedException();
+    }
+    // TODO AND EXTRACT TO A FILE UTILS
+    private byte[] loadImg(final String imgPath) {
+        throw new NotImplementedException();
+    }
 
     @GET
     @Path(value = "/{productId}/img")
     @Produces("image/png")
-    public @ResponseBody byte[] getImg(@PathParam("productId") long productId) throws EntityNotFoundException {
+    public @ResponseBody byte[] getImgForProduct(@PathParam("productId") long productId) throws EntityNotFoundException {
         return productService.findProductById(productId).getFile();
     }
 }
