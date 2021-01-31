@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Getter
@@ -24,6 +25,7 @@ public class Occupant {
     private String surname;
 
     @ManyToOne
+    @XmlTransient
     private Reservation reservation;
 
     public Occupant(String name, String surname) {
