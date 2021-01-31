@@ -11,7 +11,7 @@ import javax.ws.rs.core.Response;
 
 @Component
 @Controller
-@Path("hello")
+@Path("/hello")
 public class TestController {
 
     @GET
