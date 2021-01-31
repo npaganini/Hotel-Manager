@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.webapp.dto;
+package ar.edu.itba.paw.interfaces.dtos;
 
 import ar.edu.itba.paw.models.charge.Charge;
 import ar.edu.itba.paw.models.occupant.Occupant;
@@ -8,12 +8,8 @@ import ar.edu.itba.paw.models.room.Room;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.glassfish.jersey.server.JSONP;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
