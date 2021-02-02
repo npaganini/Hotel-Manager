@@ -14,7 +14,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Table(name = "product")
 public class Product {
-
     public final static String KEY_ID = "id";
     public final static String KEY_DESCRIPTION = "description";
     public final static String KEY_PRICE = "price";
@@ -56,5 +55,4 @@ public class Product {
     public int hashCode() {
         return Math.toIntExact(id);
     }
-
 }
