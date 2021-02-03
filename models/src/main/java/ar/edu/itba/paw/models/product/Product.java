@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Getter
 @Setter
@@ -33,6 +34,7 @@ public class Product {
     @Column(nullable = false)
     private double price;
 
+    @XmlTransient
     private byte[] file;
 
     @Column(nullable = false)

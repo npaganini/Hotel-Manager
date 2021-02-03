@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.services.ProductService;
 import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.webapp.dtos.FileUploadResponse;
+import ar.edu.itba.paw.webapp.dtos.ProductRequest;
 import ar.edu.itba.paw.webapp.utils.FilesUtils;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
@@ -11,16 +12,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 
 @Controller
 @Path("products")
@@ -63,19 +61,17 @@ public class ProductController {
     @POST
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response addProduct(
-            @FormParam("productImg") String imgPath,
-            @FormParam("productDescription") String description,
-            @FormParam("productPrice") Double price) {
-        if (price < 0) {
+            @RequestBody ProductRequest productRequest) throws IOException {
+        if (productRequest.getPrice() < 0) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Price must be valid.").build();
         }
         LOGGER.debug("Request to add product to DB received");
-        Product newProduct = new Product(description, price, FilesUtils.loadImg(imgPath));
-        productService.saveProduct(newProduct);
+        Product newProduct = new Product(productRequest.getDescription(), productRequest.getPrice(),
+                FilesUtils.loadImg(productRequest.getImgPath()));
+        newProduct = productService.saveProduct(newProduct);
         LOGGER.debug("Product was saved successfully");
         // TODO is this ok?
-        final URI uri = uriInfo.getAbsolutePathBuilder().path(String.valueOf(newProduct.getId())).build();
-        return Response.created(uri).build();
+        return Response.ok(new GenericEntity<Product>(newProduct){}).build();
     }
 
     @POST
