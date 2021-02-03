@@ -56,14 +56,7 @@ const onLoginPerformed = (onSubmit, { user, password }) => () => {
     .then((result) => {
       window.token = result.data.token;
       window.alert("Logeado pa");
-      getAllRooms()
-        .then((result) => {
-          console.log(result);
-        })
-        .catch((error) => {
-          console.log("room error", error);
-        });
-      // onSubmit();
+      onSubmit();
     })
     .catch((error) => {
       console.log("there was an error", error);
