@@ -4,18 +4,10 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
-  useHistory,
 } from "react-router-dom";
 
 import "./App.css";
 
-import Navbar from "./components/Navbar/Navbar";
-import Table from "./components/Table/Table";
-import DatePicker from "./components/DatePickers/DatePicker";
-import Button from "./components/Button/Button";
-import Input from "./components/Input/Input";
-import Dropdown from "./components/Dropdown/Dropdown";
 import Login from "./containers/Login/Login";
 import Principal from "./containers/Principal/Principal";
 import Reservation from "./containers/Reservation/Reservation";
@@ -23,6 +15,9 @@ import CheckIn from "./containers/Check-In/Check-In";
 import Registration from './containers/Registration/Registration'
 import CheckOut from './containers/Check-Out/Check-Out'
 import Reservations from './containers/Reservations/Reservations'
+import Products from './containers/Products/Products'
+import NewProduct from './containers/Products/NewProduct'
+
 
 class App extends Component {
   render() {
@@ -63,6 +58,12 @@ class App extends Component {
           </Route>
           <Route path="/reservations">
             <Reservations/>
+          </Route>
+          <Route path="/products">
+            <Products/>
+          </Route>
+          <Route path="/newProduct">
+            <NewProduct/>
           </Route>
         </Switch>
       </Router>

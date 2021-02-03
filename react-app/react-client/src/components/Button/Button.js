@@ -30,6 +30,7 @@ const IconLabelButtons = (props) => {
           className={classes.button}
           startIcon={<DeleteIcon />}
           id={props.Id}
+          size={props.size}
           onClick={onClick}
         >
           <p className={classes.text}>{props.ButtonText}</p>
@@ -44,6 +45,7 @@ const IconLabelButtons = (props) => {
           color="primary"
           className={classes.button}
           id={props.Id}
+          size={props.size}
           onClick={onClick}
         >
           <p className={classes.text}>{props.ButtonText}</p>
@@ -56,6 +58,7 @@ const IconLabelButtons = (props) => {
           variant="contained"
           color="default"
           className={classes.button}
+          size={props.size}
           id={props.Id}
           onClick={onClick}
         >
@@ -67,7 +70,7 @@ const IconLabelButtons = (props) => {
         <Button
           variant="contained"
           color="default"
-          size="large"
+          size={props.size}
           className={classes.button}
           id={props.Id}
           onClick={onClick}
