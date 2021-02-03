@@ -22,6 +22,7 @@ import Reservation from "./containers/Reservation/Reservation";
 import CheckIn from "./containers/Check-In/Check-In";
 import Registration from './containers/Registration/Registration'
 import CheckOut from './containers/Check-Out/Check-Out'
+import Reservations from './containers/Reservations/Reservations'
 
 class App extends Component {
   render() {
@@ -59,6 +60,9 @@ class App extends Component {
           </Route>
           <Route path="/checkout">
             <CheckOut/>
+          </Route>
+          <Route path="/reservations">
+            <Reservations/>
           </Route>
         </Switch>
       </Router>

@@ -12,9 +12,6 @@ const useStyles = makeStyles((theme) => ({
     background: "#FAF6FC",
     height: "100vh",
   },
-  tableRow: {
-    marginTop: "40px",
-  },
   tableCol: {
     paddingRight: "7.5%",
     paddingLeft: "7.5%",

@@ -85,7 +85,7 @@ const Navbar = ({ history }) => {
     }
 
     const reservationsOnClick = () => {
-      history.push("/reservation");
+      history.push("/reservations");
     }
 
     const productsOnClick = () => {
