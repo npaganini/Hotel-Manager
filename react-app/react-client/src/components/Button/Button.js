@@ -43,7 +43,6 @@ const IconLabelButtons = (props) => {
           className={classes.text}
           color="primary"
           className={classes.button}
-          startIcon={<SaveIcon />}
           id={props.Id}
           onClick={onClick}
         >

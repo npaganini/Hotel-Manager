@@ -21,6 +21,7 @@ import Principal from "./containers/Principal/Principal";
 import Reservation from "./containers/Reservation/Reservation";
 import CheckIn from "./containers/Check-In/Check-In";
 import Registration from './containers/Registration/Registration'
+import CheckOut from './containers/Check-Out/Check-Out'
 
 class App extends Component {
   render() {
@@ -55,6 +56,9 @@ class App extends Component {
           </Route>
           <Route path="/registration">
             <Registration/>
+          </Route>
+          <Route path="/checkout">
+            <CheckOut/>
           </Route>
         </Switch>
       </Router>
