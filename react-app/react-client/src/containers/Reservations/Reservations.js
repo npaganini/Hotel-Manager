@@ -60,7 +60,7 @@ const Reservations = ({ history }) => {
         console.log(surname);
     }
 
-    const onSubmitReservation = () => {
+    const onSearchReservations = () => {
         console.log(dateFrom);
         console.log(dateTo);
         console.log(email);
@@ -69,7 +69,7 @@ const Reservations = ({ history }) => {
         history.push("/")
     }
 
-    const reservationCancel = () => {
+    const back = () => {
         history.push("/");
     }
 
@@ -99,10 +99,10 @@ const Reservations = ({ history }) => {
                 </Row>
                 <Row className={classes.row} style={{ textAlign: 'center' }}>
                     <Col xs={12} md={6} style={{ textAlign: 'right' }}>
-                        <Button ButtonType="Save" onClick={onSubmitReservation} ButtonText="Buscar"></Button>
+                        <Button ButtonType="Save" onClick={onSearchReservations} ButtonText="Buscar"></Button>
                     </Col>
                     <Col xs={12} md={6} style={{ textAlign: 'left' }}>
-                        <Button ButtonType="Back" onClick={reservationCancel} ButtonText="Volver"></Button>
+                        <Button ButtonType="Back" onClick={back} ButtonText="Volver"></Button>
                     </Col>
                 </Row>
                 <br></br>

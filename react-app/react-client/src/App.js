@@ -17,6 +17,9 @@ import CheckOut from './containers/Check-Out/Check-Out'
 import Reservations from './containers/Reservations/Reservations'
 import Products from './containers/Products/Products'
 import NewProduct from './containers/Products/NewProduct'
+import Orders from './containers/Orders/Orders'
+import HelpRequest from './containers/HelpRequest/HelpRequest'
+
 
 
 class App extends Component {
@@ -64,6 +67,12 @@ class App extends Component {
           </Route>
           <Route path="/newProduct">
             <NewProduct/>
+          </Route>
+          <Route path="/orders">
+            <Orders/>
+          </Route>
+          <Route path="/helprequest">
+            <Orders/>
           </Route>
         </Switch>
       </Router>

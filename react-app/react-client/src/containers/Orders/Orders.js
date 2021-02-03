@@ -27,12 +27,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Products = ({ history }) => {
+const Orders = ({ history }) => {
     const classes = useStyles();
 
-    const addProduct = () => {
+    const onSubmitOrders = () => {
         console.log(history);
-        history.push("/newProduct")
+        history.push("/orders")
     }
 
     const back = () => {
@@ -53,7 +53,7 @@ const Products = ({ history }) => {
                     </Col>
                     <Col xs={12} md={2}>
                         <Col xs={12} md={6} style={{ textAlign: 'left' }}>
-                            <Button ButtonType="Save" size="large" onClick={addProduct} ButtonText="Agregar"></Button>
+                            <Button ButtonType="Save" size="large" onClick={onSubmitOrders} ButtonText="Refresh"></Button>
                         </Col>
                         <Col xs={12} md={6} style={{ textAlign: 'left' }}>
                             <Button ButtonType="Back" size="large" onClick={back} ButtonText="Volver"></Button>
@@ -65,4 +65,4 @@ const Products = ({ history }) => {
     );
 };
 
-export default withRouter(Products);
+export default withRouter(Orders);
