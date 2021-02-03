@@ -42,7 +42,6 @@ public class User implements Serializable    {
     private UserRole role;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-    @XmlTransient
     private List<Reservation> reservations;
 
     @XmlTransient
