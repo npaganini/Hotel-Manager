@@ -218,3 +218,9 @@ modules.xml
 
 
 # End of https://www.gitignore.io/api/intellij,intellij+all,intellij+iml
+
+### macOS ###
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
