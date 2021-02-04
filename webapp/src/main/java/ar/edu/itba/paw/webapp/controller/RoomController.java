@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.dtos.ReservationDTO;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.ChargeService;
@@ -9,14 +10,12 @@ import ar.edu.itba.paw.models.dtos.CheckoutDTO;
 import ar.edu.itba.paw.models.occupant.Occupant;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.webapp.dto.OccupantsRequest;
-import ar.edu.itba.paw.webapp.dto.ReservationDTO;
 import ar.edu.itba.paw.webapp.dto.ReservationRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -50,15 +49,12 @@ public class RoomController extends SimpleController {
     }
 
     @GET
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    @Transactional
+    @Produces(value = MediaType.APPLICATION_JSON)
     public Response getAllRooms() {
         LOGGER.debug("Request received to retrieve whole roomsList");
-        final List<Reservation> reservations = reservationService.getRoomsReservedActive();
-        final List<ReservationDTO> roomsReserved = reservations
-                .stream().map(ReservationDTO::fromReservation).collect(Collectors.toList());
+        final List<ReservationDTO> reservations = reservationService.getRoomsReservedActive();
 
-        return Response.ok(new GenericEntity<List<ReservationDTO>>(roomsReserved) {
+        return Response.ok(new GenericEntity<List<ReservationDTO>>(reservations) {
         }).build();
     }
 

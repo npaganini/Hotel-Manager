@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Getter
 @Setter
@@ -36,6 +37,7 @@ public class Charge {
     private Product product;
 
     @ManyToOne
+    @XmlTransient
     private Reservation reservation;
 
     public Charge(Product product, Reservation reservation) {

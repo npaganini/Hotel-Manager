@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfaces.daos.UserDao;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.UnsupportedAuthorizationMethodException;
 import ar.edu.itba.paw.models.user.User;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.Optional;
@@ -97,8 +99,11 @@ public class TokenAuthHandlerService {
         return Optional.empty();
     }
 
-    public void addAuthToResponse(HttpServletResponse response, String username) {
-        final String token = createToken(username);
-        response.setHeader("Authorization", AUTHENTICATION_SCHEME + token);
+    public void addAuthToResponse(HttpServletResponse response, String username) throws IOException {
+        final TokenResponse token = new TokenResponse(createToken(username));
+        final String tokenResponseJson = new ObjectMapper().writeValueAsString(token);
+        response.getWriter().write(tokenResponseJson);
+        response.flushBuffer();
+//        response.setHeader("Authorization", AUTHENTICATION_SCHEME + token);
     }
 }
