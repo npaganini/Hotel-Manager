@@ -65,14 +65,14 @@ class App extends Component {
           <Route path="/products">
             <Products/>
           </Route>
-          <Route path="/newProduct">
+          <Route path="/products/newProduct">
             <NewProduct/>
           </Route>
           <Route path="/orders">
             <Orders/>
           </Route>
           <Route path="/helprequest">
-            <Orders/>
+            <HelpRequest/>
           </Route>
         </Switch>
       </Router>

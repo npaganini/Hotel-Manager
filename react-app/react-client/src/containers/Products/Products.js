@@ -32,7 +32,7 @@ const Products = ({ history }) => {
 
     const addProduct = () => {
         console.log(history);
-        history.push("/newProduct")
+        history.push("/products/newProduct")
     }
 
     const back = () => {
