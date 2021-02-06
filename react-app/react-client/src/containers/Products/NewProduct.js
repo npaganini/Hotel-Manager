@@ -57,11 +57,6 @@ const NewProduct = ({ history }) => {
     return (
         <div>
             <Container className={classes.container}>
-                <Row>
-                    <Col>
-                        <Navbar></Navbar>
-                    </Col>
-                </Row>
                 <Row className={classes.row}>
                     <Col xs={12} md={4}>
                         <Input label="Descripcion" type="text" onChange={descriptionOnChange} />

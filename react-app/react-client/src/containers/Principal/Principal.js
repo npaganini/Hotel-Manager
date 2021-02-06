@@ -36,11 +36,6 @@ const Principal = ({history}) => {
   return (
     <div>
       <Container fluid="md" className={classes.container}>
-        <Row>
-          <Col>
-            <Navbar></Navbar>
-          </Col>
-        </Row>
         <Row className={classes.buttonRow}>
           <Col className={classes.buttonCol}>
             <Button ButtonType="Inherit" onClick={newReservationClick} ButtonText="New Reservation"></Button>

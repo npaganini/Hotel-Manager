@@ -42,11 +42,6 @@ const HelpRequest = ({ history }) => {
     return (
         <div>
             <Container className={classes.container}>
-                <Row>
-                    <Col>
-                        <Navbar></Navbar>
-                    </Col>
-                </Row>
                 <Row className={classes.row}>
                     <Col xs={12} md={10} className={classes.tableCol}>
                         <Table></Table>

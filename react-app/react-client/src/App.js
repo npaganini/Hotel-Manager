@@ -1,10 +1,6 @@
 import React, { Component } from "react";
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import "./App.css";
 
@@ -12,20 +8,24 @@ import Login from "./containers/Login/Login";
 import Principal from "./containers/Principal/Principal";
 import Reservation from "./containers/Reservation/Reservation";
 import CheckIn from "./containers/Check-In/Check-In";
-import Registration from './containers/Registration/Registration'
-import CheckOut from './containers/Check-Out/Check-Out'
-import Reservations from './containers/Reservations/Reservations'
-import Products from './containers/Products/Products'
-import NewProduct from './containers/Products/NewProduct'
-import Orders from './containers/Orders/Orders'
-import HelpRequest from './containers/HelpRequest/HelpRequest'
-
-
+import Registration from "./containers/Registration/Registration";
+import CheckOut from "./containers/Check-Out/Check-Out";
+import Reservations from "./containers/Reservations/Reservations";
+import Products from "./containers/Products/Products";
+import NewProduct from "./containers/Products/NewProduct";
+import Orders from "./containers/Orders/Orders";
+import HelpRequest from "./containers/HelpRequest/HelpRequest";
+import Navbar from "./components/Navbar/Navbar";
 
 class App extends Component {
   render() {
     return (
       <Router>
+        {/* <Row>
+          <Col> */}
+        <Navbar></Navbar>
+        {/* </Col>
+        </Row> */}
         {/* 
         // <Table></Table>
         // <DatePicker label="Desde"></DatePicker>
@@ -48,31 +48,31 @@ class App extends Component {
             <Login />
           </Route>
           <Route path="/checkin">
-            <CheckIn/>
+            <CheckIn />
           </Route>
           <Route path="/reservation">
-            <Reservation/>
+            <Reservation />
           </Route>
           <Route path="/registration">
-            <Registration/>
+            <Registration />
           </Route>
           <Route path="/checkout">
-            <CheckOut/>
+            <CheckOut />
           </Route>
           <Route path="/reservations">
-            <Reservations/>
+            <Reservations />
           </Route>
           <Route path="/products">
-            <Products/>
+            <Products />
           </Route>
           <Route path="/products/newProduct">
-            <NewProduct/>
+            <NewProduct />
           </Route>
           <Route path="/orders">
-            <Orders/>
+            <Orders />
           </Route>
           <Route path="/helprequest">
-            <HelpRequest/>
+            <HelpRequest />
           </Route>
         </Switch>
       </Router>

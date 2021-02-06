@@ -55,11 +55,6 @@ const checkOut = ({ history }) => {
         <div>
             <Container fluid="md" className={classes.container}>
                 <Row>
-                    <Col>
-                        <Navbar></Navbar>
-                    </Col>
-                </Row>
-                <Row>
                     <Col xs={6} md={3}></Col>
                     <Col>
                     <Card className={classes.card}>

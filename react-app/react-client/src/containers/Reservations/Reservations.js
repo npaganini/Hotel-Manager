@@ -76,11 +76,6 @@ const Reservations = ({ history }) => {
     return (
         <div>
             <Container className={classes.container}>
-                <Row>
-                    <Col>
-                        <Navbar></Navbar>
-                    </Col>
-                </Row>
                 <Row className={classes.row}>
                     <Col xs={12} md={6}>
                         <DatePicker Id="from" label="Desde" onChange={dateFromOnChange}></DatePicker>
