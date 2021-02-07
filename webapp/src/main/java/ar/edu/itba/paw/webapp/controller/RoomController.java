@@ -29,6 +29,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static ar.edu.itba.paw.interfaces.dtos.ReservationResponse.fromReservation;
+
 @Component
 @Controller
 @Path("/rooms")
@@ -56,8 +58,7 @@ public class RoomController extends SimpleController {
         LOGGER.debug("Request received to retrieve whole roomsList");
         final List<ReservationResponse> reservations = reservationService.getRoomsReservedActive();
 
-        return Response.ok(new GenericEntity<List<ReservationResponse>>(reservations) {
-        }).build();
+        return Response.ok(new GenericEntity<List<ReservationResponse>>(reservations) {}).build();
     }
 
     @POST
@@ -75,10 +76,14 @@ public class RoomController extends SimpleController {
     @POST
     @Path("/checkin/{reservationId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response checkinPost(@PathParam("reservationId") final String reservationId) throws RequestInvalidException,
-            EntityNotFoundException {
+    public Response checkinPost(@PathParam("reservationId") final String reservationId) throws RequestInvalidException, EntityNotFoundException {
         LOGGER.debug("Request received to do the check-in on reservation with hash: " + reservationId);
-        return Response.ok(roomService.doCheckin(reservationId)).build();
+        Reservation reservation = roomService.doCheckin(reservationId);
+        if (reservation != null) {
+            return Response.ok(new GenericEntity<ReservationResponse>(fromReservation(reservation)) {}).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
     }
 
     @POST
