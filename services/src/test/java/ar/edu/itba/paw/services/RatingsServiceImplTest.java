@@ -45,7 +45,7 @@ public class RatingsServiceImplTest {
 
     @Test
     public void getHotelRatingTest() {
-        assertEquals(HOTEL_RATING, ratingsService.getHotelRating(), DELTA);
+        assertEquals(HOTEL_RATING, ratingsService.getHotelRating().getRating(), DELTA);
     }
 
     @Test
@@ -55,7 +55,7 @@ public class RatingsServiceImplTest {
 
     @Test
     public void getRoomRatingsTest() {
-        assertEquals(ROOM_RATING, ratingsService.getRoomRating(ROOM_ID), DELTA);
+        assertEquals(ROOM_RATING, ratingsService.getRoomRating(ROOM_ID).getRating(), DELTA);
     }
 
     @Test

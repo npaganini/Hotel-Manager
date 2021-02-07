@@ -36,7 +36,7 @@ public class HelpController {
     public Response updateHelpStep(@PathParam("id") final long helpRequestId, @QueryParam("getHelpFormStatus") HelpStep status) throws RequestInvalidException {
         // todo: mav was "helpRequests.jsp"
         LOGGER.debug("Attempted to update status on help request.");
-        if(helpService.updateStatus(helpRequestId, status)) {
+        if (helpService.updateStatus(helpRequestId, status)) {
             return Response.ok(helpService.getAllRequestsThatRequireAction()).build();
         }
         return Response.status(Response.Status.BAD_REQUEST).build();

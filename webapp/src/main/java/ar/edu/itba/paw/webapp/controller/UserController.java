@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -32,45 +33,30 @@ public class UserController extends SimpleController {
         this.userService = userService;
     }
 
-//    @GET
-//    @Produces(value = {MediaType.APPLICATION_JSON})
-//    public Response redirectToLanding(Authentication authentication) {
-//        final URI uri = uriInfo.getAbsolutePathBuilder().path("/home").build();
-//        return Response.temporaryRedirect(uri).build();
-//    }
-
-//    @GET
-//    @Path("/home")
-//    @Produces(value = {MediaType.APPLICATION_JSON})
-//    public Response getLandingPage(Authentication authentication) {
-//        // todo: mav was "userIndex.jsp"
-//        LOGGER.debug("Request received to user's landing page");
-//        return Response.ok(userService.findActiveReservations(getUsername(authentication))).build();
-//    }
-
-//    @GET
-//    @Path("/expenses/{reservationId}")
-//    @Produces(value = {MediaType.APPLICATION_JSON})
-//    public Response boughtProducts(Authentication authentication, @PathParam(value = "reservationId") long reservationId) {
-//        // todo: mav was "expenses.jsp"
-//        LOGGER.debug("Request received to retrieve all expenses on reservation with id " + reservationId);
-//        return Response.ok(userService.checkProductsPurchasedByUserByReservationId(getUsername(authentication), reservationId)).build();
-//    }
-
     @GET
-    @Path("/products")
+    @Path("/expenses/{reservationId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getAllProducts(@CookieParam("reservationId") long reservationId) {
+    public Response boughtProducts(@PathParam(value = "reservationId") long reservationId) {
+        // todo: mav was "expenses.jsp"
+        LOGGER.debug("Request received to retrieve all expenses on reservation with id " + reservationId);
+        return Response.ok(userService.checkProductsPurchasedByUserByReservationId(getUserEmailFromJwt(), reservationId)).build();
+    }
+
+    // TODO This is bad, this should be in another endpoint
+    @GET
+    @Path("/{reservationId}/products")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getAllProducts(@PathParam("reservationId") long reservationId) {
         // todo: mav was "browseProducts.jsp"
         LOGGER.debug("Request received to retrieve all products list");
         return Response.ok(userService.getProducts()).build();
     }
 
     @POST
-    @Path("/products")
+    @Path("/{reservationId}/products")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response buyProduct(@FormParam("productId") Long productId,
-                               @CookieParam("reservationId") long reservationId) throws EntityNotFoundException {
+                               @PathParam("reservationId") long reservationId) throws EntityNotFoundException {
         LOGGER.debug("Request received to buy products on reservation with id " + reservationId);
         if(productId != null) {
             // todo: mav was "buyProducts.jsp"
@@ -81,21 +67,12 @@ public class UserController extends SimpleController {
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
-//    @GET
-//    @Path("/help")
-//    @Produces(value = {MediaType.APPLICATION_JSON})
-//    public Response getHelpPage(@FormParam("helpFormText") String helpForm,
-//                                @CookieParam("reservationId") long reservationId) {
-//        // todo: mav was "askHelpPage.jsp"
-//        LOGGER.debug("Request received to get help page");
-//        return Response.ok(helpForm).build();
-//    }
-
+    // TODO FIXME
     @POST
-    @Path("/help")
+    @Path("/{reservationId}/help")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response requestHelp(@FormParam("helpFormText") String helpForm,
-                                @CookieParam("reservationId") long reservationId) throws EntityNotFoundException {
+                                @PathParam("reservationId") long reservationId) throws EntityNotFoundException {
         LOGGER.debug("Help request made on reservation with id " + reservationId);
         if(helpForm != null) {
             // todo: mav was "requestHelp.jsp"
@@ -106,7 +83,8 @@ public class UserController extends SimpleController {
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
-    @PUT
+    // TODO FIXME
+    @POST
     @Path("/ratings/{hash}/rate")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response rateStay(@FormParam("rating") String rate, @PathParam("hash") String hash) throws RequestInvalidException, EntityNotFoundException {

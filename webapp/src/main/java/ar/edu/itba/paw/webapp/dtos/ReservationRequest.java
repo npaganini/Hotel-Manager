@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.webapp.dto;
+package ar.edu.itba.paw.webapp.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

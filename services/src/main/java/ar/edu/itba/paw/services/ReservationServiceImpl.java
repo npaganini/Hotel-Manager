@@ -3,7 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.daos.OccupantDao;
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
 import ar.edu.itba.paw.interfaces.daos.RoomDao;
-import ar.edu.itba.paw.interfaces.dtos.ReservationDTO;
+import ar.edu.itba.paw.interfaces.dtos.ReservationResponse;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.EmailService;
@@ -122,9 +122,9 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional
-    public List<ReservationDTO> getRoomsReservedActive() {
+    public List<ReservationResponse> getRoomsReservedActive() {
         return roomDao.getRoomsReservedActive()
-                .stream().map(ReservationDTO::fromReservation).collect(Collectors.toList());
+                .stream().map(ReservationResponse::fromReservation).collect(Collectors.toList());
     }
 
 

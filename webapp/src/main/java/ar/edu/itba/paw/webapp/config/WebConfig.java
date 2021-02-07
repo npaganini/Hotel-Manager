@@ -143,11 +143,4 @@ public class WebConfig {
         return multipartResolver;
     }
 
-//    @Bean
-//    public SimpleMappingExceptionResolver exceptionResolver() {
-//        SimpleMappingExceptionResolver simpleMappingExceptionResolver = new SimpleMappingExceptionResolver();
-//        simpleMappingExceptionResolver.setDefaultErrorView("403");
-//        return simpleMappingExceptionResolver;
-//    }
-
 }
