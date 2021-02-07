@@ -36,15 +36,32 @@ public class EmailServiceImpl implements EmailService {
         this.servletContext = servletContext;
     }
 
-    public void sendConfirmationOfReservation(String to, String hash, String password) {
+    public void sendConfirmationOfReservation(String to, String hash) {
         LOGGER.debug("About to send email notifying the confirmation of reservation to " + to);
 //        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 //        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
-//        String subject = messageSourceExternalizer.getMessage("email.reservationConfirmationSubject");
+//        String subject = messageSourceExternalizer.getMessage("email.reservationConfirm.subject");
 //        LOGGER.debug("Got the following message from message source " + subject);
-//
 //        try {
-//            helper.setText(getHtmlMessageForReservation(to, hash, password), true);
+//            helper.setText(getHtmlMessageForReservation(to, hash), true);
+//            helper.setTo(to);
+//            helper.setSubject(subject);
+//            helper.setFrom("paw.hotel.manager@gmail.com");
+//        } catch (MessagingException e) {
+//            LOGGER.error(e.toString());
+//        }
+//        javaMailSender.send(mimeMessage);
+    }
+
+    @Override
+    public void sendUserCreatedEmail(String to, String password) {
+        LOGGER.debug("About to send email notifying the creation of user to " + to);
+//        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+//        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+//        String subject = messageSourceExternalizer.getMessage("email.userCreated.subject");
+//        LOGGER.debug("Got the following message from message source " + subject);
+//        try {
+//            helper.setText(getHtmlMessageForUserCreation(to, password), true);
 //            helper.setTo(to);
 //            helper.setSubject(subject);
 //            helper.setFrom("paw.hotel.manager@gmail.com");
@@ -57,40 +74,40 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendCheckinEmail(Reservation reservation) {
         LOGGER.debug("About to send email notifying the check-in of reservation to " + reservation.getUserEmail());
-        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
-        String subject = messageSourceExternalizer.getMessage("email.checkin.subject");
-        LOGGER.debug("Got the following message from message source " + subject);
-        try {
-            helper.setText(getHtmlMessageForCheckin(reservation.getUserEmail(), reservation.getHash()), true);
-            helper.setTo(reservation.getUserEmail());
-            helper.setSubject(subject);
-            helper.setFrom("paw.hotel.manager@gmail.com");
-        } catch (MessagingException e) {
-            LOGGER.error(e.toString());
-        }
-        javaMailSender.send(mimeMessage);
+//        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+//        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+//        String subject = messageSourceExternalizer.getMessage("email.checkin.subject");
+//        LOGGER.debug("Got the following message from message source " + subject);
+//        try {
+//            helper.setText(getHtmlMessageForCheckin(reservation.getUserEmail(), reservation.getHash()), true);
+//            helper.setTo(reservation.getUserEmail());
+//            helper.setSubject(subject);
+//            helper.setFrom("paw.hotel.manager@gmail.com");
+//        } catch (MessagingException e) {
+//            LOGGER.error(e.toString());
+//        }
+//        javaMailSender.send(mimeMessage);
     }
 
     @Override
     public void sendRateStayEmail(String reservationHash) {
-        String userEmail = reservationDao
-                .findReservationByHash(reservationHash.trim())
-                .orElseThrow(() -> new EntityNotFoundException("Can't find reservation with"))
-                .getUserEmail();
-        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
-        String subject = messageSourceExternalizer.getMessage("email.ratings.subject");
-        LOGGER.debug("Got the following message from message source " + subject);
-        try {
-            helper.setText(createEmailText(reservationHash.trim()), true);
-            helper.setTo(userEmail);
-            helper.setSubject(subject);
-            helper.setFrom("paw.hotel.manager@gmail.com");
-        } catch (MessagingException e) {
-            LOGGER.error(e.toString());
-        }
-        javaMailSender.send(mimeMessage);
+//        String userEmail = reservationDao
+//                .findReservationByHash(reservationHash.trim())
+//                .orElseThrow(() -> new EntityNotFoundException("Can't find reservation with"))
+//                .getUserEmail();
+//        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+//        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+//        String subject = messageSourceExternalizer.getMessage("email.ratings.subject");
+//        LOGGER.debug("Got the following message from message source " + subject);
+//        try {
+//            helper.setText(createEmailText(reservationHash.trim()), true);
+//            helper.setTo(userEmail);
+//            helper.setSubject(subject);
+//            helper.setFrom("paw.hotel.manager@gmail.com");
+//        } catch (MessagingException e) {
+//            LOGGER.error(e.toString());
+//        }
+//        javaMailSender.send(mimeMessage);
     }
 
     private String getHtmlMessageForCheckin(String userEmail, String hash) {
@@ -102,10 +119,18 @@ public class EmailServiceImpl implements EmailService {
                 " <br> <b>" + messageSourceExternalizer.getMessage("email.password") + "</b>: " + userEmail + "</p>";
     }
 
-    private String getHtmlMessageForReservation(String to, String hash, String password) {
+    private String getHtmlMessageForReservation(String to, String hash) {
         return "<h3> " + messageSourceExternalizer.getMessage("email.reservationConfirm.welcome") + " </h3> <br> " +
                 "<h4>" + messageSourceExternalizer.getMessage("email.reservationConfirm.loginInfo") + hash +
                 messageSourceExternalizer.getMessage("email.reservationConfirm.info") +
+                "<p> <b>" + messageSourceExternalizer.getMessage("email.username") + ":</b> " +
+                to + "</p>";
+    }
+
+    private String getHtmlMessageForUserCreation(String to, String password) {
+        return "<h3> " + messageSourceExternalizer.getMessage("email.userCreated.welcome") + " </h3> <br> " +
+                "<h4>" + messageSourceExternalizer.getMessage("email.userCreated.loginInfo") +
+                messageSourceExternalizer.getMessage("email.userCreated.info") +
                 "<p> <b>" + messageSourceExternalizer.getMessage("email.username") + ":</b> " +
                 to + " <br> <b>" + messageSourceExternalizer.getMessage("email.password") + "</b>: " +
                 password + "</p>";

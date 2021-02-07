@@ -3,6 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.daos.*;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
+import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.charge.Charge;
 import ar.edu.itba.paw.models.help.Help;
@@ -30,14 +31,16 @@ public class UserServiceImpl implements UserService {
     private final ReservationDao reservationDao;
     private final UserDao userDao;
     private final HelpDao helpDao;
+    private final EmailService emailService;
 
     @Autowired
-    public UserServiceImpl(ProductDao productDao, ChargeDao chargeDao, ReservationDao reservationDao, UserDao userDao, HelpDao helpDao) {
+    public UserServiceImpl(ProductDao productDao, ChargeDao chargeDao, ReservationDao reservationDao, UserDao userDao, HelpDao helpDao, EmailService emailService) {
         this.productDao = productDao;
         this.chargeDao = chargeDao;
         this.reservationDao = reservationDao;
         this.userDao = userDao;
         this.helpDao = helpDao;
+        this.emailService = emailService;
     }
 
     @Override
@@ -67,8 +70,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserForReservation(String userEmail) {
-        Optional<User> userOptional = userDao.findByEmail(userEmail);
         User user;
+        Optional<User> userOptional = userDao.findByEmail(userEmail);
         if (userOptional.isPresent()) {
             user = userOptional.get();
             LOGGER.debug("There is already an user created with email " + userEmail);
@@ -77,6 +80,8 @@ public class UserServiceImpl implements UserService {
             String randomPassword = generatePassword();
             System.out.println("Password for user is: " + randomPassword);  // TODO: ERASE THIS PRINT BEFORE SENDING TO PROD
             user = userDao.save(new User(userEmail, userEmail, new BCryptPasswordEncoder().encode(randomPassword)));
+            LOGGER.debug("User created! Sending e-mail about user creation to: " + userEmail);
+            emailService.sendUserCreatedEmail(userEmail, randomPassword);
         }
         return user;
     }
