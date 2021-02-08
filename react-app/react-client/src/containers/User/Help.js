@@ -47,7 +47,7 @@ const UserPrincipal = ({ history }) => {
                     </Col>
                     <Col xs={1} md={1}>
                     <Col xs={12} md={6} style={{ textAlign: 'left' }}>
-                            <Button ButtonType="Save" size="large" onClick={onSubmitHelp} ButtonText="Refresh"></Button>
+                            <Button ButtonType="Save" size="large" onClick={onSubmitHelp} ButtonText="Enviar"></Button>
                         </Col>
                         <Col xs={12} md={6} style={{ textAlign: 'left' }}>
                             <Button ButtonType="Back" size="large" onClick={back} ButtonText="Volver"></Button>
