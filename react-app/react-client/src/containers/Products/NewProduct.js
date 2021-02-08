@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Form} from "react-bootstrap";
 import { makeStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
 
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
         padding: 0,
     },
     row: {
-        marginTop: "40px",
+        paddingTop: "40px",
         paddingLeft: "10%",
         paddingRight: "10%",
     },
@@ -63,14 +63,16 @@ const NewProduct = ({ history }) => {
 
                     </Col>
                     <Col xs={12} md={4}>
-                        <Input label="Foto" type="text" onChange={photoOnChange} />
+                        <Form.Group>
+                            <Form.File id="exampleFormControlFile1" label="Example file input" />
+                        </Form.Group>
                     </Col>
                     <Col xs={12} md={4}>
                         <Input label="Precio" type="number" onChange={priceOnChange} />
                     </Col>
                 </Row>
                 <Row className={classes.row}>
-                    <Col xs={12} md={6} style={{textAlign:'right'}}>
+                    <Col xs={12} md={6} style={{ textAlign: 'right' }}>
                         <Button ButtonType="Save" onClick={onSubmitReservation} ButtonText="Crear"></Button>
                     </Col>
                     <Col xs={12} md={6}>

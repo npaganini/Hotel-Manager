@@ -17,6 +17,7 @@ import Orders from "./containers/Orders/Orders";
 import HelpRequest from "./containers/HelpRequest/HelpRequest";
 import Navbar from "./components/Navbar/Navbar";
 import UserPrincipal from './containers/User/Principal'
+import UserHelp from './containers/User/Help'
 
 class App extends Component {
   render() {
@@ -66,7 +67,7 @@ class App extends Component {
           <Route path="/products">
             <Products />
           </Route>
-          <Route path="/products/newProduct">
+          <Route path="/newProduct">
             <NewProduct />
           </Route>
           <Route path="/orders">
@@ -77,6 +78,9 @@ class App extends Component {
           </Route>
           <Route path="/userprincipal">
             <UserPrincipal />
+          </Route>
+          <Route path="/userhelp">
+            <UserHelp />
           </Route>
         </Switch>
       </Router>

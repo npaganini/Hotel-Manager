@@ -17,10 +17,6 @@ const useStyles = makeStyles((theme) => ({
 const UserPrincipal = ({ history }) => {
     const classes = useStyles();
 
-    const newReservationClick = () => {
-        history.push("/reservation")
-    }
-
     return (
         <div>
             <Container fluid="md" className={classes.container}>
