@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
         padding: 0,
     },
     row: {
-        marginTop: "40px",
+        paddingTop: "40px",
         paddingLeft: "10%",
         paddingRight: "10%",
     },

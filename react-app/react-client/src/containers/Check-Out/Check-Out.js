@@ -21,11 +21,11 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center',
     },
     buttonRow: {
-        marginTop: '20px',
+        paddingTop: '20px',
         textAlign: 'center'
     },
     card: {
-        marginTop: '40px',
+        paddingTop: '40px',
     }
 }));
 

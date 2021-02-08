@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: "7.5%",
   },
   buttonRow: {
-    marginTop: "40px",
+    paddingTop: "40px",
     paddingLeft: "10%",
   },
 }));
