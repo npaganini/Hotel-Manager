@@ -3,7 +3,6 @@ import { Container, Row, Col } from "react-bootstrap";
 import { makeStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
 
-import Navbar from "../../components/Navbar/Navbar";
 import Table from "../../components/Table/Table";
 import Button from "../../components/Button/Button";
 
@@ -21,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: "7.5%",
   },
   buttonRow: {
-    marginTop: "40px",
+    paddingTop: "40px",
     paddingLeft: "10%",
   },
 }));
@@ -36,11 +35,6 @@ const Principal = ({history}) => {
   return (
     <div>
       <Container fluid="md" className={classes.container}>
-        <Row>
-          <Col>
-            <Navbar></Navbar>
-          </Col>
-        </Row>
         <Row className={classes.buttonRow}>
           <Col className={classes.buttonCol}>
             <Button ButtonType="Inherit" onClick={newReservationClick} ButtonText="New Reservation"></Button>

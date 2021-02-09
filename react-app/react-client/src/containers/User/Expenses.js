@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
         padding: 0,
     },
     row: {
-        marginTop: "40px",
+        paddingTop: "40px",
         paddingLeft: "10%",
         paddingRight: "10%",
     },
@@ -27,16 +27,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Products = ({ history }) => {
+const UserExpenses = ({ history }) => {
     const classes = useStyles();
 
-    const addProduct = () => {
-        console.log(history);
-        history.push("/products/newProduct")
-    }
-
     const back = () => {
-        history.push("/");
+        history.push("/userprincipal");
     }
 
     return (
@@ -47,10 +42,7 @@ const Products = ({ history }) => {
                         <Table></Table>
                     </Col>
                     <Col xs={12} md={2}>
-                        <Col xs={12} md={6} style={{ textAlign: 'left' }}>
-                            <Button ButtonType="Save" size="large" onClick={addProduct} ButtonText="Agregar"></Button>
-                        </Col>
-                        <Col xs={12} md={6} style={{ textAlign: 'left' }}>
+                        <Col xs={12} md={12} style={{ textAlign: 'left' }}>
                             <Button ButtonType="Back" size="large" onClick={back} ButtonText="Volver"></Button>
                         </Col>
                     </Col>
@@ -60,4 +52,4 @@ const Products = ({ history }) => {
     );
 };
 
-export default withRouter(Products);
+export default withRouter(UserExpenses);

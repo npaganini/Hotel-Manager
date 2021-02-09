@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
   },
   row: {
-    marginTop: "40px",
+    paddingTop: "40px",
     paddingLeft: "10%",
     paddingRight: "10%",
   },
@@ -73,11 +73,6 @@ const Reservation = ({history}) => {
   return (
     <div>
       <Container className={classes.container}>
-        <Row>
-          <Col>
-            <Navbar></Navbar>
-          </Col>
-        </Row>
         <Row className={classes.row}>
           <Col xs={12} md={6}>
             <DatePicker Id="from" label="Desde" onChange={dateFromOnChange}></DatePicker>

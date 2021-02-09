@@ -1,10 +1,6 @@
 import React, { Component } from "react";
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import "./App.css";
 
@@ -12,34 +8,25 @@ import Login from "./containers/Login/Login";
 import Principal from "./containers/Principal/Principal";
 import Reservation from "./containers/Reservation/Reservation";
 import CheckIn from "./containers/Check-In/Check-In";
-import Registration from './containers/Registration/Registration'
-import CheckOut from './containers/Check-Out/Check-Out'
-import Reservations from './containers/Reservations/Reservations'
-import Products from './containers/Products/Products'
-import NewProduct from './containers/Products/NewProduct'
-import Orders from './containers/Orders/Orders'
-import HelpRequest from './containers/HelpRequest/HelpRequest'
-
-
+import Registration from "./containers/Registration/Registration";
+import CheckOut from "./containers/Check-Out/Check-Out";
+import Reservations from "./containers/Reservations/Reservations";
+import Products from "./containers/Products/Products";
+import NewProduct from "./containers/Products/NewProduct";
+import Orders from "./containers/Orders/Orders";
+import HelpRequest from "./containers/HelpRequest/HelpRequest";
+import Navbar from "./components/Navbar/Navbar";
+import UserPrincipal from './containers/User/Principal'
+import UserHelp from './containers/User/Help'
+import UserProducts from './containers/User/Products'
+import UserExpenses from './containers/User/Expenses'
 
 class App extends Component {
   render() {
     return (
       <Router>
-        {/* 
-        // <Table></Table>
-        // <DatePicker label="Desde"></DatePicker>
-        //{" "}
-        <div>
-          // <Button ButtonType="Delete"></Button>
-          // <Button ButtonType="Save"></Button>
-          // <Button ButtonType="Back"></Button>
-          //{" "}
-        </div>
-        // <Input type="text" label="test"></Input>
-        // <Principal></Principal>
-        // <Reservation></Reservation> */}
-        {/* <Navbar /> */}
+        <Navbar></Navbar>
+
         <Switch>
           <Route exact path="/">
             <Principal />
@@ -48,31 +35,43 @@ class App extends Component {
             <Login />
           </Route>
           <Route path="/checkin">
-            <CheckIn/>
+            <CheckIn />
           </Route>
           <Route path="/reservation">
-            <Reservation/>
+            <Reservation />
           </Route>
           <Route path="/registration">
-            <Registration/>
+            <Registration />
           </Route>
           <Route path="/checkout">
-            <CheckOut/>
+            <CheckOut />
           </Route>
           <Route path="/reservations">
-            <Reservations/>
+            <Reservations />
           </Route>
           <Route path="/products">
-            <Products/>
+            <Products />
           </Route>
           <Route path="/newProduct">
-            <NewProduct/>
+            <NewProduct />
           </Route>
           <Route path="/orders">
-            <Orders/>
+            <Orders />
           </Route>
           <Route path="/helprequest">
-            <Orders/>
+            <HelpRequest />
+          </Route>
+          <Route path="/userprincipal">
+            <UserPrincipal />
+          </Route>
+          <Route path="/userhelp">
+            <UserHelp />
+          </Route>
+          <Route path="/userproducts">
+            <UserProducts />
+          </Route>         
+          <Route path="/userexpenses">
+            <UserExpenses />
           </Route>
         </Switch>
       </Router>

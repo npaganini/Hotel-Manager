@@ -21,11 +21,11 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center',
     },
     buttonRow: {
-        marginTop: '20px',
+        paddingTop: '20px',
         textAlign: 'center'
     },
     card: {
-        marginTop: '40px',
+        paddingTop: '40px',
     }
 }));
 
@@ -54,11 +54,6 @@ const checkOut = ({ history }) => {
     return (
         <div>
             <Container fluid="md" className={classes.container}>
-                <Row>
-                    <Col>
-                        <Navbar></Navbar>
-                    </Col>
-                </Row>
                 <Row>
                     <Col xs={6} md={3}></Col>
                     <Col>

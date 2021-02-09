@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
         padding: 0,
     },
     row: {
-        marginTop: "40px",
+        paddingTop: "40px",
         paddingLeft: "10%",
         paddingRight: "10%",
     },
@@ -42,11 +42,6 @@ const Orders = ({ history }) => {
     return (
         <div>
             <Container className={classes.container}>
-                <Row>
-                    <Col>
-                        <Navbar></Navbar>
-                    </Col>
-                </Row>
                 <Row className={classes.row}>
                     <Col xs={12} md={10} className={classes.tableCol}>
                         <Table></Table>
