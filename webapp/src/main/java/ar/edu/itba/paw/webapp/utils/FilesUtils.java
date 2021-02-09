@@ -11,7 +11,7 @@ public class FilesUtils {
     // TODO
     public static String saveFile(final InputStream file, final String fileName) throws IOException {
         // FIX THIS, USE ANOTHER PATH TO SAVE FILES
-        Path path = FileSystems.getDefault().getPath(System.getProperty("user.dir") + "/resources/" + fileName);
+        Path path = FileSystems.getDefault().getPath(System.getProperty("user.dir") + "/target/" + fileName);
 
         byte[] buffer = new byte[file.available()];
         file.read(buffer);

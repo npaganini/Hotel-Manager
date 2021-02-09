@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
 const onLoginPerformed = (onSubmit, { user, password }) => () => {
   login(user, password)
     .then((result) => {
-      window.token = result.data.token;
+      localStorage.setItem('token', result.data.token);
       window.alert("Logeado pa");
       onSubmit();
     })
