@@ -11,8 +11,12 @@ const useStyles = makeStyles((theme) => ({
     container: {
         background: "#FAF6FC",
         height: "100vh",
+        paddingTop: '40px',
         maxWidth: "100%",
-        padding: 0,
+        paddingLeft: '40px',
+        paddingRight: '40px',
+        display: "flex",
+        justifyContent: 'center',
     },
 }));
 
@@ -21,21 +25,15 @@ const UserProducts = ({ history }) => {
     const classes = useStyles();
 
     return (
-        <div>
-            <Container className={classes.container}>
-                <Row>
-                    <Col xs={1} md={2}></Col>
-                    <Col xs={10} md={8}>
-                        <Card id='1' imagePath='assets/Images/coca.png' name='Coca' price='$7' />
-                        <Card id='1' imagePath='assets/Images/coca.png' name='Coca' price='$7' />
-                        <Card id='1' imagePath='assets/Images/coca.png' name='Coca' price='$7' />
-                        <Card id='1' imagePath='assets/Images/coca.png' name='Coca' price='$7' />
-                        <Card id='1' imagePath='assets/Images/coca.png' name='Coca' price='$7' />
-                    </Col>
-                    <Col xs={1} md={2}></Col>
-                </Row>
-            </Container>
-        </div>
+        <Container className={classes.container}>
+            <CardDeck style={{ justifyContent: 'center' }}>
+                <Card id='1' imagePath='assets/Images/coca.png' name='Coca' price='$7' />
+                <Card id='2' imagePath='assets/Images/coca.png' name='Coca' price='$7' />
+                <Card id='3' imagePath='assets/Images/coca.png' name='Coca' price='$7' />
+                <Card id='4' imagePath='assets/Images/coca.png' name='Coca' price='$7' />
+                <Card id='5' imagePath='assets/Images/coca.png' name='Coca' price='$7' /> 
+            </CardDeck>
+        </Container>
     );
 };
 

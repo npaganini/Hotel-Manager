@@ -10,11 +10,11 @@ import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles({
     root: {
-        maxWidth: 345,
         width: '220px',
-        marginTop: '30px',
+        marginTop: '15px',
         paddingLeft: '5px',
         paddingRight: '5px',
+        height:'350px'
     },
 });
 
@@ -30,28 +30,30 @@ const ImgMediaCard = (props) => {
 
 
     return (
-        <Col xs={12} md={3}>
-            <Card className={classes.root}>
-                <CardActionArea>
-                    <CardMedia
-                        component="img"
-                        height="140"
-                        image={props.imagePath}
-                    />
-                    <CardContent style={{ textAlign: 'center' }}>
-                        <Typography gutterBottom variant="h5" component="h2">
-                            {props.name}
-                        </Typography>
-                        <Typography variant="h5" component="h2">
-                            {props.price}
-                        </Typography>
-                    </CardContent>
-                </CardActionArea>
-                <CardActions style={{ textAlign: 'center' }}>
-                    <Button id={props.id} ButtonType="Save" size="large" onClick={() => onSubmitBuy(this.id)} ButtonText="Comprar"></Button>
-                </CardActions>
-            </Card>
-        </Col>
+        <div style={{height:'400px'}}>
+            <Col xs={12} md={3}>
+                <Card className={classes.root}>
+                    <CardActionArea>
+                        <CardMedia
+                            component="img"
+                            height="140"
+                            image={props.imagePath}
+                        />
+                        <CardContent style={{ textAlign: 'center' }}>
+                            <Typography gutterBottom variant="h5" component="h2">
+                                {props.name}
+                            </Typography>
+                            <Typography variant="h5" component="h2">
+                                {props.price}
+                            </Typography>
+                        </CardContent>
+                    </CardActionArea>
+                    <CardActions style={{justifyContent: 'center'}}>
+                        <Button id={props.id} ButtonType="Save" size="large" onClick={() => onSubmitBuy(props.id)} ButtonText="Comprar"></Button>
+                    </CardActions>
+                </Card>
+            </Col>
+        </div>
     );
 }
 
