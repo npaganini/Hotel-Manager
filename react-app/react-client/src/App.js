@@ -18,30 +18,14 @@ import HelpRequest from "./containers/HelpRequest/HelpRequest";
 import Navbar from "./components/Navbar/Navbar";
 import UserPrincipal from './containers/User/Principal'
 import UserHelp from './containers/User/Help'
+import UserProducts from './containers/User/Products'
 
 class App extends Component {
   render() {
     return (
       <Router>
-        {/* <Row>
-          <Col> */}
         <Navbar></Navbar>
-        {/* </Col>
-        </Row> */}
-        {/* 
-        // <Table></Table>
-        // <DatePicker label="Desde"></DatePicker>
-        //{" "}
-        <div>
-          // <Button ButtonType="Delete"></Button>
-          // <Button ButtonType="Save"></Button>
-          // <Button ButtonType="Back"></Button>
-          //{" "}
-        </div>
-        // <Input type="text" label="test"></Input>
-        // <Principal></Principal>
-        // <Reservation></Reservation> */}
-        {/* <Navbar /> */}
+
         <Switch>
           <Route exact path="/">
             <Principal />
@@ -81,6 +65,9 @@ class App extends Component {
           </Route>
           <Route path="/userhelp">
             <UserHelp />
+          </Route>
+          <Route path="/userproducts">
+            <UserProducts />
           </Route>
         </Switch>
       </Router>
