@@ -17,6 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "room")
+@XmlRootElement
 public class Room {
 
     public static final String KEY_ID = "id";
@@ -41,11 +42,12 @@ public class Room {
     @Column(nullable = false)
     private int number; // > 0
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "room")
-    @XmlTransient
+    // TODO THIS IS NOT BEING USED
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "room")
+    @Transient
     private List<Reservation> reservations;
 
-    @XmlTransient
+    @Transient
     public List<Reservation> getReservations() {
         return reservations;
     }

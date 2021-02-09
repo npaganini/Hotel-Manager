@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityNotFoundException;
-import javax.servlet.ServletContext;
 
 @Service
 public class EmailServiceImpl implements EmailService {
@@ -23,17 +22,15 @@ public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender javaMailSender;
     private final ReservationDao reservationDao;
-    private final ServletContext servletContext;
-
-    @Autowired
-    private MessageSourceExternalizer messageSourceExternalizer;
+    private final MessageSourceExternalizer messageSourceExternalizer;
 
 
     @Autowired
-    public EmailServiceImpl(JavaMailSender javaMailSender, ReservationDao reservationDao, ServletContext servletContext) {
+    public EmailServiceImpl(final JavaMailSender javaMailSender, final ReservationDao reservationDao,
+                            final MessageSourceExternalizer messageSourceExternalizer) {
         this.javaMailSender = javaMailSender;
         this.reservationDao = reservationDao;
-        this.servletContext = servletContext;
+        this.messageSourceExternalizer = messageSourceExternalizer;
     }
 
     public void sendConfirmationOfReservation(String to, String hash, String password) {

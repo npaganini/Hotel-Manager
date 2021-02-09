@@ -3,6 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.daos.OccupantDao;
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
 import ar.edu.itba.paw.interfaces.daos.RoomDao;
+import ar.edu.itba.paw.interfaces.dtos.ReservationResponse;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.EmailService;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
@@ -40,7 +42,7 @@ public class ReservationServiceImpl implements ReservationService {
         this.roomDao = roomDao;
         this.userService = userService;
         this.emailService = emailService;
-	
+
     }
 
     @Override
@@ -77,7 +79,7 @@ public class ReservationServiceImpl implements ReservationService {
         LOGGER.debug("About to get all the confirmed reservations");
         return reservationDao.findAll();
     }
- 
+
     private boolean isValidDate(Calendar startDate, Calendar endDate) {
         return startDate.getTimeInMillis() < endDate.getTimeInMillis();
     }
@@ -100,7 +102,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Transactional
     @Override
     public Reservation doReservation(long roomId, String userEmail, Calendar startDate, Calendar endDate) throws RequestInvalidException {
-        if(!isValidDate(startDate, endDate) && !isRoomFreeOnDate(roomId, startDate, endDate))
+        if (!isValidDate(startDate, endDate) && !isRoomFreeOnDate(roomId, startDate, endDate))
             throw new RequestInvalidException();
         LOGGER.debug("Looking if there is already a user created with email " + userEmail);
         User user = userService.getUserForReservation(userEmail);
@@ -118,10 +120,11 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationDao.findAllBetweenDatesOrEmailAndSurname(startDate, endDate, email, occupantSurname);
     }
 
-    @Transactional
     @Override
-    public List<Reservation> getRoomsReservedActive() {
-        return roomDao.getRoomsReservedActive();
+    @Transactional
+    public List<ReservationResponse> getRoomsReservedActive() {
+        return roomDao.getRoomsReservedActive()
+                .stream().map(ReservationResponse::fromReservation).collect(Collectors.toList());
     }
 
 
