@@ -19,6 +19,7 @@ import Navbar from "./components/Navbar/Navbar";
 import UserPrincipal from './containers/User/Principal'
 import UserHelp from './containers/User/Help'
 import UserProducts from './containers/User/Products'
+import UserExpenses from './containers/User/Expenses'
 
 class App extends Component {
   render() {
@@ -68,6 +69,9 @@ class App extends Component {
           </Route>
           <Route path="/userproducts">
             <UserProducts />
+          </Route>         
+          <Route path="/userexpenses">
+            <UserExpenses />
           </Route>
         </Switch>
       </Router>
