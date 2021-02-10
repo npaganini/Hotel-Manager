@@ -86,7 +86,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public boolean isRoomFreeOnDate(long roomId, Calendar startDate, Calendar endDate) {
-        return isValidDate(startDate, endDate) && reservationDao.isRoomFreeOnDate(roomId, startDate, endDate);
+        return reservationDao.isRoomFreeOnDate(roomId, startDate, endDate);
     }
 
     @Override
@@ -102,8 +102,11 @@ public class ReservationServiceImpl implements ReservationService {
     @Transactional
     @Override
     public Reservation doReservation(long roomId, String userEmail, Calendar startDate, Calendar endDate) throws RequestInvalidException {
-        if (!isValidDate(startDate, endDate) && !isRoomFreeOnDate(roomId, startDate, endDate))
-            throw new RequestInvalidException();
+        final boolean isValidDate = isValidDate(startDate, endDate);
+        final boolean isRoomFree = isRoomFreeOnDate(roomId, startDate, endDate);
+        if (!isValidDate || !isRoomFree) {
+            throw new RequestInvalidException(!isValidDate ? "The dates are invalid" : "The room is not available on selected dates");
+        }
         LOGGER.debug("Looking if there is already a user created with email " + userEmail);
         User user = userService.getUserForReservation(userEmail);
         LOGGER.debug("Getting room...");
