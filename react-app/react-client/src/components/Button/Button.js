@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 const IconLabelButtons = (props) => {
   const classes = useStyles();
 
-  const { onClick } = props;
+  const { onClick, disabled } = props;
 
   switch (props.ButtonType) {
     case "Delete":
@@ -32,6 +32,7 @@ const IconLabelButtons = (props) => {
           id={props.Id}
           size={props.size}
           onClick={onClick}
+          disabled={disabled}
         >
           <p className={classes.text}>{props.ButtonText}</p>
         </Button>
@@ -47,6 +48,7 @@ const IconLabelButtons = (props) => {
           id={props.Id}
           size={props.size}
           onClick={onClick}
+          disabled={disabled}
         >
           <p className={classes.text}>{props.ButtonText}</p>
         </Button>
@@ -61,6 +63,7 @@ const IconLabelButtons = (props) => {
           size={props.size}
           id={props.Id}
           onClick={onClick}
+          disabled={disabled}
         >
           <p className={classes.text}>{props.ButtonText}</p>
         </Button>
@@ -74,6 +77,7 @@ const IconLabelButtons = (props) => {
           className={classes.button}
           id={props.Id}
           onClick={onClick}
+          disabled={disabled}
         >
           <p className={classes.text}>{props.ButtonText}</p>
         </Button>

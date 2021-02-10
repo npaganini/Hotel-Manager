@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class OccupantRequest {
 
-    private String name;
-    private String lastname;
+    private String firstName;
+    private String lastName;
 
 }

@@ -124,7 +124,7 @@ public class RoomController extends SimpleController {
             reservationService.registerOccupants(reservationHash.trim(),
                     occupantsRequest.getOccupants()
                             .stream()
-                            .map(occupantR -> new Occupant(occupantR.getName(), occupantR.getLastname()))
+                            .map(occupantR -> new Occupant(occupantR.getFirstName(), occupantR.getLastName()))
                             .collect(Collectors.toList()));
 
             return Response.status(Response.Status.CREATED).build();
