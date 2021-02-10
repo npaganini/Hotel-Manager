@@ -43,11 +43,10 @@ public class Room {
     private int number; // > 0
 
     // TODO THIS IS NOT BEING USED
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "room")
-    @Transient
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "room")
     private List<Reservation> reservations;
 
-    @Transient
+    @XmlTransient
     public List<Reservation> getReservations() {
         return reservations;
     }
