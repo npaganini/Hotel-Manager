@@ -25,12 +25,16 @@ public class Occupant {
     private String surname;
 
     @ManyToOne
-    @XmlTransient
     private Reservation reservation;
 
     public Occupant(String name, String surname) {
         this.name = name;
         this.surname = surname;
+    }
+
+    @XmlTransient
+    public Reservation getReservation() {
+        return reservation;
     }
 
     public boolean equals(Object object) {

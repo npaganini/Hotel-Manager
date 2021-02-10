@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -28,8 +29,8 @@ public class ReservationResponse implements Serializable {
     private String userEmail;
     private Room room;
     private boolean isActive;
-    private List<Charge> charges;
-    private List<Occupant> occupants;
+    private List<ChargeResponse> charges;
+    private List<OccupantResponse> occupants;
     private String hash;
     private Calification calification;
 
@@ -42,8 +43,16 @@ public class ReservationResponse implements Serializable {
         rDto.userEmail = reservation.getUserEmail();
         rDto.room = reservation.getRoom();
         rDto.isActive = reservation.getRoom().isFreeNow();
-        rDto.charges = reservation.getCharges();
-        rDto.occupants = reservation.getOccupants();
+        rDto.charges = reservation
+                .getCharges()
+                .stream()
+                .map(charge -> new ChargeResponse(charge.getId(), charge.isDelivered(), charge.getProduct()))
+                .collect(Collectors.toList());
+        rDto.occupants = reservation
+                .getOccupants()
+                .stream()
+                .map(occupant -> new OccupantResponse(occupant.getName(), occupant.getSurname()))
+                .collect(Collectors.toList());
         rDto.hash = reservation.getHash();
         rDto.calification = reservation.getCalification();
 

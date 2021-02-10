@@ -37,7 +37,6 @@ public class Charge {
     private Product product;
 
     @ManyToOne
-    @XmlTransient
     private Reservation reservation;
 
     public Charge(Product product, Reservation reservation) {
@@ -47,6 +46,11 @@ public class Charge {
 
     public void setProductDelivered() {
         this.delivered = true;
+    }
+
+    @XmlTransient
+    public Reservation getReservation() {
+        return reservation;
     }
 
 }
