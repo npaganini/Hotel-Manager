@@ -3,6 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.daos.*;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
+import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.charge.Charge;
 import ar.edu.itba.paw.models.help.Help;
@@ -16,10 +17,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.SecureRandom;
 import java.util.*;
 
 @Component
 public class UserServiceImpl implements UserService {
+    public static final int GENERATED_PASSWORD_LENGTH = 8;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -28,14 +31,16 @@ public class UserServiceImpl implements UserService {
     private final ReservationDao reservationDao;
     private final UserDao userDao;
     private final HelpDao helpDao;
+    private final EmailService emailService;
 
     @Autowired
-    public UserServiceImpl(ProductDao productDao, ChargeDao chargeDao, ReservationDao reservationDao, UserDao userDao, HelpDao helpDao) {
+    public UserServiceImpl(ProductDao productDao, ChargeDao chargeDao, ReservationDao reservationDao, UserDao userDao, HelpDao helpDao, EmailService emailService) {
         this.productDao = productDao;
         this.chargeDao = chargeDao;
         this.reservationDao = reservationDao;
         this.userDao = userDao;
         this.helpDao = helpDao;
+        this.emailService = emailService;
     }
 
     @Override
@@ -65,16 +70,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserForReservation(String userEmail) {
-        Optional<User> userOptional = userDao.findByEmail(userEmail);
         User user;
+        Optional<User> userOptional = userDao.findByEmail(userEmail);
         if (userOptional.isPresent()) {
             user = userOptional.get();
             LOGGER.debug("There is already an user created with email " + userEmail);
         } else {
-            LOGGER.debug("There is no user created with email " + userEmail + ". So we'll create one");
-            user = userDao.save(new User(userEmail,
-                    userEmail,
-                    new BCryptPasswordEncoder().encode(userEmail)));
+            LOGGER.debug("There is no user created with email " + userEmail + ". So we'll create one.");
+            String randomPassword = generatePassword();
+            System.out.println("Password for user is: " + randomPassword);  // TODO: ERASE THIS PRINT BEFORE SENDING TO PROD
+            user = userDao.save(new User(userEmail, userEmail, new BCryptPasswordEncoder().encode(randomPassword)));
+            LOGGER.debug("User created! Sending e-mail about user creation to: " + userEmail);
+            emailService.sendUserCreatedEmail(userEmail, randomPassword);
         }
         return user;
     }
@@ -101,5 +108,24 @@ public class UserServiceImpl implements UserService {
 
     private boolean isValidString(String text) {
         return text.matches("^.*[a-zA-Z0-9áéíóúüñÁÉÍÓÚÑ ].*$");
+    }
+
+    private Integer[] generateRandomIntsArray() {
+        Random random = new SecureRandom();
+        Integer[] ints = new Integer[GENERATED_PASSWORD_LENGTH];
+        for (int i = 0; i < GENERATED_PASSWORD_LENGTH; i++) {
+            ints[i] = random.nextInt(26);
+        }
+        return ints;
+    }
+
+    protected String generatePassword() {
+        LOGGER.debug("Generating password...");
+        Integer[] ints = generateRandomIntsArray();
+        StringBuilder password = new StringBuilder(GENERATED_PASSWORD_LENGTH);
+        for (Integer i: ints) {
+            password.append(Character.toChars('a' + i));
+        }
+        return password.toString();
     }
 }

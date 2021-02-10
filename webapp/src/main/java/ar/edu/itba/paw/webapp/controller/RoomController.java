@@ -25,6 +25,7 @@ import javax.ws.rs.core.*;
 import java.net.URI;
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,7 +69,6 @@ public class RoomController extends SimpleController {
         final Reservation reservation = reservationService.doReservation(reservationRequest.getRoomId(),
                 reservationRequest.getUserEmail(), reservationRequest.getStartDate(), reservationRequest.getEndDate());
         final URI uri = uriInfo.getAbsolutePathBuilder().path(String.valueOf(reservation.getId())).build();
-        // FIXME habría que devolver el id de la reservation o un par de cosas mas
         return Response.created(uri).build();
     }
 

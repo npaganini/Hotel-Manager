@@ -5,6 +5,7 @@ import ar.edu.itba.paw.interfaces.daos.ProductDao;
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
 import ar.edu.itba.paw.interfaces.daos.UserDao;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
+import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.models.charge.Charge;
 import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.models.reservation.Reservation;
@@ -17,17 +18,16 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceImplTest {
+    public static final String NEW_EMAIL = "newEmail@email.com";
 
     @Mock
     private ProductDao productDao;
@@ -37,15 +37,17 @@ public class UserServiceImplTest {
     private ReservationDao reservationDao;
     @Mock
     private UserDao userDao;
+    @Mock
+    private EmailService emailService;  // this is being used by test getUserForReservationWithNonExistentUser()
 
     @InjectMocks
     private UserServiceImpl userService;
 
-    private Product product = new Product("coke", 2D);
-    private Reservation reservation = new Reservation(null, "email", Calendar.getInstance(), Calendar.getInstance(), null);
-    private Charge charge = new Charge(product, reservation);
-    private User user = new User("email@email.com", "email", "email");
-    private User newUser = new User("newEmail@email.com", "newEmail", "newEmail");
+    private final Product product = new Product("coke", 2D);
+    private final Reservation reservation = new Reservation(null, "email", Calendar.getInstance(), Calendar.getInstance(), null);
+    private final Charge charge = new Charge(product, reservation);
+    private final User user = new User("email@email.com", "email", "email");
+    private final User newUser = new User(NEW_EMAIL, "newEmail", "newEmail");
 
     @Before
     public void init() {
@@ -56,13 +58,14 @@ public class UserServiceImplTest {
         Mockito.when(chargeDao.getAllChargesByUser("email", 1L)).thenReturn(productIntegerMap);
         Mockito.when(chargeDao.getAllChargesByUser("invalidEmail", 2L)).thenReturn(new HashMap<>());
         Mockito.when(chargeDao.save(any(Charge.class))).thenReturn(charge);
-        Mockito.when(productDao.findById(1L)).thenReturn(Optional.ofNullable(product));
+        Mockito.when(productDao.findById(1L)).thenReturn(Optional.of(product));
         Mockito.when(productDao.findById(2L)).thenReturn(Optional.empty());
-        Mockito.when(reservationDao.findById(1L)).thenReturn(Optional.ofNullable(reservation));
+        Mockito.when(reservationDao.findById(1L)).thenReturn(Optional.of(reservation));
         Mockito.when(reservationDao.findById(2L)).thenReturn(Optional.empty());
-        Mockito.when(userDao.findByEmail("email")).thenReturn(Optional.ofNullable(user));
-        Mockito.when(userDao.findByEmail("newEmail")).thenReturn(Optional.empty());
+        Mockito.when(userDao.findByEmail("email")).thenReturn(Optional.of(user));
+        Mockito.when(userDao.findByEmail(NEW_EMAIL)).thenReturn(Optional.empty());
         Mockito.when(userDao.save(any(User.class))).thenReturn(newUser);
+        // emailService.doNothing()     is default
     }
 
     @Test
@@ -108,7 +111,14 @@ public class UserServiceImplTest {
 
     @Test
     public void getUserForReservationWithNonExistentUser() {
-        User user = userService.getUserForReservation("newEmail");
-        assertEquals("User didnt exist, it should now be a new user with email: newEmail@email.com", "newEmail@email.com", user.getEmail());
+        User user = userService.getUserForReservation(NEW_EMAIL);
+        assertEquals("User didn't exist, it should now be a new user with email: " + NEW_EMAIL, NEW_EMAIL, user.getEmail());
+    }
+
+    @Test
+    public void generatePasswordForNewUser() {
+        Optional<String> password = Optional.ofNullable(userService.generatePassword());
+        assertTrue("Password should be generated", password.isPresent());
+        assertEquals("Password should be of specified length", password.get().length(), UserServiceImpl.GENERATED_PASSWORD_LENGTH);
     }
 }
