@@ -67,7 +67,6 @@ public class RoomController extends SimpleController {
         final Reservation reservation = reservationService.doReservation(reservationRequest.getRoomId(),
                 reservationRequest.getUserEmail(), reservationRequest.getStartDate(), reservationRequest.getEndDate());
         final URI uri = uriInfo.getAbsolutePathBuilder().path(String.valueOf(reservation.getId())).build();
-        // FIXME habría que devolver el id de la reservation o un par de cosas mas
         return Response.created(uri).build();
     }
 
