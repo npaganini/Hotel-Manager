@@ -18,12 +18,10 @@ const useStyles = makeStyles((theme) => ({
 
 const SimpleSelect = (props) => {
   const classes = useStyles();
-  const [room, setRoom] = React.useState('');
   const {t} = useTranslation();
 
-  const handleChange = (event) => {
-    setRoom(event.target.value);
-  };
+  const {onChange, options} = props;
+
 
   return (
       <FormControl className={classes.formControl}>
@@ -31,14 +29,12 @@ const SimpleSelect = (props) => {
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={room}
-          onChange={handleChange}
+          onChange={onChange}
         >
-          <MenuItem value={10}>10</MenuItem>
-          <MenuItem value={20}>20</MenuItem>
-          <MenuItem value={30}>30</MenuItem>
+          {options.forEach(element => {
+            <MenuItem value={element.value}>{element.label}</MenuItem>
+          })}
         </Select>
-        {/* <FormHelperText>Campo Requerido</FormHelperText> */}
       </FormControl>
      
   );
