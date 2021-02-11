@@ -29,17 +29,20 @@ const useStyles = makeStyles((theme) => ({
 
 const Principal = ({ history }) => {
   const classes = useStyles();
+  const [busyRooms, setBusyRooms] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
 
   const newReservationClick = () => {
     history.push("/reservation");
   };
 
-  const [busyRooms, setBusyRooms] = useState([]);
-
   // this is not ok, it could may be do a request every x seconds, or with a button to refresh
   if (busyRooms.length == 0) {
     getAllBusyRooms()
-      .then((response) => setBusyRooms(response.data))
+      .then((response) => {
+        setBusyRooms(response.data);
+        setTotalCount(response.headers["x-total-count"]);
+      })
       .catch((error) => {
         console.log("there was an error on get all busy rooms", error);
       });
@@ -59,7 +62,7 @@ const Principal = ({ history }) => {
         </Row>
         <Row className="justify-content-sm-center">
           <Col className={classes.tableCol}>
-            <Table columns={busyRoomsColumns} rows={busyRooms} />
+            <Table columns={busyRoomsColumns} rows={busyRooms} totalItems={totalCount} />
           </Col>
         </Row>
       </Container>

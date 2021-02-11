@@ -4,12 +4,14 @@ import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.charge.Charge;
+import ar.edu.itba.paw.models.dtos.PaginatedDTO;
 import ar.edu.itba.paw.models.help.Help;
+import ar.edu.itba.paw.models.product.Product;
+import ar.edu.itba.paw.models.reservation.Reservation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -22,6 +24,8 @@ import java.net.URI;
 @Path("/user")
 public class UserController extends SimpleController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+    public static final String DEFAULT_FIRST_PAGE = "1";
+    public static final String DEFAULT_PAGE_SIZE = "20";
 
     private final UserService userService;
 
@@ -42,14 +46,54 @@ public class UserController extends SimpleController {
         return Response.ok(userService.checkProductsPurchasedByUserByReservationId(getUserEmailFromJwt(), reservationId)).build();
     }
 
+//    @GET
+//    @Produces(value = {MediaType.APPLICATION_JSON})
+//    public Response redirectToLanding() {
+//        final URI uri = uriInfo.getAbsolutePathBuilder().path("/home").build();
+//        return Response.temporaryRedirect(uri).build();
+//    }
+//
+    @GET
+    @Path("/home")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getLandingPage(@QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
+                                   @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) {
+        // todo: mav was "userIndex.jsp"
+        LOGGER.debug("Request received to user's landing page");
+        PaginatedDTO<Reservation> activeReservations;
+        try {
+            activeReservations = userService.findActiveReservations(getUserEmailFromJwt(), page, limit);
+        } catch (IndexOutOfBoundsException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+        return sendPaginatedResponse(page, limit, activeReservations, uriInfo);
+    }
+//
+//    @GET
+//    @Path("/expenses/{reservationId}")
+//    @Produces(value = {MediaType.APPLICATION_JSON})
+//    public Response boughtProducts(@PathParam(value = "reservationId") long reservationId) {
+//        // todo: mav was "expenses.jsp"
+//        LOGGER.debug("Request received to retrieve all expenses on reservation with id " + reservationId);
+//        return Response.ok(userService.checkProductsPurchasedByUserByReservationId(getUsername(authentication), reservationId)).build();
+//    }
+
     // TODO This is bad, this should be in another endpoint
     @GET
     @Path("/{reservationId}/products")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getAllProducts(@PathParam("reservationId") long reservationId) {
+    public Response getAllProducts(@PathParam("reservationId") long reservationId,
+                                   @QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
+                                   @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) {
         // todo: mav was "browseProducts.jsp"
         LOGGER.debug("Request received to retrieve all products list");
-        return Response.ok(userService.getProducts()).build();
+        PaginatedDTO<Product> productList;
+        try {
+            productList = userService.getProducts(page, limit);
+        } catch (IndexOutOfBoundsException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+        return sendPaginatedResponse(page, limit, productList, uriInfo);
     }
 
     @POST

@@ -7,6 +7,7 @@ import ar.edu.itba.paw.interfaces.services.ChargeService;
 import ar.edu.itba.paw.interfaces.services.ReservationService;
 import ar.edu.itba.paw.interfaces.services.RoomService;
 import ar.edu.itba.paw.models.dtos.CheckoutDTO;
+import ar.edu.itba.paw.models.dtos.PaginatedDTO;
 import ar.edu.itba.paw.models.occupant.Occupant;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
@@ -25,9 +26,7 @@ import javax.persistence.NoResultException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.net.URI;
-import java.text.ParseException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,8 +36,9 @@ import static ar.edu.itba.paw.interfaces.dtos.ReservationResponse.fromReservatio
 @Controller
 @Path("/rooms")
 public class RoomController extends SimpleController {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(RoomController.class);
+    public static final String DEFAULT_FIRST_PAGE = "1";
+    public static final String DEFAULT_PAGE_SIZE = "20";
 
     private final RoomService roomService;
     private final ReservationService reservationService;
@@ -56,11 +56,23 @@ public class RoomController extends SimpleController {
 
     @GET
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getAllRooms() {
+    public Response getAllRooms(@QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
+                                @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) {
         LOGGER.debug("Request received to retrieve whole roomsList");
-        final List<ReservationResponse> reservations = reservationService.getRoomsReservedActive();
-
-        return Response.ok(new GenericEntity<List<ReservationResponse>>(reservations) {}).build();
+        PaginatedDTO<ReservationResponse> reservations;
+        try {
+            reservations = reservationService.getRoomsReservedActive(page, limit);
+        } catch (IndexOutOfBoundsException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+        final long totalCount = reservations.getMaxItems();
+        return Response.ok(new GenericEntity<List<ReservationResponse>>(reservations.getList()) {})
+            .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
+            .link(uriInfo.getAbsolutePathBuilder().queryParam("page", totalCount % limit == 0 ? (totalCount / limit) : (totalCount / limit) + 1).build(), "last")
+            .link(uriInfo.getAbsolutePathBuilder().queryParam("page", page > 1 ? page - 1 : page).build(), "prev")
+            .link(uriInfo.getAbsolutePathBuilder().queryParam("page", page < ((double) totalCount / limit) ? page + 1 : page).build(), "next")
+            .header("X-Total-Count", totalCount)
+            .build();
     }
 
     @POST
@@ -112,10 +124,7 @@ public class RoomController extends SimpleController {
             Calendar startDateCalendar = new JsonToCalendar().unmarshal(startDate);
             Calendar endDateCalendar = new JsonToCalendar().unmarshal(endDate);
             if (startDateCalendar.before(endDateCalendar)) {
-                return Response
-                        .ok(new GenericEntity<List<Room>>(roomService.findAllFreeBetweenDates(startDateCalendar, endDateCalendar)) {
-                        })
-                        .build();
+                return Response.ok(new GenericEntity<List<Room>>(roomService.findAllFreeBetweenDates(startDateCalendar, endDateCalendar)) {}).build();
             }
         }
         String message = "Expected 'startDate' and 'endDate' in format yyyy-mm-dd.";
@@ -139,14 +148,12 @@ public class RoomController extends SimpleController {
         if (reservationHash != null && !CollectionUtils.isEmpty(occupantsRequest.getOccupants())) {
             LOGGER.debug("Attempted to register occupants on reservation hash " + reservationHash);
             reservationService.registerOccupants(reservationHash.trim(),
-                    occupantsRequest.getOccupants()
-                            .stream()
-                            .map(occupantR -> new Occupant(occupantR.getFirstName(), occupantR.getLastName()))
-                            .collect(Collectors.toList()));
-
+                occupantsRequest.getOccupants()
+                    .stream()
+                    .map(occupantR -> new Occupant(occupantR.getFirstName(), occupantR.getLastName()))
+                    .collect(Collectors.toList()));
             return Response.status(Response.Status.CREATED).build();
         }
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
-
 }

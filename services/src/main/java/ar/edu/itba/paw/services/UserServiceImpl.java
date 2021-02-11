@@ -6,6 +6,7 @@ import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.charge.Charge;
+import ar.edu.itba.paw.models.dtos.PaginatedDTO;
 import ar.edu.itba.paw.models.help.Help;
 import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.models.reservation.Reservation;
@@ -22,9 +23,8 @@ import java.util.*;
 
 @Component
 public class UserServiceImpl implements UserService {
-    public static final int GENERATED_PASSWORD_LENGTH = 8;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+    public static final int GENERATED_PASSWORD_LENGTH = 8;
 
     private final ProductDao productDao;
     private final ChargeDao chargeDao;
@@ -44,20 +44,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Product> getProducts() {
-        return new LinkedList<>(productDao.findAll());
+    public PaginatedDTO<Product> getProducts(int page, int pageSize) {
+        if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
+        return productDao.findAll(page, pageSize);
     }
 
     @Override
-    public List<Reservation> findActiveReservations(String userEmail) {
-        return reservationDao.findActiveReservationsByEmail(userEmail);
+    public PaginatedDTO<Reservation> findActiveReservations(String userEmail, int page, int pageSize) {
+        if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
+        return reservationDao.findActiveReservationsByEmail(userEmail, page, pageSize);
     }
 
     @Override
     public Map<Product, Integer> checkProductsPurchasedByUserByReservationId(String userEmail, long reservationId) {
         return new HashMap<>(chargeDao.getAllChargesByUser(userEmail, reservationId));
     }
-
 
     @Override
     public Charge addCharge(long productId, long reservationId) throws EntityNotFoundException {

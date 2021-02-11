@@ -7,6 +7,6 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class RoomRatingsDto {
+public class RoomRatingsDTO {
     private List<String> ratings;
 }

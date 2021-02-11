@@ -8,6 +8,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Data
 @AllArgsConstructor
 @XmlRootElement
-public class RatingDto {
+public class RatingDTO {
     private double rating;
 }
