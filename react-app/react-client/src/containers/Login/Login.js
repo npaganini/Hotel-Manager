@@ -53,9 +53,10 @@ const useStyles = makeStyles((theme) => ({
 
 const onLoginPerformed = (onSubmit, { user, password }) => () => {
   login(user, password)
-    .then((result) => {
-      localStorage.setItem('token', result.data.token);
-      window.alert("Logeado pa");
+    .then(() => {
+      window.alert(
+        localStorage.getItem("token") + " | " + localStorage.getItem("role")
+      );
       onSubmit();
     })
     .catch((error) => {
