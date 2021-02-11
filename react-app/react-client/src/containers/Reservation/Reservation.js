@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
 
 import { getFreeRooms } from "../../api/roomApi";
+import { doReservation } from "../../api/roomApi";
 
 import Button from "../../components/Button/Button";
 import DatePicker from "../../components/DatePickers/DatePicker";
@@ -32,7 +33,7 @@ const Reservation = ({ history }) => {
 
   const [showRooms, show] = useState(false);
   const [room, setRoom] = useState("");
-  const [options, setOptions] = useState([{}]);
+  const [options, setOptions] = useState([]);
   const [dateFrom, setDateFrom] = useState(new Date());
   const [dateTo, setDateTo] = useState(new Date());
   const [email, setEmail] = useState("");
@@ -43,44 +44,44 @@ const Reservation = ({ history }) => {
 
   const dateFromOnChange = (newDateFrom) => {
     setDateFrom(newDateFrom.target.value);
-    console.log(newDateFrom);
   };
 
   const dateToOnChange = (newDateTo) => {
     setDateTo(newDateTo.target.value);
-    console.log(newDateTo);
   };
 
   const showRoomsHandler = (startDate, endDate) => () => {
-    console.log(startDate);
-    console.log(endDate);
     getFreeRooms({ startDate, endDate })
       .then((result) => {
-        console.log("result", result);
+        setOptions(result.data);
       })
       .catch((err) => {
         console.log("error", err);
       });
     if (!showRooms) show(true);
+
   };
 
-  const onSubmitReservation = () => {
-    console.log(dateFrom);
-    console.log(dateTo);
-    console.log(email);
+  const onSubmitReservation = ({ startDate, endDate, userEmail, roomId }) => () => {
 
+    doReservation({ startDate, endDate, userEmail, roomId })
+      .then((result) => {
+        console.log(result)
+      })
+      .catch((err) => {
+        console.log("error", err);
+      });
     history.push("/");
   };
 
   const onRoomChange = (newRoom) => {
     setRoom(newRoom.target.value);
+
   };
 
   const reservationCancel = () => {
     history.push("/");
   };
-
-  console.log("showRooms", showRooms);
 
   return (
     <div>
@@ -123,7 +124,7 @@ const Reservation = ({ history }) => {
           <Col xs={6} md={2}>
             <Button
               ButtonType="Save"
-              onClick={onSubmitReservation}
+              onClick={onSubmitReservation(dateFrom, dateTo, email, room)}
               ButtonText="Accept"
             ></Button>
           </Col>
