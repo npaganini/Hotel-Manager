@@ -3,6 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
 import ar.edu.itba.paw.interfaces.daos.RoomDao;
 import ar.edu.itba.paw.interfaces.daos.UserDao;
+import ar.edu.itba.paw.interfaces.dtos.ReservationResponse;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.*;
@@ -80,14 +81,14 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional
-    public Reservation doCheckin(String reservationHash) throws RequestInvalidException, EntityNotFoundException {
+    public ReservationResponse doCheckin(String reservationHash) throws RequestInvalidException, EntityNotFoundException {
         Reservation reservation = reservationService.getReservationByHash(reservationHash.trim());
         if (reservation.isActive()) {
             throw new RequestInvalidException();
         }
         reserveRoom(reservation.getRoom().getId(), reservation);
         if (reservationService.activeReservation(reservation.getId())) {
-            return reservation;
+            return ReservationResponse.fromReservation(reservation);
         }
         return null;
     }
