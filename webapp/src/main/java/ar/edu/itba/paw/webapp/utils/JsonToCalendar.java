@@ -7,10 +7,10 @@ import java.util.Date;
 
 public class JsonToCalendar extends XmlAdapter<String, Calendar> {
 
-//    String is dd-mm-yyyy
+//    String is yyyy-MM-dd
     @Override
     public Calendar unmarshal(String v) throws Exception {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date =  simpleDateFormat.parse(v);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
@@ -19,7 +19,7 @@ public class JsonToCalendar extends XmlAdapter<String, Calendar> {
 
     @Override
     public String marshal(Calendar v) throws Exception {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         return simpleDateFormat.format(v.getTime());
     }
 }
