@@ -16,5 +16,5 @@ export const post = async (url, body) =>
 export const get = async (url, params) =>
   axios.get(
     baseURL + url,
-    Object.assign({}, params, options(localStorage.getItem("token")))
+    Object.assign({}, { params }, options(localStorage.getItem("token")))
   );
