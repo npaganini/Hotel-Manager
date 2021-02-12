@@ -76,9 +76,16 @@ public class RoomController extends SimpleController {
     @POST
     @Path("/checkin/{reservationId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response checkinPost(@PathParam("reservationId") final String reservationId) throws RequestInvalidException, EntityNotFoundException {
+    public Response checkinPost(@PathParam("reservationId") final String reservationId) throws EntityNotFoundException {
         LOGGER.debug("Request received to do the check-in on reservation with hash: " + reservationId);
-        ReservationResponse reservation = roomService.doCheckin(reservationId);
+        ReservationResponse reservation;
+        try {
+            reservation = roomService.doCheckin(reservationId);
+        } catch (RequestInvalidException e) {
+            return Response.status(Response.Status.CONFLICT).build();
+        } catch (EntityNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
         if (reservation != null) {
             return Response.ok(new GenericEntity<ReservationResponse>(reservation) {}).build();
         } else {

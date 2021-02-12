@@ -74,37 +74,33 @@ const checkIn = ({ history }) => {
         <div>
             <Container fluid="md" className={classes.container}>
                 <Row>
-                    <Col xs={6} md={3}>
-                        <Navbar/>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={6} md={3}>
+                    <Col xs={6} md={3}></Col>
+                    <Col>
                         <Card className={classes.card}>
-                        <Row className={classes.buttonRow}>
-                            <Col style={{marginBottom: '5px'}}>
-                                <Input label={t('reservation.id')} onChange={onChangeCheckIn}/>
-                            </Col>
-                            <Col className={classes.buttonColLeft}>
-                                <Button ButtonType="Save" onClick={(checkInSubmit)} ButtonText={t('accept')}/>
-                            </Col>
-                            <Col className={classes.buttonColRight}>
-                                <Button ButtonType="Back" onClick={checkInCancel} ButtonText={t('cancel')}/>
-                            </Col>
-                        </Row>
-                        <InfoSimpleDialog open={showDialog} onClose={handleDialogClose} title={info ? t('reservation.checkin.successful') : ''}>
-                            {info ? <div>
-                                <div>{t('reservation.id')}: {info.hash}</div>
-                                <div>{t('email')}: {info.userEmail}</div>
-                                <div>{t('reservation.date.start')}: {(new Date(info.startDate)).toLocaleDateString()}</div>
-                                <div>{t('reservation.date.end')}: {(new Date(info.endDate)).toLocaleDateString()}</div>
-                                <div>{t('reservation.room.number')}: {info.room.number}</div>
-                                <div>{t('reservation.room.type')}: {t(`room.roomType.${info.room.roomType.toLowerCase()}`)}</div>
-                            </div> : <div>{t('reservation.checkin.error')}</div>}
-                        </InfoSimpleDialog>
-                    </Card>
+                            <Row className={classes.buttonRow}>
+                                <Col style={{marginBottom: '5px'}}>
+                                    <Input label={t('reservation.id')} onChange={onChangeCheckIn}/>
+                                </Col>
+                                <Col className={classes.buttonColLeft}>
+                                    <Button ButtonType="Save" onClick={(checkInSubmit)} ButtonText={t('accept')}/>
+                                </Col>
+                                <Col className={classes.buttonColRight}>
+                                    <Button ButtonType="Back" onClick={checkInCancel} ButtonText={t('cancel')}/>
+                                </Col>
+                            </Row>
+                            <InfoSimpleDialog open={showDialog} onClose={handleDialogClose} title={info ? t('reservation.checkin.successful') : ''}>
+                                {info ? <div>
+                                    <div>{t('reservation.id')}: {info.hash}</div>
+                                    <div>{t('email')}: {info.userEmail}</div>
+                                    <div>{t('reservation.date.start')}: {(new Date(info.startDate)).toLocaleDateString()}</div>
+                                    <div>{t('reservation.date.end')}: {(new Date(info.endDate)).toLocaleDateString()}</div>
+                                    <div>{t('reservation.room.number')}: {info.room.number}</div>
+                                    <div>{t('reservation.room.type')}: {t(`room.roomType.${info.room.roomType.toLowerCase()}`)}</div>
+                                </div> : <div>{t('reservation.checkin.error')}</div>}
+                            </InfoSimpleDialog>
+                        </Card>
                     </Col>
-                    <Col xs={6} md={3}/>
+                    <Col xs={6} md={3}></Col>
                 </Row>
             </Container>
         </div>
