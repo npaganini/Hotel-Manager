@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -100,10 +99,12 @@ public class TokenAuthHandlerService {
     }
 
     public void addAuthToResponse(HttpServletResponse response, String username) throws IOException {
-        final TokenResponse token = new TokenResponse(createToken(username));
+        // If we are at this point, there is no chance user is no longer available, it just crash everythin if this happens
+        User user = userDao.findByUsername(username).get();
+
+        final LoginResponse token = new LoginResponse(createToken(username), user.getRole().toString());
         final String tokenResponseJson = new ObjectMapper().writeValueAsString(token);
         response.getWriter().write(tokenResponseJson);
         response.flushBuffer();
-//        response.setHeader("Authorization", AUTHENTICATION_SCHEME + token);
     }
 }
