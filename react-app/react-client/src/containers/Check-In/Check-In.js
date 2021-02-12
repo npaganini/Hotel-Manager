@@ -3,10 +3,11 @@ import { Container, Row, Col, Card } from 'react-bootstrap'
 import { makeStyles } from '@material-ui/core/styles';
 import { withRouter } from "react-router";
 
-
-import Navbar from '../../components/Navbar/Navbar'
 import Button from '../../components/Button/Button'
+import InfoSimpleDialog from '../../components/Dialog/SimpleDialog';
 import Input from '../../components/Input/Input'
+import {doCheckin} from "../../api/roomApi";
+import {useTranslation} from "react-i18next";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -29,22 +30,43 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-
 const checkIn = ({ history }) => {
     const classes = useStyles();
-
     const [checkIn, onCheckIn] = useState("");
-    const [submit, onSubmit] = useState(false);
+    const [showDialog, updateShowDialog] = useState(false);
+    const [loading, updateShowLoading] = useState(false);
+    const [info, updateInfo] = useState(undefined);
+    const {t} = useTranslation();
 
     const onChangeCheckIn = (newCheckIn) => {
         onCheckIn(newCheckIn.target.value);
     }
 
+    const handleDialogClose = () => {
+        updateShowDialog(false);
+        if (info) {
+            history.push("/registration");
+        }
+    }
+
     const checkInSubmit = () => {
-        onSubmit(true);
-        console.log("history", history);
-        console.log(checkIn);
-        history.push("/");
+        updateShowLoading(true);
+        doCheckin(checkIn)
+            .then((response) => {
+                updateShowLoading(false);
+                console.log(response)
+                // call show dialog in InfoSimpleDialog
+                updateShowDialog(true);
+                // send result to dialog window to show it
+                updateInfo(response.data);
+            })
+            .catch((error) => {
+                updateShowLoading(false);
+                updateShowDialog(true);
+                updateInfo(undefined);
+                console.log("There was an error processing the request!\n\n", error);
+            });
+        // Once dialog window closes, redirect to occupants
     }
 
     const checkInCancel = () => {
@@ -57,19 +79,30 @@ const checkIn = ({ history }) => {
                 <Row>
                     <Col xs={6} md={3}></Col>
                     <Col>
-                    <Card className={classes.card}>
-                        <Row className={classes.buttonRow}>
-                            <Col style={{marginBottom: '5px'}}>
-                                <Input label="Reservation Id" onChange={onChangeCheckIn}></Input>
-                            </Col>
-                            <Col className={classes.buttonColLeft}>
-                                <Button ButtonType="Save" onClick={checkInSubmit} ButtonText="Accept"></Button>
-                            </Col>
-                            <Col className={classes.buttonColRight}>
-                                <Button ButtonType="Back" onClick={checkInCancel} ButtonText="Cancel"></Button>
-                            </Col>
-                        </Row>
-                    </Card>
+                        <Card className={classes.card}>
+                            <Row className={classes.buttonRow}>
+                                <Col style={{marginBottom: '5px'}}>
+                                    <Input label={t('reservation.id')} onChange={onChangeCheckIn}/>
+                                </Col>
+                                <Col className={classes.buttonColLeft}>
+                                    <Button ButtonType="Save" onClick={(checkInSubmit)} ButtonText={t('accept')}/>
+                                </Col>
+                                <Col className={classes.buttonColRight}>
+                                    <Button ButtonType="Back" onClick={checkInCancel} ButtonText={t('cancel')}/>
+                                </Col>
+                            </Row>
+                            <InfoSimpleDialog open={loading} title={t('loading')}/>
+                            <InfoSimpleDialog open={showDialog} onClose={handleDialogClose} title={info ? t('reservation.checkin.successful') : ''}>
+                                {info ? <div>
+                                    <div>{t('reservation.id')}: {info.hash}</div>
+                                    <div>{t('email')}: {info.userEmail}</div>
+                                    <div>{t('reservation.date.start')}: {(new Date(info.startDate)).toLocaleDateString()}</div>
+                                    <div>{t('reservation.date.end')}: {(new Date(info.endDate)).toLocaleDateString()}</div>
+                                    <div>{t('reservation.room.number')}: {info.room.number}</div>
+                                    <div>{t('reservation.room.type')}: {t(`room.roomType.${info.room.roomType.toLowerCase()}`)}</div>
+                                </div> : <div>{t('reservation.checkin.error')}</div>}
+                            </InfoSimpleDialog>
+                        </Card>
                     </Col>
                     <Col xs={6} md={3}></Col>
                 </Row>

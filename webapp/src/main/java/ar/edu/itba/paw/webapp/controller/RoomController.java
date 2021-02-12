@@ -21,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.NoResultException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.net.URI;
@@ -29,6 +30,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static ar.edu.itba.paw.interfaces.dtos.ReservationResponse.fromReservation;
 
 @Component
 @Controller
@@ -57,8 +60,7 @@ public class RoomController extends SimpleController {
         LOGGER.debug("Request received to retrieve whole roomsList");
         final List<ReservationResponse> reservations = reservationService.getRoomsReservedActive();
 
-        return Response.ok(new GenericEntity<List<ReservationResponse>>(reservations) {
-        }).build();
+        return Response.ok(new GenericEntity<List<ReservationResponse>>(reservations) {}).build();
     }
 
     @POST
@@ -76,10 +78,21 @@ public class RoomController extends SimpleController {
     @POST
     @Path("/checkin/{reservationId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response checkinPost(@PathParam("reservationId") final String reservationId) throws RequestInvalidException,
-            EntityNotFoundException {
+    public Response checkinPost(@PathParam("reservationId") final String reservationId) throws EntityNotFoundException {
         LOGGER.debug("Request received to do the check-in on reservation with hash: " + reservationId);
-        return Response.ok(roomService.doCheckin(reservationId)).build();
+        ReservationResponse reservation;
+        try {
+            reservation = roomService.doCheckin(reservationId);
+        } catch (RequestInvalidException e) {
+            return Response.status(Response.Status.CONFLICT).build();
+        } catch (EntityNotFoundException | NoResultException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        if (reservation != null) {
+            return Response.ok(new GenericEntity<ReservationResponse>(reservation) {}).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
     }
 
     @POST

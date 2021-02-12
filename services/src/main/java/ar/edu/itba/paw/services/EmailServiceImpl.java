@@ -89,6 +89,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendRateStayEmail(String reservationHash) {
+        LOGGER.debug("About to send e-mail asking to rate stay for reservation " + reservationHash);
         String userEmail = reservationDao
                 .findReservationByHash(reservationHash.trim())
                 .orElseThrow(() -> new EntityNotFoundException("Can't find reservation with"))

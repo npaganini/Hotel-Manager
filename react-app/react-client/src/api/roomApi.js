@@ -13,7 +13,7 @@ const postRegisterOccupantsUrl = id => baseRoomURL + `/occupants/${id}`;
 export const getAllBusyRooms = async () => get(getAllBusyRoomsUrl);
 export const getFreeRooms = async (params) => get(getFreeRoomsUrl, params);
 export const doReservation = async (body) => post(postReservationUrl, body);
-export const doCheckin = async (body, id) => post(postCheckingUrl(id), body);
+export const doCheckin = async (id) => post(postCheckingUrl(id));
 export const doCheckout = async (body, id) => post(postCheckoutUrl(id), body);
 export const sendOrderToRoom = async (body, id) => post(postSendOrdersTooRoomUrl(id), body);
 export const registerOccupants = async (body, id) => post(postRegisterOccupantsUrl(id), body);

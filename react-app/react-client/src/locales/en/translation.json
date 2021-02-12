@@ -73,11 +73,13 @@
     },
     "checkin": {
       "message": "Check-In",
-      "successful": "Check-In Sucessful!"
+      "successful": "Check-In Successful!",
+      "error": "Reservation not found!"
     },
     "checkout": {
       "message": "Check-Out",
-      "successful": "Check-Out Sucessful!"
+      "successful": "Check-Out Successful!",
+      "error": "Reservation not found!"
     },
     "order": {
       "singular": "Order",
@@ -129,6 +131,11 @@
         "singular": "Room Occupied",
         "plural": "Rooms Occupied"
       }
+    },
+    "roomType": {
+      "single": "single",
+      "double": "double",
+      "triple": "triple"
     }
   },
 
@@ -160,5 +167,7 @@
   "lastname": "Last Name",
   "firstname": "First Name",
   "search": "Search",
-  "registration": "Registration"
+  "registration": "Registration",
+  "close": "Close",
+  "loading": "Loading..."
 }
