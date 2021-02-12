@@ -22,15 +22,17 @@ import UserHelp from "./containers/User/Help";
 import UserProducts from "./containers/User/Products";
 import UserExpenses from "./containers/User/Expenses";
 import { CLIENT } from "./components/PrivateRoute/routesByRole";
+import { NotFound } from "./containers/NotFound/NotFound";
 
 const isClient = () => localStorage.getItem("role") === CLIENT;
+const isLoggedIn = () => !!localStorage.getItem("token");
 
 class App extends Component {
   render() {
+    console.log("esta logeado?", isLoggedIn());
     return (
       <Router>
-        <Navbar />
-
+        {isLoggedIn() && <Navbar />}
         <Switch>
           <PrivateRoute
             exact
@@ -59,6 +61,9 @@ class App extends Component {
             component={isClient() ? UserHelp : HelpRequest}
           />
           <PrivateRoute path="/expenses" component={UserExpenses} />
+          <Route>
+            <NotFound />
+          </Route>
         </Switch>
       </Router>
     );

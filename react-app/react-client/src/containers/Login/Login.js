@@ -13,7 +13,6 @@ import { useTranslation } from "react-i18next";
 import { withRouter } from "react-router";
 
 import { login } from "../../api/loginApi";
-import { getAllRooms } from "../../api/roomApi";
 
 const useStyles = makeStyles((theme) => ({
   root: {
