@@ -6,7 +6,6 @@ import { withRouter } from "react-router";
 import Button from '../../components/Button/Button'
 import InfoSimpleDialog from '../../components/Dialog/SimpleDialog';
 import Input from '../../components/Input/Input'
-import Navbar from '../../components/Navbar/Navbar'
 import {doCheckin} from "../../api/roomApi";
 import {useTranslation} from "react-i18next";
 
@@ -35,7 +34,8 @@ const checkIn = ({ history }) => {
     const classes = useStyles();
     const [checkIn, onCheckIn] = useState("");
     const [showDialog, updateShowDialog] = useState(false);
-    const [info, updateInfo] = useState(null);
+    const [loading, updateShowLoading] = useState(false);
+    const [info, updateInfo] = useState(undefined);
     const {t} = useTranslation();
 
     const onChangeCheckIn = (newCheckIn) => {
@@ -50,8 +50,10 @@ const checkIn = ({ history }) => {
     }
 
     const checkInSubmit = () => {
+        updateShowLoading(true);
         doCheckin(checkIn)
             .then((response) => {
+                updateShowLoading(false);
                 console.log(response)
                 // call show dialog in InfoSimpleDialog
                 updateShowDialog(true);
@@ -59,8 +61,9 @@ const checkIn = ({ history }) => {
                 updateInfo(response.data);
             })
             .catch((error) => {
+                updateShowLoading(false);
                 updateShowDialog(true);
-                updateInfo(null);
+                updateInfo(undefined);
                 console.log("There was an error processing the request!\n\n", error);
             });
         // Once dialog window closes, redirect to occupants
@@ -88,6 +91,7 @@ const checkIn = ({ history }) => {
                                     <Button ButtonType="Back" onClick={checkInCancel} ButtonText={t('cancel')}/>
                                 </Col>
                             </Row>
+                            <InfoSimpleDialog open={loading} title={t('loading')}/>
                             <InfoSimpleDialog open={showDialog} onClose={handleDialogClose} title={info ? t('reservation.checkin.successful') : ''}>
                                 {info ? <div>
                                     <div>{t('reservation.id')}: {info.hash}</div>

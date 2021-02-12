@@ -168,5 +168,6 @@
   "firstname": "First Name",
   "search": "Search",
   "registration": "Registration",
-  "close": "Close"
+  "close": "Close",
+  "loading": "Loading..."
 }

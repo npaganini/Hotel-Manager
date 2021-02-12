@@ -166,5 +166,6 @@
   "firstname": "Nombre",
   "search": "Buscar",
   "registration": "Registros",
-  "close": "Cerrar"
+  "close": "Cerrar",
+  "loading": "Cargando..."
 }

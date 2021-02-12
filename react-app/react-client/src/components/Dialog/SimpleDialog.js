@@ -15,16 +15,16 @@ const InfoSimpleDialog = (props) => {
             <DialogTitle id="simple-dialog-title">{title}</DialogTitle>
             <DialogContent>{children}</DialogContent>
             <DialogActions>
-                <Button onClick={onClose} color="primary">
+                {onClose && <Button onClick={onClose} color="primary">
                     {t('close')}
-                </Button>
+                </Button>}
             </DialogActions>
         </Dialog>
     );
 }
 
 InfoSimpleDialog.propTypes = {
-    onClose: PropTypes.func.isRequired,
+    onClose: PropTypes.func,
     open: PropTypes.bool.isRequired,
     title: PropTypes.string.isRequired,
 };

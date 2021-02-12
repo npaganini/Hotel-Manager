@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.NoResultException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.net.URI;
@@ -83,7 +84,7 @@ public class RoomController extends SimpleController {
             reservation = roomService.doCheckin(reservationId);
         } catch (RequestInvalidException e) {
             return Response.status(Response.Status.CONFLICT).build();
-        } catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException | NoResultException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         if (reservation != null) {
