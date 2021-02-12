@@ -1,27 +1,40 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
+import { managerPaths, clientPaths, CLIENT, MANAGER } from "./routesByRole";
 
-export const PrivateRoute = ({ component: Component, roles }) => (
+export const PrivateRoute = ({ component: Component, ...routeProps }) => (
   <Route
     render={(props) => {
-      const currentUser = authenticationService.currentUserValue;
+      const currentUser = localStorage.getItem("token");
       if (!currentUser) {
         // not logged in so redirect to login page with the return url
-        return (
-          <Redirect
-            to={{ pathname: "/login", state: { from: props.location } }}
-          />
-        );
+        return <Redirect to={{ pathname: "/login" }} />;
       }
 
-      // check if route is restricted by role
-      if (roles && roles.indexOf(currentUser.role) === -1) {
-        // role not authorised so redirect to home page
-        return <Redirect to={{ pathname: "/" }} />;
+      const role = localStorage.getItem("role");
+      const path = routeProps;
+
+      if (clientPaths.indexOf(path) == -1 && managerPaths.indexOf(path) == -1) {
+        // TODO show some not found page
+      }
+
+      if (!role) {
+        // TODO show some forbidden page
+      }
+
+      if (role === CLIENT) {
+        if (clientPaths.indexOf(path) == -1) {
+          // TODO show some forbidden page
+        }
+      } else if (role === MANAGER) {
+        if (managerPaths.indexOf(path) == -1) {
+          // TODO show some forbidden page
+        }
       }
 
       // authorised so return component
       return <Component {...props} />;
     }}
+    {...routeProps}
   />
 );
