@@ -34,7 +34,6 @@ public class Product {
     @Column(nullable = false)
     private double price;
 
-    @XmlTransient
     private byte[] file;
 
     @Column(nullable = false)

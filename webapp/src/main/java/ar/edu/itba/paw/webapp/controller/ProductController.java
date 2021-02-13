@@ -8,11 +8,14 @@ import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.webapp.dtos.FileUploadResponse;
 import ar.edu.itba.paw.webapp.dtos.ProductRequest;
 import ar.edu.itba.paw.webapp.utils.FilesUtils;
+import org.apache.commons.io.IOUtils;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -100,7 +103,8 @@ public class ProductController extends SimpleController {
         newProduct = productService.saveProduct(newProduct);
         LOGGER.debug("Product was saved successfully");
         // TODO is this ok?
-        return Response.ok(new GenericEntity<Product>(newProduct){}).build();
+        return Response.ok(new GenericEntity<Product>(newProduct) {
+        }).build();
     }
 
     @POST
@@ -117,8 +121,8 @@ public class ProductController extends SimpleController {
     @GET
     @Path(value = "/{productId}/img")
     @Produces("image/png")
-    public @ResponseBody
-    byte[] getImgForProduct(@PathParam("productId") long productId) throws EntityNotFoundException {
-        return productService.findProductById(productId).getFile();
+    public Response getImgForProduct(@PathParam("productId") long productId) throws EntityNotFoundException {
+        return Response.ok(new GenericEntity<byte[]>(productService.findProductById(productId).getFile()) {
+        }).build();
     }
 }

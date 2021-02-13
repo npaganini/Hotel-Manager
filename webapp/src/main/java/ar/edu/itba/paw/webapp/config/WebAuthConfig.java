@@ -73,8 +73,9 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
             .hasAuthority(UserRole.CLIENT.toString())
             .antMatchers("/rooms/**", "/reservation/**", "/products/**", "/ratings/**")
             .hasAnyAuthority(UserRole.EMPLOYEE.toString(), UserRole.MANAGER.toString())
-            .antMatchers("/", "/index", "/product/**")
-            .hasAnyAuthority(UserRole.EMPLOYEE.toString(), UserRole.MANAGER.toString(), UserRole.CLIENT.toString())
+            .antMatchers("/", "/index", "/products/**")
+                .permitAll()
+//            .hasAnyAuthority(UserRole.EMPLOYEE.toString(), UserRole.MANAGER.toString(), UserRole.CLIENT.toString())
             .anyRequest().authenticated();
         http.exceptionHandling().accessDeniedPage("/403");
         http.addFilter(authenticationFilterBean()).addFilter(authorizationFilterBean());
