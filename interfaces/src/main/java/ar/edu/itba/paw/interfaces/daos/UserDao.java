@@ -6,5 +6,6 @@ import java.util.Optional;
 
 public interface UserDao extends SimpleDao<User>{
     Optional<User> findByEmail(String userEmail);
+
     Optional<User> findByUsername(String username);
 }

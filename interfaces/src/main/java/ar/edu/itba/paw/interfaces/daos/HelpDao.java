@@ -1,15 +1,16 @@
 package ar.edu.itba.paw.interfaces.daos;
 
+import ar.edu.itba.paw.models.dtos.PaginatedDTO;
 import ar.edu.itba.paw.models.help.Help;
 
 import java.util.List;
 
 public interface HelpDao extends SimpleDao<ar.edu.itba.paw.models.help.Help> {
-    List<Help> findHelpRequestByReservationHash(long reservationId);
+    PaginatedDTO<Help> findHelpRequestsByReservationHash(long reservationId, int page, int pageSize);
 
-    List<Help> findAllHelpRequestsNotSentFor();
+    PaginatedDTO<Help> findAllHelpRequestsNotSentFor(int page, int pageSize);
 
-    List<Help> findAllHelpRequestsNotResolved();
+    PaginatedDTO<Help> findAllHelpRequestsNotResolved(int page, int pageSize);
 
     boolean updateToHelpRequestResolved(long helpId);
 

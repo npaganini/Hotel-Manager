@@ -7,6 +7,7 @@ import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.ChargeService;
 import ar.edu.itba.paw.models.charge.Charge;
+import ar.edu.itba.paw.models.dtos.PaginatedDTO;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
 import org.slf4j.Logger;
@@ -39,7 +40,18 @@ public class ChargeServiceImpl implements ChargeService {
         if (!reservationOptional.isPresent() || !reservationOptional.get().isActive()) {
             throw new RequestInvalidException();
         }
-        return chargeDao.findChargeByReservationId(reservationId);
+        return chargeDao.findChargesByReservationId(reservationId);
+    }
+
+    @Override
+    public PaginatedDTO<Charge> getAllChargesByReservationId(long reservationId, int page, int pageSize) throws RequestInvalidException {
+        if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
+        LOGGER.debug("Getting all current charges for reservation with id " + reservationId);
+        Optional<Reservation> reservationOptional = reservationDao.findById(reservationId);
+        if (!reservationOptional.isPresent() || !reservationOptional.get().isActive()) {
+            throw new RequestInvalidException();
+        }
+        return chargeDao.findChargesByReservationId(reservationId, page, pageSize);
     }
 
     @Override
@@ -49,8 +61,9 @@ public class ChargeServiceImpl implements ChargeService {
     }
 
     @Override
-    public List<Charge> getAllChargesNotDelivered() {
-        return chargeDao.findAllChargesNotDelivered();
+    public PaginatedDTO<Charge> getAllChargesNotDelivered(int page, int pageSize) {
+        if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
+        return chargeDao.findAllChargesNotDelivered(page, pageSize);
     }
 
     @Override

@@ -149,6 +149,13 @@
     "404": "Recurso no encontrado."
   },
 
+  "pagination": {
+    "first": "Primero",
+    "last": "Último",
+    "prev": "Anterior",
+    "next": "Siguiente"
+  },
+
   "accept": "Aceptar",
   "cancel": "Cancelar",
   "success": "La accion se realizo exitosamente.",

@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.services.ProductService;
+import ar.edu.itba.paw.models.dtos.PaginatedDTO;
 import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.webapp.dtos.FileUploadResponse;
 import ar.edu.itba.paw.webapp.dtos.ProductRequest;
@@ -22,8 +23,10 @@ import java.io.InputStream;
 
 @Controller
 @Path("products")
-public class ProductController {
+public class ProductController extends SimpleController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
+    public static final String DEFAULT_FIRST_PAGE = "1";
+    public static final String DEFAULT_PAGE_SIZE = "20";
 
     private final ProductService productService;
 
@@ -37,9 +40,16 @@ public class ProductController {
 
     @GET
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response products() {
+    public Response products(@QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
+                             @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) {
         // todo: mav was "products.jsp"
-        return Response.ok(productService.getAll()).build();
+        PaginatedDTO<Product> products;
+        try {
+            products = productService.getAll(page, limit);
+        } catch (IndexOutOfBoundsException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+        return sendPaginatedResponse(page, limit, products, uriInfo);
     }
 
     @POST
@@ -60,8 +70,7 @@ public class ProductController {
 
     @POST
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response addProduct(
-            @RequestBody ProductRequest productRequest) throws IOException {
+    public Response addProduct(@RequestBody ProductRequest productRequest) throws IOException {
         if (productRequest.getPrice() < 0) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Price must be valid.").build();
         }

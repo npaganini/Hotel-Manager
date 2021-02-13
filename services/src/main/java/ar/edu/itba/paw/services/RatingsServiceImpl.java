@@ -2,7 +2,8 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
 import ar.edu.itba.paw.interfaces.services.RatingsService;
-import ar.edu.itba.paw.models.dtos.RatingDto;
+import ar.edu.itba.paw.models.dtos.PaginatedDTO;
+import ar.edu.itba.paw.models.dtos.RatingDTO;
 import ar.edu.itba.paw.models.reservation.Calification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,26 +22,28 @@ public class RatingsServiceImpl implements RatingsService {
     }
 
     @Override
-    public RatingDto getHotelRating() {
+    public RatingDTO getHotelRating() {
         LOGGER.debug("About to get the general hotel rating.");
-        return new RatingDto(reservationDao.getHotelRating());
+        return new RatingDTO(reservationDao.getHotelRating());
     }
 
     @Override
-    public List<Calification> getAllHotelRatings() {
+    public PaginatedDTO<Calification> getAllHotelRatings(int page, int pageSize) {
+        if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
         LOGGER.debug("Getting a list of all hotel ratings...");
-        return reservationDao.getAllRatings();
+        return reservationDao.getAllRatings(page, pageSize);
     }
 
     @Override
-    public RatingDto getRoomRating(long roomId) {
+    public RatingDTO getRoomRating(long roomId) {
         LOGGER.debug("Getting the room's rating for room with id: " + roomId);
-        return new RatingDto(reservationDao.getRoomRating(roomId));
+        return new RatingDTO(reservationDao.getRoomRating(roomId));
     }
 
     @Override
-    public List<Calification> getAllRoomRatings(long roomId) {
+    public PaginatedDTO<Calification> getAllRoomRatings(long roomId, int page, int pageSize) {
+        if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
         LOGGER.debug("Getting a list of all the room's ratings for room with id: " + roomId);
-        return reservationDao.getRatingsByRoom(roomId);
+        return reservationDao.getRatingsByRoom(roomId, page, pageSize);
     }
 }

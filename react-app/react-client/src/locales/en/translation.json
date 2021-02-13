@@ -151,6 +151,13 @@
     "404": "Resource not found."
   },
 
+  "pagination": {
+    "first": "First",
+    "last": "Last",
+    "prev": "Prev",
+    "next": "Next"
+  },
+
   "accept": "Accept",
   "cancel": "Cancel",
   "success": "Success!",

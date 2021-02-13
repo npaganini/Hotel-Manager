@@ -9,6 +9,7 @@ import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.ReservationService;
 import ar.edu.itba.paw.interfaces.services.UserService;
+import ar.edu.itba.paw.models.dtos.PaginatedDTO;
 import ar.edu.itba.paw.models.occupant.Occupant;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
@@ -26,7 +27,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(ReservationServiceImpl.class);
 
     private final OccupantDao occupantDao;
@@ -75,9 +75,10 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<Reservation> getAll() {
+    public PaginatedDTO<Reservation> getAll(int page, int pageSize) {
+        if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
         LOGGER.debug("About to get all the confirmed reservations");
-        return reservationDao.findAll();
+        return reservationDao.findAll(page, pageSize);
     }
 
     private boolean isValidDate(Calendar startDate, Calendar endDate) {
@@ -119,16 +120,18 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<Reservation> findAllBetweenDatesOrEmailAndSurname(Calendar startDate, Calendar endDate, String email, String occupantSurname) {
-        return reservationDao.findAllBetweenDatesOrEmailAndSurname(startDate, endDate, email, occupantSurname);
+    public PaginatedDTO<Reservation> findAllBetweenDatesOrEmailAndSurname(Calendar startDate, Calendar endDate, String email, String occupantSurname, int page, int pageSize) {
+        if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
+        return reservationDao.findAllBetweenDatesOrEmailAndSurname(startDate, endDate, email, occupantSurname, page, pageSize);
     }
 
     @Override
     @Transactional
-    public List<ReservationResponse> getRoomsReservedActive() {
-        return roomDao.getRoomsReservedActive()
-                .stream().map(ReservationResponse::fromReservation).collect(Collectors.toList());
+    public PaginatedDTO<ReservationResponse> getRoomsReservedActive(int page, int pageSize) {
+        if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
+        PaginatedDTO<Reservation> paginatedReservationResponseList = reservationDao.getActiveReservations(page, pageSize);
+        return new PaginatedDTO<>(paginatedReservationResponseList.getList()
+                .stream().map(ReservationResponse::fromReservation).collect(Collectors.toList()),
+                paginatedReservationResponseList.getMaxItems());
     }
-
-
 }
