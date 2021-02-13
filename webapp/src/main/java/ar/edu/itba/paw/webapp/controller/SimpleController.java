@@ -14,11 +14,11 @@ public class SimpleController {
 
     protected <T extends Serializable> Response sendPaginatedResponse(int currentPage, int limit, long totalCount, GenericEntity<List<T>> paginatedDtoList, UriBuilder uriBuilder) {
         return Response.ok(paginatedDtoList)
-            .link(uriBuilder.replaceQueryParam("page", 1).build(), "first")
-            .link(uriBuilder.replaceQueryParam("page", totalCount % limit == 0 ? (totalCount / limit) : (totalCount / limit) + 1).build(), "last")
-            .link(uriBuilder.replaceQueryParam("page", currentPage > 1 ? currentPage - 1 : currentPage).build(), "prev")
-            .link(uriBuilder.replaceQueryParam("page", currentPage < ((double) totalCount / limit) ? currentPage + 1 : currentPage).build(), "next")
-            .header("X-Total-Count", totalCount)
-            .build();
+                .link(uriBuilder.replaceQueryParam("page", 1).build(), "first")
+                .link(uriBuilder.replaceQueryParam("page", totalCount % limit == 0 ? (totalCount / limit) : (totalCount / limit) + 1).build(), "last")
+                .link(uriBuilder.replaceQueryParam("page", currentPage > 1 ? currentPage - 1 : currentPage).build(), "prev")
+                .link(uriBuilder.replaceQueryParam("page", currentPage < ((double) totalCount / limit) ? currentPage + 1 : currentPage).build(), "next")
+                .header("X-Total-Count", totalCount)
+                .build();
     }
 }
