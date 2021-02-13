@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.dtos.ChargesByUserResponse;
 import ar.edu.itba.paw.interfaces.dtos.ProductResponse;
 import ar.edu.itba.paw.interfaces.dtos.ReservationResponse;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
@@ -10,10 +11,13 @@ import ar.edu.itba.paw.models.dtos.PaginatedDTO;
 import ar.edu.itba.paw.models.help.Help;
 import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.models.reservation.Reservation;
+import ar.edu.itba.paw.webapp.dtos.HelpRequest;
+import ar.edu.itba.paw.webapp.dtos.RateReservationRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -38,48 +42,19 @@ public class UserController extends SimpleController {
     }
 
     @GET
-    @Path("/expenses/{reservationId}")
+    @Path("/{reservationId}/expenses")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response boughtProducts(@PathParam(value = "reservationId") long reservationId) {
+    public Response boughtProducts(@PathParam(value = "reservationId") long reservationId,
+                                   @QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
+                                   @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit,
+                                   @Context SecurityContext securityContext) {
         // todo: mav was "expenses.jsp"
         LOGGER.debug("Request received to retrieve all expenses on reservation with id " + reservationId);
-        return Response.ok(userService.checkProductsPurchasedByUserByReservationId(getUserEmailFromJwt(), reservationId)).build();
+        List<ChargesByUserResponse> chargesByUser = userService.checkProductsPurchasedByUserByReservationId(getUserEmailFromJwt(securityContext), reservationId);
+        return Response.ok(new GenericEntity<List<ChargesByUserResponse>>(chargesByUser) {
+        }).build();
     }
 
-//    @GET
-//    @Produces(value = {MediaType.APPLICATION_JSON})
-//    public Response redirectToLanding() {
-//        final URI uri = uriInfo.getAbsolutePathBuilder().path("/home").build();
-//        return Response.temporaryRedirect(uri).build();
-//    }
-//
-//    @GET
-//    @Path("/home")
-//    @Produces(value = {MediaType.APPLICATION_JSON})
-//    public Response getLandingPage(@QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
-//                                   @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) {
-//        // todo: mav was "userIndex.jsp"
-//        LOGGER.debug("Request received to user's landing page");
-//        PaginatedDTO<ReservationResponse> activeReservations;
-//        try {
-//            activeReservations = userService.findActiveReservations(getUserEmailFromJwt(), page, limit);
-//        } catch (IndexOutOfBoundsException e) {
-//            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
-//        }
-//        return sendPaginatedResponse(page, limit, activeReservations.getMaxItems(), new GenericEntity<List<ReservationResponse>>(activeReservations.getList()) {}, uriInfo.getAbsolutePathBuilder());
-//    }
-//
-//    @GET
-//    @Path("/{reservationId}/expenses")
-//    @Produces(value = {MediaType.APPLICATION_JSON})
-//    public Response boughtProducts(@PathParam(value = "reservationId") long reservationId) {
-//        // todo: mav was "expenses.jsp"
-//        LOGGER.debug("Request received to retrieve all expenses on reservation with id " + reservationId);
-//        PaginatedDTO<ProductResponse> purchasedItems = userService.checkProductsPurchasedByUserByReservationId(just_use_reservationId);
-//        return sendPaginatedResponse(page, limit, purchasedItems.getMaxItems(), new GenericEntity<List<ProductResponse>>(purchasedItems.getList()) {}, uriInfo.getAbsolutePathBuilder());
-//    }
-
-    // TODO This is bad, this should be in another endpoint
     @GET
     @Path("/{reservationId}/products")
     @Produces(value = {MediaType.APPLICATION_JSON})
@@ -94,16 +69,16 @@ public class UserController extends SimpleController {
         } catch (IndexOutOfBoundsException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        return sendPaginatedResponse(page, limit, productList.getMaxItems(), new GenericEntity<List<ProductResponse>>(productList.getList()) {}, uriInfo.getAbsolutePathBuilder());
+        return sendPaginatedResponse(page, limit, productList.getMaxItems(), new GenericEntity<List<ProductResponse>>(productList.getList()) {
+        }, uriInfo.getAbsolutePathBuilder());
     }
 
     @POST
-    @Path("/{reservationId}/products")
+    @Path("/{reservationId}/products/{productId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response buyProduct(@FormParam("productId") Long productId,
-                               @PathParam("reservationId") long reservationId) throws EntityNotFoundException {
+    public Response buyProduct(@PathParam("reservationId") long reservationId, @PathParam("productId") Long productId) throws EntityNotFoundException {
         LOGGER.debug("Request received to buy products on reservation with id " + reservationId);
-        if(productId != null) {
+        if (productId != null) {
             // todo: mav was "buyProducts.jsp"
             Charge charge = userService.addCharge(productId, reservationId);
             URI uri = uriInfo.getAbsolutePathBuilder().path("/" + charge.getId()).build();
@@ -116,12 +91,12 @@ public class UserController extends SimpleController {
     @POST
     @Path("/{reservationId}/help")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response requestHelp(@FormParam("helpFormText") String helpForm,
-                                @PathParam("reservationId") long reservationId) throws EntityNotFoundException {
+    public Response requestHelp(@PathParam("reservationId") long reservationId,
+                                @RequestBody HelpRequest helpRequest) throws EntityNotFoundException {
         LOGGER.debug("Help request made on reservation with id " + reservationId);
-        if(helpForm != null) {
+        if (helpRequest.getHelpDescription() != null) {
             // todo: mav was "requestHelp.jsp"
-            Help helpRequested = userService.requestHelp(helpForm, reservationId);
+            Help helpRequested = userService.requestHelp(helpRequest.getHelpDescription(), reservationId);
             URI uri = uriInfo.getAbsolutePathBuilder().path("/" + helpRequested.getId()).build();
             return Response.created(uri).build();
         }
@@ -132,9 +107,10 @@ public class UserController extends SimpleController {
     @POST
     @Path("/ratings/{hash}/rate")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response rateStay(@FormParam("rating") String rate, @PathParam("hash") String hash) throws RequestInvalidException, EntityNotFoundException {
+    public Response rateStay(@PathParam("hash") String hash,
+                             @RequestBody RateReservationRequest rateRequest) throws RequestInvalidException, EntityNotFoundException {
         // todo: mav was "thanksMessage.jsp"
-        userService.rateStay(rate, hash);
+        userService.rateStay(rateRequest.getRate(), hash);
         return Response.ok().build();
     }
 }

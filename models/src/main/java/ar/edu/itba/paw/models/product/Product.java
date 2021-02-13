@@ -57,4 +57,12 @@ public class Product {
     public int hashCode() {
         return Math.toIntExact(id);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return id == product.id;
+    }
 }

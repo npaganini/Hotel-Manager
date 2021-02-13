@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.daos.*;
+import ar.edu.itba.paw.interfaces.dtos.ChargesByUserResponse;
 import ar.edu.itba.paw.interfaces.dtos.ProductResponse;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
@@ -60,8 +61,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<Product, Integer> checkProductsPurchasedByUserByReservationId(String userEmail, long reservationId) {
-        return new HashMap<>(chargeDao.getAllChargesByUser(userEmail, reservationId));
+    public List<ChargesByUserResponse> checkProductsPurchasedByUserByReservationId(String userEmail, long reservationId) {
+        Map<Product, Integer> productToQtyMap = chargeDao.getAllChargesByUser(userEmail, reservationId);
+        return productToQtyMap.keySet().stream().map(
+                product -> new ChargesByUserResponse(product.getDescription(), product.getId(), product.getPrice(), productToQtyMap.get(product))
+        ).collect(Collectors.toList());
     }
 
     @Override
@@ -94,7 +98,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Help requestHelp(String text, long reservationId) throws EntityNotFoundException {
         Reservation reservation = reservationDao.findById(reservationId).orElseThrow(() -> new EntityNotFoundException("Can't find reservation"));
-        if(text.length() > 0 && isValidString(text)) {
+        if (text.length() > 0 && isValidString(text)) {
             return helpDao.save(new Help(text, reservation));
         }
         return null;
@@ -128,7 +132,7 @@ public class UserServiceImpl implements UserService {
         LOGGER.debug("Generating password...");
         Integer[] ints = generateRandomIntsArray();
         StringBuilder password = new StringBuilder(GENERATED_PASSWORD_LENGTH);
-        for (Integer i: ints) {
+        for (Integer i : ints) {
             password.append(Character.toChars('a' + i));
         }
         return password.toString();
