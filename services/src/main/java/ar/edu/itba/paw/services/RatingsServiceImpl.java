@@ -6,10 +6,12 @@ import ar.edu.itba.paw.interfaces.services.RatingsService;
 import ar.edu.itba.paw.models.dtos.PaginatedDTO;
 import ar.edu.itba.paw.models.dtos.RatingDTO;
 import ar.edu.itba.paw.models.reservation.Calification;
+import ar.edu.itba.paw.models.reservation.Reservation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,7 +27,7 @@ public class RatingsServiceImpl implements RatingsService {
     @Override
     public RatingDTO getHotelRating() {
         LOGGER.debug("About to get the general hotel rating.");
-        return new RatingDTO(reservationDao.getHotelRating());
+        return new RatingDTO(getAverageRating(reservationDao.getHotelRating()));
     }
 
     @Override
@@ -41,7 +43,7 @@ public class RatingsServiceImpl implements RatingsService {
     @Override
     public RatingDTO getRoomRating(long roomId) {
         LOGGER.debug("Getting the room's rating for room with id: " + roomId);
-        return new RatingDTO(reservationDao.getRoomRating(roomId));
+        return new RatingDTO(getAverageRating(reservationDao.getRoomRating(roomId)));
     }
 
     @Override
@@ -52,5 +54,22 @@ public class RatingsServiceImpl implements RatingsService {
         return new PaginatedDTO<>(cals.getList()
                 .stream().map(CalificationResponse::fromCalification).collect(Collectors.toList()),
                 cals.getMaxItems());
+    }
+
+    private double getAverageRating(List<Reservation> reservations) {
+        double rating = 0;
+        for (Reservation r: reservations) {
+            int rated;
+            switch (r.getCalification()) {
+                case AWFUL: rated = 1; break;
+                case BAD: rated = 2; break;
+                case NORMAL: rated = 3; break;
+                case GOOD: rated = 4; break;
+                case EXCELLENT: rated = 5; break;
+                default: throw new IllegalArgumentException();
+            }
+            rating += rated;
+        }
+        return rating / ((double) reservations.size());
     }
 }

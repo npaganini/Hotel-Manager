@@ -3,8 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfaces.dtos.CalificationResponse;
 import ar.edu.itba.paw.interfaces.services.RatingsService;
 import ar.edu.itba.paw.models.dtos.PaginatedDTO;
-import ar.edu.itba.paw.models.reservation.Calification;
-import ar.edu.itba.paw.webapp.dtos.RoomRatingsDTO;
+import ar.edu.itba.paw.models.dtos.RatingDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @Path("/ratings")
@@ -35,7 +33,13 @@ public class RatingsController extends SimpleController {
     @GET
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getHotelRatings() {
-        return Response.ok(ratingsService.getHotelRating()).build();
+        RatingDTO hotelRating;
+        try {
+            hotelRating = ratingsService.getHotelRating();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+        return Response.ok().entity(new GenericEntity<RatingDTO>(hotelRating) {}).build();
     }
 
     @GET
@@ -56,7 +60,13 @@ public class RatingsController extends SimpleController {
     @Path("/rooms/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getRoomRating(@PathParam(value = "id") long roomId) {
-        return Response.ok(ratingsService.getRoomRating(roomId)).build();
+        RatingDTO roomRating;
+        try {
+            roomRating = ratingsService.getRoomRating(roomId);
+        } catch (Exception e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
+        return Response.ok().entity(new GenericEntity<RatingDTO>(roomRating) {}).build();
     }
 
     @GET
