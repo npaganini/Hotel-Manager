@@ -71,15 +71,6 @@ public class RatingsController extends SimpleController {
         } catch (IndexOutOfBoundsException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        // todo: test this before merge
-//        RoomRatingsDTO roomRatingsDto = new RoomRatingsDTO(ratings.getList());
         return sendPaginatedResponse(page, limit, ratings.getMaxItems(), new GenericEntity<List<CalificationResponse>>(ratings.getList()) {}, uriInfo.getAbsolutePathBuilder());
-//        return Response.ok(roomRatingsDto)
-//            .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
-//            .link(uriInfo.getAbsolutePathBuilder().queryParam("page", totalCount % limit == 0 ? (totalCount / limit) : (totalCount / limit) + 1).build(), "last")
-//            .link(uriInfo.getAbsolutePathBuilder().queryParam("page", page > 1 ? page - 1 : page).build(), "prev")
-//            .link(uriInfo.getAbsolutePathBuilder().queryParam("page", page < ((double) totalCount / limit) ? page + 1 : page).build(), "next")
-//            .header("X-Total-Count", totalCount)
-//            .build();
     }
 }
