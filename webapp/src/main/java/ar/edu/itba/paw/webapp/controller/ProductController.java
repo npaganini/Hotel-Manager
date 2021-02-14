@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.dtos.ProductResponse;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.services.ProductService;
 import ar.edu.itba.paw.models.dtos.PaginatedDTO;
@@ -20,6 +21,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 @Controller
 @Path("products")
@@ -43,13 +45,13 @@ public class ProductController extends SimpleController {
     public Response products(@QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
                              @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) {
         // todo: mav was "products.jsp"
-        PaginatedDTO<Product> products;
+        PaginatedDTO<ProductResponse> products;
         try {
             products = productService.getAll(page, limit);
         } catch (IndexOutOfBoundsException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        return sendPaginatedResponse(page, limit, products, uriInfo);
+        return sendPaginatedResponse(page, limit, products.getMaxItems(), new GenericEntity<List<ProductResponse>>(products.getList()) {}, uriInfo.getAbsolutePathBuilder());
     }
 
     @POST
@@ -90,9 +92,7 @@ public class ProductController extends SimpleController {
     public Response loadProductFile(@FormDataParam("file") InputStream file,
                                     @FormDataParam("file") FormDataContentDisposition fileDetail) throws IOException {
         String fileName = fileDetail.getFileName();
-
         String pathToFile = FilesUtils.saveFile(file, fileName);
-
         return Response.ok(new FileUploadResponse(pathToFile)).build();
     }
 

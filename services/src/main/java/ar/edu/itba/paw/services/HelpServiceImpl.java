@@ -2,6 +2,7 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.daos.HelpDao;
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
+import ar.edu.itba.paw.interfaces.dtos.HelpResponse;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.HelpService;
 import ar.edu.itba.paw.models.dtos.PaginatedDTO;
@@ -15,8 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class HelpServiceImpl implements HelpService {
@@ -31,24 +31,33 @@ public class HelpServiceImpl implements HelpService {
     }
 
     @Override
-    public PaginatedDTO<Help> getAllHelpRequestsByReservationId(long reservationId, int page, int pageSize) {
+    public PaginatedDTO<HelpResponse> getAllHelpRequestsByReservationId(long reservationId, int page, int pageSize) {
         if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
         LOGGER.debug("Fetching reservation by id: " + reservationId);
         Reservation reservation = reservationDao.findById(reservationId).orElseThrow(EntityNotFoundException::new);
         LOGGER.debug("Fetching all help request for reservation: " + reservationId);
-        return helpDao.findHelpRequestsByReservationHash(reservation.getId(), page, pageSize);
+        PaginatedDTO<Help> helpRequests = helpDao.findHelpRequestsByReservationHash(reservation.getId(), page, pageSize);
+        return new PaginatedDTO<>(helpRequests.getList()
+                .stream().map(HelpResponse::fromHelpRequest).collect(Collectors.toList()),
+                helpRequests.getMaxItems());
     }
 
     @Override
-    public PaginatedDTO<Help> getAllRequestsNotAttendedTo(int page, int pageSize) {
+    public PaginatedDTO<HelpResponse> getAllRequestsNotAttendedTo(int page, int pageSize) {
         if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
-        return helpDao.findAllHelpRequestsNotSentFor(page, pageSize);
+        PaginatedDTO<Help> helpRequests = helpDao.findAllHelpRequestsNotSentFor(page, pageSize);
+        return new PaginatedDTO<>(helpRequests.getList()
+                .stream().map(HelpResponse::fromHelpRequest).collect(Collectors.toList()),
+                helpRequests.getMaxItems());
     }
 
     @Override
-    public PaginatedDTO<Help> getAllRequestsThatRequireAction(int page, int pageSize) {
+    public PaginatedDTO<HelpResponse> getAllRequestsThatRequireAction(int page, int pageSize) {
         if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
-        return helpDao.findAllHelpRequestsNotResolved(page, pageSize);
+        PaginatedDTO<Help> helpRequests = helpDao.findAllHelpRequestsNotResolved(page, pageSize);
+        return new PaginatedDTO<>(helpRequests.getList()
+                .stream().map(HelpResponse::fromHelpRequest).collect(Collectors.toList()),
+                helpRequests.getMaxItems());
     }
 
     @Transactional

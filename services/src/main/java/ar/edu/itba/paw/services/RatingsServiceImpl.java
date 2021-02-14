@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
+import ar.edu.itba.paw.interfaces.dtos.CalificationResponse;
 import ar.edu.itba.paw.interfaces.services.RatingsService;
 import ar.edu.itba.paw.models.dtos.PaginatedDTO;
 import ar.edu.itba.paw.models.dtos.RatingDTO;
@@ -9,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RatingsServiceImpl implements RatingsService {
@@ -28,10 +29,13 @@ public class RatingsServiceImpl implements RatingsService {
     }
 
     @Override
-    public PaginatedDTO<Calification> getAllHotelRatings(int page, int pageSize) {
+    public PaginatedDTO<CalificationResponse> getAllHotelRatings(int page, int pageSize) {
         if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
         LOGGER.debug("Getting a list of all hotel ratings...");
-        return reservationDao.getAllRatings(page, pageSize);
+        PaginatedDTO<Calification> cals = reservationDao.getAllRatings(page, pageSize);
+        return new PaginatedDTO<>(cals.getList()
+                .stream().map(CalificationResponse::fromCalification).collect(Collectors.toList()),
+                cals.getMaxItems());
     }
 
     @Override
@@ -41,9 +45,12 @@ public class RatingsServiceImpl implements RatingsService {
     }
 
     @Override
-    public PaginatedDTO<Calification> getAllRoomRatings(long roomId, int page, int pageSize) {
+    public PaginatedDTO<CalificationResponse> getAllRoomRatings(long roomId, int page, int pageSize) {
         if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
         LOGGER.debug("Getting a list of all the room's ratings for room with id: " + roomId);
-        return reservationDao.getRatingsByRoom(roomId, page, pageSize);
+        PaginatedDTO<Calification> cals = reservationDao.getRatingsByRoom(roomId, page, pageSize);
+        return new PaginatedDTO<>(cals.getList()
+                .stream().map(CalificationResponse::fromCalification).collect(Collectors.toList()),
+                cals.getMaxItems());
     }
 }

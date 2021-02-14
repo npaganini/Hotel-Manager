@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfaces.daos.HelpDao;
 import ar.edu.itba.paw.models.charge.Charge;
 import ar.edu.itba.paw.models.dtos.PaginatedDTO;
 import ar.edu.itba.paw.models.help.Help;
+import ar.edu.itba.paw.models.help.HelpStep;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.TypedQuery;
@@ -55,8 +56,9 @@ public class HelpRepositoryHibernate extends SimpleRepositoryHibernate<Help> imp
         CriteriaQuery<Long> cqCount = builder.createQuery(Long.class);
         Root<Help> entityRoot = cqCount.from(Help.class);
         cqCount.select(builder.count(entityRoot));
-        Predicate wherePredicate = builder.equal(entityRoot.get("helpStep"), "REQUIRES_FURTHER_ACTION");
-        cqCount.where(builder.and(wherePredicate));
+        Predicate wherePredicate1 = builder.equal(entityRoot.get("helpStep"), "UNATTENDED");
+        Predicate wherePredicate2 = builder.equal(entityRoot.get("helpStep"), "REQUIRES_FURTHER_ACTION");
+        cqCount.where(builder.or(new Predicate[]{wherePredicate1, wherePredicate2}));
         long count = em.createQuery(cqCount).getSingleResult();
 
         List<Help> helpList = em.createQuery(

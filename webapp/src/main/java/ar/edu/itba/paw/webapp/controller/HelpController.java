@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.dtos.HelpResponse;
+import ar.edu.itba.paw.interfaces.dtos.ReservationResponse;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.HelpService;
 import ar.edu.itba.paw.models.dtos.PaginatedDTO;
@@ -10,10 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
+import java.util.List;
 
 @Controller
 @Path("help")
@@ -37,13 +37,13 @@ public class HelpController extends SimpleController {
                          @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) {
         // todo: mav was "helpRequests.jsp"
         LOGGER.debug("Request attempted to get the list of help requests.");
-        PaginatedDTO<Help> helpRequests;
+        PaginatedDTO<HelpResponse> helpRequests;
         try {
             helpRequests = helpService.getAllRequestsThatRequireAction(page, limit);
         } catch (IndexOutOfBoundsException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        return sendPaginatedResponse(page, limit, helpRequests, uriInfo);
+        return sendPaginatedResponse(page, limit, helpRequests.getMaxItems(), new GenericEntity<List<HelpResponse>>(helpRequests.getList()) {}, uriInfo.getAbsolutePathBuilder());
     }
 
     @PUT

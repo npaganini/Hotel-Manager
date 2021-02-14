@@ -30,8 +30,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static ar.edu.itba.paw.interfaces.dtos.ReservationResponse.fromReservation;
-
 @Component
 @Controller
 @Path("/rooms")
@@ -65,14 +63,7 @@ public class RoomController extends SimpleController {
         } catch (IndexOutOfBoundsException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        final long totalCount = reservations.getMaxItems();
-        return Response.ok(new GenericEntity<List<ReservationResponse>>(reservations.getList()) {})
-            .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
-            .link(uriInfo.getAbsolutePathBuilder().queryParam("page", totalCount % limit == 0 ? (totalCount / limit) : (totalCount / limit) + 1).build(), "last")
-            .link(uriInfo.getAbsolutePathBuilder().queryParam("page", page > 1 ? page - 1 : page).build(), "prev")
-            .link(uriInfo.getAbsolutePathBuilder().queryParam("page", page < ((double) totalCount / limit) ? page + 1 : page).build(), "next")
-            .header("X-Total-Count", totalCount)
-            .build();
+        return sendPaginatedResponse(page, limit, reservations.getMaxItems(), new GenericEntity<List<ReservationResponse>>(reservations.getList()) {}, uriInfo.getAbsolutePathBuilder());
     }
 
     @POST

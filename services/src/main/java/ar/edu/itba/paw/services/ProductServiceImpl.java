@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.daos.ProductDao;
+import ar.edu.itba.paw.interfaces.dtos.ProductResponse;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.services.ProductService;
 import ar.edu.itba.paw.models.dtos.PaginatedDTO;
@@ -10,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -46,9 +47,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public PaginatedDTO<Product> getAll(int page, int pageSize) {
+    public PaginatedDTO<ProductResponse> getAll(int page, int pageSize) {
         if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
-        return productDao.findAll(page, pageSize);
+        PaginatedDTO<Product> paginatedResponseList = productDao.findAll(page, pageSize);
+        return new PaginatedDTO<>(paginatedResponseList.getList()
+                .stream().map(ProductResponse::fromProduct).collect(Collectors.toList()),
+                paginatedResponseList.getMaxItems());
     }
 
     @Transactional

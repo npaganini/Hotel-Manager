@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.daos.*;
+import ar.edu.itba.paw.interfaces.dtos.ProductResponse;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.EmailService;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class UserServiceImpl implements UserService {
@@ -44,9 +46,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PaginatedDTO<Product> getProducts(int page, int pageSize) {
+    public PaginatedDTO<ProductResponse> getProducts(int page, int pageSize) {
         if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
-        return productDao.findAll(page, pageSize);
+        PaginatedDTO<Product> products = productDao.findAllActive(page, pageSize);
+        return new PaginatedDTO<>(products.getList()
+                .stream().map(ProductResponse::fromProduct).collect(Collectors.toList()), products.getMaxItems());
     }
 
     @Override
