@@ -145,7 +145,7 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
     public PaginatedDTO<Calification> getAllRatings(int page, int pageSize) {
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<Long> cqCount = builder.createQuery(Long.class);
-        Root<Calification> entityRoot = cqCount.from(Calification.class);
+        Root<Reservation> entityRoot = cqCount.from(Reservation.class);
         cqCount.select(builder.count(entityRoot));
         Predicate wherePredicate = builder.isNotNull(entityRoot.get("calification"));
         cqCount.where(builder.and(wherePredicate));
@@ -171,7 +171,7 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
     public PaginatedDTO<Calification> getRatingsByRoom(long roomId, int page, int pageSize) {
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<Long> cqCount = builder.createQuery(Long.class);
-        Root<Calification> entityRoot = cqCount.from(Calification.class);
+        Root<Reservation> entityRoot = cqCount.from(Reservation.class);
         cqCount.select(builder.count(entityRoot));
         Predicate wherePredicate1 = builder.equal(entityRoot.get("room").get("id"), roomId);
         Predicate wherePredicate2 = builder.isNotNull(entityRoot.get("calification"));

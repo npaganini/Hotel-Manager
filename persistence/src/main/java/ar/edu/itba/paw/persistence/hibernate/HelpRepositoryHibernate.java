@@ -39,7 +39,7 @@ public class HelpRepositoryHibernate extends SimpleRepositoryHibernate<Help> imp
         CriteriaQuery<Long> cqCount = builder.createQuery(Long.class);
         Root<Help> entityRoot = cqCount.from(Help.class);
         cqCount.select(builder.count(entityRoot));
-        Predicate wherePredicate = builder.equal(entityRoot.get("helpStep"), "UNATTENDED");
+        Predicate wherePredicate = builder.equal(entityRoot.get("helpStep"), HelpStep.UNATTENDED);
         cqCount.where(builder.and(wherePredicate));
         long count = em.createQuery(cqCount).getSingleResult();
 
@@ -56,8 +56,8 @@ public class HelpRepositoryHibernate extends SimpleRepositoryHibernate<Help> imp
         CriteriaQuery<Long> cqCount = builder.createQuery(Long.class);
         Root<Help> entityRoot = cqCount.from(Help.class);
         cqCount.select(builder.count(entityRoot));
-        Predicate wherePredicate1 = builder.equal(entityRoot.get("helpStep"), "UNATTENDED");
-        Predicate wherePredicate2 = builder.equal(entityRoot.get("helpStep"), "REQUIRES_FURTHER_ACTION");
+        Predicate wherePredicate1 = builder.equal(entityRoot.get("helpStep"), HelpStep.UNATTENDED);
+        Predicate wherePredicate2 = builder.equal(entityRoot.get("helpStep"), HelpStep.REQUIRES_FURTHER_ACTION);
         cqCount.where(builder.or(new Predicate[]{wherePredicate1, wherePredicate2}));
         long count = em.createQuery(cqCount).getSingleResult();
 
