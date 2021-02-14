@@ -34,10 +34,10 @@ public class SimpleController {
 
     protected <T extends Serializable> Response sendPaginatedResponse(int currentPage, int limit, long totalCount, GenericEntity<List<T>> paginatedDTO, UriBuilder uriBuilder) {
         return Response.ok(paginatedDTO)
-            .link(uriBuilder.queryParam("page", 1).build(), "first")
-            .link(uriBuilder.queryParam("page", totalCount % limit == 0 ? (totalCount / limit) : (totalCount / limit) + 1).build(), "last")
-            .link(uriBuilder.queryParam("page", currentPage > 1 ? currentPage - 1 : currentPage).build(), "prev")
-            .link(uriBuilder.queryParam("page", currentPage < ((double) totalCount / limit) ? currentPage + 1 : currentPage).build(), "next")
+            .link(uriBuilder.replaceQueryParam("page", 1).build(), "first")
+            .link(uriBuilder.replaceQueryParam("page", totalCount % limit == 0 ? (totalCount / limit) : (totalCount / limit) + 1).build(), "last")
+            .link(uriBuilder.replaceQueryParam("page", currentPage > 1 ? currentPage - 1 : currentPage).build(), "prev")
+            .link(uriBuilder.replaceQueryParam("page", currentPage < ((double) totalCount / limit) ? currentPage + 1 : currentPage).build(), "next")
             .header("X-Total-Count", totalCount)
             .build();
     }
