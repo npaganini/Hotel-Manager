@@ -59,7 +59,16 @@ public class ProductController extends SimpleController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response hideProduct(@PathParam(value = "id") long productId) throws Exception {
         // todo: mav was "productDisable.jsp"
-        return Response.ok(productService.disableProduct(productId)).build();
+        boolean productsAffected;
+        try {
+            productsAffected = productService.disableProduct(productId);
+        } catch (EntityNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        if (productsAffected) {
+            return Response.ok().build();
+        }
+        return Response.status(Response.Status.CONFLICT).build();
     }
 
     @POST
@@ -67,7 +76,16 @@ public class ProductController extends SimpleController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response showProduct(@PathParam(value = "id") long productId) throws Exception {
         // todo: mav was "productAvailable.jsp"
-        return Response.ok(productService.enableProduct(productId)).build();
+        boolean productsChanged;
+        try {
+            productsChanged = productService.enableProduct(productId);
+        } catch (EntityNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        if (productsChanged) {
+            return Response.ok().build();
+        }
+        return Response.status(Response.Status.CONFLICT).build();
     }
 
     @POST
