@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.dtos.CalificationResponse;
+import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.services.RatingsService;
 import ar.edu.itba.paw.models.dtos.PaginatedDTO;
 import ar.edu.itba.paw.models.dtos.RatingDTO;
@@ -80,6 +81,8 @@ public class RatingsController extends SimpleController {
             ratings = ratingsService.getAllRoomRatings(roomId, page, limit);
         } catch (IndexOutOfBoundsException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        } catch (EntityNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
         return sendPaginatedResponse(page, limit, ratings.getMaxItems(), new GenericEntity<List<CalificationResponse>>(ratings.getList()) {}, uriInfo.getAbsolutePathBuilder());
     }

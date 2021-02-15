@@ -7,7 +7,7 @@ public class EntityNotFoundException extends Exception {
     private final String description;
 
     public EntityNotFoundException(String description) {
-        super("The entity you were trying to look was not found");
+        super("The entity you were looking for was not found");
         this.description = description;
     }
 }
