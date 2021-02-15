@@ -59,24 +59,26 @@ const Reservation = ({ history }) => {
         console.log("error", err);
       });
     if (!showRooms) show(true);
-
   };
 
-  const onSubmitReservation = ({ startDate, endDate, userEmail, roomId }) => () => {
-
+  const onSubmitReservation = ({
+    startDate,
+    endDate,
+    userEmail,
+    roomId,
+  }) => () => {
     doReservation({ startDate, endDate, userEmail, roomId })
       .then((result) => {
-        console.log(result)
+        console.log(result);
+        history.push("/");
       })
       .catch((err) => {
         console.log("error", err);
       });
-    history.push("/");
   };
 
   const onRoomChange = (newRoom) => {
     setRoom(newRoom.target.value);
-
   };
 
   const reservationCancel = () => {
@@ -124,7 +126,12 @@ const Reservation = ({ history }) => {
           <Col xs={6} md={2}>
             <Button
               ButtonType="Save"
-              onClick={onSubmitReservation(dateFrom, dateTo, email, room)}
+              onClick={onSubmitReservation({
+                startDate: dateFrom,
+                endDate: dateTo,
+                userEmail: email,
+                roomId: room,
+              })}
               ButtonText="Accept"
             ></Button>
           </Col>
