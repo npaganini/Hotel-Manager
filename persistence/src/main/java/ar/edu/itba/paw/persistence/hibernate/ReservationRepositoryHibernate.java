@@ -102,7 +102,7 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
     }
 
     @Override
-    public PaginatedDTO<Reservation> findActiveReservationsByEmail(String userEmail, int page, int pageSize) {
+    public List<Reservation> findActiveReservationsByEmail(String userEmail) {
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<Long> cqCount = builder.createQuery(Long.class);
         Root<Reservation> entityRoot = cqCount.from(Reservation.class);
@@ -110,14 +110,10 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
         Predicate wherePredicate1 = builder.equal(entityRoot.get("userEmail"), userEmail);
         Predicate wherePredicate2 = builder.isTrue(entityRoot.get("isActive"));
         cqCount.where(builder.and(new Predicate[]{wherePredicate1, wherePredicate2}));
-        long count = em.createQuery(cqCount).getSingleResult();
 
-        List<Reservation> reservations = em.createQuery("SELECT r FROM " + getModelName() + " r WHERE r.userEmail = :userEmail AND r.isActive = true", getModelClass())
+        return em.createQuery("SELECT r FROM " + getModelName() + " r WHERE r.userEmail = :userEmail AND r.isActive = true", getModelClass())
                 .setParameter("userEmail", userEmail)
-                .setFirstResult((page - 1) * pageSize)
-                .setMaxResults(pageSize)
                 .getResultList();
-        return new PaginatedDTO<>(reservations, count);
     }
 
     @Override

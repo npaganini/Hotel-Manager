@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.dtos.ActiveReservationResponse;
 import ar.edu.itba.paw.interfaces.dtos.ChargesByUserResponse;
 import ar.edu.itba.paw.interfaces.dtos.ProductResponse;
 import ar.edu.itba.paw.interfaces.dtos.ReservationResponse;
@@ -11,6 +12,7 @@ import ar.edu.itba.paw.models.dtos.PaginatedDTO;
 import ar.edu.itba.paw.models.help.Help;
 import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.models.reservation.Reservation;
+import ar.edu.itba.paw.webapp.dtos.ActiveReservationsResponse;
 import ar.edu.itba.paw.webapp.dtos.HelpRequest;
 import ar.edu.itba.paw.webapp.dtos.RateReservationRequest;
 import org.slf4j.Logger;
@@ -55,15 +57,14 @@ public class UserController extends SimpleController {
         }).build();
     }
 
-//    @GET
-//    @Produces(value = MediaType.APPLICATION_JSON)
-//    public Response getActiveReservations(@QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
-//                                          @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit,
-//                                          @Context SecurityContext securityContext) {
-//        PaginatedDTO<Reservation> activeReservations = userService.findActiveReservations(getUserEmailFromJwt(securityContext), page, limit);
-//        return sendPaginatedResponse(page, limit, activeReservations.getMaxItems(), new GenericEntity<List<Reservation>>(activeReservations.getList()) {
-//        }, uriInfo.getAbsolutePathBuilder());
-//    }
+    @GET
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public Response getActiveReservations(@QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
+                                          @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit,
+                                          @Context SecurityContext securityContext) {
+        List<ActiveReservationResponse> activeReservations = userService.findActiveReservations(getUserEmailFromJwt(securityContext));
+        return Response.ok(new ActiveReservationsResponse(activeReservations)).build();
+    }
 
     @GET
     @Path("/{reservationId}/products")

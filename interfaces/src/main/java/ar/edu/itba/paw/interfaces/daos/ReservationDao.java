@@ -15,7 +15,7 @@ public interface ReservationDao extends SimpleDao<Reservation> {
 
     PaginatedDTO<Reservation> getActiveReservations(int page, int pageSize);
 
-    PaginatedDTO<Reservation> findActiveReservationsByEmail(String userEmail, int page, int pageSize);
+    List<Reservation> findActiveReservationsByEmail(String userEmail);
 
     boolean isRoomFreeOnDate(long roomId, Calendar startDate, Calendar endDate);
 
