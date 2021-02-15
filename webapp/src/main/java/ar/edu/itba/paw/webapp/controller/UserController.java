@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.dtos.ProductResponse;
+import ar.edu.itba.paw.interfaces.dtos.ReservationResponse;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.UserService;
@@ -14,11 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 import java.net.URI;
+import java.util.List;
 
 @Controller
 @Path("/user")
@@ -53,29 +53,30 @@ public class UserController extends SimpleController {
 //        return Response.temporaryRedirect(uri).build();
 //    }
 //
-    @GET
-    @Path("/home")
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getLandingPage(@QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
-                                   @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) {
-        // todo: mav was "userIndex.jsp"
-        LOGGER.debug("Request received to user's landing page");
-        PaginatedDTO<Reservation> activeReservations;
-        try {
-            activeReservations = userService.findActiveReservations(getUserEmailFromJwt(), page, limit);
-        } catch (IndexOutOfBoundsException e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
-        }
-        return sendPaginatedResponse(page, limit, activeReservations, uriInfo);
-    }
+//    @GET
+//    @Path("/home")
+//    @Produces(value = {MediaType.APPLICATION_JSON})
+//    public Response getLandingPage(@QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
+//                                   @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) {
+//        // todo: mav was "userIndex.jsp"
+//        LOGGER.debug("Request received to user's landing page");
+//        PaginatedDTO<ReservationResponse> activeReservations;
+//        try {
+//            activeReservations = userService.findActiveReservations(getUserEmailFromJwt(), page, limit);
+//        } catch (IndexOutOfBoundsException e) {
+//            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+//        }
+//        return sendPaginatedResponse(page, limit, activeReservations.getMaxItems(), new GenericEntity<List<ReservationResponse>>(activeReservations.getList()) {}, uriInfo.getAbsolutePathBuilder());
+//    }
 //
 //    @GET
-//    @Path("/expenses/{reservationId}")
+//    @Path("/{reservationId}/expenses")
 //    @Produces(value = {MediaType.APPLICATION_JSON})
 //    public Response boughtProducts(@PathParam(value = "reservationId") long reservationId) {
 //        // todo: mav was "expenses.jsp"
 //        LOGGER.debug("Request received to retrieve all expenses on reservation with id " + reservationId);
-//        return Response.ok(userService.checkProductsPurchasedByUserByReservationId(getUsername(authentication), reservationId)).build();
+//        PaginatedDTO<ProductResponse> purchasedItems = userService.checkProductsPurchasedByUserByReservationId(just_use_reservationId);
+//        return sendPaginatedResponse(page, limit, purchasedItems.getMaxItems(), new GenericEntity<List<ProductResponse>>(purchasedItems.getList()) {}, uriInfo.getAbsolutePathBuilder());
 //    }
 
     // TODO This is bad, this should be in another endpoint
@@ -87,13 +88,13 @@ public class UserController extends SimpleController {
                                    @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) {
         // todo: mav was "browseProducts.jsp"
         LOGGER.debug("Request received to retrieve all products list");
-        PaginatedDTO<Product> productList;
+        PaginatedDTO<ProductResponse> productList;
         try {
             productList = userService.getProducts(page, limit);
         } catch (IndexOutOfBoundsException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        return sendPaginatedResponse(page, limit, productList, uriInfo);
+        return sendPaginatedResponse(page, limit, productList.getMaxItems(), new GenericEntity<List<ProductResponse>>(productList.getList()) {}, uriInfo.getAbsolutePathBuilder());
     }
 
     @POST

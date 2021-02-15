@@ -1,20 +1,17 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.dtos.CalificationResponse;
 import ar.edu.itba.paw.interfaces.services.RatingsService;
 import ar.edu.itba.paw.models.dtos.PaginatedDTO;
-import ar.edu.itba.paw.models.reservation.Calification;
-import ar.edu.itba.paw.webapp.dtos.RoomRatingsDTO;
+import ar.edu.itba.paw.models.dtos.RatingDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
-import java.util.stream.Collectors;
+import javax.ws.rs.core.*;
+import java.util.List;
 
 @Controller
 @Path("/ratings")
@@ -36,7 +33,13 @@ public class RatingsController extends SimpleController {
     @GET
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getHotelRatings() {
-        return Response.ok(ratingsService.getHotelRating()).build();
+        RatingDTO hotelRating;
+        try {
+            hotelRating = ratingsService.getHotelRating();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+        return Response.ok().entity(new GenericEntity<RatingDTO>(hotelRating) {}).build();
     }
 
     @GET
@@ -44,20 +47,26 @@ public class RatingsController extends SimpleController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getAllHotelRatings(@QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
                                        @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) {
-        PaginatedDTO<Calification> cals;
+        PaginatedDTO<CalificationResponse> cals;
         try {
             cals = ratingsService.getAllHotelRatings(page, limit);
         } catch (IndexOutOfBoundsException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        return sendPaginatedResponse(page, limit, cals, uriInfo);
+        return sendPaginatedResponse(page, limit, cals.getMaxItems(), new GenericEntity<List<CalificationResponse>>(cals.getList()) {}, uriInfo.getAbsolutePathBuilder());
     }
 
     @GET
     @Path("/rooms/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getRoomRating(@PathParam(value = "id") long roomId) {
-        return Response.ok(ratingsService.getRoomRating(roomId)).build();
+        RatingDTO roomRating;
+        try {
+            roomRating = ratingsService.getRoomRating(roomId);
+        } catch (Exception e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
+        return Response.ok().entity(new GenericEntity<RatingDTO>(roomRating) {}).build();
     }
 
     @GET
@@ -66,20 +75,12 @@ public class RatingsController extends SimpleController {
     public Response getRoomRatings(@PathParam(value ="id") long roomId,
                                    @QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
                                    @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) {
-        PaginatedDTO<Calification> ratings;
+        PaginatedDTO<CalificationResponse> ratings;
         try {
             ratings = ratingsService.getAllRoomRatings(roomId, page, limit);
         } catch (IndexOutOfBoundsException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        long totalCount = ratings.getMaxItems();
-        RoomRatingsDTO roomRatingsDto = new RoomRatingsDTO(ratings.getList().stream().map(Enum::toString).collect(Collectors.toList()));
-        return Response.ok(roomRatingsDto)
-            .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
-            .link(uriInfo.getAbsolutePathBuilder().queryParam("page", totalCount % limit == 0 ? (totalCount / limit) : (totalCount / limit) + 1).build(), "last")
-            .link(uriInfo.getAbsolutePathBuilder().queryParam("page", page > 1 ? page - 1 : page).build(), "prev")
-            .link(uriInfo.getAbsolutePathBuilder().queryParam("page", page < ((double) totalCount / limit) ? page + 1 : page).build(), "next")
-            .header("X-Total-Count", totalCount)
-            .build();
+        return sendPaginatedResponse(page, limit, ratings.getMaxItems(), new GenericEntity<List<CalificationResponse>>(ratings.getList()) {}, uriInfo.getAbsolutePathBuilder());
     }
 }

@@ -1,11 +1,13 @@
 package ar.edu.itba.paw.models.dtos;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+@Getter
+@Setter
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 @XmlRootElement
 public class RatingDTO {

@@ -137,15 +137,15 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
     }
 
     @Override
-    public double getHotelRating() {
-        return em.createQuery("SELECT AVG(r.calification) FROM Reservation r", Double.class).getSingleResult();
+    public List<Reservation> getHotelRating() {
+        return em.createQuery("SELECT r FROM Reservation r WHERE r.calification IS NOT NULL", Reservation.class).getResultList();
     }
 
     @Override
     public PaginatedDTO<Calification> getAllRatings(int page, int pageSize) {
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<Long> cqCount = builder.createQuery(Long.class);
-        Root<Calification> entityRoot = cqCount.from(Calification.class);
+        Root<Reservation> entityRoot = cqCount.from(Reservation.class);
         cqCount.select(builder.count(entityRoot));
         Predicate wherePredicate = builder.isNotNull(entityRoot.get("calification"));
         cqCount.where(builder.and(wherePredicate));
@@ -160,18 +160,18 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
     }
 
     @Override
-    public double getRoomRating(long roomId) {
+    public List<Reservation> getRoomRating(long roomId) {
         return em.createQuery(
-                "SELECT AVG(r.calification) FROM Reservation r WHERE r.room.id = :roomId", Double.class)
+                "SELECT r FROM Reservation r WHERE r.room.id = :roomId AND r.calification IS NOT NULL", Reservation.class)
                 .setParameter("roomId", roomId)
-                .getSingleResult();
+                .getResultList();
     }
 
     @Override
     public PaginatedDTO<Calification> getRatingsByRoom(long roomId, int page, int pageSize) {
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<Long> cqCount = builder.createQuery(Long.class);
-        Root<Calification> entityRoot = cqCount.from(Calification.class);
+        Root<Reservation> entityRoot = cqCount.from(Reservation.class);
         cqCount.select(builder.count(entityRoot));
         Predicate wherePredicate1 = builder.equal(entityRoot.get("room").get("id"), roomId);
         Predicate wherePredicate2 = builder.isNotNull(entityRoot.get("calification"));

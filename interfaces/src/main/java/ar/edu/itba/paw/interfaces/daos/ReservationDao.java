@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.reservation.Calification;
 import ar.edu.itba.paw.models.reservation.Reservation;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.Optional;
 
 public interface ReservationDao extends SimpleDao<Reservation> {
@@ -22,11 +23,11 @@ public interface ReservationDao extends SimpleDao<Reservation> {
 
     void rateStay(long id, String rate);
 
-    double getHotelRating();
+    List<Reservation> getHotelRating();
 
     PaginatedDTO<Calification> getAllRatings(int page, int pageSize);
 
-    double getRoomRating(long roomId);
+    List<Reservation> getRoomRating(long roomId);
 
     PaginatedDTO<Calification> getRatingsByRoom(long roomId, int page, int pageSize);
 }

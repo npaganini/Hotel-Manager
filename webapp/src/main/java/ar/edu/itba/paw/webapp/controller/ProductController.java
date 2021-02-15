@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.dtos.ProductResponse;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.services.ProductService;
 import ar.edu.itba.paw.models.dtos.PaginatedDTO;
@@ -20,6 +21,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 @Controller
 @Path("products")
@@ -43,13 +45,13 @@ public class ProductController extends SimpleController {
     public Response products(@QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
                              @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) {
         // todo: mav was "products.jsp"
-        PaginatedDTO<Product> products;
+        PaginatedDTO<ProductResponse> products;
         try {
             products = productService.getAll(page, limit);
         } catch (IndexOutOfBoundsException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        return sendPaginatedResponse(page, limit, products, uriInfo);
+        return sendPaginatedResponse(page, limit, products.getMaxItems(), new GenericEntity<List<ProductResponse>>(products.getList()) {}, uriInfo.getAbsolutePathBuilder());
     }
 
     @POST
@@ -57,7 +59,16 @@ public class ProductController extends SimpleController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response hideProduct(@PathParam(value = "id") long productId) throws Exception {
         // todo: mav was "productDisable.jsp"
-        return Response.ok(productService.disableProduct(productId)).build();
+        boolean productsAffected;
+        try {
+            productsAffected = productService.disableProduct(productId);
+        } catch (EntityNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        if (productsAffected) {
+            return Response.ok().build();
+        }
+        return Response.status(Response.Status.CONFLICT).build();
     }
 
     @POST
@@ -65,7 +76,16 @@ public class ProductController extends SimpleController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response showProduct(@PathParam(value = "id") long productId) throws Exception {
         // todo: mav was "productAvailable.jsp"
-        return Response.ok(productService.enableProduct(productId)).build();
+        boolean productsChanged;
+        try {
+            productsChanged = productService.enableProduct(productId);
+        } catch (EntityNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        if (productsChanged) {
+            return Response.ok().build();
+        }
+        return Response.status(Response.Status.CONFLICT).build();
     }
 
     @POST
@@ -90,9 +110,7 @@ public class ProductController extends SimpleController {
     public Response loadProductFile(@FormDataParam("file") InputStream file,
                                     @FormDataParam("file") FormDataContentDisposition fileDetail) throws IOException {
         String fileName = fileDetail.getFileName();
-
         String pathToFile = FilesUtils.saveFile(file, fileName);
-
         return Response.ok(new FileUploadResponse(pathToFile)).build();
     }
 
