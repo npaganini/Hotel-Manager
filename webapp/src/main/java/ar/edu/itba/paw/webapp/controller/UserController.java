@@ -109,6 +109,9 @@ public class UserController extends SimpleController {
         LOGGER.debug("Help request made on reservation with id " + reservationId);
         if (helpRequest.getHelpDescription() != null) {
             // todo: mav was "requestHelp.jsp"
+            System.out.println("id ---> " + reservationId);
+
+            System.out.println("help ---> " + helpRequest.getHelpDescription());
             Help helpRequested = userService.requestHelp(helpRequest.getHelpDescription(), reservationId);
             // do something with this help object
             return Response.ok().build();

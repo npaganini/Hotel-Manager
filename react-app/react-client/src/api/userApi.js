@@ -18,3 +18,4 @@ export const requestHelp = (reservationId, body) =>
   post(helpRequestUrl(reservationId), body);
 export const rateStay = (reservationId, body) =>
   post(rateStayUrl(reservationId), body);
+export const getAllReservations = () => get(baseUserUrl);

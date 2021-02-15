@@ -25,14 +25,16 @@ const UserHelp = (props, { history }) => {
         setHelp(newHelp.target.value);
     }
 
-    const onSubmitHelp = (helpDescription) => () => {
-            requestHelp(props.match.params.id,{helpDescription})
-                .then((response) => {
-                    console.log(response.status);
-          })
-          .catch((error) => {
-            console.log("there was an error trying to generate a help request", error);
-          });
+    const onSubmitHelp = ({ helpDescription }) => () => {
+        requestHelp(props.match.params.id, { helpDescription })
+            .then((response) => {
+                console.log(response.status);
+                console.log(history);
+                history.push("/userprincipal");
+            })
+            .catch((error) => {
+                console.log("there was an error trying to generate a help request", error);
+            });
     }
 
     const back = () => {
