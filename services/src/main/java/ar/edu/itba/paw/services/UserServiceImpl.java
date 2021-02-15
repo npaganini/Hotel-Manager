@@ -1,8 +1,10 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.daos.*;
+import ar.edu.itba.paw.interfaces.dtos.ActiveReservationResponse;
 import ar.edu.itba.paw.interfaces.dtos.ChargesByUserResponse;
 import ar.edu.itba.paw.interfaces.dtos.ProductResponse;
+import ar.edu.itba.paw.interfaces.dtos.ReservationResponse;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.EmailService;
@@ -55,9 +57,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PaginatedDTO<Reservation> findActiveReservations(String userEmail, int page, int pageSize) {
-        if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
-        return reservationDao.findActiveReservationsByEmail(userEmail, page, pageSize);
+    @Transactional
+    public List<ActiveReservationResponse> findActiveReservations(final String userEmail) {
+        return reservationDao.findActiveReservationsByEmail(userEmail)
+                .stream().map(ActiveReservationResponse::fromReservation).collect(Collectors.toList());
     }
 
     @Override
