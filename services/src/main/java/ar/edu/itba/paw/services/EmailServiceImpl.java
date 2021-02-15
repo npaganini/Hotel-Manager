@@ -114,8 +114,7 @@ public class EmailServiceImpl implements EmailService {
                 "<p>" + messageSourceExternalizer.getMessage("email.checkin.yourReservationIdIs") + " <b> " +
                 hash + "</b>" + messageSourceExternalizer.getMessage("email.checkin.keepItSafe") +
                 "<h4>" + messageSourceExternalizer.getMessage("email.checkin.reminder") + " <br> " +
-                "<p> <b>" + messageSourceExternalizer.getMessage("email.username") + ":</b> " + userEmail +
-                " <br> <b>" + messageSourceExternalizer.getMessage("email.password") + "</b>: " + userEmail + "</p>";
+                "<p> <b>" + messageSourceExternalizer.getMessage("email.username") + ":</b> " + userEmail + "</p>";
     }
 
     private String getHtmlMessageForReservation(String to, String hash) {
