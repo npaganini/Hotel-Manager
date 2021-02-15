@@ -97,20 +97,20 @@ public class UserController extends SimpleController {
         if (helpRequest.getHelpDescription() != null) {
             // todo: mav was "requestHelp.jsp"
             Help helpRequested = userService.requestHelp(helpRequest.getHelpDescription(), reservationId);
-            URI uri = uriInfo.getAbsolutePathBuilder().path("/" + helpRequested.getId()).build();
-            return Response.created(uri).build();
+            // do something with this help object
+            return Response.ok().build();
         }
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
     // TODO FIXME
     @POST
-    @Path("/ratings/{hash}/rate")
+    @Path("/ratings/{reservationId}/rate")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response rateStay(@PathParam("hash") String hash,
+    public Response rateStay(@PathParam("reservationId") long reservationId,
                              @RequestBody RateReservationRequest rateRequest) throws RequestInvalidException, EntityNotFoundException {
         // todo: mav was "thanksMessage.jsp"
-        userService.rateStay(rateRequest.getRate(), hash);
+        userService.rateStay(rateRequest.getRate(), reservationId);
         return Response.ok().build();
     }
 }
