@@ -2,11 +2,11 @@ import { get, post } from "./baseApi";
 
 const baseUserUrl = "/user";
 
-const boughtProductsUrl = (reservationId) => `/expenses/${reservationId}`;
-const getAllProductsUrl = (reservationId) => `/${reservationId}/products`;
-const buyProductUrl = (reservationId) => `/${reservationId}/products`;
-const helpRequestUrl = (reservationId) => `/${reservationId}/help`;
-const rateStayUrl = (reservationHash) => `/ratings/${reservationHash}/rate`;
+const boughtProductsUrl = (reservationId) => baseUserUrl + `/expenses/${reservationId}`;
+const getAllProductsUrl = (reservationId) => baseUserUrl + `/${reservationId}/products`;
+const buyProductUrl = (reservationId) => baseUserUrl + `/${reservationId}/products`;
+const helpRequestUrl = (reservationId) => baseUserUrl + `/${reservationId}/help`;
+const rateStayUrl = (reservationHash) => baseUserUrl + `/ratings/${reservationHash}/rate`;
 
 export const getBoughtProducts = (reservationId) =>
   get(boughtProductsUrl(reservationId));

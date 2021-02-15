@@ -3,7 +3,8 @@ import { Container, Row, Col, Form } from "react-bootstrap";
 import { makeStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
 
-import Table from "../../components/Table/Table";
+import { requestHelp } from "../../api/userApi";
+
 import Button from "../../components/Button/Button";
 import UserNavbar from '../../components/Navbar/UserNavbar'
 
@@ -15,8 +16,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-
-const UserPrincipal = ({ history }) => {
+const UserHelp = (props, { history }) => {
     const classes = useStyles();
 
     const [help, setHelp] = useState("");
@@ -25,8 +25,14 @@ const UserPrincipal = ({ history }) => {
         setHelp(newHelp.target.value);
     }
 
-    const onSubmitHelp = () => {
-        history.push("/userprincipal")
+    const onSubmitHelp = (helpDescription) => () => {
+            requestHelp(props.match.params.id,{helpDescription})
+                .then((response) => {
+                    console.log(response.status);
+          })
+          .catch((error) => {
+            console.log("there was an error trying to generate a help request", error);
+          });
     }
 
     const back = () => {
@@ -42,12 +48,14 @@ const UserPrincipal = ({ history }) => {
                     <Col xs={9} md={7}>
                         <Form.Group controlId="exampleForm.ControlTextarea1">
                             <Form.Label>Write what you need</Form.Label>
-                            <Form.Control as="textarea" rows={7} onChange={onHelpChange}/>
+                            <Form.Control as="textarea" rows={7} onChange={onHelpChange} />
                         </Form.Group>
                     </Col>
                     <Col xs={1} md={1}>
-                    <Col xs={12} md={6} style={{ textAlign: 'left' }}>
-                            <Button ButtonType="Save" size="large" onClick={onSubmitHelp} ButtonText="Enviar"></Button>
+                        <Col xs={12} md={6} style={{ textAlign: 'left' }}>
+                            <Button ButtonType="Save" size="large" onClick={onSubmitHelp({
+                                helpDescription: help
+                            })} ButtonText="Enviar"></Button>
                         </Col>
                         <Col xs={12} md={6} style={{ textAlign: 'left' }}>
                             <Button ButtonType="Back" size="large" onClick={back} ButtonText="Volver"></Button>
@@ -63,4 +71,4 @@ const UserPrincipal = ({ history }) => {
     );
 };
 
-export default withRouter(UserPrincipal);
+export default withRouter(UserHelp);

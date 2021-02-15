@@ -57,7 +57,7 @@ class App extends Component {
           />
           <PrivateRoute path="/orders" component={Orders} />
           <PrivateRoute
-            path="/help"
+            path="/help/:id"
             component={isClient() ? UserHelp : HelpRequest}
           />
           <PrivateRoute path="/expenses" component={UserExpenses} />
