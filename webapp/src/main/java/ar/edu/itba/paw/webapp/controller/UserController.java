@@ -55,6 +55,16 @@ public class UserController extends SimpleController {
         }).build();
     }
 
+//    @GET
+//    @Produces(value = MediaType.APPLICATION_JSON)
+//    public Response getActiveReservations(@QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
+//                                          @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit,
+//                                          @Context SecurityContext securityContext) {
+//        PaginatedDTO<Reservation> activeReservations = userService.findActiveReservations(getUserEmailFromJwt(securityContext), page, limit);
+//        return sendPaginatedResponse(page, limit, activeReservations.getMaxItems(), new GenericEntity<List<Reservation>>(activeReservations.getList()) {
+//        }, uriInfo.getAbsolutePathBuilder());
+//    }
+
     @GET
     @Path("/{reservationId}/products")
     @Produces(value = {MediaType.APPLICATION_JSON})
