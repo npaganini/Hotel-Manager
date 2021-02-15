@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.interfaces.services;
 
 import ar.edu.itba.paw.interfaces.dtos.ChargesByUserResponse;
+import ar.edu.itba.paw.interfaces.dtos.ChargeDeliveryResponse;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.models.charge.Charge;
@@ -15,7 +16,7 @@ public interface ChargeService {
 
     double sumCharge(long reservationId) throws RequestInvalidException;
 
-    PaginatedDTO<Charge> getAllChargesNotDelivered(int page, int pageSize);
+    PaginatedDTO<ChargeDeliveryResponse> getAllChargesNotDelivered(int page, int pageSize);
 
     int setChargeToDelivered(long chargeId) throws RequestInvalidException, EntityNotFoundException;
 

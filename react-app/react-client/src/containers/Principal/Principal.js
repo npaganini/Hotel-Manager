@@ -1,73 +1,74 @@
-import React, { useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { makeStyles } from "@material-ui/core/styles";
-import { withRouter } from "react-router";
+import React, {useState} from "react";
+import {Container, Row, Col} from "react-bootstrap";
+import {makeStyles} from "@material-ui/core/styles";
+import {withRouter} from "react-router";
 
 import Table from "../../components/Table/Table";
 import Button from "../../components/Button/Button";
-import { getAllBusyRooms } from "../../api/roomApi";
-import { busyRoomsColumns } from "../../utils/columnsUtil";
+import {getAllBusyRooms} from "../../api/roomApi";
+import {busyRoomsColumns} from "../../utils/columnsUtil";
+import {useTranslation} from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
-  container: {
-    background: "#FAF6FC",
-    height: "100vh",
-  },
-  tableCol: {
-    paddingRight: "7.5%",
-    paddingLeft: "7.5%",
-  },
-  buttonCol: {
-    textAlign: "right",
-    paddingRight: "7.5%",
-  },
-  buttonRow: {
-    paddingTop: "40px",
-    paddingLeft: "10%",
-  },
+    container: {
+        background: "#FAF6FC",
+        height: "100vh",
+    },
+    tableCol: {
+        paddingRight: "7.5%",
+        paddingLeft: "7.5%",
+    },
+    buttonCol: {
+        textAlign: "right",
+        paddingRight: "7.5%",
+    },
+    buttonRow: {
+        paddingTop: "40px",
+        paddingLeft: "10%",
+    },
 }));
 
-const Principal = ({ history }) => {
-  const classes = useStyles();
-  const [busyRooms, setBusyRooms] = useState([]);
-  const [totalCount, setTotalCount] = useState(0);
+const Principal = ({history}) => {
+    const classes = useStyles();
+    const {t} = useTranslation();
+    const [tableInfo, setTableInfo] = useState({busyRooms: [], totalCount: 0});
+    const {busyRooms, totalCount} = tableInfo;
 
-  const newReservationClick = () => {
-    history.push("/reservation");
-  };
+    const getAllActiveReservations = (page = 1, limit = 20) => {
+        getAllBusyRooms({page, limit})
+            .then((response) => {
+                setTableInfo({busyRooms: response.data, totalCount: +response.headers["x-total-count"]})
+            }).catch((error) => {
+                console.log("There was an error while fetching all busy rooms! ", error);
+            }
+        );
+    };
 
-  // this is not ok, it could may be do a request every x seconds, or with a button to refresh
-  if (busyRooms.length == 0) {
-    getAllBusyRooms()
-      .then((response) => {
-        setBusyRooms(response.data);
-        setTotalCount(response.headers["x-total-count"]);
-      })
-      .catch((error) => {
-        console.log("there was an error on get all busy rooms", error);
-      });
-  }
+    const newReservationClick = () => {
+        history.push("/reservation");
+    };
 
-  return (
-    <div>
-      <Container fluid="md" className={classes.container}>
-        <Row className={classes.buttonRow}>
-          <Col className={classes.buttonCol}>
-            <Button
-              ButtonType="Inherit"
-              onClick={newReservationClick}
-              ButtonText="New Reservation"
-            ></Button>
-          </Col>
-        </Row>
-        <Row className="justify-content-sm-center">
-          <Col className={classes.tableCol}>
-            <Table columns={busyRoomsColumns} rows={busyRooms} totalItems={totalCount} />
-          </Col>
-        </Row>
-      </Container>
-    </div>
-  );
+    return (
+        <div>
+            <Container fluid="md" className={classes.container}>
+                <Row className={classes.buttonRow}>
+                    <Col className={classes.buttonCol}>
+                        <Button
+                            ButtonType="Inherit"
+                            onClick={newReservationClick}
+                            ButtonText={t("reservation.new")}
+                        />
+                    </Col>
+                </Row>
+                <Row className="justify-content-sm-center">
+                    <Col className={classes.tableCol}>
+                        <Table columns={busyRoomsColumns} rows={busyRooms} totalItems={totalCount}
+                               pageFunction={getAllActiveReservations}/>
+                    </Col>
+                </Row>
+            </Container>
+        </div>
+    );
 };
 
 export default withRouter(Principal);

@@ -65,7 +65,8 @@
     "plural": "Reservas",
     "date": {
       "start": "Desde",
-      "end": "Hasta"
+      "end": "Hasta",
+      "required": "¡Un período de fechas es requerido!"
     },
     "room": {
       "type": "Tipo de Habitación",
@@ -174,5 +175,7 @@
   "search": "Buscar",
   "registration": "Registros",
   "close": "Cerrar",
-  "loading": "Cargando..."
+  "loading": "Cargando...",
+  "yes": "Sí",
+  "no": "No"
 }

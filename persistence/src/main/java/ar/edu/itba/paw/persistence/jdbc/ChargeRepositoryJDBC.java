@@ -2,7 +2,7 @@ package ar.edu.itba.paw.persistence.jdbc;
 
 /*import ar.edu.itba.paw.interfaces.daos.ChargeDao;
 import ar.edu.itba.paw.models.charge.Charge;
-import ar.edu.itba.paw.models.dtos.ChargeDeliveryDTO;
+import ar.edu.itba.paw.interfaces.dtos.ChargeDeliveryDTO;
 import ar.edu.itba.paw.models.dtos.Charge;
 import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.models.reservation.Reservation;

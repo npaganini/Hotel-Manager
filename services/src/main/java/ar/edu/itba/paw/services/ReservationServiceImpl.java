@@ -75,10 +75,14 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public PaginatedDTO<Reservation> getAll(int page, int pageSize) {
+    @Transactional
+    public PaginatedDTO<ReservationResponse> getAll(int page, int pageSize) {
         if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
         LOGGER.debug("About to get all the confirmed reservations");
-        return reservationDao.findAll(page, pageSize);
+        PaginatedDTO<Reservation> reservations = reservationDao.findAll(page, pageSize);
+        return new PaginatedDTO<>(reservations.getList()
+                .stream().map(ReservationResponse::fromReservation).collect(Collectors.toList()),
+                reservations.getMaxItems());
     }
 
     private boolean isValidDate(Calendar startDate, Calendar endDate) {
@@ -120,9 +124,15 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public PaginatedDTO<Reservation> findAllBetweenDatesOrEmailAndSurname(Calendar startDate, Calendar endDate, String email, String occupantSurname, int page, int pageSize) {
+    @Transactional
+    public PaginatedDTO<ReservationResponse> findAllBetweenDatesOrEmailAndSurname(Calendar startDate, Calendar endDate,
+                                                                                  String email, String occupantSurname,
+                                                                                  int page, int pageSize) {
         if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
-        return reservationDao.findAllBetweenDatesOrEmailAndSurname(startDate, endDate, email, occupantSurname, page, pageSize);
+        PaginatedDTO<Reservation> reservations = reservationDao.findAllBetweenDatesOrEmailAndSurname(startDate, endDate, email, occupantSurname, page, pageSize);
+        return new PaginatedDTO<>(reservations.getList()
+                .stream().map(ReservationResponse::fromReservation).collect(Collectors.toList()),
+                reservations.getMaxItems());
     }
 
     @Override

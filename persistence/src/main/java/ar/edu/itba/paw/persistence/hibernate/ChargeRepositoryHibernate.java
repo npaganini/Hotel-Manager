@@ -99,7 +99,7 @@ public class ChargeRepositoryHibernate extends SimpleRepositoryHibernate<Charge>
         CriteriaQuery<Long> cqCount = builder.createQuery(Long.class);
         Root<Charge> entityRoot = cqCount.from(Charge.class);
         cqCount.select(builder.count(entityRoot));
-        Predicate wherePredicate = builder.isTrue(entityRoot.get("delivered"));
+        Predicate wherePredicate = builder.isFalse(entityRoot.get("delivered"));
         cqCount.where(builder.and(wherePredicate));
         long count = em.createQuery(cqCount).getSingleResult();
 
