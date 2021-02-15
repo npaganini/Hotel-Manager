@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.dtos.ReservationConfirmedResponse;
 import ar.edu.itba.paw.interfaces.dtos.ReservationResponse;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
@@ -63,7 +64,8 @@ public class RoomController extends SimpleController {
         } catch (IndexOutOfBoundsException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        return sendPaginatedResponse(page, limit, reservations.getMaxItems(), new GenericEntity<List<ReservationResponse>>(reservations.getList()) {}, uriInfo.getAbsolutePathBuilder());
+        return sendPaginatedResponse(page, limit, reservations.getMaxItems(), new GenericEntity<List<ReservationResponse>>(reservations.getList()) {
+        }, uriInfo.getAbsolutePathBuilder());
     }
 
     @POST
@@ -74,8 +76,8 @@ public class RoomController extends SimpleController {
         LOGGER.debug("Request received to do a reservation on room with id: " + reservationRequest.getRoomId());
         final Reservation reservation = reservationService.doReservation(reservationRequest.getRoomId(),
                 reservationRequest.getUserEmail(), reservationRequest.getStartDate(), reservationRequest.getEndDate());
-        final URI uri = uriInfo.getAbsolutePathBuilder().path(String.valueOf(reservation.getId())).build();
-        return Response.created(uri).build();
+        return Response.ok(new GenericEntity<ReservationConfirmedResponse>(new ReservationConfirmedResponse(reservation.getId(), reservation.getHash(), reservation.getRoom().getNumber())) {
+        }).build();
     }
 
     @POST
@@ -92,7 +94,8 @@ public class RoomController extends SimpleController {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         if (reservation != null) {
-            return Response.ok(new GenericEntity<ReservationResponse>(reservation) {}).build();
+            return Response.ok(new GenericEntity<ReservationResponse>(reservation) {
+            }).build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -115,7 +118,8 @@ public class RoomController extends SimpleController {
             Calendar startDateCalendar = new JsonToCalendar().unmarshal(startDate);
             Calendar endDateCalendar = new JsonToCalendar().unmarshal(endDate);
             if (startDateCalendar.before(endDateCalendar)) {
-                return Response.ok(new GenericEntity<List<Room>>(roomService.findAllFreeBetweenDates(startDateCalendar, endDateCalendar)) {}).build();
+                return Response.ok(new GenericEntity<List<Room>>(roomService.findAllFreeBetweenDates(startDateCalendar, endDateCalendar)) {
+                }).build();
             }
         }
         String message = "Expected 'startDate' and 'endDate' in format yyyy-mm-dd.";
@@ -139,10 +143,10 @@ public class RoomController extends SimpleController {
         if (reservationHash != null && !CollectionUtils.isEmpty(occupantsRequest.getOccupants())) {
             LOGGER.debug("Attempted to register occupants on reservation hash " + reservationHash);
             reservationService.registerOccupants(reservationHash.trim(),
-                occupantsRequest.getOccupants()
-                    .stream()
-                    .map(occupantR -> new Occupant(occupantR.getFirstName(), occupantR.getLastName()))
-                    .collect(Collectors.toList()));
+                    occupantsRequest.getOccupants()
+                            .stream()
+                            .map(occupantR -> new Occupant(occupantR.getFirstName(), occupantR.getLastName()))
+                            .collect(Collectors.toList()));
             return Response.status(Response.Status.CREATED).build();
         }
         return Response.status(Response.Status.BAD_REQUEST).build();
