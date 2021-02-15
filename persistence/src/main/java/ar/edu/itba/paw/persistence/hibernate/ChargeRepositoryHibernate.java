@@ -16,6 +16,7 @@ import javax.persistence.criteria.Root;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Repository
 public class ChargeRepositoryHibernate extends SimpleRepositoryHibernate<Charge> implements ChargeDao {
@@ -35,7 +36,7 @@ public class ChargeRepositoryHibernate extends SimpleRepositoryHibernate<Charge>
         final List<ProductAmountDTO> list = em.createQuery(query).getResultList();
 
         final Map<Product, Integer> ans = new HashMap<>();
-        for(ProductAmountDTO product: list) {
+        for (ProductAmountDTO product : list) {
             ans.put(product.getProduct(), Math.toIntExact(product.getAmount()));
         }
         return ans;

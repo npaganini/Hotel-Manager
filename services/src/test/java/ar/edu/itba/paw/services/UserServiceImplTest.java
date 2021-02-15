@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfaces.daos.ChargeDao;
 import ar.edu.itba.paw.interfaces.daos.ProductDao;
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
 import ar.edu.itba.paw.interfaces.daos.UserDao;
+import ar.edu.itba.paw.interfaces.dtos.ChargesByUserResponse;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.models.charge.Charge;
@@ -70,15 +71,15 @@ public class UserServiceImplTest {
 
     @Test
     public void getProductsBoughtByValidReservationIdTest() {
-        Map<Product, Integer> productToPrice = userService.checkProductsPurchasedByUserByReservationId("email", 1L);
-        assertEquals("Product should have one element", 1, productToPrice.size());
-        assertNotNull(productToPrice.get(product));
+        List<ChargesByUserResponse> charges = userService.checkProductsPurchasedByUserByReservationId("email", 1L);
+        assertEquals("Product should have one element", 1, charges.size());
+        assertNotNull(charges.get(0));
     }
 
     @Test
     public void getProductsBoughtByNonValidReservationIdTest() {
-        Map<Product, Integer> productToPrice = userService.checkProductsPurchasedByUserByReservationId("invalidEmail", 2L);
-        assertEquals("Product should have no element", 0, productToPrice.size());
+        List<ChargesByUserResponse> charges = userService.checkProductsPurchasedByUserByReservationId("invalidEmail", 2L);
+        assertEquals("Product should have no element", 0, charges.size());
     }
 
     @Test
