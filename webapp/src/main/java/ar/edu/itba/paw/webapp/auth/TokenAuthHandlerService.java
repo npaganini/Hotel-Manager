@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -54,7 +53,6 @@ public class TokenAuthHandlerService {
     }
 
     private String createToken(final String username) {
-        System.out.println("Creating new token for user: " + username);
         LOGGER.debug("Creating new token for user: " + username);
         final ZonedDateTime now = ZonedDateTime.now();
         final Date expirationDate = Date.from(now.plusDays(DAYS_UNTIL_TOKEN_EXPIRES).toInstant());
@@ -70,12 +68,12 @@ public class TokenAuthHandlerService {
     }
 
     public String getUsername(final String token) {
-        System.out.println("Retrieving username for token: " + token);
+        LOGGER.debug("Retrieving username for token: " + token);
         return getAllClaimsFromToken(token).getSubject();
     }
 
     private Claims getAllClaimsFromToken(String token) {
-        System.out.println("Retrieving all claims for token: " + token);
+        LOGGER.debug("Retrieving all claims for token: " + token);
         return Jwts.parser()
                 .setSigningKey(key)
                 .parseClaimsJws(token.replace(AUTHENTICATION_SCHEME, ""))
@@ -88,22 +86,24 @@ public class TokenAuthHandlerService {
     }
 
     public Optional<String> validateToken(String token) {
-        System.out.println("Validating token...");
+        LOGGER.debug("Validating token...");
         Claims tokenClaims = getAllClaimsFromToken(token);
         if (tokenClaims != null) {
             if (!isTokenExpired(tokenClaims)) {
                 return Optional.of(tokenClaims.getSubject());
             }
-            System.out.println("Token expired!");
+            LOGGER.debug("Token expired!");
         }
         return Optional.empty();
     }
 
     public void addAuthToResponse(HttpServletResponse response, String username) throws IOException {
-        final TokenResponse token = new TokenResponse(createToken(username));
+        // If we are at this point, there is no chance user is no longer available, it just crash everything if this happens
+        User user = userDao.findByUsername(username).get();
+
+        final LoginResponse token = new LoginResponse(createToken(username), user.getRole().toString());
         final String tokenResponseJson = new ObjectMapper().writeValueAsString(token);
         response.getWriter().write(tokenResponseJson);
         response.flushBuffer();
-//        response.setHeader("Authorization", AUTHENTICATION_SCHEME + token);
     }
 }

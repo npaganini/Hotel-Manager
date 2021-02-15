@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Getter
@@ -14,6 +17,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "product")
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Product {
     public final static String KEY_ID = "id";
     public final static String KEY_DESCRIPTION = "description";
@@ -34,7 +39,6 @@ public class Product {
     @Column(nullable = false)
     private double price;
 
-    @XmlTransient
     private byte[] file;
 
     @Column(nullable = false)
@@ -56,5 +60,13 @@ public class Product {
     @Override
     public int hashCode() {
         return Math.toIntExact(id);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return id == product.id;
     }
 }

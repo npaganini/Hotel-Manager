@@ -51,7 +51,7 @@ public class ChargeServiceImplTest {
         Mockito.when(chargeDao.findById(1L)).thenReturn(Optional.of(charge));
         Mockito.when(chargeDao.findById(2L)).thenReturn(Optional.empty());
         Mockito.when(chargeDao.updateChargeToDelivered(1L)).thenReturn(1);
-        Mockito.when(chargeDao.findChargeByReservationId(1L)).thenReturn(Collections.singletonList(charge));
+        Mockito.when(chargeDao.findChargesByReservationId(1L)).thenReturn(Collections.singletonList(charge));
         Mockito.when(roomDao.findById(1L)).thenReturn(Optional.of(room));
         Charge charge1 = new Charge(product, reservation);
         Charge charge2 = new Charge(product2, reservation);

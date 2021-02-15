@@ -58,10 +58,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// TODO currentPath to value
 const Navbar = ({ history }) => {
   const classes = useStyles();
+
+  const { location } = history;
+  const { pathname } = location;
+
   const [value, setValue] = React.useState(0);
   const { t } = useTranslation();
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -96,7 +102,7 @@ const Navbar = ({ history }) => {
   };
 
   const helpRequestOnClick = () => {
-    history.push("/helprequest");
+    history.push("/help");
   };
 
   return (

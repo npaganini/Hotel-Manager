@@ -73,11 +73,13 @@
     },
     "checkin": {
       "message": "Check-In",
-      "successful": "¡Check-In exitoso!"
+      "successful": "¡Check-In exitoso!",
+      "error": "Reserva no encontrada."
     },
     "checkout": {
       "message": "Check-Out",
-      "successful": "¡Check-Out exitoso!"
+      "successful": "¡Check-Out exitoso!",
+      "error": "Reserva no encontrada."
     },
     "order": {
       "singular": "Pedido",
@@ -127,6 +129,11 @@
     "occupied": {
       "singular": "Habitación Ocupada",
       "plural": "Habitaciones Ocupadas"
+    },
+    "roomType": {
+      "single": "simple",
+      "double": "doble",
+      "triple": "triple"
     }
   },
 
@@ -140,6 +147,13 @@
     "500": "Hubo un problema procesando su pedido. Por favor, intente devuelta en unos minutos.",
     "403": "Acceso denegado. Por favor, inicie sesión.",
     "404": "Recurso no encontrado."
+  },
+
+  "pagination": {
+    "first": "Primero",
+    "last": "Último",
+    "prev": "Anterior",
+    "next": "Siguiente"
   },
 
   "accept": "Aceptar",
@@ -158,5 +172,7 @@
   "lastname": "Apellido",
   "firstname": "Nombre",
   "search": "Buscar",
-  "registration": "Registros"
+  "registration": "Registros",
+  "close": "Cerrar",
+  "loading": "Cargando..."
 }

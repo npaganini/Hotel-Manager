@@ -1,16 +1,15 @@
 package ar.edu.itba.paw.interfaces.services;
 
-import ar.edu.itba.paw.models.dtos.RatingDto;
-import ar.edu.itba.paw.models.reservation.Calification;
-
-import java.util.List;
+import ar.edu.itba.paw.interfaces.dtos.CalificationResponse;
+import ar.edu.itba.paw.models.dtos.PaginatedDTO;
+import ar.edu.itba.paw.models.dtos.RatingDTO;
 
 public interface RatingsService {
-    RatingDto getHotelRating();
+    RatingDTO getHotelRating();
 
-    List<Calification> getAllHotelRatings();
+    PaginatedDTO<CalificationResponse> getAllHotelRatings(int page, int pageSize);
 
-    RatingDto getRoomRating(long roomId);
+    RatingDTO getRoomRating(long roomId);
 
-    List<Calification> getAllRoomRatings(long roomId);
+    PaginatedDTO<CalificationResponse> getAllRoomRatings(long roomId, int page, int pageSize);
 }

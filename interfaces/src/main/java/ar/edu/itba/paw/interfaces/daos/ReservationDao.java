@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.interfaces.daos;
 
+import ar.edu.itba.paw.models.dtos.PaginatedDTO;
 import ar.edu.itba.paw.models.reservation.Calification;
 import ar.edu.itba.paw.models.reservation.Reservation;
 
@@ -8,24 +9,25 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ReservationDao extends SimpleDao<Reservation> {
-
     Optional<Reservation> findReservationByHash(String hash);
 
     boolean updateActive(long reservationId, boolean b);
 
-    List<Reservation> findActiveReservationsByEmail(String userEmail);
+    PaginatedDTO<Reservation> getActiveReservations(int page, int pageSize);
+
+    PaginatedDTO<Reservation> findActiveReservationsByEmail(String userEmail, int page, int pageSize);
 
     boolean isRoomFreeOnDate(long roomId, Calendar startDate, Calendar endDate);
 
-    List<Reservation> findAllBetweenDatesOrEmailAndSurname(Calendar startDate, Calendar endDate, String email, String occupantSurname);
+    PaginatedDTO<Reservation> findAllBetweenDatesOrEmailAndSurname(Calendar startDate, Calendar endDate, String email, String occupantSurname, int page, int pageSize);
 
     void rateStay(long id, String rate);
 
-    double getHotelRating();
+    List<Reservation> getHotelRating();
 
-    List<Calification> getAllRatings();
+    PaginatedDTO<Calification> getAllRatings(int page, int pageSize);
 
-    double getRoomRating(long roomId);
+    List<Reservation> getRoomRating(long roomId);
 
-    List<Calification> getRatingsByRoom(long roomId);
+    PaginatedDTO<Calification> getRatingsByRoom(long roomId, int page, int pageSize);
 }

@@ -1,28 +1,29 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.dtos.CalificationResponse;
 import ar.edu.itba.paw.interfaces.services.RatingsService;
-import ar.edu.itba.paw.models.reservation.Calification;
-import ar.edu.itba.paw.webapp.dtos.RoomRatingsDto;
+import ar.edu.itba.paw.models.dtos.PaginatedDTO;
+import ar.edu.itba.paw.models.dtos.RatingDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @Path("/ratings")
 public class RatingsController extends SimpleController {
     private static final Logger LOGGER = LoggerFactory.getLogger(RatingsController.class);
+    public static final String DEFAULT_FIRST_PAGE = "1";
+    public static final String DEFAULT_PAGE_SIZE = "20";
 
     private final RatingsService ratingsService;
+
+    @Context
+    private UriInfo uriInfo;
 
     @Autowired
     public RatingsController(RatingsService ratingsService) {
@@ -32,29 +33,54 @@ public class RatingsController extends SimpleController {
     @GET
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getHotelRatings() {
-        return Response.ok(ratingsService.getHotelRating()).build();
+        RatingDTO hotelRating;
+        try {
+            hotelRating = ratingsService.getHotelRating();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+        return Response.ok().entity(new GenericEntity<RatingDTO>(hotelRating) {}).build();
     }
 
     @GET
     @Path("/hotel")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getAllHotelRatings() {
-        return Response.ok(ratingsService.getAllHotelRatings()).build();
+    public Response getAllHotelRatings(@QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
+                                       @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) {
+        PaginatedDTO<CalificationResponse> cals;
+        try {
+            cals = ratingsService.getAllHotelRatings(page, limit);
+        } catch (IndexOutOfBoundsException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+        return sendPaginatedResponse(page, limit, cals.getMaxItems(), new GenericEntity<List<CalificationResponse>>(cals.getList()) {}, uriInfo.getAbsolutePathBuilder());
     }
 
     @GET
     @Path("/rooms/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getRoomRating(@PathParam(value = "id") long roomId) {
-        return Response.ok(ratingsService.getRoomRating(roomId)).build();
+        RatingDTO roomRating;
+        try {
+            roomRating = ratingsService.getRoomRating(roomId);
+        } catch (Exception e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
+        return Response.ok().entity(new GenericEntity<RatingDTO>(roomRating) {}).build();
     }
 
     @GET
     @Path("/rooms/{id}/all")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getRoomRatings(@PathParam(value ="id") long roomId) {
-        List<Calification> ratings = ratingsService.getAllRoomRatings(roomId);
-        RoomRatingsDto roomRatingsDto = new RoomRatingsDto(ratings.stream().map(Enum::toString).collect(Collectors.toList()));
-        return Response.ok(roomRatingsDto).build();
+    public Response getRoomRatings(@PathParam(value ="id") long roomId,
+                                   @QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
+                                   @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) {
+        PaginatedDTO<CalificationResponse> ratings;
+        try {
+            ratings = ratingsService.getAllRoomRatings(roomId, page, limit);
+        } catch (IndexOutOfBoundsException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+        return sendPaginatedResponse(page, limit, ratings.getMaxItems(), new GenericEntity<List<CalificationResponse>>(ratings.getList()) {}, uriInfo.getAbsolutePathBuilder());
     }
 }

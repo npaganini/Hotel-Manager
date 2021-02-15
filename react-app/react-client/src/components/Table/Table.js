@@ -59,7 +59,7 @@ const rowsDefault = [
 
 const useStyles = makeStyles({});
 
-const DataTable = ({ columns, rows }) => {
+const DataTable = ({ columns, rows, totalItems }) => {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);

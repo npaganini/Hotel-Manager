@@ -1,11 +1,14 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.daos.*;
+import ar.edu.itba.paw.interfaces.dtos.ChargesByUserResponse;
+import ar.edu.itba.paw.interfaces.dtos.ProductResponse;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.charge.Charge;
+import ar.edu.itba.paw.models.dtos.PaginatedDTO;
 import ar.edu.itba.paw.models.help.Help;
 import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.models.reservation.Reservation;
@@ -19,12 +22,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class UserServiceImpl implements UserService {
-    public static final int GENERATED_PASSWORD_LENGTH = 8;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+    public static final int GENERATED_PASSWORD_LENGTH = 8;
 
     private final ProductDao productDao;
     private final ChargeDao chargeDao;
@@ -44,20 +47,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Product> getProducts() {
-        return new LinkedList<>(productDao.findAll());
+    public PaginatedDTO<ProductResponse> getProducts(int page, int pageSize) {
+        if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
+        PaginatedDTO<Product> products = productDao.findAllActive(page, pageSize);
+        return new PaginatedDTO<>(products.getList()
+                .stream().map(ProductResponse::fromProduct).collect(Collectors.toList()), products.getMaxItems());
     }
 
     @Override
-    public List<Reservation> findActiveReservations(String userEmail) {
-        return reservationDao.findActiveReservationsByEmail(userEmail);
+    public PaginatedDTO<Reservation> findActiveReservations(String userEmail, int page, int pageSize) {
+        if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
+        return reservationDao.findActiveReservationsByEmail(userEmail, page, pageSize);
     }
 
     @Override
-    public Map<Product, Integer> checkProductsPurchasedByUserByReservationId(String userEmail, long reservationId) {
-        return new HashMap<>(chargeDao.getAllChargesByUser(userEmail, reservationId));
+    public List<ChargesByUserResponse> checkProductsPurchasedByUserByReservationId(String userEmail, long reservationId) {
+        Map<Product, Integer> productToQtyMap = chargeDao.getAllChargesByUser(userEmail, reservationId);
+        return productToQtyMap.keySet().stream().map(
+                product -> new ChargesByUserResponse(product.getDescription(), product.getId(), product.getPrice(), productToQtyMap.get(product))
+        ).collect(Collectors.toList());
     }
-
 
     @Override
     public Charge addCharge(long productId, long reservationId) throws EntityNotFoundException {
@@ -89,7 +98,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Help requestHelp(String text, long reservationId) throws EntityNotFoundException {
         Reservation reservation = reservationDao.findById(reservationId).orElseThrow(() -> new EntityNotFoundException("Can't find reservation"));
-        if(text.length() > 0 && isValidString(text)) {
+        if (text.length() > 0 && isValidString(text)) {
             return helpDao.save(new Help(text, reservation));
         }
         return null;
@@ -97,8 +106,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void rateStay(String rate, String hash) throws EntityNotFoundException, RequestInvalidException {
-        Reservation reservation = reservationDao.findReservationByHash(hash)
+    public void rateStay(String rate, long reservationId) throws EntityNotFoundException, RequestInvalidException {
+        Reservation reservation = reservationDao.findById(reservationId)
                 .orElseThrow(() -> new EntityNotFoundException("Reservation was not found"));
         if (reservation.getCalification() != null) {
             throw new RequestInvalidException();
@@ -123,7 +132,7 @@ public class UserServiceImpl implements UserService {
         LOGGER.debug("Generating password...");
         Integer[] ints = generateRandomIntsArray();
         StringBuilder password = new StringBuilder(GENERATED_PASSWORD_LENGTH);
-        for (Integer i: ints) {
+        for (Integer i : ints) {
             password.append(Character.toChars('a' + i));
         }
         return password.toString();
