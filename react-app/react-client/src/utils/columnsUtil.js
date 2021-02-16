@@ -17,9 +17,8 @@ export const busyRoomsColumns = [
   { id: "userEmail", label: "Titular" },
 ];
 
-
 export const reservationUserColumns = [
-  {id: "roomType", label: "Room Type"},
+  { id: "roomType", label: "Room Type" },
   {
     id: "startDate",
     label: "Desde",
@@ -32,8 +31,20 @@ export const reservationUserColumns = [
     label: "Hasta",
     format: (date) => moment(date).format("DD/MM/YYYY"),
   },
-  {id: "roomNumber", label: "Room Number"},
-  {id: "actions", label: "actions"},
-  {id: "expenses", label: "expenses"},
-  {id: "help", label: "Problem?"}
+  { id: "roomNumber", label: "Room Number" },
+  {
+    id: "actions",
+    label: "actions",
+    isButton: true,
+  },
+  {
+    id: "expenses",
+    label: "expenses",
+    isButton: true,
+  },
+  {
+    id: "help",
+    label: "Problem?",
+    isButton: true,
+  },
 ];

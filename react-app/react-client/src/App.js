@@ -17,6 +17,8 @@ import NewProduct from "./containers/Products/NewProduct";
 import Orders from "./containers/Orders/Orders";
 import HelpRequest from "./containers/HelpRequest/HelpRequest";
 import Navbar from "./components/Navbar/Navbar";
+import UserNavbar from "./components/Navbar/UserNavbar";
+
 import UserPrincipal from "./containers/User/Principal";
 import UserHelp from "./containers/User/Help";
 import UserProducts from "./containers/User/Products";
@@ -32,7 +34,7 @@ class App extends Component {
     console.log("esta logeado?", isLoggedIn());
     return (
       <Router>
-        {isLoggedIn() && <Navbar />}
+        {isLoggedIn() && isClient() ? <UserNavbar /> : <Navbar />}
         <Switch>
           <PrivateRoute
             exact
@@ -56,7 +58,7 @@ class App extends Component {
             component={NewProduct}
           />
           <PrivateRoute path="/orders" component={Orders} />
-          <PrivateRoute
+          <Route
             path="/help/:id"
             component={isClient() ? UserHelp : HelpRequest}
           />
