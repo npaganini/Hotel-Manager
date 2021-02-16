@@ -2,11 +2,11 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
 import ar.edu.itba.paw.interfaces.dtos.CalificationResponse;
+import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.services.RatingsService;
 import ar.edu.itba.paw.models.dtos.PaginatedDTO;
 import ar.edu.itba.paw.models.dtos.RatingDTO;
 import ar.edu.itba.paw.models.reservation.Calification;
-import ar.edu.itba.paw.models.reservation.Reservation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -41,26 +41,35 @@ public class RatingsServiceImpl implements RatingsService {
     }
 
     @Override
-    public RatingDTO getRoomRating(long roomId) {
+    public RatingDTO getRoomRating(long roomId) throws EntityNotFoundException {
         LOGGER.debug("Getting the room's rating for room with id: " + roomId);
-        return new RatingDTO(getAverageRating(reservationDao.getRoomRating(roomId)));
+        List<Calification> cals = reservationDao.getRoomRating(roomId);
+        if (cals.size() == 0) {
+            LOGGER.debug("Invalid room id: " + roomId);
+            throw new EntityNotFoundException("Invalid room id: " + roomId);
+        }
+        return new RatingDTO(getAverageRating(cals));
     }
 
     @Override
-    public PaginatedDTO<CalificationResponse> getAllRoomRatings(long roomId, int page, int pageSize) {
+    public PaginatedDTO<CalificationResponse> getAllRoomRatings(long roomId, int page, int pageSize) throws EntityNotFoundException {
         if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
         LOGGER.debug("Getting a list of all the room's ratings for room with id: " + roomId);
         PaginatedDTO<Calification> cals = reservationDao.getRatingsByRoom(roomId, page, pageSize);
+        if (cals.getList().size() == 0) {
+            LOGGER.debug("Invalid room id: " + roomId);
+            throw new EntityNotFoundException("Invalid room id: " + roomId);
+        }
         return new PaginatedDTO<>(cals.getList()
                 .stream().map(CalificationResponse::fromCalification).collect(Collectors.toList()),
                 cals.getMaxItems());
     }
 
-    private double getAverageRating(List<Reservation> reservations) {
+    private double getAverageRating(List<Calification> reservations) {
         double rating = 0;
-        for (Reservation r: reservations) {
+        for (Calification c: reservations) {
             int rated;
-            switch (r.getCalification()) {
+            switch (c) {
                 case AWFUL: rated = 1; break;
                 case BAD: rated = 2; break;
                 case NORMAL: rated = 3; break;

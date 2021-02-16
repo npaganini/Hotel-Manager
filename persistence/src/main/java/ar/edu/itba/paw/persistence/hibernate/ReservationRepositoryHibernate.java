@@ -133,8 +133,8 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
     }
 
     @Override
-    public List<Reservation> getHotelRating() {
-        return em.createQuery("SELECT r FROM Reservation r WHERE r.calification IS NOT NULL", Reservation.class).getResultList();
+    public List<Calification> getHotelRating() {
+        return em.createQuery("SELECT r.calification FROM Reservation r WHERE r.calification IS NOT NULL", Calification.class).getResultList();
     }
 
     @Override
@@ -156,9 +156,9 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
     }
 
     @Override
-    public List<Reservation> getRoomRating(long roomId) {
+    public List<Calification> getRoomRating(long roomId) {
         return em.createQuery(
-                "SELECT r FROM Reservation r WHERE r.room.id = :roomId AND r.calification IS NOT NULL", Reservation.class)
+                "SELECT r.calification FROM Reservation r WHERE r.room.id = :roomId AND r.calification IS NOT NULL", Calification.class)
                 .setParameter("roomId", roomId)
                 .getResultList();
     }
