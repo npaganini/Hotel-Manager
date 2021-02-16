@@ -2,7 +2,7 @@ import { get, post } from "./baseApi";
 
 const baseUserUrl = "/user";
 
-const boughtProductsUrl = (reservationId) => baseUserUrl + `/expenses/${reservationId}`;
+const boughtProductsUrl = (reservationId) => baseUserUrl + `/${reservationId}/expenses`;
 const getAllProductsUrl = (reservationId) => baseUserUrl + `/${reservationId}/products`;
 const buyProductUrl = (reservationId) => baseUserUrl + `/${reservationId}/products`;
 const helpRequestUrl = (reservationId) => baseUserUrl + `/${reservationId}/help`;

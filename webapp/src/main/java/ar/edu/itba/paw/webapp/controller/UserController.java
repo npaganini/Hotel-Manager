@@ -55,6 +55,9 @@ public class UserController extends SimpleController {
         // todo: mav was "expenses.jsp"
         LOGGER.debug("Request received to retrieve all expenses on reservation with id " + reservationId);
         List<ChargesByUserResponse> chargesByUser = userService.checkProductsPurchasedByUserByReservationId(getUserEmailFromJwt(securityContext), reservationId);
+        System.out.println(chargesByUser);
+        System.out.println(reservationId);
+
         return Response.ok(new GenericEntity<List<ChargesByUserResponse>>(chargesByUser) {
         }).build();
     }
