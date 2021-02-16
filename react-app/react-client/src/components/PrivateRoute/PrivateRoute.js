@@ -16,6 +16,10 @@ export const PrivateRoute = ({ component: Component, ...routeProps }) => (
 
       const { path } = routeProps;
 
+      if(path === "/login"){
+        return <Redirect to={{ pathname: "/" }} />;
+      }
+
       if (role === CLIENT) {
         if (clientPaths.indexOf(path) == -1) {
           return <Forbidden />;

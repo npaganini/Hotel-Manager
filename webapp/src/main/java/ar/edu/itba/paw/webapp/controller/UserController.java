@@ -18,6 +18,7 @@ import ar.edu.itba.paw.webapp.dtos.RateReservationRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -43,6 +44,7 @@ public class UserController extends SimpleController {
         this.userService = userService;
     }
 
+
     @GET
     @Path("/{reservationId}/expenses")
     @Produces(value = {MediaType.APPLICATION_JSON})
@@ -53,6 +55,9 @@ public class UserController extends SimpleController {
         // todo: mav was "expenses.jsp"
         LOGGER.debug("Request received to retrieve all expenses on reservation with id " + reservationId);
         List<ChargesByUserResponse> chargesByUser = userService.checkProductsPurchasedByUserByReservationId(getUserEmailFromJwt(securityContext), reservationId);
+        System.out.println(chargesByUser);
+        System.out.println(reservationId);
+
         return Response.ok(new GenericEntity<List<ChargesByUserResponse>>(chargesByUser) {
         }).build();
     }
@@ -107,6 +112,9 @@ public class UserController extends SimpleController {
         LOGGER.debug("Help request made on reservation with id " + reservationId);
         if (helpRequest.getHelpDescription() != null) {
             // todo: mav was "requestHelp.jsp"
+            System.out.println("id ---> " + reservationId);
+
+            System.out.println("help ---> " + helpRequest.getHelpDescription());
             Help helpRequested = userService.requestHelp(helpRequest.getHelpDescription(), reservationId);
             // do something with this help object
             return Response.ok().build();
