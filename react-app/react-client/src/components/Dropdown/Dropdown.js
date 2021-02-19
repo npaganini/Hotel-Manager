@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
@@ -19,7 +20,7 @@ const SimpleSelect = (props) => {
   const classes = useStyles();
   const { t } = useTranslation();
 
-  const { onChange, options } = props;
+  const { onChange, options, error, required, helperText } = props;
 
   let list = [];
 
@@ -28,7 +29,7 @@ const SimpleSelect = (props) => {
   })
 
   return (
-    <FormControl className={classes.formControl}>
+    <FormControl className={classes.formControl} error={error} required={required}>
       <InputLabel id="demo-simple-select-label">{t('room.singular')}</InputLabel>
       <Select
         labelId="demo-simple-select-label"
@@ -37,8 +38,8 @@ const SimpleSelect = (props) => {
       >
         {list}
       </Select>
+      <FormHelperText>{helperText}</FormHelperText>
     </FormControl>
-
   );
 }
 

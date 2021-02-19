@@ -38,6 +38,7 @@ const Reservation = ({ history }) => {
   const [dateTo, setDateTo] = useState(new Date());
   const [email, setEmail] = useState("");
   const [errorInput, setErrorInput] = useState(false);
+  const [errorDropdown, setErrorDropdown] = useState(false);
 
   const emailOnChange = (newEmail) => {
     setEmail(newEmail.target.value);
@@ -67,6 +68,10 @@ const Reservation = ({ history }) => {
     if (email.length == 0){
       setErrorInput(true);
       isOk = false;
+    }
+    if(room.length == 0){
+      isOk = false;
+      setErrorDropdown(true);
     }
 
     return isOk;
@@ -133,7 +138,7 @@ const Reservation = ({ history }) => {
         <Row className={classes.row}>
           <Col xs={12} md={2}>
             {showRooms && (
-              <Dropdown onChange={onRoomChange} options={options} />
+              <Dropdown onChange={onRoomChange} error={errorDropdown} helperText={errorDropdown && "El campo es requerido"} required={true} options={options} />
             )}
           </Col>
           <Col xs={12} md={6}>
