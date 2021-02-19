@@ -8,6 +8,8 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import { useTranslation, withTranslation } from "react-i18next";
 import { withRouter } from "react-router";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -58,17 +60,34 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navbar = ({ history }) => {
+const Navbar = ({ history, setIsClient, setIsLoggedIn }) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const { t } = useTranslation();
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  const [showDropdown, setShowDropdown] = React.useState(undefined);
 
   const homeOnClick = () => {
     history.push("/");
+  };
+
+  const handleClose = () => setShowDropdown(undefined);
+
+  const handleChange = (_, newValue) => {
+    if (newValue === 1) {
+      setShowDropdown(true);
+    } else {
+      setValue(newValue);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    window.alert("Logout successful");
+    setIsLoggedIn(false);
+    setIsClient(false);
+    history.push("/login");
   };
 
   return (
@@ -89,6 +108,15 @@ const Navbar = ({ history }) => {
             {...a11yProps(7)}
             className={classes.rightAlign}
           />
+          <Menu
+            id="simple-menu"
+            anchorEl={showDropdown}
+            keepMounted
+            open={Boolean(showDropdown)}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+          </Menu>
         </Tabs>
       </AppBar>
     </div>

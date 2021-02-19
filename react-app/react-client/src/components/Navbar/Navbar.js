@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 // TODO currentPath to value
-const Navbar = ({ history }) => {
+const Navbar = ({ history, setIsLoggedIn, setIsClient }) => {
   const classes = useStyles();
 
   const { location } = history;
@@ -71,8 +71,7 @@ const Navbar = ({ history }) => {
   const [showDropdown, setShowDropdown] = React.useState(undefined);
   const { t } = useTranslation();
 
-  const handleChange = (event, newValue) => {
-    console.log("handle change", newValue, event);
+  const handleChange = (_, newValue) => {
     if (newValue === 8) {
       setShowDropdown(true);
     } else {
@@ -86,6 +85,8 @@ const Navbar = ({ history }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
     window.alert("Logout successful");
+    setIsLoggedIn(false);
+    setIsClient(false);
     history.push("/login");
   };
 
