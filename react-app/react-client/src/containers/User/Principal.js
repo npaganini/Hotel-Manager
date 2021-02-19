@@ -51,15 +51,15 @@ const UserPrincipal = ({ history }) => {
           className="justify-content-sm-center"
           style={{ paddingTop: "40px" }}
         >
-          <Col xs={1} md={2}></Col>
-          <Col xs={10} md={8}>
+          <Col xs={1} md={1}></Col>
+          <Col xs={10} md={10}>
             <Table
               columns={reservationUserColumns}
               rows={reservations}
               totalItems={totalCount}
             ></Table>
           </Col>
-          <Col xs={1} md={2}></Col>
+          <Col xs={1} md={1}></Col>
         </Row>
       </Container>
     </div>

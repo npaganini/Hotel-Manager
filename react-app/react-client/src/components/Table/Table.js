@@ -88,7 +88,7 @@ const DataTable = ({ columns, rows, totalItems }) => {
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  style={{ minWidth: column.minWidth }}
+                  style={{ minWidth: column.minWidth, textAlign:'center' }}
                 >
                   {column.label}
                 </TableCell>
@@ -103,7 +103,7 @@ const DataTable = ({ columns, rows, totalItems }) => {
                     const value = row[column.id];
                     if (column.isButton) {
                       return (
-                        <TableCell key={column.id} align={column.align}>
+                        <TableCell key={column.id} align={column.align} style={{textAlign: 'center'}}>
                           <Button
                             id={column.id}
                             ButtonType="Save"
@@ -115,7 +115,7 @@ const DataTable = ({ columns, rows, totalItems }) => {
                       );
                     }
                     return (
-                      <TableCell key={column.id} align={column.align}>
+                      <TableCell key={column.id} align={column.align} style={{textAlign: 'center'}}>
                         {column.format ? column.format(value) : value}
                       </TableCell>
                     );
