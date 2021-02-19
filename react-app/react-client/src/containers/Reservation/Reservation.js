@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { makeStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
+import InfoSimpleDialog from '../../components/Dialog/SimpleDialog';
 
 import { getFreeRooms } from "../../api/roomApi";
 import { doReservation } from "../../api/roomApi";
-
+import { useTranslation } from "react-i18next";
 import Button from "../../components/Button/Button";
 import DatePicker from "../../components/DatePickers/DatePicker";
 import Dropdown from "../../components/Dropdown/Dropdown";
@@ -40,6 +41,18 @@ const Reservation = ({ history }) => {
   const [errorInput, setErrorInput] = useState(false);
   const [errorDropdown, setErrorDropdown] = useState(false);
 
+  const [showDialog, updateShowDialog] = useState(false);
+  const [loading, updateShowLoading] = useState(false);
+  const [info, updateInfo] = useState(undefined);
+  const { t } = useTranslation();
+
+  const handleDialogClose = () => {
+    updateShowDialog(false);
+    if (info) {
+      history.push("/");
+    }
+  }
+
   const emailOnChange = (newEmail) => {
     setEmail(newEmail.target.value);
   };
@@ -65,11 +78,11 @@ const Reservation = ({ history }) => {
 
   const formIsValidate = () => {
     let isOk = true;
-    if (email.length == 0){
+    if (email.length == 0) {
       setErrorInput(true);
       isOk = false;
     }
-    if(room.length == 0){
+    if (room.length == 0) {
       isOk = false;
       setErrorDropdown(true);
     }
@@ -86,12 +99,17 @@ const Reservation = ({ history }) => {
     if (!formIsValidate())
       return;
     else {
+      updateShowLoading(true);
       doReservation({ startDate, endDate, userEmail, roomId })
-        .then((result) => {
-          console.log(result);
-          history.push("/");
+        .then((response) => {
+          updateShowLoading(false);
+          updateShowDialog(true);
+          updateInfo(response.data);
         })
         .catch((err) => {
+          updateShowLoading(false);
+          updateShowDialog(true);
+          updateInfo(undefined);
           console.log("error", err);
         });
     }
@@ -164,6 +182,13 @@ const Reservation = ({ history }) => {
             ></Button>
           </Col>
         </Row>
+        <InfoSimpleDialog open={loading} title={t('loading')} />
+        <InfoSimpleDialog open={showDialog} onClose={handleDialogClose} title={info ? "La reserva se realizo correctamente!" : ''}>
+          {info ? <div>
+            <div>Clave de la reserva: {info.reservationHash}</div>
+            <div>Habitacion: {info.roomNumber}</div>
+          </div> : <div>{t('reservation.checkin.error')}</div>}
+        </InfoSimpleDialog>
       </Container>
     </div>
   );
