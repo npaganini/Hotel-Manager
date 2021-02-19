@@ -31,10 +31,9 @@ const isLoggedIn = () => !!localStorage.getItem("token");
 
 class App extends Component {
   render() {
-    console.log("esta logeado?", isLoggedIn());
     return (
       <Router>
-        {isLoggedIn() && isClient() ? <UserNavbar /> : <Navbar />}
+        {isLoggedIn() ? isClient() ? <UserNavbar /> : <Navbar /> : <div />}
         <Switch>
           <PrivateRoute
             exact
