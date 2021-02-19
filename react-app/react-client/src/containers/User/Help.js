@@ -19,23 +19,30 @@ const UserHelp = ({ match, history }) => {
 
   const [help, setHelp] = useState("");
 
+
   const onHelpChange = (newHelp) => {
     setHelp(newHelp.target.value);
   };
 
+  const validateInput = () => {
+    return help.length == 0;
+  }
+
+
+
   const onSubmitHelp = ({ helpDescription }) => () => {
-    requestHelp(match.params.id, { helpDescription })
-      .then((response) => {
-        console.log(response.status);
-        console.log(history);
-        history.push("/");
-      })
-      .catch((error) => {
-        console.log(
-          "there was an error trying to generate a help request",
-          error
-        );
-      });
+      requestHelp(match.params.id, { helpDescription })
+        .then((response) => {
+          console.log(response.status);
+          console.log(history);
+          history.push("/");
+        })
+        .catch((error) => {
+          console.log(
+            "there was an error trying to generate a help request",
+            error
+          );
+        });
   };
 
   const back = () => {
@@ -64,6 +71,7 @@ const UserHelp = ({ match, history }) => {
                 onClick={onSubmitHelp({
                   helpDescription: help,
                 })}
+                disabled={validateInput()}
                 ButtonText="Enviar"
               ></Button>
             </Col>

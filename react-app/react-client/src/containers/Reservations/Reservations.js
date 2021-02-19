@@ -74,7 +74,7 @@ const Reservations = ({ history }) => {
 
     return (
         <div>
-            <Container className={classes.container}>
+            <Container fluid="md" className={classes.container}>
                 <Row className={classes.row}>
                     <Col xs={12} md={6}>
                         <DatePicker Id="from" label="Desde" onChange={dateFromOnChange}></DatePicker>
@@ -100,7 +100,7 @@ const Reservations = ({ history }) => {
                     </Col>
                 </Row>
                 <br></br>
-                <Row className="justify-content-sm-center">
+                <Row className="justify-content-sm-center" style={{background: "#FAF6FC"}}>
                     <Col className={classes.tableCol}>
                         <Table></Table>
                     </Col>

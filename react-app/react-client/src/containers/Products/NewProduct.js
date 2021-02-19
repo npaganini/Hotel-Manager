@@ -31,6 +31,9 @@ const NewProduct = ({ history }) => {
   const [description, setDescription] = useState("");
   const [photo, setPhoto] = useState("");
   const [price, setPrice] = useState("");
+  const [errorDescription, setErrorDescription] = useState(false);
+  const [errorPrice, setErrorPrice] = useState(false);
+  const [errorMessagePrice, setErrorMessagePrice] = useState("");
 
   const descriptionOnChange = (description) => {
     setDescription(description.target.value);
@@ -57,27 +60,59 @@ const NewProduct = ({ history }) => {
     setPrice(newPrice.target.value);
   };
 
+  const formIsValidate = () => {
+    let isOk = true;
+    if (description.length == 0) {
+      setErrorDescription(true);
+      isOk = false;
+    }
+    if (price.length == 0) {
+      setErrorPrice(true);
+      setErrorMessagePrice("El campo es requerido");
+      isOk = false;
+    }
+    else if(price <= 0){
+      setErrorPrice(true);
+      setErrorMessagePrice("El precio debe ser mayor que 0");
+      isOk = false;
+    }
+
+    return isOk;
+  }
+
+  const back = () => {
+    history.push("/products");
+  }
+
+
   const onSubmitProduct = () => {
-    console.log("photo path", photo);
-    addProduct({ imgPath: photo, description, price })
-      .then(() => history.push("/products"))
-      .catch((error) => {
-        console.log("error submitting product", error);
-      });
+    if (!formIsValidate())
+      return;
+    else {
+      console.log("photo path", photo);
+      addProduct({ imgPath: photo, description, price })
+        .then(() => history.push("/products"))
+        .catch((error) => {
+          console.log("error submitting product", error);
+        });
+    }
   };
 
   return (
     <div>
       <Container className={classes.container}>
         <Row className={classes.row}>
-          <Col xs={12} md={4}>
+          <Col xs={12} md={4} style={{ justifyContent: 'center' }}>
             <Input
               label="Descripcion"
               type="text"
+              error={errorDescription}
+              helperText={errorDescription && "El campo es requerido"}
+              required={true}
               onChange={descriptionOnChange}
             />
           </Col>
-          <Col xs={12} md={4}>
+          <Col xs={12} md={4} style={{ justifyContent: 'center' }}>
             <Form.Group>
               <Form.File
                 id="exampleFormControlFile1"
@@ -86,8 +121,14 @@ const NewProduct = ({ history }) => {
               />
             </Form.Group>
           </Col>
-          <Col xs={12} md={4}>
-            <Input label="Precio" type="number" onChange={priceOnChange} />
+          <Col xs={12} md={4} style={{ justifyContent: 'center' }}>
+            <Input
+              label="Precio"
+              type="number"
+              onChange={priceOnChange}
+              error={errorPrice}
+              helperText={errorPrice && errorMessagePrice}
+              required={true} />
           </Col>
         </Row>
         <Row className={classes.row}>
@@ -101,7 +142,8 @@ const NewProduct = ({ history }) => {
           <Col xs={12} md={6}>
             <Button
               ButtonType="Back"
-              // onClick={reservationCancel}
+
+              onClick={back}
               ButtonText="Cancelar"
             ></Button>
           </Col>

@@ -82,12 +82,6 @@ const Navbar = ({ history }) => {
 
   const handleClose = () => setShowDropdown(undefined);
 
-  const accountOnClick = () => {
-    window.alert("HAY QUE IMPLEMENTAR ESTO O SACARLO");
-  };
-
-  const handleAccountClick = accountOnClick;
-
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
@@ -187,9 +181,6 @@ const Navbar = ({ history }) => {
             open={Boolean(showDropdown)}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleAccountClick}>
-              {t("user.account")}
-            </MenuItem>
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </Menu>
         </Tabs>

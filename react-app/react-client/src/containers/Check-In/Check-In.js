@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap'
 import { makeStyles } from '@material-ui/core/styles';
 import { withRouter } from "react-router";
@@ -6,8 +6,8 @@ import { withRouter } from "react-router";
 import Button from '../../components/Button/Button'
 import InfoSimpleDialog from '../../components/Dialog/SimpleDialog';
 import Input from '../../components/Input/Input'
-import {doCheckin} from "../../api/roomApi";
-import {useTranslation} from "react-i18next";
+import { doCheckin } from "../../api/roomApi";
+import { useTranslation } from "react-i18next";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -17,13 +17,16 @@ const useStyles = makeStyles((theme) => ({
     },
     buttonColLeft: {
         textAlign: 'right',
+        paddingTop: '10px'
+
     },
     buttonColRight: {
         textAlign: 'center',
+        paddingTop: '10px'
     },
     buttonRow: {
-        paddingTop: '20px',
-        textAlign: 'center'
+        textAlign: 'center',
+        justifyContent: 'center'
     },
     card: {
         marginTop: '40px',
@@ -36,7 +39,9 @@ const checkIn = ({ history }) => {
     const [showDialog, updateShowDialog] = useState(false);
     const [loading, updateShowLoading] = useState(false);
     const [info, updateInfo] = useState(undefined);
-    const {t} = useTranslation();
+    const { t } = useTranslation();
+    const [errorInput, setErrorInput] = useState(false);
+
 
     const onChangeCheckIn = (newCheckIn) => {
         onCheckIn(newCheckIn.target.value);
@@ -49,24 +54,38 @@ const checkIn = ({ history }) => {
         }
     }
 
+    const formIsValidate = () => {
+        let isOk = true;
+        if (checkIn.length == 0) {
+            setErrorInput(true);
+            isOk = false;
+        }
+
+        return isOk;
+    }
+    
     const checkInSubmit = () => {
-        updateShowLoading(true);
-        doCheckin(checkIn)
-            .then((response) => {
-                updateShowLoading(false);
-                console.log(response)
-                // call show dialog in InfoSimpleDialog
-                updateShowDialog(true);
-                // send result to dialog window to show it
-                updateInfo(response.data);
-            })
-            .catch((error) => {
-                updateShowLoading(false);
-                updateShowDialog(true);
-                updateInfo(undefined);
-                console.log("There was an error processing the request!\n\n", error);
-            });
-        // Once dialog window closes, redirect to occupants
+        if (!formIsValidate())
+            return;
+        else {
+            updateShowLoading(true);
+            doCheckin(checkIn)
+                .then((response) => {
+                    updateShowLoading(false);
+                    console.log(response)
+                    // call show dialog in InfoSimpleDialog
+                    updateShowDialog(true);
+                    // send result to dialog window to show it
+                    updateInfo(response.data);
+                })
+                .catch((error) => {
+                    updateShowLoading(false);
+                    updateShowDialog(true);
+                    updateInfo(undefined);
+                    console.log("There was an error processing the request!\n\n", error);
+                });
+            // Once dialog window closes, redirect to occupants
+        }
     }
 
     const checkInCancel = () => {
@@ -77,21 +96,21 @@ const checkIn = ({ history }) => {
         <div>
             <Container fluid="md" className={classes.container}>
                 <Row>
-                    <Col xs={6} md={3}></Col>
+                    <Col xs={4} md={2}></Col>
                     <Col>
                         <Card className={classes.card}>
                             <Row className={classes.buttonRow}>
-                                <Col style={{marginBottom: '5px'}}>
-                                    <Input label={t('reservation.id')} onChange={onChangeCheckIn}/>
+                                <Col xs={12} md={6} style={{ marginBottom: '10px' }}>
+                                    <Input label={t('reservation.id')} error={errorInput} helperText={errorInput && "El campo es requerido"} required={true} onChange={onChangeCheckIn} />
                                 </Col>
-                                <Col className={classes.buttonColLeft}>
-                                    <Button ButtonType="Save" onClick={(checkInSubmit)} ButtonText={t('accept')}/>
+                                <Col xs={6} md={2} className={classes.buttonColLeft}>
+                                    <Button ButtonType="Save" onClick={(checkInSubmit)} ButtonText={t('accept')} />
                                 </Col>
-                                <Col className={classes.buttonColRight}>
-                                    <Button ButtonType="Back" onClick={checkInCancel} ButtonText={t('cancel')}/>
+                                <Col xs={6} md={2} className={classes.buttonColRight}>
+                                    <Button ButtonType="Back" onClick={checkInCancel} ButtonText={t('cancel')} />
                                 </Col>
                             </Row>
-                            <InfoSimpleDialog open={loading} title={t('loading')}/>
+                            <InfoSimpleDialog open={loading} title={t('loading')} />
                             <InfoSimpleDialog open={showDialog} onClose={handleDialogClose} title={info ? t('reservation.checkin.successful') : ''}>
                                 {info ? <div>
                                     <div>{t('reservation.id')}: {info.hash}</div>
@@ -104,7 +123,7 @@ const checkIn = ({ history }) => {
                             </InfoSimpleDialog>
                         </Card>
                     </Col>
-                    <Col xs={6} md={3}></Col>
+                    <Col xs={4} md={2}></Col>
                 </Row>
             </Container>
         </div>
