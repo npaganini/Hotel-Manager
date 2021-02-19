@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { PrivateRoute } from "./components/PrivateRoute/PrivateRoute";
@@ -26,49 +26,66 @@ import UserExpenses from "./containers/User/Expenses";
 import { CLIENT } from "./components/PrivateRoute/routesByRole";
 import { NotFound } from "./containers/NotFound/NotFound";
 
-const isClient = () => localStorage.getItem("role") === CLIENT;
-const isLoggedIn = () => !!localStorage.getItem("token");
+const App = () => {
+  const isClientL = () => localStorage.getItem("role") === CLIENT;
+  const isLoggedInL = () => !!localStorage.getItem("token");
 
-class App extends Component {
-  render() {
-    return (
-      <Router>
-        {isLoggedIn() ? isClient() ? <UserNavbar /> : <Navbar /> : <div />}
-        <Switch>
-          <PrivateRoute
-            exact
-            path="/"
-            component={isClient() ? UserPrincipal : Principal}
+  const [isLoggedIn, setIsLoggedIn] = useState(isLoggedInL());
+  const [isClient, setIsClient] = useState(isClientL());
+
+  const handleSetIsLoggedIn = (value) => setIsLoggedIn(value);
+  const handleSetIsClient = (value) => setIsClient(value);
+
+  return (
+    <Router>
+      {isLoggedIn ? (
+        isClient ? (
+          <UserNavbar
+            setIsLoggedIn={handleSetIsLoggedIn}
+            setIsClient={handleSetIsClient}
           />
-          <PrivateRoute path="/login" component={Login} />
-          <PrivateRoute path="/checkin" component={CheckIn} />
-          <PrivateRoute path="/reservation" component={Reservation} />
-          <PrivateRoute path="/registration" component={Registration} />
-          <PrivateRoute path="/checkout" component={CheckOut} />
-          <PrivateRoute path="/reservations" component={Reservations} />
-          <PrivateRoute
-            exact
-            path="/products"
-            component={isClient() ? UserProducts : Products}
+        ) : (
+          <Navbar
+            setIsLoggedIn={handleSetIsLoggedIn}
+            setIsClient={handleSetIsClient}
           />
-          <PrivateRoute
-            exact
-            path="/products/newProduct"
-            component={NewProduct}
-          />
-          <PrivateRoute path="/orders" component={Orders} />
-          <Route
-            path="/help/:id"
-            component={isClient() ? UserHelp : HelpRequest}
-          />
-          <Route path="/expenses/:id" component={UserExpenses} />
-          <Route>
-            <NotFound />
-          </Route>
-        </Switch>
-      </Router>
-    );
-  }
-}
+        )
+      ) : (
+        <div />
+      )}
+      <Switch>
+        <PrivateRoute
+          exact
+          path="/"
+          component={isClient ? UserPrincipal : Principal}
+        />
+        <PrivateRoute
+          path="/login"
+          component={Login}
+          setIsLoggedIn={handleSetIsLoggedIn}
+          setIsClient={handleSetIsClient}
+        />
+        <PrivateRoute path="/checkin" component={CheckIn} />
+        <PrivateRoute path="/reservation" component={Reservation} />
+        <PrivateRoute path="/registration" component={Registration} />
+        <PrivateRoute path="/checkout" component={CheckOut} />
+        <PrivateRoute path="/reservations" component={Reservations} />
+        <Route exact path="/products/:id" component={UserProducts} />
+        <Route exact path="/products" component={Products} />
+        <PrivateRoute
+          exact
+          path="/products/newProduct"
+          component={NewProduct}
+        />
+        <PrivateRoute path="/orders" component={Orders} />
+        <Route path="/help/:id" component={isClient ? UserHelp : HelpRequest} />
+        <Route path="/expenses/:id" component={UserExpenses} />
+        <Route>
+          <NotFound />
+        </Route>
+      </Switch>
+    </Router>
+  );
+};
 
 export default App;

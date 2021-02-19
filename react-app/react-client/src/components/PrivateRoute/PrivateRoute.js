@@ -3,7 +3,12 @@ import { Route, Redirect } from "react-router-dom";
 import { managerPaths, clientPaths, CLIENT, MANAGER } from "./routesByRole";
 import { Forbidden } from "../../containers/Forbidden/Forbidden";
 
-export const PrivateRoute = ({ component: Component, ...routeProps }) => (
+export const PrivateRoute = ({
+  component: Component,
+  setIsLoggedIn,
+  setIsClient,
+  ...routeProps
+}) => (
   <Route
     render={(props) => {
       const currentUser = localStorage.getItem("token");
@@ -18,7 +23,11 @@ export const PrivateRoute = ({ component: Component, ...routeProps }) => (
         if (role && currentUser) {
           return <Redirect to={{ pathname: "/" }} />;
         }
-        return <Component {...props} />;
+        return (
+          <Component
+            {...Object.assign({}, ...props, { setIsClient, setIsLoggedIn })}
+          />
+        );
       }
 
       if (!currentUser || !role) {
