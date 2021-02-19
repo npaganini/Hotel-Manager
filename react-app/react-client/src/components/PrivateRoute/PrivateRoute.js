@@ -9,7 +9,10 @@ export const PrivateRoute = ({ component: Component, ...routeProps }) => (
       const currentUser = localStorage.getItem("token");
       const role = localStorage.getItem("role");
 
+      console.log("current user", currentUser);
+      console.log("role", role);
       const { path } = routeProps;
+      console.log("path", path);
 
       if (path === "/login") {
         if (role && currentUser) {

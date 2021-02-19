@@ -8,6 +8,8 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import { useTranslation, withTranslation } from "react-i18next";
 import { withRouter } from "react-router";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -66,11 +68,31 @@ const Navbar = ({ history }) => {
   const { pathname } = location;
 
   const [value, setValue] = React.useState(0);
+  const [showDropdown, setShowDropdown] = React.useState(undefined);
   const { t } = useTranslation();
 
-
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    console.log("handle change", newValue, event);
+    if (newValue === 8) {
+      setShowDropdown(true);
+    } else {
+      setValue(newValue);
+    }
+  };
+
+  const handleClose = () => setShowDropdown(undefined);
+
+  const accountOnClick = () => {
+    window.alert("HAY QUE IMPLEMENTAR ESTO O SACARLO");
+  };
+
+  const handleAccountClick = accountOnClick;
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    window.alert("Logout successful");
+    history.push("/login");
   };
 
   const homeOnClick = () => {
@@ -158,6 +180,18 @@ const Navbar = ({ history }) => {
             {...a11yProps(7)}
             className={classes.rightAlign}
           />
+          <Menu
+            id="simple-menu"
+            anchorEl={showDropdown}
+            keepMounted
+            open={Boolean(showDropdown)}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={handleAccountClick}>
+              {t("user.account")}
+            </MenuItem>
+            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+          </Menu>
         </Tabs>
       </AppBar>
     </div>
