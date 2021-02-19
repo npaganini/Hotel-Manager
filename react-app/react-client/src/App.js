@@ -41,7 +41,7 @@ class App extends Component {
             path="/"
             component={isClient() ? UserPrincipal : Principal}
           />
-          <Route path="/login" component={Login} />
+          <PrivateRoute path="/login" component={Login} />
           <PrivateRoute path="/checkin" component={CheckIn} />
           <PrivateRoute path="/reservation" component={Reservation} />
           <PrivateRoute path="/registration" component={Registration} />
