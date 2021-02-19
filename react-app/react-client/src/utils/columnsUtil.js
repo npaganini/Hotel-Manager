@@ -34,12 +34,12 @@ export const reservationUserColumns = [
   { id: "roomNumber", label: "Room Number" },
   {
     id: "actions",
-    label: "actions",
+    label: "Actions",
     isButton: true,
   },
   {
     id: "expenses",
-    label: "expenses",
+    label: "Expenses",
     isButton: true,
   },
   {

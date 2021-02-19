@@ -50,12 +50,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const onLoginPerformed = (onSubmit, { user, password }) => () => {
+const onLoginPerformed = (
+  onSubmit,
+  { user, password },
+  { setIsLoggedIn, setIsClient }
+) => () => {
   login(user, password)
     .then(() => {
       window.alert(
         localStorage.getItem("token") + " | " + localStorage.getItem("role")
       );
+      setIsLoggedIn(true);
+      setIsClient(localStorage.getItem("role") === "CLIENT");
       onSubmit();
     })
     .catch((error) => {
@@ -63,7 +69,7 @@ const onLoginPerformed = (onSubmit, { user, password }) => () => {
     });
 };
 
-const Login = ({ history }) => {
+const Login = ({ history, setIsLoggedIn, setIsClient }) => {
   const classes = useStyles();
   const { t } = useTranslation();
 
@@ -130,10 +136,14 @@ const Login = ({ history }) => {
                         color="primary"
                         className={hasLogged ? classes.submit : classes.submit} // FIXME
                         disabled={hasLogged}
-                        onClick={onLoginPerformed(submitLogin, {
-                          user,
-                          password,
-                        })}
+                        onClick={onLoginPerformed(
+                          submitLogin,
+                          {
+                            user,
+                            password,
+                          },
+                          { setIsClient, setIsLoggedIn }
+                        )}
                       >
                         Ingresar
                       </Button>
