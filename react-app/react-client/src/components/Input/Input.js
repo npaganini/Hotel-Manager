@@ -1,8 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import FormControl from '@material-ui/core/FormControl';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ComposedTextField = (props) => {
 
-  const { onChange } = props;
+  const { onChange, error, required, helperText} = props;
 
   const [name, setName] = React.useState();
   const classes = useStyles();
@@ -22,10 +20,8 @@ const ComposedTextField = (props) => {
 
   return (
     <form className={classes.root} noValidate autoComplete="off">
-      <FormControl>
-        <InputLabel htmlFor="component-simple">{props.label}</InputLabel>
-        <Input id="component-simple" value={name} type = {props.type} onChange={onChange} />
-      </FormControl>
+        <TextField id="component-simple" label={props.label} value={name} type = {props.type} onChange={onChange} 
+        fullWidth={true} error={error} required={required} helperText={helperText}/>
     </form>
   );
 }

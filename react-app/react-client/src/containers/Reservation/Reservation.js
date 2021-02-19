@@ -37,6 +37,7 @@ const Reservation = ({ history }) => {
   const [dateFrom, setDateFrom] = useState(new Date());
   const [dateTo, setDateTo] = useState(new Date());
   const [email, setEmail] = useState("");
+  const [errorInput, setErrorInput] = useState(false);
 
   const emailOnChange = (newEmail) => {
     setEmail(newEmail.target.value);
@@ -61,21 +62,36 @@ const Reservation = ({ history }) => {
     if (!showRooms) show(true);
   };
 
+  const formIsValidate = () => {
+    let isOk = true;
+    if (email.length == 0){
+      setErrorInput(true);
+      isOk = false;
+    }
+
+    return isOk;
+  }
+
   const onSubmitReservation = ({
     startDate,
     endDate,
     userEmail,
     roomId,
   }) => () => {
-    doReservation({ startDate, endDate, userEmail, roomId })
-      .then((result) => {
-        console.log(result);
-        history.push("/");
-      })
-      .catch((err) => {
-        console.log("error", err);
-      });
+    if (!formIsValidate())
+      return;
+    else {
+      doReservation({ startDate, endDate, userEmail, roomId })
+        .then((result) => {
+          console.log(result);
+          history.push("/");
+        })
+        .catch((err) => {
+          console.log("error", err);
+        });
+    }
   };
+
 
   const onRoomChange = (newRoom) => {
     setRoom(newRoom.target.value);
@@ -121,7 +137,7 @@ const Reservation = ({ history }) => {
             )}
           </Col>
           <Col xs={12} md={6}>
-            <Input label="Email" type="email" onChange={emailOnChange} />
+            <Input label="Email" error={errorInput} helperText={errorInput && "El campo es requerido"} required={true} type="email" onChange={emailOnChange} />
           </Col>
           <Col xs={6} md={2}>
             <Button
