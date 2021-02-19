@@ -46,11 +46,8 @@ class App extends Component {
           <PrivateRoute path="/registration" component={Registration} />
           <PrivateRoute path="/checkout" component={CheckOut} />
           <PrivateRoute path="/reservations" component={Reservations} />
-          <PrivateRoute
-            exact
-            path="/products"
-            component={isClient() ? UserProducts : Products}
-          />
+          <Route exact path="/products/:id" component={UserProducts} />
+          <Route exact path="/products" component={Products} />
           <PrivateRoute
             exact
             path="/products/newProduct"
