@@ -38,7 +38,10 @@ public class ChargeServiceImpl implements ChargeService {
     }
 
     @Override
-    public List<ChargesByUserResponse> checkProductsPurchasedInCheckOut(long reservationId) {
+    public List<ChargesByUserResponse> checkProductsPurchasedInCheckOut(String reservationHash) throws EntityNotFoundException {
+        long reservationId = reservationDao.findReservationByHash(reservationHash)
+                .orElseThrow(() -> new EntityNotFoundException("Cant find reservation with hash " + reservationHash))
+                .getId();
         Map<Product, Integer> productToQtyMap = chargeDao.getAllChargesInCheckOut(reservationId);
         return productToQtyMap.keySet().stream().map(
                 product -> new ChargesByUserResponse(product.getDescription(), product.getId(), product.getPrice(), productToQtyMap.get(product))

@@ -21,5 +21,5 @@ public interface ChargeService {
 
     int setChargesToDelivered(long roomId) throws RequestInvalidException, EntityNotFoundException;
 
-    List<ChargesByUserResponse> checkProductsPurchasedInCheckOut(long reservationId);
+    List<ChargesByUserResponse> checkProductsPurchasedInCheckOut(String reservationHash) throws EntityNotFoundException;
 }

@@ -60,7 +60,7 @@ const checkOut = ({ history }) => {
         if (!formIsValidate())
             return;
         else {
-            history.push(`/sarasa/${checkOut}`);
+            history.push(`/checkout/${checkOut}/expenses`);
         }
     }
 
@@ -77,7 +77,7 @@ const checkOut = ({ history }) => {
                         <Card className={classes.card}>
                             <Row className={classes.buttonRow}>
                                 <Col xs={12} md={6} style={{ marginBottom: '10px' }}>
-                                    <Input label={t('reservation.id')} error={errorInput} helperText={errorInput && "El campo es requerido"} required={true} onChange={onChangeCheckOut}></Input>
+                                    <Input label={t('reservation.hash')} error={errorInput} helperText={errorInput && "El campo es requerido"} required={true} onChange={onChangeCheckOut}></Input>
                                 </Col>
                                 <Col xs={6} md={2} className={classes.buttonColLeft}>
                                     <Button ButtonType="Save" onClick={checkOutSubmit} ButtonText="Accept"></Button>
