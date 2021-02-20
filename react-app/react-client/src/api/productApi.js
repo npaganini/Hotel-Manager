@@ -13,5 +13,5 @@ export const uploadProductFile = async (body) => post(addProductFileUrl, body);
 export const addProduct = async (body) => post(addProductUrl, body);
 export const enableProduct = async (id) => post(enableProductUrl(id));
 export const disableProduct = async (id) => post(disableProductUrl(id));
-export const getAllProducts = async () => get(findAllProductsUrl);
 export const getProductFile = (id) => baseURL + getProductFileUrl(id);
+export const getAllProducts = async (params) => get(findAllProductsUrl, params);

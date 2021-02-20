@@ -19,7 +19,7 @@ public class HelpResponse implements Serializable {
     private long id;
     private String helpStep;
     private String helpText;
-    private long reservationId;
+    private int roomNumber;
 
     public static HelpResponse fromHelpRequest(Help helpRequest) {
         final HelpResponse hDto = new HelpResponse();
@@ -27,7 +27,7 @@ public class HelpResponse implements Serializable {
         hDto.id = helpRequest.getId();
         hDto.helpStep = helpRequest.getHelpStep().toString();
         hDto.helpText = helpRequest.getHelpText();
-        hDto.reservationId = helpRequest.getReservation().getId();
+        hDto.roomNumber = helpRequest.getReservation().getRoom().getNumber();
 
         return hDto;
     }

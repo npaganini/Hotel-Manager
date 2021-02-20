@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfaces.daos.ChargeDao;
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
 import ar.edu.itba.paw.interfaces.daos.RoomDao;
 import ar.edu.itba.paw.interfaces.dtos.ChargesByUserResponse;
+import ar.edu.itba.paw.interfaces.dtos.ChargeDeliveryResponse;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.ChargeService;
@@ -76,9 +77,13 @@ public class ChargeServiceImpl implements ChargeService {
     }
 
     @Override
-    public PaginatedDTO<Charge> getAllChargesNotDelivered(int page, int pageSize) {
+    public PaginatedDTO<ChargeDeliveryResponse> getAllChargesNotDelivered(int page, int pageSize) {
         if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
-        return chargeDao.findAllChargesNotDelivered(page, pageSize);
+        LOGGER.debug("Getting all undelivered orders.");
+        PaginatedDTO<Charge> charges = chargeDao.findAllChargesNotDelivered(page, pageSize);
+        return new PaginatedDTO<>(charges.getList()
+                .stream().map(ChargeDeliveryResponse::fromCharge).collect(Collectors.toList()),
+                charges.getMaxItems());
     }
 
     @Override

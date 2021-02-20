@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.dtos.ChargesByUserResponse;
+import ar.edu.itba.paw.interfaces.dtos.ChargeDeliveryResponse;
 import ar.edu.itba.paw.interfaces.dtos.ReservationConfirmedResponse;
 import ar.edu.itba.paw.interfaces.dtos.ReservationResponse;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
@@ -19,6 +20,7 @@ import ar.edu.itba.paw.webapp.utils.JsonToCalendar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
@@ -29,6 +31,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.net.URI;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -69,6 +72,48 @@ public class RoomController extends SimpleController {
         }, uriInfo.getAbsolutePathBuilder());
     }
 
+    @GET
+    @Path("/reservations")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getAllReservations(@QueryParam("startDate") @Nullable String startDate,
+                                       @QueryParam("endDate") @Nullable String endDate,
+                                       @QueryParam("email") @Nullable String email,
+                                       @QueryParam("lastName") @Nullable String lastName,
+                                       @QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
+                                       @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) throws Exception {
+        LOGGER.debug("Request received to retrieve reservations.");
+        PaginatedDTO<ReservationResponse> reservations = null;
+        try {
+            if (startDate == null && endDate == null && email == null && lastName == null) {
+                LOGGER.debug("Getting all reservations starting at page " + page);
+                reservations = reservationService.getAll(page, limit);
+            } else {
+                if (!StringUtils.isEmpty(startDate) && !StringUtils.isEmpty(endDate)) {
+                    LOGGER.debug("Getting all reservations between " + startDate + " and " + endDate);
+                    Calendar startDateCalendar = new JsonToCalendar().unmarshal(startDate);
+                    Calendar endDateCalendar = new JsonToCalendar().unmarshal(endDate);
+                    if (startDateCalendar.before(endDateCalendar)) {
+                        LOGGER.debug("Valid dates received, continuing with fetch...");
+                        reservations = reservationService.findAllBetweenDatesOrEmailAndSurname(startDateCalendar, endDateCalendar, email, lastName, page, limit);
+                    } else {
+                        LOGGER.debug("Request received with invalid dates.");
+                        return Response.status(Response.Status.BAD_REQUEST).build();
+                    }
+                }
+            }
+        } catch (IllegalArgumentException e) {
+            LOGGER.debug(e.getMessage());
+            System.out.println(e.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        if (reservations == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        LOGGER.debug("Reservation(s) found!");
+        return sendPaginatedResponse(page, limit, reservations.getMaxItems(), new GenericEntity<List<ReservationResponse>>(reservations.getList()) {
+        }, uriInfo.getAbsolutePathBuilder());
+    }
+
     @POST
     @Path("/reservation")
     @Produces(value = {MediaType.APPLICATION_JSON})
@@ -84,7 +129,7 @@ public class RoomController extends SimpleController {
     @POST
     @Path("/checkin/{reservationId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response checkinPost(@PathParam("reservationId") final String reservationId) throws EntityNotFoundException {
+    public Response checkinPost(@PathParam("reservationId") final String reservationId) {
         LOGGER.debug("Request received to do the check-in on reservation with hash: " + reservationId);
         ReservationResponse reservation;
         try {
@@ -126,6 +171,22 @@ public class RoomController extends SimpleController {
         }
         String message = "Expected 'startDate' and 'endDate' in format yyyy-mm-dd.";
         return Response.status(Response.Status.BAD_REQUEST).entity(message).build();
+    }
+
+    @GET
+    @Path("/orders")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getUndeliveredOrders(@QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
+                                         @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) {
+        LOGGER.debug("Request received to retrieve all undelivered orders");
+        PaginatedDTO<ChargeDeliveryResponse> orders;
+        try {
+            orders = chargeService.getAllChargesNotDelivered(page, limit);
+        } catch (IndexOutOfBoundsException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+        return sendPaginatedResponse(page, limit, orders.getMaxItems(), new GenericEntity<List<ChargeDeliveryResponse>>(orders.getList()) {
+        }, uriInfo.getAbsolutePathBuilder());
     }
 
     @POST
