@@ -134,6 +134,10 @@ const DataTable = ({ columns, rows, totalItems }) => {
         page={page}
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
+        labelRowsPerPage='Filas por páginas'
+        nextIconButtonText= 'Página Siguiente'
+        backIconButtonText= 'Página Anterior'
+        labelDisplayedRows= {({ from, to, count }) =>`${from}-${to} de (localizar aca) ${count !== -1 ? count :`mas de (localizar aca) ${to}`}`}
       />
     </div>
   );
