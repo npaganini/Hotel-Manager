@@ -51,7 +51,7 @@ const UserExpenses = ({ history, match }) => {
   }
 
   const back = () => {
-    history.push("/userprincipal");
+    history.push("/");
   };
 
   return (
