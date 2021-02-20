@@ -3,10 +3,9 @@ import { Container, Row, Col, Card } from 'react-bootstrap'
 import { makeStyles } from '@material-ui/core/styles';
 import { withRouter } from "react-router";
 
-
-import Navbar from '../../components/Navbar/Navbar'
-import Button from '../../components/Button/Button'
-import Input from '../../components/Input/Input'
+import Navbar from '../../components/Navbar/Navbar';
+import Button from '../../components/Button/Button';
+import Input from '../../components/Input/Input';
 import { useTranslation } from "react-i18next";
 
 
@@ -61,10 +60,7 @@ const checkOut = ({ history }) => {
         if (!formIsValidate())
             return;
         else {
-            onSubmit(true);
-            console.log("history", history);
-            console.log(checkOut);
-            history.push("/");
+            history.push(`/checkout/${checkOut}/expenses`);
         }
     }
 
@@ -81,7 +77,7 @@ const checkOut = ({ history }) => {
                         <Card className={classes.card}>
                             <Row className={classes.buttonRow}>
                                 <Col xs={12} md={6} style={{ marginBottom: '10px' }}>
-                                    <Input label={t('reservation.id')} error={errorInput} helperText={errorInput && "El campo es requerido"} required={true} onChange={onChangeCheckOut}></Input>
+                                    <Input label={t('reservation.hash')} error={errorInput} helperText={errorInput && "El campo es requerido"} required={true} onChange={onChangeCheckOut}></Input>
                                 </Col>
                                 <Col xs={6} md={2} className={classes.buttonColLeft}>
                                     <Button ButtonType="Save" onClick={checkOutSubmit} ButtonText="Accept"></Button>

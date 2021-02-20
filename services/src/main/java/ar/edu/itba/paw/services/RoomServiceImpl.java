@@ -72,6 +72,7 @@ public class RoomServiceImpl implements RoomService {
         }
         LOGGER.debug("Request received to do the check-out on reservation with hash: " + reservationHash);
         freeRoom(reservation.getRoom().getId());
+        // FIXME delete this
         List<Charge> charges = chargeService.getAllChargesByReservationId(reservation.getId());
         CheckoutDTO checkoutDTO = new CheckoutDTO(charges,
                 charges.size() > 0 ? chargeService.sumCharge(reservation.getId()) : 0d);

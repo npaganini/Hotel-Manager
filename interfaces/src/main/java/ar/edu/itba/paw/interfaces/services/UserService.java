@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface UserService {
+
     List<ChargesByUserResponse> checkProductsPurchasedByUserByReservationId(String userEmail, long reservationId);
 
     List<ActiveReservationResponse> findActiveReservations(String userEmail);

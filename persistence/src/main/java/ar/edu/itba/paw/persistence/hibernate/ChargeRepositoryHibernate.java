@@ -43,6 +43,25 @@ public class ChargeRepositoryHibernate extends SimpleRepositoryHibernate<Charge>
     }
 
     @Override
+    public Map<Product, Integer> getAllChargesInCheckOut(long reservationId) {
+        CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaQuery<ProductAmountDTO> query = builder.createQuery(ProductAmountDTO.class);
+        Root<Charge> charge = query.from(Charge.class);
+        Predicate predicateForId = builder.equal(charge.get("reservation").get("id"), reservationId);
+        query.multiselect(charge.get("product"), builder.count(charge));
+        query.where(predicateForId);
+        query.groupBy(charge.get("product"));
+
+        final List<ProductAmountDTO> list = em.createQuery(query).getResultList();
+
+        final Map<Product, Integer> ans = new HashMap<>();
+        for (ProductAmountDTO product : list) {
+            ans.put(product.getProduct(), Math.toIntExact(product.getAmount()));
+        }
+        return ans;
+    }
+
+    @Override
     public List<Charge> findChargesByReservationId(long reservationId) {
         return em.createQuery("SELECT c FROM Charge AS c WHERE c.reservation.id = :reservationId", Charge.class)
                 .setParameter("reservationId", reservationId).getResultList();

@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.dtos.ChargesByUserResponse;
 import ar.edu.itba.paw.interfaces.dtos.ReservationConfirmedResponse;
 import ar.edu.itba.paw.interfaces.dtos.ReservationResponse;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
@@ -102,12 +103,13 @@ public class RoomController extends SimpleController {
     }
 
     @POST
-    @Path("/checkout/{reservationId}")
+    @Path("/checkout/{reservationHash}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response checkoutPost(@PathParam(value = "reservationId") final String reservationId) throws RequestInvalidException, EntityNotFoundException {
-        CheckoutDTO checkoutDTO = roomService.doCheckout(reservationId);
+    public Response checkoutPost(@PathParam(value = "reservationHash") final String reservationHash) throws RequestInvalidException, EntityNotFoundException {
+        roomService.doCheckout(reservationHash);
         // TODO: make front end show total to pay
-        return Response.ok(checkoutDTO.getCharges()).build();
+        return Response.ok(new GenericEntity<List<ChargesByUserResponse>>(chargeService.checkProductsPurchasedInCheckOut(reservationHash)) {
+        }).build();
     }
 
     @GET

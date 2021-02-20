@@ -8,7 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 public interface ChargeDao extends SimpleDao<ar.edu.itba.paw.models.charge.Charge> {
+
     Map<Product, Integer> getAllChargesByUser(String userEmail, long reservationId);
+
+    Map<Product, Integer> getAllChargesInCheckOut(long reservationId);
 
     List<Charge> findChargesByReservationId(long reservationId);
 

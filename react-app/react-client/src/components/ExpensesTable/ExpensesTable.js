@@ -73,10 +73,10 @@ const ExpensesTable = (props) => {
               return (
                 <TableRow key={productDescription}>
                   <TableCell>{productDescription}</TableCell>
-                  <TableCell align="right">{productAmount}</TableCell>
-                  <TableCell align="right">{productPrice}</TableCell>
+                  <TableCell align="right">x{productAmount}</TableCell>
+                  <TableCell align="right">${productPrice}</TableCell>
                   <TableCell align="right">
-                    {priceRow(productAmount, productPrice)}
+                    ${priceRow(productAmount, productPrice)}
                   </TableCell>
                 </TableRow>
               );
@@ -87,7 +87,7 @@ const ExpensesTable = (props) => {
             <TableCell style={{ textAlign: "right" }} colSpan={2}>
               Total
             </TableCell>
-            <TableCell align="right">{subtotal(props.rows)}</TableCell>
+            <TableCell align="right">${subtotal(props.rows)}</TableCell>
           </TableRow>
         </TableBody>
       </Table>
