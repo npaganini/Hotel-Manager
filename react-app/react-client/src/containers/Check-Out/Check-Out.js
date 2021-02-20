@@ -3,10 +3,9 @@ import { Container, Row, Col, Card } from 'react-bootstrap'
 import { makeStyles } from '@material-ui/core/styles';
 import { withRouter } from "react-router";
 
-
-import Navbar from '../../components/Navbar/Navbar'
-import Button from '../../components/Button/Button'
-import Input from '../../components/Input/Input'
+import Navbar from '../../components/Navbar/Navbar';
+import Button from '../../components/Button/Button';
+import Input from '../../components/Input/Input';
 import { useTranslation } from "react-i18next";
 
 
@@ -61,10 +60,7 @@ const checkOut = ({ history }) => {
         if (!formIsValidate())
             return;
         else {
-            onSubmit(true);
-            console.log("history", history);
-            console.log(checkOut);
-            history.push("/");
+            history.push(`/sarasa/${checkOut}`);
         }
     }
 

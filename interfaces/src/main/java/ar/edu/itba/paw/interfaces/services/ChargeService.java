@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.interfaces.services;
 
+import ar.edu.itba.paw.interfaces.dtos.ChargesByUserResponse;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.models.charge.Charge;
@@ -19,4 +20,6 @@ public interface ChargeService {
     int setChargeToDelivered(long chargeId) throws RequestInvalidException, EntityNotFoundException;
 
     int setChargesToDelivered(long roomId) throws RequestInvalidException, EntityNotFoundException;
+
+    List<ChargesByUserResponse> checkProductsPurchasedInCheckOut(long reservationId);
 }

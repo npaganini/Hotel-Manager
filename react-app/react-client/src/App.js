@@ -11,6 +11,7 @@ import Reservation from "./containers/Reservation/Reservation";
 import CheckIn from "./containers/Check-In/Check-In";
 import Registration from "./containers/Registration/Registration";
 import CheckOut from "./containers/Check-Out/Check-Out";
+import CheckOutExpenses from "./containers/Check-Out/Check-Out-Expenses";
 import Reservations from "./containers/Reservations/Reservations";
 import Products from "./containers/Products/Products";
 import NewProduct from "./containers/Products/NewProduct";
@@ -69,6 +70,7 @@ const App = () => {
         <PrivateRoute path="/reservation" component={Reservation} />
         <PrivateRoute path="/registration" component={Registration} />
         <PrivateRoute path="/checkout" component={CheckOut} />
+        <Route path="/sarasa/:reservationId" component={CheckOutExpenses} />
         <PrivateRoute path="/reservations" component={Reservations} />
         <Route exact path="/products/:id" component={UserProducts} />
         <Route exact path="/products" component={Products} />

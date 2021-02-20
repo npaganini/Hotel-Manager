@@ -3,11 +3,13 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.daos.ChargeDao;
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
 import ar.edu.itba.paw.interfaces.daos.RoomDao;
+import ar.edu.itba.paw.interfaces.dtos.ChargesByUserResponse;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.ChargeService;
 import ar.edu.itba.paw.models.charge.Charge;
 import ar.edu.itba.paw.models.dtos.PaginatedDTO;
+import ar.edu.itba.paw.models.product.Product;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
 import org.slf4j.Logger;
@@ -16,7 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ChargeServiceImpl implements ChargeService {
@@ -31,6 +35,14 @@ public class ChargeServiceImpl implements ChargeService {
         this.reservationDao = reservationDao;
         this.chargeDao = chargeDao;
         this.roomDao = roomDao;
+    }
+
+    @Override
+    public List<ChargesByUserResponse> checkProductsPurchasedInCheckOut(long reservationId) {
+        Map<Product, Integer> productToQtyMap = chargeDao.getAllChargesInCheckOut(reservationId);
+        return productToQtyMap.keySet().stream().map(
+                product -> new ChargesByUserResponse(product.getDescription(), product.getId(), product.getPrice(), productToQtyMap.get(product))
+        ).collect(Collectors.toList());
     }
 
     @Override

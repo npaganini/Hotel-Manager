@@ -105,9 +105,10 @@ public class RoomController extends SimpleController {
     @Path("/checkout/{reservationId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response checkoutPost(@PathParam(value = "reservationId") final String reservationId) throws RequestInvalidException, EntityNotFoundException {
+        System.out.println("entra " + reservationId);
         CheckoutDTO checkoutDTO = roomService.doCheckout(reservationId);
         // TODO: make front end show total to pay
-        return Response.ok(checkoutDTO.getCharges()).build();
+        return Response.ok(chargeService.checkProductsPurchasedInCheckOut(Long.parseLong(reservationId))).build();
     }
 
     @GET
