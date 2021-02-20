@@ -26,7 +26,8 @@ const useStyles = makeStyles((theme) => ({
     },
     buttonRow: {
         textAlign: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        width: "100%",
     },
     card: {
         marginTop: '40px',
@@ -95,7 +96,7 @@ const checkIn = ({ history }) => {
     return (
         <div>
             <Container fluid="md" className={classes.container}>
-                <Row>
+                <Row style={{width: "100%"}}>
                     <Col xs={4} md={2}></Col>
                     <Col>
                         <Card className={classes.card}>

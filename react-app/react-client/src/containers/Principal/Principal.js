@@ -12,18 +12,14 @@ const useStyles = makeStyles((theme) => ({
   container: {
     background: "#FAF6FC",
     height: "100vh",
-  },
-  tableCol: {
-    paddingRight: "7.5%",
-    paddingLeft: "7.5%",
+    width: '100%',
   },
   buttonCol: {
     textAlign: "right",
-    paddingRight: "7.5%",
   },
   buttonRow: {
     paddingTop: "40px",
-    paddingLeft: "10%",
+    width: "100%",
   },
 }));
 
@@ -54,16 +50,19 @@ const Principal = ({ history }) => {
         <Row className={classes.buttonRow}>
           <Col className={classes.buttonCol}>
             <Button
-              ButtonType="Inherit"
+              ButtonType="Save"
               onClick={newReservationClick}
               ButtonText="New Reservation"
             ></Button>
           </Col>
+          <Col xs={1} md={1}></Col>
         </Row>
-        <Row className="justify-content-sm-center">
-          <Col className={classes.tableCol}>
+        <Row className="justify-content-sm-center" style={{marginTop:'10px',width: "100%"}}>
+          <Col xs={1} md={1}></Col>
+          <Col>
             <Table columns={busyRoomsColumns} rows={busyRooms} totalItems={totalCount} />
           </Col>
+          <Col xs={1} md={1}></Col>
         </Row>
       </Container>
     </div>

@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: "40px",
         paddingLeft: "10%",
         paddingRight: "10%",
+        width: "100%"
     },
     buttonCol: {
         textAlign: "center",
@@ -100,7 +101,7 @@ const Reservations = ({ history }) => {
                     </Col>
                 </Row>
                 <br></br>
-                <Row className="justify-content-sm-center" style={{background: "#FAF6FC"}}>
+                <Row className="justify-content-sm-center" style={{background: "#FAF6FC", width: "100%"}}>
                     <Col className={classes.tableCol}>
                         <Table></Table>
                     </Col>
