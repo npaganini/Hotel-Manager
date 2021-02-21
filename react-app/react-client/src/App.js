@@ -19,6 +19,7 @@ import Orders from "./containers/Orders/Orders";
 import HelpRequest from "./containers/HelpRequest/HelpRequest";
 import Navbar from "./components/Navbar/Navbar";
 import UserNavbar from "./components/Navbar/UserNavbar";
+import Rates from "./containers/Rates/Rates"
 
 import UserPrincipal from "./containers/User/Principal";
 import UserHelp from "./containers/User/Help";
@@ -67,6 +68,7 @@ const App = () => {
           setIsClient={handleSetIsClient}
         />
         <PrivateRoute path="/checkin" component={CheckIn} />
+        <Route path="/rates" component={Rates} />
         <PrivateRoute path="/reservation" component={Reservation} />
         <PrivateRoute path="/registration" component={Registration} />
         <PrivateRoute exact path="/checkout" component={CheckOut} />

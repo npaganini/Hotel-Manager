@@ -77,7 +77,7 @@ const Navbar = ({ history, setIsLoggedIn, setIsClient }) => {
   const { t } = useTranslation();
 
   const handleChange = (_, newValue) => {
-    if (newValue === 8) {
+    if (newValue === 9) {
       setShowDropdown(true);
     } else {
       setValue(newValue);
@@ -121,6 +121,10 @@ const Navbar = ({ history, setIsLoggedIn, setIsClient }) => {
 
   const ordersOnClick = () => {
     history.push("/orders");
+  };
+
+  const ratesOnClick = () => {
+    history.push("/rates")
   };
 
   const helpRequestOnClick = () => {
@@ -169,6 +173,11 @@ const Navbar = ({ history, setIsLoggedIn, setIsClient }) => {
             label={t("reservation.order.plural")}
             onClick={ordersOnClick}
             {...a11yProps(5)}
+          />
+          <Tab
+            label="Rates"
+            onClick={ratesOnClick}
+            {...a11yProps(8)}
           />
           <Tab
             label={t("help.request.singular")}
