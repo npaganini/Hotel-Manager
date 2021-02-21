@@ -123,6 +123,10 @@ const Navbar = ({ history, setIsLoggedIn, setIsClient }) => {
     history.push("/orders");
   };
 
+  const ratesOnClick = () => {
+    history.push("/rates")
+  };
+
   const helpRequestOnClick = () => {
     history.push("/help");
   };
@@ -169,6 +173,11 @@ const Navbar = ({ history, setIsLoggedIn, setIsClient }) => {
             label={t("reservation.order.plural")}
             onClick={ordersOnClick}
             {...a11yProps(5)}
+          />
+          <Tab
+            label="Rates"
+            onClick={ratesOnClick}
+            {...a11yProps(8)}
           />
           <Tab
             label={t("help.request.singular")}

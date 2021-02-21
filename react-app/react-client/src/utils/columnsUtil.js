@@ -90,3 +90,20 @@ export const reservationsColumns = [
     },
     {id: "isActive", label: "reservation.isActive"}
 ]
+
+
+export const rateColumns = [
+  {id: "roomNumber", label: "RoomNumber"},
+  {id: "userEmail", label: "reservation.email"},
+  {
+      id: "startDate", label: "reservation.date.start", format: (date) => {
+          return moment(date).format("DD/MM/YYYY");
+      },
+  },
+  {
+      id: "endDate", label: "reservation.date.end", format: (date) => {
+          return moment(date).format("DD/MM/YYYY");
+      },
+  },
+  {id: "rate", label: "Rate"}
+]

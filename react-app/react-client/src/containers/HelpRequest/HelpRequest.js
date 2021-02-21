@@ -46,7 +46,7 @@ const HelpRequest = ({history}) => {
 
     const onSubmitHelpRequest = () => {
         console.log(history);
-        history.push("/helpRequest")
+        history.push("/help")
     }
 
     const back = () => {
@@ -67,7 +67,7 @@ const HelpRequest = ({history}) => {
                                     ButtonText={t("refresh")}/>
                         </Col>
                         <Col xs={12} md={6} style={{textAlign: 'left'}}>
-                            <Button ButtonType="Back" size="large" onClick={back} ButtonText={t("home")}/>
+                            <Button ButtonType="Back" size="large" onClick={back} ButtonText="Volver"/>
                         </Col>
                     </Col>
                 </Row>
