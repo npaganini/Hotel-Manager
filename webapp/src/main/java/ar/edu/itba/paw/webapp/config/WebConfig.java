@@ -5,18 +5,22 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
@@ -59,7 +63,7 @@ public class WebConfig {
         factoryBean.setJpaVendorAdapter(vendorAdapter);
         final Properties properties = new Properties();
         // FIXME TODO create-drop for development only
-        properties.setProperty("hibernate.hbm2ddl.auto", "update"); // poner create en vez de update BORRA todos los datos guardados, cuidado
+        properties.setProperty("hibernate.hbm2ddl.auto", "validate"); // poner create en vez de update BORRA todos los datos guardados, cuidado
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL92Dialect");
         // TODO: BORRAR ANTES DE MANDAR A PROD
         properties.setProperty("hibernate.show_sql", "true");   // todo: setear false antes de pushear a prod
@@ -70,8 +74,18 @@ public class WebConfig {
     }
 
     @Bean
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
+
+    @Bean
     public RequestContextListener requestContextListener() {
         return new RequestContextListener();
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager(final EntityManagerFactory emf) {
+        return new JpaTransactionManager(emf);
     }
 
     @Bean

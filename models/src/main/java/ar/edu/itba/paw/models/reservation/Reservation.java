@@ -21,6 +21,7 @@ import java.util.Random;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "reservation")
+@Embeddable
 public class Reservation {
 
     public final static String KEY_ID = "id";
@@ -65,6 +66,8 @@ public class Reservation {
     @Column(nullable = false)
     private String hash = getRandomString();
 
+    @Enumerated(EnumType.STRING)
+    @Embedded
     private Calification calification;
 
     public Reservation(Room room, String userEmail, Calendar startDate, Calendar endDate, User user) {

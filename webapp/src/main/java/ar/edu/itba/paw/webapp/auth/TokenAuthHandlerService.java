@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ import java.util.Date;
 import java.util.Optional;
 
 @Component
+@PropertySource("classpath:key.properties")
 public class TokenAuthHandlerService {
     private static final String AUTH_HEADER = "Authorization";
     private static final int DAYS_UNTIL_TOKEN_EXPIRES = 60;

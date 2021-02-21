@@ -31,6 +31,7 @@ public class Room {
     private long id;
 
     @Column(name = KEY_ROOM_TYPE)
+    @Enumerated(EnumType.STRING)
     private RoomType roomType;
 
     @Column(nullable = false, name = KEY_FREE_NOW)
