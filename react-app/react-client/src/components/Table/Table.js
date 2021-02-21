@@ -82,11 +82,11 @@ const DataTable = ({columns, rows, totalItems = 0, pageFunction = () => {}} = {}
                                                     {
                                                         (typeof value == "boolean") ? (value ? t("yes") : t("no")) :
                                                         (Array.isArray(value) ?
-                                                            value.forEach((product) => {
+                                                            value.map((product) => {
                                                                 return (
-                                                                    <span>
-                                                                        {`${product[0]}x${product[1]}`}
-                                                                    </span>
+                                                                    <div key={`${product[0]}${product[1]}`}>
+                                                                        {`${product[0]} x${product[1]}`}
+                                                                    </div>
                                                                 );
                                                             })
                                                             :

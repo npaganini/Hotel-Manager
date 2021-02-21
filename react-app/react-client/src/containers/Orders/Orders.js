@@ -41,15 +41,13 @@ const Orders = ({history}) => {
         getAllUndeliveredOrders({page, limit})
             .then((response) => {
                 // This map-reduce will take the response and make an object like:
-                // { roomNumber : { roomId, { productDescription : { name , amount } } } }
+                // { roomNumber : { roomId, [ name , amount ] } }
                 // This is so orders are grouped by room number
-                console.log("reduce");
                 const dataByRoom = response.data.reduce((acc, charge) => {
                     let key = charge['roomNumber'];
                     if (!acc[key]) {
                         acc[key] = [];
                         acc[key].push({roomId: charge['roomId'], chargesInfo: []})
-                        console.log(acc);
                     }
                     // acc[key][0]['chargesInfo'].push({chargeId: charge['chargeId'], description: charge['description']});
                     acc[key][0]['chargesInfo'].push({description: charge['description']});
@@ -57,7 +55,6 @@ const Orders = ({history}) => {
                 }, {});
                 const dataByRoomArray = Object.keys(dataByRoom).map((key) => [Number(key), dataByRoom[key]]);
                 dataByRoomArray.forEach((room) => {
-                    console.log(room[1][0]['chargesInfo']);
                     room[1][0].chargesInfo = room[1][0].chargesInfo.reduce((acc, product) => {
                         let key = product.description;
                         if (!acc[key]) {
@@ -74,10 +71,9 @@ const Orders = ({history}) => {
 
                 setOrders(dataByRoomArray.map((roomOrders) => {
                     let productsListObj = roomOrders[1][0].chargesInfo;
-                    console.log("array", Object.keys(productsListObj).map((key) => [key, productsListObj[key][0].amount]));
                     const newObject = Object.assign(
                         {},
-                        { roomNumber: roomOrders[0], description: Object.keys(productsListObj).map((key) => [(key), ((+productsListObj[key][0].amount))]) },
+                        { id: roomOrders[1][0].roomId, roomNumber: roomOrders[0], description: Object.keys(productsListObj).map((key) => [(key), ((+productsListObj[key][0].amount))]) },
                         {action: () => {setOrdersDelivered(`${+roomOrders[1][0].roomId}`);}}
                     );
                     console.log("newObject");
@@ -85,7 +81,6 @@ const Orders = ({history}) => {
                     return newObject;
                 }));
             }).catch((error) => {
-                console.log("pepito mal");
                 console.log("There was an error while fetching all undelivered orders! ", error);
             }
         );
@@ -108,7 +103,8 @@ const Orders = ({history}) => {
     }
 
     const onSubmitOrders = () => {
-        history.push("/orders")
+        updateShowDialog(false);
+        history.push("/orders");
     }
 
     const back = () => {
