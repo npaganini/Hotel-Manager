@@ -57,9 +57,10 @@ const DataTable = ({columns, rows, totalItems = 0, pageFunction = () => {}} = {}
                         </TableRow>
                     </TableHead>
                     <TableBody className={classes.space}>
-                        {rows.map((row) => {
+                        {rows.map((row, index) => {
                             return (
-                                <TableRow hover role="checkbox" tabIndex={-1} key={row.id} aria-checked={"false"}>
+                                <TableRow hover role="checkbox" tabIndex={-1} key={row.id ? row.id : index}
+                                          aria-checked={"false"}>
                                     {columns.map((column) => {
                                         const value = row[column.id];
                                         if (column.isButton) {
@@ -71,7 +72,7 @@ const DataTable = ({columns, rows, totalItems = 0, pageFunction = () => {}} = {}
                                                         ButtonType="Save"
                                                         size="large"
                                                         onClick={value}
-                                                        ButtonText={t(column.label)}
+                                                        ButtonText={(column.id === "toggle") ? (row.enabled ? t("disabled") : t("enable")) : t(column.label)}
                                                     />
                                                 </TableCell>
                                             );
@@ -81,17 +82,17 @@ const DataTable = ({columns, rows, totalItems = 0, pageFunction = () => {}} = {}
                                                            style={{textAlign: 'center'}}>
                                                     {
                                                         (typeof value == "boolean") ? (value ? t("yes") : t("no")) :
-                                                        (Array.isArray(value) ?
-                                                            value.map((product) => {
-                                                                return (
-                                                                    <div key={`${product[0]}${product[1]}`}>
-                                                                        {`${product[0]} x${product[1]}`}
-                                                                    </div>
-                                                                );
-                                                            })
-                                                            :
-                                                            (column.format ? column.format(value) : value)
-                                                        )
+                                                            (Array.isArray(value) ?
+                                                                    value.map((product) => {
+                                                                        return (
+                                                                            <div key={`${product[0]}${product[1]}`}>
+                                                                                {`${product[0]} x${product[1]}`}
+                                                                            </div>
+                                                                        );
+                                                                    })
+                                                                    :
+                                                                    (column.format ? column.format(value) : value)
+                                                            )
                                                     }
                                                 </TableCell>
                                             );
@@ -104,15 +105,15 @@ const DataTable = ({columns, rows, totalItems = 0, pageFunction = () => {}} = {}
                 </Table>
             </TableContainer>
             {isValidPageNumber &&
-                <TablePagination
-                    rowsPerPageOptions={[10, 20]}
-                    component="div"
-                    count={+totalItems}
-                    rowsPerPage={rowsPerPage}
-                    page={+page - 1}
-                    onChangePage={handleChangePage}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                />
+            <TablePagination
+                rowsPerPageOptions={[10, 20]}
+                component="div"
+                count={+totalItems}
+                rowsPerPage={rowsPerPage}
+                page={+page - 1}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+            />
             }
         </div>
     );

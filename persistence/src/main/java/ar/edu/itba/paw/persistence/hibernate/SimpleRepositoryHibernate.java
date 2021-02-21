@@ -32,7 +32,7 @@ abstract class SimpleRepositoryHibernate<T> implements SimpleDao<T> {
     @Override
     public PaginatedDTO<T> findAll(int page, int pageSize) {
         long count = getTotalCount(getModelClass());
-        List<T> tList = em.createQuery("FROM " + getModelName(), getModelClass())
+        List<T> tList = em.createQuery("FROM " + getModelName() + "ORDER BY id", getModelClass())
                 .setFirstResult((page - 1) * pageSize)
                 .setMaxResults(pageSize)
                 .getResultList();
