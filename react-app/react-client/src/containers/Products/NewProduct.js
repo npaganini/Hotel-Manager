@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import { makeStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
+import { useTranslation } from "react-i18next";
 
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
@@ -35,6 +36,8 @@ const NewProduct = ({ history }) => {
   const [errorDescription, setErrorDescription] = useState(false);
   const [errorPrice, setErrorPrice] = useState(false);
   const [errorMessagePrice, setErrorMessagePrice] = useState("");
+  const { t } = useTranslation();
+
 
   const descriptionOnChange = (description) => {
     setDescription(description.target.value);
@@ -69,12 +72,12 @@ const NewProduct = ({ history }) => {
     }
     if (price.length == 0) {
       setErrorPrice(true);
-      setErrorMessagePrice("El campo es requerido");
+      setErrorMessagePrice(t("required"));
       isOk = false;
     }
     else if(price <= 0){
       setErrorPrice(true);
-      setErrorMessagePrice("El precio debe ser mayor que 0");
+      setErrorMessagePrice(t("product.errorMessagePrice"));
       isOk = false;
     }
 
@@ -105,7 +108,7 @@ const NewProduct = ({ history }) => {
         <Row className={classes.row}>
           <Col xs={12} md={4} style={{ justifyContent: 'center' }}>
             <Input
-              label="Descripcion"
+              label={t("product.description")}
               type="text"
               error={errorDescription}
               helperText={errorDescription && "El campo es requerido"}
@@ -117,14 +120,14 @@ const NewProduct = ({ history }) => {
             <Form.Group>
               <Form.File
                 id="exampleFormControlFile1"
-                label="Example file input"
+                label={t("product.img")}
                 onChange={photoOnChange}
               />
             </Form.Group>
           </Col>
           <Col xs={12} md={4} style={{ justifyContent: 'center' }}>
             <Input
-              label="Precio"
+              label={t("product.price")}
               type="number"
               onChange={priceOnChange}
               error={errorPrice}
@@ -137,7 +140,7 @@ const NewProduct = ({ history }) => {
             <Button
               ButtonType="Save"
               onClick={onSubmitProduct}
-              ButtonText="Crear"
+              ButtonText={t("product.create")}
             ></Button>
           </Col>
           <Col xs={12} md={6}>
@@ -145,7 +148,7 @@ const NewProduct = ({ history }) => {
               ButtonType="Back"
 
               onClick={back}
-              ButtonText="Cancelar"
+              ButtonText={t("cancel")}
             ></Button>
           </Col>
         </Row>

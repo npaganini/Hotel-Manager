@@ -68,7 +68,7 @@ const HelpRequest = ({history}) => {
                                     ButtonText={t("refresh")}/>
                         </Col>
                         <Col xs={12} md={6} style={{textAlign: 'left'}}>
-                            <Button ButtonType="Back" size="large" onClick={back} ButtonText="Volver"/>
+                            <Button ButtonType="Back" size="large" onClick={back} ButtonText={t("back")}/>
                         </Col>
                     </Col>
                 </Row>

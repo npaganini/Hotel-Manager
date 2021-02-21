@@ -7,6 +7,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import {useTranslation} from "react-i18next";
 
 const TAX_RATE = 0.07;
 
@@ -47,6 +48,7 @@ const invoiceTotal = invoiceTaxes + invoiceSubtotal;
 
 const ExpensesTable = (props) => {
   const classes = useStyles();
+  const {t} = useTranslation();
 
   console.log("expenses table", props.rows);
 
@@ -56,15 +58,15 @@ const ExpensesTable = (props) => {
         <TableHead>
           <TableRow>
             <TableCell align="center" colSpan={3}>
-              Details
+              {t("table.details")}
             </TableCell>
-            <TableCell align="right">Price</TableCell>
+            <TableCell align="right">{t("table.price")}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>Desc</TableCell>
-            <TableCell align="right">Qty.</TableCell>
-            <TableCell align="right">Unit</TableCell>
-            <TableCell align="right">Sum</TableCell>
+            <TableCell>{t("table.description")}</TableCell>
+            <TableCell align="right">{t("table.quantity")}</TableCell>
+            <TableCell align="right">{t("table.unit")}</TableCell>
+            <TableCell align="right">{t("table.sum")}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

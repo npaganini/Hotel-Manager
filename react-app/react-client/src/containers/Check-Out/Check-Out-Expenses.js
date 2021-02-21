@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { makeStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
+import { useTranslation } from "react-i18next";
 
 import {doCheckout} from '../../api/roomApi';
 
@@ -32,6 +33,7 @@ const CheckOutExpenses = ({ history, match }) => {
     const classes = useStyles();
 
     const [expenses, setExpenses] = useState([]);
+    const { t } = useTranslation();
 
     if (expenses.length === 0) {
         doCheckout({},match.params.reservationId)
@@ -69,7 +71,7 @@ const CheckOutExpenses = ({ history, match }) => {
                                 ButtonType="Back"
                                 size="large"
                                 onClick={back}
-                                ButtonText="Salir"
+                                ButtonText={t("user.home")}
                             ></Button>
                         </Col>
                     </Col>

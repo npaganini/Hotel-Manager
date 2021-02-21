@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { makeStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
+import { useTranslation } from "react-i18next";
 
 import { getBoughtProducts } from "../../api/userApi";
 
@@ -31,6 +32,7 @@ const UserExpenses = ({ history, match }) => {
   const classes = useStyles();
 
   const [expenses, setExpenses] = useState([]);
+  const { t } = useTranslation();
 
   if (expenses.length === 0) {
     getBoughtProducts(match.params.id)
@@ -67,7 +69,7 @@ const UserExpenses = ({ history, match }) => {
                 ButtonType="Back"
                 size="large"
                 onClick={back}
-                ButtonText="Volver"
+                ButtonText={t("back")}
               ></Button>
             </Col>
           </Col>

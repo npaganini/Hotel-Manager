@@ -86,7 +86,7 @@ const Products = ({history}) => {
                             <Button ButtonType="Save" size="large" onClick={addProduct} ButtonText={t("product.add")}/>
                         </Col>
                         <Col xs={12} md={6} style={{textAlign: 'left'}}>
-                            <Button ButtonType="Back" size="large" onClick={back} ButtonText={t("home")}/>
+                            <Button ButtonType="Back" size="large" onClick={back} ButtonText={t("back")}/>
                         </Col>
                     </Col>
                 </Row>
