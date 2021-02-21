@@ -11,6 +11,9 @@ import { useTranslation } from "react-i18next";
 import { rateColumns } from "../../utils/columnsUtil";
 import Progress from "../../components/Progress/Progress"
 
+import { getAvgHotelRating, getAllHotelRatings } from "../../api/ratingsApi";
+
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -38,27 +41,52 @@ const useStyles = makeStyles((theme) => ({
 const Rates = ({ history }) => {
     const classes = useStyles();
     const { t } = useTranslation();
-    const [startDate, setDateFrom] = useState(new Date());
-    const [endDate, setDateTo] = useState(new Date());
-    const [email, setEmail] = useState("");
+    const [search, setSearch] = useState("");
+    const [showDialog, updateShowDialog] = useState(false);
     const [errorStatusCode, setErrorStatusCode] = useState(200);
-    const [tableInfo, setTableInfo] = useState({ reservations: [], totalCount: 0 });
-    const { reservations, totalCount } = tableInfo;
+    const [avg, setAvg] = useState("");
+    const [pagFunction, setPagFunction] = useState(() => getAllRatingsFiltered())
+    const [tableInfo, setTableInfo] = useState({ rates: [], totalCount: 0 });
+    const { rates, totalCount } = tableInfo;
 
-    const emailOnChange = (newEmail) => {
-        setEmail(newEmail.target.value);
+    const getAllRatingsFiltered = (page = 1, limit = 20) => {
+        console.log("pija");
+        getAllHotelRatings({ page, limit })
+            .then((response) => {
+                console.log("holis", response);
+                setTableInfo({ rates: response.data, totalCount: +response.headers["x-total-count"] });
+            })
+        .catch((error) => {
+            updateShowDialog(true);
+            console.log("There was an error while fetching all ratings! ", error);
+        }
+        );
+
+    };
+
+
+    if (avg.length == 0) {
+        getAvgHotelRating()
+            .then((response) => {
+                console.log("result", response);
+                setAvg(response.data.rating);
+                console.log("avg", avg);
+            })
+            .catch((error) => console.log("error", error));
     }
 
-    const dateFromOnChange = (newDateFrom) => {
-        setDateFrom(newDateFrom.target.value);
+
+    const handleDialogClose = () => {
+        updateShowDialog(false);
     }
 
-    const dateToOnChange = (newDateTo) => {
-        setDateTo(newDateTo.target.value);
+    const searchOnChange = (newSearch) => {
+        setSearch(newSearch.target.value);
     }
 
-    const onSearchReservations = () => {
-        // getAllReservationsFiltered(1, 20, startDate, endDate, email, lastName);
+
+    const onSearchRatings = () => {
+        getAllRatingsFiltered(1, 20);
     }
 
     const back = () => {
@@ -70,18 +98,10 @@ const Rates = ({ history }) => {
             <Container fluid="md" className={classes.container}>
                 <Row className={classes.row}>
                     <Col xs={12} md={6}>
-                        <DatePicker Id="from" label={t("reservation.date.start")} onChange={dateFromOnChange} />
-                    </Col>
-                    <Col xs={12} md={6}>
-                        <DatePicker Id="to" label={t("reservation.date.end")} onChange={dateToOnChange} />
-                    </Col>
-                </Row>
-                <Row className={classes.row}>
-                    <Col xs={12} md={6}>
-                        <Input label="Search..." type="email" onChange={emailOnChange} />
+                        <Input label="Room Number" type="email" onChange={searchOnChange} />
                     </Col>
                     <Col xs={6} md={3} style={{ textAlign: 'right' }}>
-                        <Button ButtonType="Save" onClick={onSearchReservations} ButtonText={t("search")} />
+                        <Button ButtonType="Save" onClick={onSearchRatings} ButtonText={t("search")} />
                     </Col>
                     <Col xs={6} md={3} style={{ textAlign: 'center' }}>
                         <Button ButtonType="Back" onClick={back} ButtonText={t("user.home")} />
@@ -96,13 +116,13 @@ const Rates = ({ history }) => {
                         Rate Promedio:
                     </Col>
                     <Col xs={12} md={8}>
-                        <Progress progress={3.14} />
+                        <Progress progress={avg} />
                     </Col>
                 </Row>
                 <br />
-                <Row className="justify-content-sm-center" style={{ background: "#FAF6FC",width: "100%" }}>
+                <Row className="justify-content-sm-center" style={{ background: "#FAF6FC", width: "100%" }}>
                     <Col className={classes.tableCol}>
-                        <Table columns={rateColumns} rows={reservations} totalItems={totalCount} />
+                        <Table columns={rateColumns} rows={rates} totalItems={totalCount} pageFunction={pagFunction} />
                     </Col>
                 </Row>
             </Container>
