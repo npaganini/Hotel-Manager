@@ -105,5 +105,5 @@ export const rateColumns = [
           return moment(date).format("DD/MM/YYYY");
       },
   },
-  {id: "rate", label: "Rate"}
+  {id: "calification", label: "Rate"}
 ]

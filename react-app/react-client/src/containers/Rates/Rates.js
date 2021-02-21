@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 import { rateColumns } from "../../utils/columnsUtil";
 import Progress from "../../components/Progress/Progress"
 
-import { getAvgHotelRating, getAllHotelRatings } from "../../api/ratingsApi";
+import { getAvgHotelRating, getAllHotelRatings, getAvgRoomRating, getAllRoomRatings } from "../../api/ratingsApi";
 
 
 
@@ -45,48 +45,60 @@ const Rates = ({ history }) => {
     const [showDialog, updateShowDialog] = useState(false);
     const [errorStatusCode, setErrorStatusCode] = useState(200);
     const [avg, setAvg] = useState("");
-    const [pagFunction, setPagFunction] = useState(() => getAllRatingsFiltered())
     const [tableInfo, setTableInfo] = useState({ rates: [], totalCount: 0 });
     const { rates, totalCount } = tableInfo;
 
     const getAllRatingsFiltered = (page = 1, limit = 20) => {
-        console.log("pija");
         getAllHotelRatings({ page, limit })
             .then((response) => {
-                console.log("holis", response);
                 setTableInfo({ rates: response.data, totalCount: +response.headers["x-total-count"] });
             })
-        .catch((error) => {
-            updateShowDialog(true);
-            console.log("There was an error while fetching all ratings! ", error);
-        }
-        );
+            .catch((error) => {
+                updateShowDialog(true);
+                console.log("There was an error while fetching all ratings! ", error);
+            }
+            );
 
-    };
-
-
-    if (avg.length == 0) {
         getAvgHotelRating()
             .then((response) => {
-                console.log("result", response);
                 setAvg(response.data.rating);
-                console.log("avg", avg);
+            })
+            .catch((error) => console.log("error", error));
+    };
+
+    const searchHandler = (page = 1, limit = 20) => {
+        console.log("llama");
+        getAllRoomRatings(search, { page, limit })
+            .then((response) => {
+                setTableInfo({ rates: response.data, totalCount: +response.headers["x-total-count"] });
+                console.log("resp", response);
+            })
+            .catch((error) => {
+                updateShowDialog(true);
+                console.log("There was an error while fetching all ratings! ", error);
+            }
+            );
+
+        getAvgRoomRating(search)
+            .then((response) => {
+                setAvg(response.data.rating);
             })
             .catch((error) => console.log("error", error));
     }
 
 
-    const handleDialogClose = () => {
-        updateShowDialog(false);
-    }
+    const [customFunc, setCustomFunc] = useState(() => getAllRatingsFiltered)
 
     const searchOnChange = (newSearch) => {
         setSearch(newSearch.target.value);
     }
 
 
-    const onSearchRatings = () => {
-        getAllRatingsFiltered(1, 20);
+    const onSearchRatings = (page = 1, limit = 20) => {
+        if (search.length == 0)
+            setCustomFunc(() => getAllRatingsFiltered())
+        else
+            setCustomFunc(() => searchHandler())
     }
 
     const back = () => {
@@ -122,7 +134,7 @@ const Rates = ({ history }) => {
                 <br />
                 <Row className="justify-content-sm-center" style={{ background: "#FAF6FC", width: "100%" }}>
                     <Col className={classes.tableCol}>
-                        <Table columns={rateColumns} rows={rates} totalItems={totalCount} pageFunction={pagFunction} />
+                        <Table columns={rateColumns} rows={rates} totalItems={totalCount} pageFunction={customFunc} />
                     </Col>
                 </Row>
             </Container>

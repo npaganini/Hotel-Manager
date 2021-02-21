@@ -77,7 +77,7 @@ const Navbar = ({ history, setIsLoggedIn, setIsClient }) => {
   const { t } = useTranslation();
 
   const handleChange = (_, newValue) => {
-    if (newValue === 8) {
+    if (newValue === 9) {
       setShowDropdown(true);
     } else {
       setValue(newValue);
