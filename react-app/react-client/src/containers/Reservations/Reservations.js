@@ -49,6 +49,7 @@ const Reservations = ({ history }) => {
     const getAllReservationsFiltered = (page = 1, limit = 20, startDate, endDate, email, lastName) => {
         getAllReservations({page, limit, startDate, endDate, email, lastName})
             .then((response) => {
+                console.log(response.data);
                 setTableInfo({reservations: response.data, totalCount: +response.headers["x-total-count"]})
             }).catch((error) => {
                 setErrorStatusCode(error.response.status);
