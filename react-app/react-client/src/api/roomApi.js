@@ -19,6 +19,6 @@ export const getAllReservations = async (params) => get(reservationsUrl, params)
 export const doReservation = async (body) => post(postReservationUrl, body);
 export const doCheckin = async (id) => post(postCheckingUrl(id));
 export const doCheckout = async (body, id) => post(postCheckoutUrl(id), body);
-export const sendOrderToRoom = async (body, id) => post(postSendOrdersToRoomUrl(id), body);
+export const sendOrderToRoom = async (id) => post(postSendOrdersToRoomUrl(id));
 export const registerOccupants = async (body, id) => post(postRegisterOccupantsUrl(id), body);
 

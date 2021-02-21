@@ -94,7 +94,8 @@
 
   "order": {
     "finish": "¡Pedido Terminado!",
-    "deliver": "El pedido ya se puede llevar a la habitacion."
+    "deliver": "El pedido ya se puede llevar a la habitacion.",
+    "send": "Entregar"
   },
 
   "help": {

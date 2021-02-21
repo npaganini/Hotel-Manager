@@ -94,7 +94,8 @@
 
   "order": {
     "finish": "Order Finished!",
-    "deliver": "Order may be delivered to room."
+    "deliver": "Order may be delivered to room.",
+    "send": "Deliver"
   },
 
   "help": {
