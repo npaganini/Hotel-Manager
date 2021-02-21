@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -34,6 +35,7 @@ public class EmailServiceImpl implements EmailService {
         this.messageSourceExternalizer = messageSourceExternalizer;
     }
 
+    @Async
     public void sendConfirmationOfReservation(String to, String hash) {
         LOGGER.debug("About to send email notifying the confirmation of reservation to " + to);
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -51,6 +53,7 @@ public class EmailServiceImpl implements EmailService {
         javaMailSender.send(mimeMessage);
     }
 
+    @Async
     @Override
     public void sendUserCreatedEmail(String to, String password) {
         LOGGER.debug("About to send email notifying the creation of user to " + to);
@@ -69,6 +72,7 @@ public class EmailServiceImpl implements EmailService {
         javaMailSender.send(mimeMessage);
     }
 
+    @Async
     @Override
     public void sendCheckinEmail(Reservation reservation) {
         LOGGER.debug("About to send email notifying the check-in of reservation to " + reservation.getUserEmail());
@@ -87,6 +91,7 @@ public class EmailServiceImpl implements EmailService {
         javaMailSender.send(mimeMessage);
     }
 
+    @Async
     @Override
     public void sendRateStayEmail(String reservationHash) {
         LOGGER.debug("About to send e-mail asking to rate stay for reservation " + reservationHash);

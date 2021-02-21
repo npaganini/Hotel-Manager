@@ -26,7 +26,7 @@ const InfoSimpleDialog = (props) => {
 InfoSimpleDialog.propTypes = {
     onClose: PropTypes.func,
     open: PropTypes.bool.isRequired,
-    title: PropTypes.string.isRequired,
+    title: PropTypes.string,
 };
 
 export default InfoSimpleDialog;

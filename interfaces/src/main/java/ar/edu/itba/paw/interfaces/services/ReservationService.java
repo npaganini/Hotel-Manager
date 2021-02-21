@@ -18,9 +18,9 @@ public interface ReservationService {
 
     void inactiveReservation(long reservationId) throws RequestInvalidException;
 
-    PaginatedDTO<Reservation> getAll(int page, int pageSize);
+    PaginatedDTO<ReservationResponse> getAll(int page, int pageSize);
 
-    PaginatedDTO<Reservation> findAllBetweenDatesOrEmailAndSurname(Calendar startDate, Calendar endDate, String email, String occupantSurname, int page, int pageSize);
+    PaginatedDTO<ReservationResponse> findAllBetweenDatesOrEmailAndSurname(Calendar startDate, Calendar endDate, String email, String occupantSurname, int page, int pageSize);
 
     PaginatedDTO<ReservationResponse> getRoomsReservedActive(int page, int pageSize);
 

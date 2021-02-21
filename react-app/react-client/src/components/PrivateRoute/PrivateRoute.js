@@ -14,10 +14,10 @@ export const PrivateRoute = ({
       const currentUser = localStorage.getItem("token");
       const role = localStorage.getItem("role");
 
-      console.log("current user", currentUser);
-      console.log("role", role);
+      console.log("route props", routeProps);
+      console.log("props", props);
+
       const { path } = routeProps;
-      console.log("path", path);
 
       if (path === "/login") {
         if (role && currentUser) {

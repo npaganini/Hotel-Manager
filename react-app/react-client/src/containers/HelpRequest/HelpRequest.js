@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { makeStyles } from "@material-ui/core/styles";
-import { withRouter } from "react-router";
-
-
+import React, {useState} from "react";
+import {Container, Row, Col} from "react-bootstrap";
+import {makeStyles} from "@material-ui/core/styles";
+import {withRouter} from "react-router";
 import Button from "../../components/Button/Button";
 import Table from '../../components/Table/Table'
+import {useTranslation} from "react-i18next";
+import {getAllHelpRequests} from "../../api/helpApi";
+import {helpListColumns} from "../../utils/columnsUtil";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -27,8 +28,22 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const HelpRequest = ({ history }) => {
+const HelpRequest = ({history}) => {
     const classes = useStyles();
+    const {t} = useTranslation();
+    const [tableInfo, setTableInfo] = useState({helpList: [], totalCount: 0});
+    const {helpList, totalCount} = tableInfo;
+    // const {itemList, totalCount, pageFunction} = usePagination(getAllHelpRequests);
+
+    const getAllHelpRequestsUnsolved = (page, limit) => {
+        getAllHelpRequests({page, limit})
+            .then((response) => {
+                setTableInfo({helpList: response.data, totalCount: +response.headers["x-total-count"]})
+            }).catch((error) => {
+                console.log("There was an error while fetching all help requests! ", error);
+            }
+        );
+    };
 
     const onSubmitHelpRequest = () => {
         console.log(history);
@@ -44,14 +59,16 @@ const HelpRequest = ({ history }) => {
             <Container className={classes.container}>
                 <Row className={classes.row}>
                     <Col xs={12} md={10} className={classes.tableCol}>
-                        <Table></Table>
+                        <Table columns={helpListColumns} rows={helpList} totalItems={totalCount}
+                               pageFunction={getAllHelpRequestsUnsolved}/>
                     </Col>
                     <Col xs={12} md={2}>
-                        <Col xs={12} md={6} style={{ textAlign: 'left' }}>
-                            <Button ButtonType="Save" size="large" onClick={onSubmitHelpRequest} ButtonText="Refresh"></Button>
+                        <Col xs={12} md={6} style={{textAlign: 'left'}}>
+                            <Button ButtonType="Save" size="large" onClick={onSubmitHelpRequest}
+                                    ButtonText={t("refresh")}/>
                         </Col>
-                        <Col xs={12} md={6} style={{ textAlign: 'left' }}>
-                            <Button ButtonType="Back" size="large" onClick={back} ButtonText="Volver"></Button>
+                        <Col xs={12} md={6} style={{textAlign: 'left'}}>
+                            <Button ButtonType="Back" size="large" onClick={back} ButtonText={t("home")}/>
                         </Col>
                     </Col>
                 </Row>

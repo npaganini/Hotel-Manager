@@ -65,7 +65,8 @@
     "plural": "Reservations",
     "date": {
       "start": "Start Date",
-      "end": "End Date"
+      "end": "End Date",
+      "required": "Date period required!"
     },
     "room": {
       "type": "Room Type",
@@ -154,8 +155,11 @@
   "pagination": {
     "first": "First",
     "last": "Last",
-    "prev": "Prev",
-    "next": "Next"
+    "prev": "Previous",
+    "next": "Next",
+    "rowsperpage": "Rows per page",
+    "of": "of",
+    "moreof": "more of"
   },
 
   "accept": "Accept",
@@ -176,5 +180,7 @@
   "search": "Search",
   "registration": "Registration",
   "close": "Close",
-  "loading": "Loading..."
+  "loading": "Loading...",
+  "yes": "Yes",
+  "no": "No"
 }

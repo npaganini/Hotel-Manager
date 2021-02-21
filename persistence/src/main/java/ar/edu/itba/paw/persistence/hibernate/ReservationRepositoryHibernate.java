@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.*;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,12 +63,9 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
            predicatesCount++;
         }
         if (occupantSurname != null && occupantSurname.length() > 0) {
-            List<Occupant> occupantsList = em
-                    .createQuery("SELECT o.reservation.id FROM Occupant o WHERE o.surname = :surname", Occupant.class)
-                    .setParameter("surname", occupantSurname.toLowerCase())
-                    .setFirstResult((page - 1) * pageSize)
-                    .setMaxResults(pageSize)
-                    .getResultList();
+            List<Long> occupantsList = em
+                    .createQuery("SELECT o.reservation.id FROM Occupant o WHERE o.surname = :surname", Long.class)
+                    .setParameter("surname", occupantSurname.toLowerCase()).getResultList();
             if (occupantsList.size() > 0) {
                 occupantPredicate = builder.in(root.get("id")).value(occupantsList);
                 predicatesCount++;
@@ -78,14 +76,16 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
         int current = 0;
         if (datePredicate != null) array[current++] = datePredicate;
         if (emailPredicate != null) array[current++] = emailPredicate;
-        if (occupantPredicate != null) array[current++] = occupantPredicate;
+        if (occupantPredicate != null) array[current] = occupantPredicate;
 
         long count;
         List<Reservation> reservationsList;
         if (predicatesCount > 0) {
-            // todo: validar que se está paginando bien este look-up
-            count = getTotalCount(Reservation.class, array);
-            reservationsList = em.createQuery(query.select(root).where(builder.and(array))).getResultList();
+            count = em.createQuery(query.select(root).where(builder.and(array))).getResultList().size();
+            reservationsList = em.createQuery(query.select(root).where(builder.and(array)))
+                    .setFirstResult((page - 1) * pageSize)
+                    .setMaxResults(pageSize)
+                    .getResultList();
         } else {
             count = getTotalCount(Reservation.class);
             reservationsList = em.createQuery("SELECT r FROM Reservation r", getModelClass()).getResultList();
