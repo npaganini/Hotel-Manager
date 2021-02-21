@@ -34,11 +34,11 @@ public class EmailServiceImpl implements EmailService {
     }
 
     public void sendConfirmationOfReservation(String to, String hash) {
-        LOGGER.debug("About to send email notifying the confirmation of reservation to " + to);
+        LOGGER.info("About to send email notifying the confirmation of reservation to " + to);
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
         String subject = messageSourceExternalizer.getMessage("email.reservationConfirm.subject");
-        LOGGER.debug("Got the following message from message source " + subject);
+        LOGGER.info("Got the following message from message source " + subject);
         try {
             helper.setText(getHtmlMessageForReservation(to, hash), true);
             helper.setTo(to);
@@ -52,11 +52,11 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendUserCreatedEmail(String to, String password) {
-        LOGGER.debug("About to send email notifying the creation of user to " + to);
+        LOGGER.info("About to send email notifying the creation of user to " + to);
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
         String subject = messageSourceExternalizer.getMessage("email.userCreated.subject");
-        LOGGER.debug("Got the following message from message source " + subject);
+        LOGGER.info("Got the following message from message source " + subject);
         try {
             helper.setText(getHtmlMessageForUserCreation(to, password), true);
             helper.setTo(to);
@@ -70,11 +70,11 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendCheckinEmail(Reservation reservation) {
-        LOGGER.debug("About to send email notifying the check-in of reservation to " + reservation.getUserEmail());
+        LOGGER.info("About to send email notifying the check-in of reservation to " + reservation.getUserEmail());
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
         String subject = messageSourceExternalizer.getMessage("email.checkin.subject");
-        LOGGER.debug("Got the following message from message source " + subject);
+        LOGGER.info("Got the following message from message source " + subject);
         try {
             helper.setText(getHtmlMessageForCheckin(reservation.getUserEmail(), reservation.getHash()), true);
             helper.setTo(reservation.getUserEmail());
@@ -88,7 +88,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendRateStayEmail(String reservationHash) {
-        LOGGER.debug("About to send e-mail asking to rate stay for reservation " + reservationHash);
+        LOGGER.info("About to send e-mail asking to rate stay for reservation " + reservationHash);
         String userEmail = reservationDao
                 .findReservationByHash(reservationHash.trim())
                 .orElseThrow(() -> new EntityNotFoundException("Can't find reservation with"))
@@ -96,7 +96,7 @@ public class EmailServiceImpl implements EmailService {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
         String subject = messageSourceExternalizer.getMessage("email.ratings.subject");
-        LOGGER.debug("Got the following message from message source " + subject);
+        LOGGER.info("Got the following message from message source " + subject);
         try {
             helper.setText(createEmailText(reservationHash.trim()), true);
             helper.setTo(userEmail);

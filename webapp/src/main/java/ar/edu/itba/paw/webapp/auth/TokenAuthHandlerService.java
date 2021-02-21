@@ -53,7 +53,7 @@ public class TokenAuthHandlerService {
     }
 
     private String createToken(final String username) {
-        LOGGER.debug("Creating new token for user: " + username);
+        LOGGER.info("Creating new token for user: " + username);
         final ZonedDateTime now = ZonedDateTime.now();
         final Date expirationDate = Date.from(now.plusDays(DAYS_UNTIL_TOKEN_EXPIRES).toInstant());
         String token = Jwts.builder()
@@ -68,12 +68,12 @@ public class TokenAuthHandlerService {
     }
 
     public String getUsername(final String token) {
-        LOGGER.debug("Retrieving username for token: " + token);
+        LOGGER.info("Retrieving username for token: " + token);
         return getAllClaimsFromToken(token).getSubject();
     }
 
     private Claims getAllClaimsFromToken(String token) {
-        LOGGER.debug("Retrieving all claims for token: " + token);
+        LOGGER.info("Retrieving all claims for token: " + token);
         return Jwts.parser()
                 .setSigningKey(key)
                 .parseClaimsJws(token.replace(AUTHENTICATION_SCHEME, ""))
@@ -86,13 +86,13 @@ public class TokenAuthHandlerService {
     }
 
     public Optional<String> validateToken(String token) {
-        LOGGER.debug("Validating token...");
+        LOGGER.info("Validating token...");
         Claims tokenClaims = getAllClaimsFromToken(token);
         if (tokenClaims != null) {
             if (!isTokenExpired(tokenClaims)) {
                 return Optional.of(tokenClaims.getSubject());
             }
-            LOGGER.debug("Token expired!");
+            LOGGER.info("Token expired!");
         }
         return Optional.empty();
     }

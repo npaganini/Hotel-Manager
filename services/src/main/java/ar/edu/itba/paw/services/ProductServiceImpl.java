@@ -28,14 +28,14 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     @Override
     public Product saveProduct(Product product) {
-        LOGGER.debug("About to save product with description " + product.getDescription() + " and price " + product.getPrice());
+        LOGGER.info("About to save product with description " + product.getDescription() + " and price " + product.getPrice());
         return productDao.save(product);
     }
 
     @Transactional
     @Override
     public boolean disableProduct(long productId) throws EntityNotFoundException {
-        LOGGER.debug("About to unable product for visibility with id " + productId);
+        LOGGER.info("About to unable product for visibility with id " + productId);
         productDao.findById(productId).orElseThrow(() -> new EntityNotFoundException("Cant find product with id " + productId));
         return productDao.updateProductEnable(productId, false) > 0;
     }
@@ -43,7 +43,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     @Override
     public boolean enableProduct(long productId) throws EntityNotFoundException {
-        LOGGER.debug("About to enable product for visibility with id " + productId);
+        LOGGER.info("About to enable product for visibility with id " + productId);
         productDao.findById(productId).orElseThrow(() -> new EntityNotFoundException("Cant find product with id " + productId));
         return productDao.updateProductEnable(productId, true) > 0;
     }

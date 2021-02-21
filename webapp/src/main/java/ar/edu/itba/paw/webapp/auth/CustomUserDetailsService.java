@@ -24,7 +24,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        LOGGER.debug("Looking for username in database...");
+        LOGGER.info("Looking for username in database...");
         User user = userDao.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
         return new MyUserPrincipal(user);
     }

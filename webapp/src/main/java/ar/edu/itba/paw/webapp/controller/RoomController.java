@@ -57,7 +57,7 @@ public class RoomController extends SimpleController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getAllRooms(@QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
                                 @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) {
-        LOGGER.debug("Request received to retrieve whole roomsList");
+        LOGGER.info("Request received to retrieve whole roomsList");
         PaginatedDTO<ReservationResponse> reservations;
         try {
             reservations = reservationService.getRoomsReservedActive(page, limit);
@@ -77,35 +77,35 @@ public class RoomController extends SimpleController {
                                        @QueryParam("lastName")  String lastName,
                                        @QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
                                        @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) throws Exception {
-        LOGGER.debug("Request received to retrieve reservations.");
+        LOGGER.info("Request received to retrieve reservations.");
         PaginatedDTO<ReservationResponse> reservations = null;
         try {
             if (startDate == null && endDate == null && email == null && lastName == null) {
-                LOGGER.debug("Getting all reservations starting at page " + page);
+                LOGGER.info("Getting all reservations starting at page " + page);
                 reservations = reservationService.getAll(page, limit);
             } else {
                 if (!StringUtils.isEmpty(startDate) && !StringUtils.isEmpty(endDate)) {
-                    LOGGER.debug("Getting all reservations between " + startDate + " and " + endDate);
+                    LOGGER.info("Getting all reservations between " + startDate + " and " + endDate);
                     Calendar startDateCalendar = JsonToCalendar.unmarshal(startDate);
                     Calendar endDateCalendar = JsonToCalendar.unmarshal(endDate);
                     if (startDateCalendar.before(endDateCalendar)) {
-                        LOGGER.debug("Valid dates received, continuing with fetch...");
+                        LOGGER.info("Valid dates received, continuing with fetch...");
                         reservations = reservationService.findAllBetweenDatesOrEmailAndSurname(startDateCalendar, endDateCalendar, email, lastName, page, limit);
                     } else {
-                        LOGGER.debug("Request received with invalid dates.");
+                        LOGGER.info("Request received with invalid dates.");
                         return Response.status(Response.Status.BAD_REQUEST).build();
                     }
                 }
             }
         } catch (IllegalArgumentException e) {
-            LOGGER.debug(e.getMessage());
+            LOGGER.info(e.getMessage());
             System.out.println(e.getMessage());
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         if (reservations == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        LOGGER.debug("Reservation(s) found!");
+        LOGGER.info("Reservation(s) found!");
         return sendPaginatedResponse(page, limit, reservations.getMaxItems(), new GenericEntity<List<ReservationResponse>>(reservations.getList()) {
         }, uriInfo.getAbsolutePathBuilder());
     }
@@ -115,7 +115,7 @@ public class RoomController extends SimpleController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response reservationPost(ReservationRequest reservationRequest)
             throws RequestInvalidException {
-        LOGGER.debug("Request received to do a reservation on room with id: " + reservationRequest.getRoomId());
+        LOGGER.info("Request received to do a reservation on room with id: " + reservationRequest.getRoomId());
         final Reservation reservation = reservationService.doReservation(reservationRequest.getRoomId(),
                 reservationRequest.getUserEmail(), reservationRequest.getStartDate(), reservationRequest.getEndDate());
         return Response.ok(new GenericEntity<ReservationConfirmedResponse>(new ReservationConfirmedResponse(reservation.getId(), reservation.getHash(), reservation.getRoom().getNumber())) {
@@ -126,7 +126,7 @@ public class RoomController extends SimpleController {
     @Path("/checkin/{reservationId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response checkinPost(@PathParam("reservationId") final String reservationId) {
-        LOGGER.debug("Request received to do the check-in on reservation with hash: " + reservationId);
+        LOGGER.info("Request received to do the check-in on reservation with hash: " + reservationId);
         ReservationResponse reservation;
         try {
             reservation = roomService.doCheckin(reservationId);
@@ -174,7 +174,7 @@ public class RoomController extends SimpleController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getUndeliveredOrders(@QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
                                          @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) {
-        LOGGER.debug("Request received to retrieve all undelivered orders");
+        LOGGER.info("Request received to retrieve all undelivered orders");
         PaginatedDTO<ChargeDeliveryResponse> orders;
         try {
             orders = chargeService.getAllChargesNotDelivered(page, limit);
@@ -189,7 +189,7 @@ public class RoomController extends SimpleController {
     @Path("/orders/{roomId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response sendOrder(@PathParam(value = "roomId") Long roomId) throws Exception {
-        LOGGER.debug("Order request sent for room with id: " + roomId);
+        LOGGER.info("Order request sent for room with id: " + roomId);
         chargeService.setChargesToDelivered(roomId);
         return Response.ok().build();
     }
@@ -198,9 +198,9 @@ public class RoomController extends SimpleController {
     @Path("/occupants/{reservationHash}")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response registrationPost(@PathParam("reservationHash") String reservationHash, OccupantsRequest occupantsRequest) throws EntityNotFoundException {
-        LOGGER.debug("Attempted to access registration form");
+        LOGGER.info("Attempted to access registration form");
         if (reservationHash != null && !CollectionUtils.isEmpty(occupantsRequest.getOccupants())) {
-            LOGGER.debug("Attempted to register occupants on reservation hash " + reservationHash);
+            LOGGER.info("Attempted to register occupants on reservation hash " + reservationHash);
             reservationService.registerOccupants(reservationHash.trim(),
                     occupantsRequest.getOccupants()
                             .stream()

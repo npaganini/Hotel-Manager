@@ -40,13 +40,13 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws IOException, ServletException {
         final String header = httpServletRequest.getHeader(AUTH_HEADER);
-        LOGGER.debug("Applying filters to request...");
+        LOGGER.info("Applying filters to request...");
         if (header == null || !header.startsWith(AUTHENTICATION_SCHEME)) {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
-            LOGGER.debug("No authorization sent on request");
+            LOGGER.info("No authorization sent on request");
             return;
         }
-        LOGGER.debug("Resource requested: " + httpServletRequest.getPathInfo());
+        LOGGER.info("Resource requested: " + httpServletRequest.getPathInfo());
         UsernamePasswordAuthenticationToken authentication = getAuthentication(httpServletRequest);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -63,14 +63,14 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
             Optional<String> possibleUser = tokenAuthHandlerService.validateToken(token);
             if (possibleUser.isPresent()) {
                 String user = possibleUser.get();
-                LOGGER.debug("User found that uses that token! User is: " + user);
+                LOGGER.info("User found that uses that token! User is: " + user);
                 MyUserPrincipal principal = (MyUserPrincipal) userDetailsService.loadUserByUsername(user);
                 return new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
             }
-            LOGGER.debug("No user found for that token!");
+            LOGGER.info("No user found for that token!");
             return null;
         }
-        LOGGER.debug("No bearer token found in request!");
+        LOGGER.info("No bearer token found in request!");
         return null;
     }
 }

@@ -28,14 +28,14 @@ public class RatingsServiceImpl implements RatingsService {
 
     @Override
     public RatingDTO getHotelRating() {
-        LOGGER.debug("About to get the general hotel rating.");
+        LOGGER.info("About to get the general hotel rating.");
         return new RatingDTO(getAverageRating(reservationDao.getHotelRating()));
     }
 
     @Override
     public PaginatedDTO<CalificationResponse> getAllHotelRatings(int page, int pageSize) {
         if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
-        LOGGER.debug("Getting a list of all hotel ratings...");
+        LOGGER.info("Getting a list of all hotel ratings...");
         PaginatedDTO<Calification> cals = reservationDao.getAllRatings(page, pageSize);
         return new PaginatedDTO<>(cals.getList()
                 .stream().map(CalificationResponse::fromCalification).collect(Collectors.toList()),
@@ -44,10 +44,10 @@ public class RatingsServiceImpl implements RatingsService {
 
     @Override
     public RatingDTO getRoomRating(long roomId) throws EntityNotFoundException {
-        LOGGER.debug("Getting the room's rating for room with id: " + roomId);
+        LOGGER.info("Getting the room's rating for room with id: " + roomId);
         List<Calification> cals = reservationDao.getRoomRating(roomId);
         if (cals.size() == 0) {
-            LOGGER.debug("Invalid room id: " + roomId);
+            LOGGER.info("Invalid room id: " + roomId);
             throw new EntityNotFoundException("Invalid room id: " + roomId);
         }
         return new RatingDTO(getAverageRating(cals));
@@ -56,10 +56,10 @@ public class RatingsServiceImpl implements RatingsService {
     @Override
     public PaginatedDTO<CalificationResponse> getAllRoomRatings(long roomId, int page, int pageSize) throws EntityNotFoundException {
         if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
-        LOGGER.debug("Getting a list of all the room's ratings for room with id: " + roomId);
+        LOGGER.info("Getting a list of all the room's ratings for room with id: " + roomId);
         PaginatedDTO<Calification> cals = reservationDao.getRatingsByRoom(roomId, page, pageSize);
         if (cals.getList().size() == 0) {
-            LOGGER.debug("Invalid room id: " + roomId);
+            LOGGER.info("Invalid room id: " + roomId);
             throw new EntityNotFoundException("Invalid room id: " + roomId);
         }
         return new PaginatedDTO<>(cals.getList()

@@ -36,7 +36,7 @@ public class HelpController extends SimpleController {
     public Response help(@QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
                          @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) {
         // todo: mav was "helpRequests.jsp"
-        LOGGER.debug("Request attempted to get the list of help requests.");
+        LOGGER.info("Request attempted to get the list of help requests.");
         PaginatedDTO<HelpResponse> helpRequests;
         try {
             helpRequests = helpService.getAllRequestsThatRequireAction(page, limit);
@@ -53,7 +53,7 @@ public class HelpController extends SimpleController {
                                    @QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
                                    @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) throws RequestInvalidException {
         // todo: mav was "helpRequests.jsp"
-        LOGGER.debug("Attempted to update status on help request.");
+        LOGGER.info("Attempted to update status on help request.");
         try {
             if (helpService.updateStatus(helpRequestId, status)) {
                 return help(page, limit);

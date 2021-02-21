@@ -53,7 +53,7 @@ public class ChargeServiceImpl implements ChargeService {
 
     @Override
     public List<Charge> getAllChargesByReservationId(long reservationId) throws RequestInvalidException {
-        LOGGER.debug("Getting all current charges for reservation with id " + reservationId);
+        LOGGER.info("Getting all current charges for reservation with id " + reservationId);
         Optional<Reservation> reservationOptional = reservationDao.findById(reservationId);
         if (!reservationOptional.isPresent() || !reservationOptional.get().isActive()) {
             throw new RequestInvalidException();
@@ -64,7 +64,7 @@ public class ChargeServiceImpl implements ChargeService {
     @Override
     public PaginatedDTO<Charge> getAllChargesByReservationId(long reservationId, int page, int pageSize) throws RequestInvalidException {
         if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
-        LOGGER.debug("Getting all current charges for reservation with id " + reservationId);
+        LOGGER.info("Getting all current charges for reservation with id " + reservationId);
         Optional<Reservation> reservationOptional = reservationDao.findById(reservationId);
         if (!reservationOptional.isPresent() || !reservationOptional.get().isActive()) {
             throw new RequestInvalidException();
@@ -74,14 +74,14 @@ public class ChargeServiceImpl implements ChargeService {
 
     @Override
     public double sumCharge(long reservationId) {
-        LOGGER.debug("Getting the balance of reservation with id" + reservationId);
+        LOGGER.info("Getting the balance of reservation with id" + reservationId);
         return chargeDao.sumCharge(reservationId);
     }
 
     @Override
     public PaginatedDTO<ChargeDeliveryResponse> getAllChargesNotDelivered(int page, int pageSize) {
         if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
-        LOGGER.debug("Getting all undelivered orders.");
+        LOGGER.info("Getting all undelivered orders.");
         PaginatedDTO<Charge> charges = chargeDao.findAllChargesNotDelivered(page, pageSize);
         return new PaginatedDTO<>(charges.getList()
                 .stream().map(ChargeDeliveryResponse::fromCharge).collect(Collectors.toList()),
@@ -106,7 +106,7 @@ public class ChargeServiceImpl implements ChargeService {
             List<Charge> chargeList = chargeDao.findChargesByRoomNumber(room.get().getNumber());
             for (Charge c : chargeList) {
                 if (c.isDelivered()) {
-                    LOGGER.debug("Charge with ID: " + c.getId() + " was already delivered.");
+                    LOGGER.info("Charge with ID: " + c.getId() + " was already delivered.");
                     throw new RequestInvalidException();
                 }
             }

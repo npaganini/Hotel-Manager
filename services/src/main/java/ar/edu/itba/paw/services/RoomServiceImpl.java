@@ -69,7 +69,7 @@ public class RoomServiceImpl implements RoomService {
         if (!reservation.isActive()) {
             throw new RequestInvalidException();
         }
-        LOGGER.debug("Request received to do the check-out on reservation with hash: " + reservationHash);
+        LOGGER.info("Request received to do the check-out on reservation with hash: " + reservationHash);
         freeRoom(reservation.getRoom().getId());
         // FIXME delete this
         List<Charge> charges = chargeService.getAllChargesByReservationId(reservation.getId());

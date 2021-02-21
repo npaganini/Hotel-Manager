@@ -88,13 +88,13 @@ public class UserServiceImpl implements UserService {
         Optional<User> userOptional = userDao.findByEmail(userEmail);
         if (userOptional.isPresent()) {
             user = userOptional.get();
-            LOGGER.debug("There is already an user created with email " + userEmail);
+            LOGGER.info("There is already an user created with email " + userEmail);
         } else {
-            LOGGER.debug("There is no user created with email " + userEmail + ". So we'll create one.");
+            LOGGER.info("There is no user created with email " + userEmail + ". So we'll create one.");
             String randomPassword = generatePassword();
             System.out.println("Password for user is: " + randomPassword);  // TODO: ERASE THIS PRINT BEFORE SENDING TO PROD
             user = userDao.save(new User(userEmail, userEmail, new BCryptPasswordEncoder().encode(randomPassword)));
-            LOGGER.debug("User created! Sending e-mail about user creation to: " + userEmail);
+            LOGGER.info("User created! Sending e-mail about user creation to: " + userEmail);
             emailService.sendUserCreatedEmail(userEmail, randomPassword);
         }
         return user;
@@ -134,7 +134,7 @@ public class UserServiceImpl implements UserService {
     }
 
     protected String generatePassword() {
-        LOGGER.debug("Generating password...");
+        LOGGER.info("Generating password...");
         Integer[] ints = generateRandomIntsArray();
         StringBuilder password = new StringBuilder(GENERATED_PASSWORD_LENGTH);
         for (Integer i : ints) {
