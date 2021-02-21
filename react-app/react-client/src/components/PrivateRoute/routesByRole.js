@@ -10,9 +10,11 @@ export const managerPaths = [
   "/reservation",
   "/checkin",
   "/login",
+  "/checkout/:reservationId/expenses",
+  
 ];
 
-export const clientPaths = ["/", "/help", "/products", "/expenses", "/login"];
+export const clientPaths = ["/", "/help/:id","/products/:id", "/expenses/:id", "/login"];
 
 export const CLIENT = "CLIENT";
 export const MANAGER = "MANAGER";

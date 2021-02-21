@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -58,6 +58,9 @@ const useStyles = makeStyles((theme) => ({
   tabPanel: {
     padding: "0px",
   },
+  menuLogout: {
+    marginTop: "30px",
+  },
 }));
 
 const Navbar = ({ history, setIsClient, setIsLoggedIn }) => {
@@ -66,6 +69,7 @@ const Navbar = ({ history, setIsClient, setIsLoggedIn }) => {
   const { t } = useTranslation();
 
   const [showDropdown, setShowDropdown] = React.useState(undefined);
+  const inputEl = useRef(null);
 
   const homeOnClick = () => {
     history.push("/");
@@ -107,10 +111,16 @@ const Navbar = ({ history, setIsClient, setIsLoggedIn }) => {
             label={t("user.account")}
             {...a11yProps(7)}
             className={classes.rightAlign}
+            ref={inputEl}
           />
           <Menu
-            id="simple-menu"
-            anchorEl={showDropdown}
+            className={classes.menuLogout}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "center",
+            }}
+            transformOrigin={{ vertical: "bottom", horizontal: "center" }}
+            anchorEl={inputEl.current}
             keepMounted
             open={Boolean(showDropdown)}
             onClose={handleClose}
