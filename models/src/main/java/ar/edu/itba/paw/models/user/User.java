@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.util.List;
 
@@ -38,13 +37,12 @@ public class User implements Serializable    {
     @Column(length = 100, nullable = false)
     private String email;
 
-    @Enumerated(EnumType.STRING)
     private UserRole role;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
     private List<Reservation> reservations;
 
-    @XmlTransient
+
     public List<Reservation> getReservations() {
         return reservations;
     }

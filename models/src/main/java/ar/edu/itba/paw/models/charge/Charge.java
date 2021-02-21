@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 @Getter
 @Setter
@@ -48,7 +46,7 @@ public class Charge {
         this.delivered = true;
     }
 
-    @XmlTransient
+
     public Reservation getReservation() {
         return reservation;
     }

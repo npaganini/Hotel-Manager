@@ -3,8 +3,8 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.daos.ChargeDao;
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
 import ar.edu.itba.paw.interfaces.daos.RoomDao;
-import ar.edu.itba.paw.interfaces.dtos.ChargesByUserResponse;
 import ar.edu.itba.paw.interfaces.dtos.ChargeDeliveryResponse;
+import ar.edu.itba.paw.interfaces.dtos.ChargesByUserResponse;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.ChargeService;
@@ -15,7 +15,8 @@ import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -23,7 +24,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Service
+@Component
 public class ChargeServiceImpl implements ChargeService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ChargeServiceImpl.class);
@@ -32,6 +33,7 @@ public class ChargeServiceImpl implements ChargeService {
     private final ChargeDao chargeDao;
     private final RoomDao roomDao;
 
+    @Autowired
     public ChargeServiceImpl(ReservationDao reservationDao, ChargeDao chargeDao, RoomDao roomDao) {
         this.reservationDao = reservationDao;
         this.chargeDao = chargeDao;

@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import java.util.List;
 
 @Getter
@@ -17,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "room")
-@XmlRootElement
+
 public class Room {
 
     public static final String KEY_ID = "id";
@@ -32,7 +30,6 @@ public class Room {
     @Column(name = "id", columnDefinition = "NUMERIC(19,0)")
     private long id;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = KEY_ROOM_TYPE)
     private RoomType roomType;
 
@@ -46,7 +43,7 @@ public class Room {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "room")
     private List<Reservation> reservations;
 
-    @XmlTransient
+
     public List<Reservation> getReservations() {
         return reservations;
     }

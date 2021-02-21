@@ -1,14 +1,13 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.dtos.HelpResponse;
-import ar.edu.itba.paw.interfaces.dtos.ReservationResponse;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.HelpService;
 import ar.edu.itba.paw.models.dtos.PaginatedDTO;
-import ar.edu.itba.paw.models.help.Help;
 import ar.edu.itba.paw.models.help.HelpStep;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.*;
@@ -27,6 +26,7 @@ public class HelpController extends SimpleController {
     @Context
     private UriInfo uriInfo;
 
+    @Autowired
     public HelpController(HelpService helpService) {
         this.helpService = helpService;
     }

@@ -7,7 +7,6 @@ import ar.edu.itba.paw.models.user.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +23,6 @@ import java.util.Date;
 import java.util.Optional;
 
 @Component
-@Service
 public class TokenAuthHandlerService {
     private static final String AUTH_HEADER = "Authorization";
     private static final int DAYS_UNTIL_TOKEN_EXPIRES = 60;

@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -67,7 +65,6 @@ public class Reservation {
     @Column(nullable = false)
     private String hash = getRandomString();
 
-    @Enumerated(EnumType.STRING)
     private Calification calification;
 
     public Reservation(Room room, String userEmail, Calendar startDate, Calendar endDate, User user) {

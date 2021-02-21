@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.interfaces.dtos.ChargesByUserResponse;
 import ar.edu.itba.paw.interfaces.dtos.ChargeDeliveryResponse;
+import ar.edu.itba.paw.interfaces.dtos.ChargesByUserResponse;
 import ar.edu.itba.paw.interfaces.dtos.ReservationConfirmedResponse;
 import ar.edu.itba.paw.interfaces.dtos.ReservationResponse;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
@@ -9,7 +9,6 @@ import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.ChargeService;
 import ar.edu.itba.paw.interfaces.services.ReservationService;
 import ar.edu.itba.paw.interfaces.services.RoomService;
-import ar.edu.itba.paw.models.dtos.CheckoutDTO;
 import ar.edu.itba.paw.models.dtos.PaginatedDTO;
 import ar.edu.itba.paw.models.occupant.Occupant;
 import ar.edu.itba.paw.models.reservation.Reservation;
@@ -20,7 +19,6 @@ import ar.edu.itba.paw.webapp.utils.JsonToCalendar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
@@ -29,9 +27,7 @@ import org.springframework.util.StringUtils;
 import javax.persistence.NoResultException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.net.URI;
 import java.util.Calendar;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,10 +71,10 @@ public class RoomController extends SimpleController {
     @GET
     @Path("/reservations")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getAllReservations(@QueryParam("startDate") @Nullable String startDate,
-                                       @QueryParam("endDate") @Nullable String endDate,
-                                       @QueryParam("email") @Nullable String email,
-                                       @QueryParam("lastName") @Nullable String lastName,
+    public Response getAllReservations(@QueryParam("startDate")  String startDate,
+                                       @QueryParam("endDate")  String endDate,
+                                       @QueryParam("email")  String email,
+                                       @QueryParam("lastName")  String lastName,
                                        @QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
                                        @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) throws Exception {
         LOGGER.debug("Request received to retrieve reservations.");
@@ -90,8 +86,8 @@ public class RoomController extends SimpleController {
             } else {
                 if (!StringUtils.isEmpty(startDate) && !StringUtils.isEmpty(endDate)) {
                     LOGGER.debug("Getting all reservations between " + startDate + " and " + endDate);
-                    Calendar startDateCalendar = new JsonToCalendar().unmarshal(startDate);
-                    Calendar endDateCalendar = new JsonToCalendar().unmarshal(endDate);
+                    Calendar startDateCalendar = JsonToCalendar.unmarshal(startDate);
+                    Calendar endDateCalendar = JsonToCalendar.unmarshal(endDate);
                     if (startDateCalendar.before(endDateCalendar)) {
                         LOGGER.debug("Valid dates received, continuing with fetch...");
                         reservations = reservationService.findAllBetweenDatesOrEmailAndSurname(startDateCalendar, endDateCalendar, email, lastName, page, limit);
@@ -162,8 +158,8 @@ public class RoomController extends SimpleController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response reservation(@QueryParam("startDate") String startDate, @QueryParam("endDate") String endDate) throws Exception {
         if (!StringUtils.isEmpty(startDate) && !StringUtils.isEmpty(endDate)) {
-            Calendar startDateCalendar = new JsonToCalendar().unmarshal(startDate);
-            Calendar endDateCalendar = new JsonToCalendar().unmarshal(endDate);
+            Calendar startDateCalendar = JsonToCalendar.unmarshal(startDate);
+            Calendar endDateCalendar = JsonToCalendar.unmarshal(endDate);
             if (startDateCalendar.before(endDateCalendar)) {
                 return Response.ok(new GenericEntity<List<Room>>(roomService.findAllFreeBetweenDates(startDateCalendar, endDateCalendar)) {
                 }).build();
