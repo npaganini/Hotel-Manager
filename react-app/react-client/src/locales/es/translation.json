@@ -160,6 +160,7 @@
     "moreof": "más de"
   },
 
+  "required": "Requerido",
   "accept": "Aceptar",
   "cancel": "Cancelar",
   "success": "La accion se realizo exitosamente.",

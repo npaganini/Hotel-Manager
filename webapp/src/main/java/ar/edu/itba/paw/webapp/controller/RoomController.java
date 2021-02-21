@@ -150,9 +150,12 @@ public class RoomController extends SimpleController {
     @POST
     @Path("/checkout/{reservationHash}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response checkoutPost(@PathParam(value = "reservationHash") final String reservationHash) throws RequestInvalidException, EntityNotFoundException {
-        roomService.doCheckout(reservationHash);
-        // TODO: make front end show total to pay
+    public Response checkoutPost(@PathParam(value = "reservationHash") final String reservationHash) throws EntityNotFoundException {
+        try {
+            roomService.doCheckout(reservationHash);
+        } catch (RequestInvalidException | EntityNotFoundException | NoResultException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
         return Response.ok(new GenericEntity<List<ChargesByUserResponse>>(chargeService.checkProductsPurchasedInCheckOut(reservationHash)) {
         }).build();
     }

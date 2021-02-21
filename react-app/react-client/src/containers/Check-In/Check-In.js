@@ -36,11 +36,11 @@ const useStyles = makeStyles((theme) => ({
 
 const checkIn = ({ history }) => {
     const classes = useStyles();
+    const { t } = useTranslation();
     const [checkIn, onCheckIn] = useState("");
     const [showDialog, updateShowDialog] = useState(false);
     const [loading, updateShowLoading] = useState(false);
     const [info, updateInfo] = useState(undefined);
-    const { t } = useTranslation();
     const [errorInput, setErrorInput] = useState(false);
 
 

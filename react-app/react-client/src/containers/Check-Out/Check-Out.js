@@ -36,12 +36,9 @@ const useStyles = makeStyles((theme) => ({
 
 const checkOut = ({ history }) => {
     const classes = useStyles();
-
-    const [checkOut, onCheckOut] = useState("");
-    const [submit, onSubmit] = useState(false);
-    const [errorInput, setErrorInput] = useState(false);
-
     const { t } = useTranslation();
+    const [checkOut, onCheckOut] = useState("");
+    const [errorInput, setErrorInput] = useState(false);
 
     const onChangeCheckOut = (newCheckOut) => {
         onCheckOut(newCheckOut.target.value);
@@ -49,7 +46,7 @@ const checkOut = ({ history }) => {
 
     const formIsValidate = () => {
         let isOk = true;
-        if (checkOut.length == 0) {
+        if (checkOut.length === 0) {
             setErrorInput(true);
             isOk = false;
         }
@@ -73,23 +70,23 @@ const checkOut = ({ history }) => {
         <div>
             <Container fluid="md" className={classes.container}>
                 <Row style={{width: "100%"}}>
-                    <Col xs={4} md={2}></Col>
+                    <Col xs={4} md={2}/>
                     <Col>
                         <Card className={classes.card}>
                             <Row className={classes.buttonRow}>
                                 <Col xs={12} md={6} style={{ marginBottom: '10px' }}>
-                                    <Input label={t('reservation.hash')} error={errorInput} helperText={errorInput && "El campo es requerido"} required={true} onChange={onChangeCheckOut}></Input>
+                                    <Input label={t("reservation.hash")} error={errorInput} helperText={errorInput && t("required")} required={true} onChange={onChangeCheckOut}/>
                                 </Col>
                                 <Col xs={6} md={2} className={classes.buttonColLeft}>
-                                    <Button ButtonType="Save" onClick={checkOutSubmit} ButtonText="Accept"></Button>
+                                    <Button ButtonType="Save" onClick={checkOutSubmit} ButtonText={t('accept')}/>
                                 </Col>
                                 <Col xs={6} md={2} className={classes.buttonColRight}>
-                                    <Button ButtonType="Back" onClick={checkOutCancel} ButtonText="Cancel"></Button>
+                                    <Button ButtonType="Back" onClick={checkOutCancel} ButtonText={t('cancel')}/>
                                 </Col>
                             </Row>
                         </Card>
                     </Col>
-                    <Col xs={4} md={2}></Col>
+                    <Col xs={4} md={2}/>
                 </Row>
             </Container>
         </div>
