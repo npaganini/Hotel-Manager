@@ -28,10 +28,9 @@ export const helpListColumns = [
 
 
 export const ordersColumns = [
-    {id: "chargeId", label: "reservation.order.plural"},
-    {id: "description", label: "product.description"},
     {id: "roomNumber", label: "room.singular"},
-    {id: "action", label: "help.status.mark.message"}
+    {id: "description", label: "product.description"},
+    {id: "action", label: "order.send", isButton: true}
 ];
 
 
@@ -43,35 +42,23 @@ export const productsColumns = [
 
 
 export const reservationUserColumns = [
-  { id: "roomType", label: "reservation.room.type" },
-  {
-    id: "startDate",
-    label: "reservation.date.start",
-    format: (date) => {
-      return moment(date).format("DD/MM/YYYY");
+    {id: "roomType", label: "reservation.room.type"},
+    {
+        id: "startDate",
+        label: "reservation.date.start",
+        format: (date) => {
+            return moment(date).format("DD/MM/YYYY");
+        },
     },
-  },
-  {
-    id: "endDate",
-    label: "reservation.date.end",
-    format: (date) => moment(date).format("DD/MM/YYYY"),
-  },
-  { id: "roomNumber", label: "reservation.room.number" },
-  {
-    id: "actions",
-    label: "user.actions",
-    isButton: true,
-  },
-  {
-    id: "expenses",
-    label: "user.expenses",
-    isButton: true,
-  },
-  {
-    id: "help",
-    label: "user.problem",
-    isButton: true,
-  },
+    {
+        id: "endDate",
+        label: "reservation.date.end",
+        format: (date) => moment(date).format("DD/MM/YYYY"),
+    },
+    {id: "roomNumber", label: "reservation.room.number"},
+    {id: "actions", label: "user.actions", isButton: true},
+    {id: "expenses", label: "user.expenses", isButton: true},
+    {id: "help", label: "user.problem", isButton: true},
 ];
 
 

@@ -80,10 +80,18 @@ const DataTable = ({columns, rows, totalItems = 0, pageFunction = () => {}} = {}
                                                 <TableCell key={column.id} align={column.align}
                                                            style={{textAlign: 'center'}}>
                                                     {
-                                                        (typeof value == "boolean") ?
-                                                            (value ? t("yes") : t("no"))
+                                                        (typeof value == "boolean") ? (value ? t("yes") : t("no")) :
+                                                        (Array.isArray(value) ?
+                                                            value.forEach((product) => {
+                                                                return (
+                                                                    <span>
+                                                                        {`${product[0]}x${product[1]}`}
+                                                                    </span>
+                                                                );
+                                                            })
                                                             :
                                                             (column.format ? column.format(value) : value)
+                                                        )
                                                     }
                                                 </TableCell>
                                             );
@@ -96,15 +104,15 @@ const DataTable = ({columns, rows, totalItems = 0, pageFunction = () => {}} = {}
                 </Table>
             </TableContainer>
             {isValidPageNumber &&
-            <TablePagination
-                rowsPerPageOptions={[10, 20]}
-                component="div"
-                count={+totalItems}
-                rowsPerPage={rowsPerPage}
-                page={+page - 1}
-                onChangePage={handleChangePage}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
-            />
+                <TablePagination
+                    rowsPerPageOptions={[10, 20]}
+                    component="div"
+                    count={+totalItems}
+                    rowsPerPage={rowsPerPage}
+                    page={+page - 1}
+                    onChangePage={handleChangePage}
+                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                />
             }
         </div>
     );
