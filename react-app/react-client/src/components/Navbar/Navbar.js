@@ -175,7 +175,7 @@ const Navbar = ({ history, setIsLoggedIn, setIsClient }) => {
             {...a11yProps(5)}
           />
           <Tab
-            label="Rates"
+            label={t("rates")}
             onClick={ratesOnClick}
             {...a11yProps(8)}
           />

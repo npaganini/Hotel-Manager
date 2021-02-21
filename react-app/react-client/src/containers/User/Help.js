@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import { makeStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
+import { useTranslation } from "react-i18next";
 
 import { requestHelp } from "../../api/userApi";
 
@@ -18,6 +19,7 @@ const UserHelp = ({ match, history }) => {
   const classes = useStyles();
 
   const [help, setHelp] = useState("");
+  const { t } = useTranslation();
 
 
   const onHelpChange = (newHelp) => {
@@ -59,7 +61,7 @@ const UserHelp = ({ match, history }) => {
           <Col xs={1} md={2}></Col>
           <Col xs={9} md={7}>
             <Form.Group controlId="exampleForm.ControlTextarea1">
-              <Form.Label>Write what you need</Form.Label>
+              <Form.Label>{t("user.help.yourMessage")}</Form.Label>
               <Form.Control as="textarea" rows={7} onChange={onHelpChange} />
             </Form.Group>
           </Col>
@@ -72,7 +74,7 @@ const UserHelp = ({ match, history }) => {
                   helpDescription: help,
                 })}
                 disabled={validateInput()}
-                ButtonText="Enviar"
+                ButtonText={t("send")}
               ></Button>
             </Col>
             <Col xs={12} md={6} style={{ textAlign: "left" }}>
@@ -80,7 +82,7 @@ const UserHelp = ({ match, history }) => {
                 ButtonType="Back"
                 size="large"
                 onClick={back}
-                ButtonText="Volver"
+                ButtonText={t("back")}
               ></Button>
             </Col>
           </Col>

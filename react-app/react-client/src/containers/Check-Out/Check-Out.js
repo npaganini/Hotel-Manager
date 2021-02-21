@@ -78,13 +78,13 @@ const checkOut = ({ history }) => {
                         <Card className={classes.card}>
                             <Row className={classes.buttonRow}>
                                 <Col xs={12} md={6} style={{ marginBottom: '10px' }}>
-                                    <Input label={t('reservation.hash')} error={errorInput} helperText={errorInput && "El campo es requerido"} required={true} onChange={onChangeCheckOut}></Input>
+                                    <Input label={t('reservation.number')} error={errorInput} helperText={errorInput && t("required")} required={true} onChange={onChangeCheckOut}></Input>
                                 </Col>
                                 <Col xs={6} md={2} className={classes.buttonColLeft}>
-                                    <Button ButtonType="Save" onClick={checkOutSubmit} ButtonText="Accept"></Button>
+                                    <Button ButtonType="Save" onClick={checkOutSubmit} ButtonText={t("accept")}></Button>
                                 </Col>
                                 <Col xs={6} md={2} className={classes.buttonColRight}>
-                                    <Button ButtonType="Back" onClick={checkOutCancel} ButtonText="Cancel"></Button>
+                                    <Button ButtonType="Back" onClick={checkOutCancel} ButtonText={t("cancel")}></Button>
                                 </Col>
                             </Row>
                         </Card>

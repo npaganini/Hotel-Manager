@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import { makeStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
+import { useTranslation } from "react-i18next";
+
 
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
@@ -25,6 +27,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+
 const emptyOccupant = { firstName: "", lastName: "" };
 const emptyOccupantCopy = () => Object.assign({}, ...emptyOccupant);
 
@@ -47,7 +51,7 @@ const addOccupantDiv = (
       </Col>
       <Col>
         <Input
-          label="LastName name"
+          label="Last Name"
           value={lastName}
           onChange={onLastNameChange}
         />
@@ -70,7 +74,7 @@ const registration = ({ history }) => {
 
   const [reservationId, onReservationId] = useState("");
   const [submit, onSubmit] = useState(false);
-
+  const { t } = useTranslation();
   // occupant = {firstName:..., lastName:...}
   const [occupants, addOccupant] = useState([emptyOccupantCopy()]);
 
@@ -120,7 +124,7 @@ const registration = ({ history }) => {
             <Row className={classes.buttonRow}>
               <Col style={{ marginBottom: "5px" }}>
                 <Input
-                  label="Reservation Id"
+                  label={t("reservation.number")}
                   onChange={onChangeReservationId}
                 ></Input>
               </Col>
@@ -128,7 +132,7 @@ const registration = ({ history }) => {
                 <Button
                   ButtonType="Save"
                   onClick={registrationSubmit}
-                  ButtonText="Registrar"
+                  ButtonText= {t("register")}
                   disabled={
                     submit || hasEmptyOccupant(occupants) || !reservationId
                   }
@@ -138,7 +142,7 @@ const registration = ({ history }) => {
                 <Button
                   ButtonType="Back"
                   onClick={back}
-                  ButtonText="Cancelar"
+                  ButtonText={t("cancel")}
                 ></Button>
               </Col>
             </Row>
@@ -159,7 +163,7 @@ const registration = ({ history }) => {
             <Button
               ButtonType="Save"
               onClick={onAddOccupant}
-              ButtonText="Add Occupant"
+              ButtonText={t("registrations.addOccupant")}
             ></Button>
           </Col>
         </Row>

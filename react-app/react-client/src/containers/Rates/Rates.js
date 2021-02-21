@@ -110,7 +110,7 @@ const Rates = ({ history }) => {
             <Container fluid="md" className={classes.container}>
                 <Row className={classes.row}>
                     <Col xs={12} md={6}>
-                        <Input label="Room Number" type="email" onChange={searchOnChange} />
+                        <Input label={t("ratings.roomNumber")} type="email" onChange={searchOnChange} />
                     </Col>
                     <Col xs={6} md={3} style={{ textAlign: 'right' }}>
                         <Button ButtonType="Save" onClick={onSearchRatings} ButtonText={t("search")} />
@@ -125,7 +125,7 @@ const Rates = ({ history }) => {
                 <br />
                 <Row className={classes.row}>
                     <Col xs={12} md={4} style={{ textAlign: 'center' }}>
-                        Rate Promedio:
+                        {t("ratings.avgRate")}
                     </Col>
                     <Col xs={12} md={8}>
                         <Progress progress={avg} />
