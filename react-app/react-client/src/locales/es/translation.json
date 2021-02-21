@@ -94,7 +94,8 @@
 
   "order": {
     "finish": "¡Pedido Terminado!",
-    "deliver": "El pedido ya se puede llevar a la habitacion."
+    "deliver": "El pedido ya se puede llevar a la habitacion.",
+    "send": "Entregar"
   },
 
   "help": {
@@ -154,7 +155,10 @@
     "first": "Primero",
     "last": "Último",
     "prev": "Anterior",
-    "next": "Siguiente"
+    "next": "Siguiente",
+    "rowsperpage": "Filas por páginas",
+    "of": "de",
+    "moreof": "más de"
   },
 
   "accept": "Aceptar",

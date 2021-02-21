@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: "40px",
     paddingLeft: "10%",
     paddingRight: "10%",
+    width: "100%"
   },
   buttonCol: {
     textAlign: "center",

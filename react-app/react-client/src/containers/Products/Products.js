@@ -1,12 +1,12 @@
 import React, {useState} from "react";
-import {Container, Row, Col} from "react-bootstrap";
+import {Col, Container, Row} from "react-bootstrap";
 import {makeStyles} from "@material-ui/core/styles";
 import {withRouter} from "react-router";
 
 import Button from "../../components/Button/Button";
 import Table from '../../components/Table/Table'
 import {useTranslation} from "react-i18next";
-import {getAllProducts} from "../../api/productApi";
+import {disableProduct, enableProduct, getAllProducts} from "../../api/productApi";
 import {productsColumns} from "../../utils/columnsUtil";
 
 
@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: "40px",
         paddingLeft: "10%",
         paddingRight: "10%",
+        width: "100%"
     },
     tableCol: {
         paddingRight: "7.5%",
@@ -37,13 +38,31 @@ const Products = ({history}) => {
     const getProducts = (page, limit) => {
         getAllProducts({page, limit})
             .then((response) => {
-                setProducts(response.data);
+                setProducts(response.data.map(({id, description, price, file, enabled}) => {
+                    return Object.assign(
+                        {},
+                        {file, description, price, enabled},
+                        {toggle: () => toggleProductEnabled(enabled, id)}
+                    );
+                }));
                 setTotalCount(+response.headers["x-total-count"]);
             })
             .catch((error) => {
                 console.log("There was an error while fetching all undelivered orders! ", error);
             }
         );
+    }
+
+    const toggleProductEnabled = (toggleBoolean, id) => {
+        if (toggleBoolean) {
+            disableProduct(id).then(r => {
+                getProducts();
+            }).catch(error => console.log(error));
+        } else {
+            enableProduct(id).then(r => {
+                getProducts();
+            }).catch(error => console.log(error));
+        }
     }
 
     const addProduct = () => {

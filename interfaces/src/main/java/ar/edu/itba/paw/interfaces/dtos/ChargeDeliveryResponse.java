@@ -18,16 +18,14 @@ import java.io.Serializable;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ChargeDeliveryResponse implements Serializable {
-    private long chargeId;
     private int roomNumber;
-    private boolean delivered;
+    private long roomId;
     private String description;
 
     public static ChargeDeliveryResponse fromCharge(Charge charge) {
         final ChargeDeliveryResponse cDto = new ChargeDeliveryResponse();
-        cDto.chargeId = charge.getId();
         cDto.roomNumber = charge.getReservation().getRoom().getNumber();
-        cDto.delivered = charge.isDelivered();
+        cDto.roomId = charge.getReservation().getRoom().getId();
         cDto.description = charge.getProduct().getDescription();
         return cDto;
     }

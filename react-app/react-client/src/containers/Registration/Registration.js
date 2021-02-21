@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
   buttonRow: {
     paddingTop: "20px",
     textAlign: "center",
+    width: "100%",
   },
 }));
 
@@ -113,7 +114,7 @@ const registration = ({ history }) => {
   return (
     <div>
       <Container fluid="md" className={classes.container}>
-        <Row>
+        <Row style={{width: "100%"}}>
           <Col xs={6} md={3}></Col>
           <Col>
             <Row className={classes.buttonRow}>
