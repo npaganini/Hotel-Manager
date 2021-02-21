@@ -58,12 +58,12 @@ public class RatingsController extends SimpleController {
     }
 
     @GET
-    @Path("/rooms/{id}")
+    @Path("/rooms/{roomNumber}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getRoomRating(@PathParam(value = "id") long roomId) {
+    public Response getRoomRating(@PathParam(value = "roomNumber") int roomNumber) {
         RatingDTO roomRating;
         try {
-            roomRating = ratingsService.getRoomRating(roomId);
+            roomRating = ratingsService.getRoomRating(roomNumber);
         } catch (Exception e) {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
@@ -71,14 +71,14 @@ public class RatingsController extends SimpleController {
     }
 
     @GET
-    @Path("/rooms/{id}/all")
+    @Path("/rooms/{roomNumber}/all")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getRoomRatings(@PathParam(value ="id") long roomId,
+    public Response getRoomRatings(@PathParam(value ="roomNumber") int roomNumber,
                                    @QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
                                    @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) {
         PaginatedDTO<CalificationResponse> ratings;
         try {
-            ratings = ratingsService.getAllRoomRatings(roomId, page, limit);
+            ratings = ratingsService.getAllRoomRatings(roomNumber, page, limit);
         } catch (IndexOutOfBoundsException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         } catch (EntityNotFoundException e) {

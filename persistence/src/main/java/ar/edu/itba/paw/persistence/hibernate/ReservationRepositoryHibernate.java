@@ -1,8 +1,8 @@
 package ar.edu.itba.paw.persistence.hibernate;
 
 import ar.edu.itba.paw.interfaces.daos.ReservationDao;
+import ar.edu.itba.paw.interfaces.dtos.CalificationResponse;
 import ar.edu.itba.paw.models.dtos.PaginatedDTO;
-import ar.edu.itba.paw.models.occupant.Occupant;
 import ar.edu.itba.paw.models.reservation.Calification;
 import ar.edu.itba.paw.models.reservation.Reservation;
 import org.springframework.stereotype.Repository;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.*;
 import java.util.Calendar;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,9 +20,9 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
     public Optional<Reservation> findReservationByHash(String hash) {
         return Optional
                 .of(em.createQuery("SELECT r FROM " + getModelName() + " r WHERE r.hash = :hash", getModelClass())
-                    .setParameter("hash", hash)
-                    .getSingleResult()
-        );
+                        .setParameter("hash", hash)
+                        .getSingleResult()
+                );
     }
 
     @Override
@@ -59,8 +58,8 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
             predicatesCount++;
         }
         if (email != null && email.length() > 0) {
-           emailPredicate = builder.equal(root.get("userEmail"), email);
-           predicatesCount++;
+            emailPredicate = builder.equal(root.get("userEmail"), email);
+            predicatesCount++;
         }
         if (occupantSurname != null && occupantSurname.length() > 0) {
             List<Long> occupantsList = em
@@ -138,7 +137,7 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
     }
 
     @Override
-    public PaginatedDTO<Calification> getAllRatings(int page, int pageSize) {
+    public PaginatedDTO<CalificationResponse> getAllRatings(int page, int pageSize) {
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<Long> cqCount = builder.createQuery(Long.class);
         Root<Reservation> entityRoot = cqCount.from(Reservation.class);
@@ -147,8 +146,8 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
         cqCount.where(builder.and(wherePredicate));
         long count = em.createQuery(cqCount).getSingleResult();
 
-        List<Calification> cals = em.createQuery(
-                "SELECT r.calification FROM Reservation r WHERE r.calification IS NOT NULL", Calification.class)
+        List<CalificationResponse> cals = em.createQuery(
+                "SELECT new ar.edu.itba.paw.interfaces.dtos.CalificationResponse(r.calification, r.user.username,r.room.number, r.startDate, r.endDate) FROM Reservation r WHERE r.calification IS NOT NULL", CalificationResponse.class)
                 .setFirstResult((page - 1) * pageSize)
                 .setMaxResults(pageSize)
                 .getResultList();
@@ -156,28 +155,28 @@ public class ReservationRepositoryHibernate extends SimpleRepositoryHibernate<Re
     }
 
     @Override
-    public List<Calification> getRoomRating(long roomId) {
+    public List<Calification> getRoomRating(int roomNumber) {
         return em.createQuery(
-                "SELECT r.calification FROM Reservation r WHERE r.room.id = :roomId AND r.calification IS NOT NULL", Calification.class)
-                .setParameter("roomId", roomId)
+                "SELECT r.calification FROM Reservation r WHERE r.room.number = :roomNumber AND r.calification IS NOT NULL", Calification.class)
+                .setParameter("roomNumber", roomNumber)
                 .getResultList();
     }
 
     @Override
-    public PaginatedDTO<Calification> getRatingsByRoom(long roomId, int page, int pageSize) {
+    public PaginatedDTO<CalificationResponse> getRatingsByRoom(int roomNumber, int page, int pageSize) {
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<Long> cqCount = builder.createQuery(Long.class);
         Root<Reservation> entityRoot = cqCount.from(Reservation.class);
         cqCount.select(builder.count(entityRoot));
-        Predicate wherePredicate1 = builder.equal(entityRoot.get("room").get("id"), roomId);
+        Predicate wherePredicate1 = builder.equal(entityRoot.get("room").get("number"), roomNumber);
         Predicate wherePredicate2 = builder.isNotNull(entityRoot.get("calification"));
         cqCount.where(builder.and(new Predicate[]{wherePredicate1, wherePredicate2}));
         long count = em.createQuery(cqCount).getSingleResult();
 
-        List<Calification> cals = em.createQuery(
-                "SELECT r.calification FROM Reservation r WHERE r.room.id = :roomId AND r.calification IS NOT NULL",
-                Calification.class)
-                .setParameter("roomId", roomId)
+        List<CalificationResponse> cals = em.createQuery(
+                "SELECT new ar.edu.itba.paw.interfaces.dtos.CalificationResponse(r.calification, r.user.username,r.room.number, r.startDate, r.endDate) FROM Reservation r WHERE r.room.number = :roomNumber AND r.calification IS NOT NULL",
+                CalificationResponse.class)
+                .setParameter("roomNumber", roomNumber)
                 .setFirstResult((page - 1) * pageSize)
                 .setMaxResults(pageSize)
                 .getResultList();
