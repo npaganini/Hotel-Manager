@@ -10,7 +10,7 @@ public interface RatingsService {
 
     PaginatedDTO<CalificationResponse> getAllHotelRatings(int page, int pageSize);
 
-    RatingDTO getRoomRating(long roomId) throws EntityNotFoundException;
+    RatingDTO getRoomRating(int roomId) throws EntityNotFoundException;
 
-    PaginatedDTO<CalificationResponse> getAllRoomRatings(long roomId, int page, int pageSize) throws EntityNotFoundException;
+    PaginatedDTO<CalificationResponse> getAllRoomRatings(int roomId, int page, int pageSize) throws EntityNotFoundException;
 }

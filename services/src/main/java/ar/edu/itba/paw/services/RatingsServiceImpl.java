@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class RatingsServiceImpl implements RatingsService {
@@ -34,48 +33,55 @@ public class RatingsServiceImpl implements RatingsService {
     public PaginatedDTO<CalificationResponse> getAllHotelRatings(int page, int pageSize) {
         if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
         LOGGER.debug("Getting a list of all hotel ratings...");
-        PaginatedDTO<Calification> cals = reservationDao.getAllRatings(page, pageSize);
-        return new PaginatedDTO<>(cals.getList()
-                .stream().map(CalificationResponse::fromCalification).collect(Collectors.toList()),
-                cals.getMaxItems());
+        PaginatedDTO<CalificationResponse> cals = reservationDao.getAllRatings(page, pageSize);
+        return new PaginatedDTO<>(cals.getList(), cals.getMaxItems());
     }
 
     @Override
-    public RatingDTO getRoomRating(long roomId) throws EntityNotFoundException {
-        LOGGER.debug("Getting the room's rating for room with id: " + roomId);
-        List<Calification> cals = reservationDao.getRoomRating(roomId);
+    public RatingDTO getRoomRating(int roomNumber) throws EntityNotFoundException {
+        LOGGER.debug("Getting the room's rating for room with number: " + roomNumber);
+        List<Calification> cals = reservationDao.getRoomRating(roomNumber);
         if (cals.size() == 0) {
-            LOGGER.debug("Invalid room id: " + roomId);
-            throw new EntityNotFoundException("Invalid room id: " + roomId);
+            LOGGER.debug("Invalid room number: " + roomNumber);
+            throw new EntityNotFoundException("Invalid room roomNumber: " + roomNumber);
         }
         return new RatingDTO(getAverageRating(cals));
     }
 
     @Override
-    public PaginatedDTO<CalificationResponse> getAllRoomRatings(long roomId, int page, int pageSize) throws EntityNotFoundException {
+    public PaginatedDTO<CalificationResponse> getAllRoomRatings(int roomNumber, int page, int pageSize) throws EntityNotFoundException {
         if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
-        LOGGER.debug("Getting a list of all the room's ratings for room with id: " + roomId);
-        PaginatedDTO<Calification> cals = reservationDao.getRatingsByRoom(roomId, page, pageSize);
+        LOGGER.debug("Getting a list of all the room's ratings for room with id: " + roomNumber);
+        PaginatedDTO<CalificationResponse> cals = reservationDao.getRatingsByRoom(roomNumber, page, pageSize);
         if (cals.getList().size() == 0) {
-            LOGGER.debug("Invalid room id: " + roomId);
-            throw new EntityNotFoundException("Invalid room id: " + roomId);
+            LOGGER.debug("Invalid room id: " + roomNumber);
+            throw new EntityNotFoundException("Invalid room id: " + roomNumber);
         }
-        return new PaginatedDTO<>(cals.getList()
-                .stream().map(CalificationResponse::fromCalification).collect(Collectors.toList()),
-                cals.getMaxItems());
+        return new PaginatedDTO<>(cals.getList(), cals.getMaxItems());
     }
 
     private double getAverageRating(List<Calification> reservations) {
         double rating = 0;
-        for (Calification c: reservations) {
+        for (Calification c : reservations) {
             int rated;
             switch (c) {
-                case AWFUL: rated = 1; break;
-                case BAD: rated = 2; break;
-                case NORMAL: rated = 3; break;
-                case GOOD: rated = 4; break;
-                case EXCELLENT: rated = 5; break;
-                default: throw new IllegalArgumentException();
+                case AWFUL:
+                    rated = 1;
+                    break;
+                case BAD:
+                    rated = 2;
+                    break;
+                case NORMAL:
+                    rated = 3;
+                    break;
+                case GOOD:
+                    rated = 4;
+                    break;
+                case EXCELLENT:
+                    rated = 5;
+                    break;
+                default:
+                    throw new IllegalArgumentException();
             }
             rating += rated;
         }

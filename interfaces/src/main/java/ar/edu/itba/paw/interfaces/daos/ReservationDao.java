@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.interfaces.daos;
 
+import ar.edu.itba.paw.interfaces.dtos.CalificationResponse;
 import ar.edu.itba.paw.models.dtos.PaginatedDTO;
 import ar.edu.itba.paw.models.reservation.Calification;
 import ar.edu.itba.paw.models.reservation.Reservation;
@@ -25,9 +26,9 @@ public interface ReservationDao extends SimpleDao<Reservation> {
 
     List<Calification> getHotelRating();
 
-    PaginatedDTO<Calification> getAllRatings(int page, int pageSize);
+    PaginatedDTO<CalificationResponse> getAllRatings(int page, int pageSize);
 
-    List<Calification> getRoomRating(long roomId);
+    List<Calification> getRoomRating(int roomId);
 
-    PaginatedDTO<Calification> getRatingsByRoom(long roomId, int page, int pageSize);
+    PaginatedDTO<CalificationResponse> getRatingsByRoom(int roomNumber, int page, int pageSize);
 }
