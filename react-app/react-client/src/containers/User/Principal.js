@@ -49,7 +49,7 @@ const UserPrincipal = ({ history }) => {
       <Container fluid="md" className={classes.container}>
         <Row
           className="justify-content-sm-center"
-          style={{ paddingTop: "40px" }}
+          style={{ paddingTop: "40px",width: "100%" }}
         >
           <Col xs={1} md={1}></Col>
           <Col xs={10} md={10}>

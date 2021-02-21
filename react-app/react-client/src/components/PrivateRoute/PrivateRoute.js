@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import { managerPaths, clientPaths, CLIENT, MANAGER } from "./routesByRole";
-import { Forbidden } from "../../containers/Forbidden/Forbidden";
+import Forbidden from "../../containers/Forbidden/Forbidden";
 
 export const PrivateRoute = ({
   component: Component,

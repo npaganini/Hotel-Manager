@@ -54,7 +54,7 @@ const UserHelp = ({ match, history }) => {
       <Container fluid="md" className={classes.container}>
         <Row
           className="justify-content-sm-center"
-          style={{ paddingTop: "40px" }}
+          style={{ paddingTop: "40px",width: "100%" }}
         >
           <Col xs={1} md={2}></Col>
           <Col xs={9} md={7}>
@@ -86,7 +86,7 @@ const UserHelp = ({ match, history }) => {
           </Col>
           <Col xs={1} md={2}></Col>
         </Row>
-        <Row></Row>
+        <Row style={{width: "100%"}}></Row>
       </Container>
     </div>
   );

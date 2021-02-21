@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: "40px",
     paddingLeft: "10%",
     paddingRight: "10%",
+    width: "100%"
   },
   tableCol: {
     paddingRight: "7.5%",
@@ -50,7 +51,7 @@ const UserExpenses = ({ history, match }) => {
   }
 
   const back = () => {
-    history.push("/userprincipal");
+    history.push("/");
   };
 
   return (

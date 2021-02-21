@@ -25,7 +25,7 @@ import UserHelp from "./containers/User/Help";
 import UserProducts from "./containers/User/Products";
 import UserExpenses from "./containers/User/Expenses";
 import { CLIENT } from "./components/PrivateRoute/routesByRole";
-import { NotFound } from "./containers/NotFound/NotFound";
+import NotFound  from "./containers/NotFound/NotFound";
 
 const App = () => {
   const isClientL = () => localStorage.getItem("role") === CLIENT;
