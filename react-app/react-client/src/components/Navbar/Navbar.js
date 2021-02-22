@@ -89,7 +89,6 @@ const Navbar = ({ history, setIsLoggedIn, setIsClient }) => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
-    window.alert("Logout successful");
     setIsLoggedIn(false);
     setIsClient(false);
     history.push("/login");

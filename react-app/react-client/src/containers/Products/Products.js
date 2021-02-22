@@ -46,9 +46,6 @@ const Products = ({history}) => {
                     );
                 }));
                 setTotalCount(+response.headers["x-total-count"]);
-            })
-            .catch((error) => {
-                console.log("There was an error while fetching all undelivered orders! ", error);
             }
         );
     }
@@ -57,11 +54,11 @@ const Products = ({history}) => {
         if (toggleBoolean) {
             disableProduct(id).then(r => {
                 getProducts();
-            }).catch(error => console.log(error));
+            });
         } else {
             enableProduct(id).then(r => {
                 getProducts();
-            }).catch(error => console.log(error));
+            });
         }
     }
 

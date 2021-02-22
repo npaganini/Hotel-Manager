@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Container, Row, Col} from "react-bootstrap";
+import {Col, Container, Row} from "react-bootstrap";
 import {makeStyles} from "@material-ui/core/styles";
 import {withRouter} from "react-router";
 
@@ -72,34 +72,34 @@ const Orders = ({history}) => {
 
                 setOrders(dataByRoomArray.map((roomOrders) => {
                     let productsListObj = roomOrders[1][0].chargesInfo;
-                    const newObject = Object.assign(
+                    return Object.assign(
                         {},
-                        { id: roomOrders[1][0].roomId, roomNumber: roomOrders[0], description: Object.keys(productsListObj).map((key) => [(key), ((+productsListObj[key][0].amount))]) },
-                        {action: () => {setOrdersDelivered(`${+roomOrders[1][0].roomId}`);}}
+                        {
+                            id: roomOrders[1][0].roomId,
+                            roomNumber: roomOrders[0],
+                            description: Object.keys(productsListObj).map((key) => [(key), ((+productsListObj[key][0].amount))])
+                        },
+                        {
+                            action: () => {
+                                setOrdersDelivered(`${+roomOrders[1][0].roomId}`);
+                            }
+                        }
                     );
-                    console.log("newObject");
-                    console.log(newObject);
-                    return newObject;
                 }));
-            }).catch((error) => {
-                console.log("There was an error while fetching all undelivered orders! ", error);
             }
         );
     }
 
     const setOrdersDelivered = (id) => {
-        console.log(id);
         sendOrderToRoom(id)
             .then((response) => {
-                console.log(response)
                 // call show dialog in InfoSimpleDialog
                 updateShowDialog(true);
                 // send result to dialog window to show it
                 updateInfo(response.data);
-            }).catch((error) => {
+            }).catch(() => {
                 updateShowDialog(true);
                 updateInfo(undefined);
-                console.log(error);
         });
     }
 

@@ -111,13 +111,14 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void rateStay(String rate, long reservationId) throws EntityNotFoundException, RequestInvalidException {
-        Reservation reservation = reservationDao.findById(reservationId)
+    public void rateStay(String rate, String reservationHash) throws EntityNotFoundException, RequestInvalidException {
+        Reservation reservation = reservationDao.findReservationByHash(reservationHash)
                 .orElseThrow(() -> new EntityNotFoundException("Reservation was not found"));
         if (reservation.getCalification() != null) {
             throw new RequestInvalidException();
         }
         reservationDao.rateStay(reservation.getId(), rate);
+        emailService.sendConfirmationOfRate(reservationHash);
     }
 
     private boolean isValidString(String text) {

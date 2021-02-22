@@ -5,6 +5,7 @@ import ar.edu.itba.paw.interfaces.dtos.ChargesByUserResponse;
 import ar.edu.itba.paw.interfaces.dtos.ProductResponse;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
+import ar.edu.itba.paw.interfaces.services.MessageSourceExternalizer;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.charge.Charge;
 import ar.edu.itba.paw.models.dtos.PaginatedDTO;
@@ -30,13 +31,15 @@ public class UserController extends SimpleController {
     public static final String DEFAULT_FIRST_PAGE = "1";
     public static final String DEFAULT_PAGE_SIZE = "20";
 
+    private final MessageSourceExternalizer messageSourceExternalizer;
     private final UserService userService;
 
     @Context
     private UriInfo uriInfo;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(MessageSourceExternalizer messageSourceExternalizer, UserService userService) {
+        this.messageSourceExternalizer = messageSourceExternalizer;
         this.userService = userService;
     }
 
@@ -116,14 +119,15 @@ public class UserController extends SimpleController {
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
-    // TODO FIXME
     @POST
-    @Path("/ratings/{reservationId}/rate")
+    @Path("/ratings/{reservationHash}/rate")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response rateStay(@PathParam("reservationId") long reservationId,
-                             @RequestBody RateReservationRequest rateRequest) throws RequestInvalidException, EntityNotFoundException {
-        // todo: mav was "thanksMessage.jsp"
-        userService.rateStay(rateRequest.getRate(), reservationId);
-        return Response.ok().build();
+    public void rateStay(@PathParam("reservationHash") String reservationHash,
+                         @QueryParam("rate") RateReservationRequest rateRequest) {
+        try {
+            userService.rateStay(rateRequest.getRate(), reservationHash);
+        } catch (Exception e) {
+            LOGGER.debug(e.getMessage());
+        }
     }
 }

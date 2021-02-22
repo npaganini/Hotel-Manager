@@ -42,7 +42,6 @@ const CheckOutExpenses = ({ history, match }) => {
         updateShowLoading(true);
         doCheckout({},match.params.reservationId)
             .then((response) => {
-                console.log(response);
                 updateShowLoading(false);
                 setExpenses(
                     response.data.map(
@@ -54,11 +53,10 @@ const CheckOutExpenses = ({ history, match }) => {
                     )
                 );
             })
-            .catch((error) => {
+            .catch(() => {
                 updateInfo(undefined);
                 updateShowLoading(false);
                 updateShowDialog(true);
-                console.log("there was an error on get all expenses", error);
             });
     }
 

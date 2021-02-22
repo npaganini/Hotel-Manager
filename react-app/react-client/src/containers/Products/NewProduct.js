@@ -53,10 +53,8 @@ const NewProduct = ({ history }) => {
         // TODO save this somewhere
         const filePath = response.data.filename;
         setPhoto(filePath);
-      })
-      .catch((error) => {
-        console.log("error uploadeando archivo", error);
-      });
+      }
+    );
     setPhoto(newPhoto.target.value);
   };
 
@@ -93,12 +91,9 @@ const NewProduct = ({ history }) => {
     if (!formIsValidate())
       return;
     else {
-      console.log("photo path", photo);
       addProduct({ imgPath: photo, description, price })
-        .then(() => history.push("/products"))
-        .catch((error) => {
-          console.log("error submitting product", error);
-        });
+        .then(() => history.push("/products")
+      );
     }
   };
 

@@ -32,10 +32,8 @@ const ImgMediaCard = (props) => {
   const onSubmitBuy = (productId) =>
     buyProduct({ productId, reservationId })
       .then((response) => {
-        window.alert("Producto comprado!");
       })
       .catch((error) => {
-        console.log("error comprando producto");
       });
 
   return (

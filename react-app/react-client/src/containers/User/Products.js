@@ -28,12 +28,7 @@ const UserProducts = ({ match, history }) => {
 
   products.length === 0 &&
     getAllProducts()
-      .then((response) => setProducts(response.data))
-      .catch((error) => {
-        console.log("error", error);
-      });
-
-  console.log("products", products);
+      .then((response) => setProducts(response.data));
 
   return (
     <Container className={classes.container}>
