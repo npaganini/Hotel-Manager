@@ -27,5 +27,6 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://localhost:8080/"
+  "proxy": "http://localhost:8080",
+  "homepage": "http://pawserver.it.itba.edu.ar/paw-2019b-2/"
 }
