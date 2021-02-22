@@ -154,6 +154,7 @@
   "email": "E-Mail Address",
   "password": "Password",
   "rememberme": "Remember Me",
+  "loginFailed": "Username and/or password are incorrect",
 
   "error": {
     "message": "Oops!",
