@@ -54,7 +54,8 @@ public class RatingsController extends SimpleController {
         } catch (IndexOutOfBoundsException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        return sendPaginatedResponse(page, limit, cals.getMaxItems(), new GenericEntity<List<CalificationResponse>>(cals.getList()) {}, uriInfo.getAbsolutePathBuilder());
+        return Response.ok(cals.getList()).build();
+//        return sendPaginatedResponse(page, limit, cals.getMaxItems(),List<CalificationResponse>(cals.getList()) {}, uriInfo.getAbsolutePathBuilder());
     }
 
     @GET
