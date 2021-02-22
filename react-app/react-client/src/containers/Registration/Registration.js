@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Row, Col, Card } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import { makeStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
 import { useTranslation } from "react-i18next";
@@ -41,7 +41,7 @@ const addOccupantDiv = (
 ) => (
   <div key={index}>
     <Row className={classes.buttonRow}>
-      <Col xs={6} md={3}></Col>
+      <Col xs={6} md={3}/>
       <Col>
         <Input
           label="First name"
@@ -56,16 +56,16 @@ const addOccupantDiv = (
           onChange={onLastNameChange}
         />
       </Col>
-      <Col xs={6} md={3}></Col>
+      <Col xs={6} md={3}/>
     </Row>
   </div>
 );
 
-const isEmpty = (string) => string == undefined || string.length == 0;
+const isEmpty = (string) => string === undefined || string.length === 0;
 
 // FIXME add more validation to each occupant
 const hasEmptyOccupant = (occupants) =>
-  occupants.length == 1 &&
+  occupants.length === 1 &&
   isEmpty(occupants[0].firstName) &&
   isEmpty(occupants[0].lastName);
 
@@ -126,7 +126,7 @@ const registration = ({ history }) => {
                 <Input
                   label={t("reservation.number")}
                   onChange={onChangeReservationId}
-                ></Input>
+                />
               </Col>
               <Col className={classes.buttonColLeft}>
                 <Button
@@ -136,18 +136,18 @@ const registration = ({ history }) => {
                   disabled={
                     submit || hasEmptyOccupant(occupants) || !reservationId
                   }
-                ></Button>
+                />
               </Col>
               <Col className={classes.buttonColRight}>
                 <Button
                   ButtonType="Back"
                   onClick={back}
                   ButtonText={t("cancel")}
-                ></Button>
+                />
               </Col>
             </Row>
           </Col>
-          <Col xs={6} md={3}></Col>
+          <Col xs={6} md={3}/>
         </Row>
         {occupants.map((occupant, index) =>
           addOccupantDiv(
@@ -164,7 +164,7 @@ const registration = ({ history }) => {
               ButtonType="Save"
               onClick={onAddOccupant}
               ButtonText={t("registrations.addOccupant")}
-            ></Button>
+            />
           </Col>
         </Row>
       </Container>

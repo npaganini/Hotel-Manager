@@ -13,7 +13,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.Priority;
-import javax.servlet.*;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Priorities;
@@ -43,7 +44,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
             CredentialsDTO credentials = new ObjectMapper().readValue(request.getInputStream(), CredentialsDTO.class);
-            LOGGER.debug("Attempting authentication...");
+            LOGGER.info("Attempting authentication...");
             return authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                     credentials.getUsername(), credentials.getPassword(), new ArrayList<>()));
@@ -54,7 +55,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication auth) throws IOException, ServletException {
-        LOGGER.debug("Authentication successful!");
+        LOGGER.info("Authentication successful!");
         tokenAuthHandlerService.addAuthToResponse(response, auth.getName());
         SecurityContextHolder.getContext().setAuthentication(auth);
     }

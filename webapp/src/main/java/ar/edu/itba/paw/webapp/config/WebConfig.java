@@ -5,6 +5,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
@@ -32,26 +33,6 @@ import java.util.Properties;
 //public class WebConfig implements WebMvcConfigurer {
 public class WebConfig {
 
-    @Value("classpath:schema.sql")
-    private Resource schemaSql;
-
-//    @Bean
-//    public ViewResolver viewResolver() {
-//        final InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-//        viewResolver.setViewClass(JstlView.class);
-//        viewResolver.setPrefix("/WEB-INF/jsp/");
-//        viewResolver.setSuffix(".jsp");
-//        return viewResolver;
-//    }
-//
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry
-//                .addResourceHandler("/resources/**")
-//                .addResourceLocations("/resources/");
-//
-//    }
-
     @Bean
     public MessageSource messageSource() {
         final ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
@@ -60,20 +41,6 @@ public class WebConfig {
         messageSource.setCacheSeconds(5);
         return messageSource;
     }
-
-//    @Bean
-//    public DataSourceInitializer dataSourceInitializer(final DataSource ds) {
-//        final DataSourceInitializer dsi = new DataSourceInitializer();
-//        dsi.setDataSource(ds);
-//        dsi.setDatabasePopulator(databasePopulator());
-//        return dsi;
-//    }
-//
-//    private DatabasePopulator databasePopulator() {
-//        final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
-//        dbp.addScript(schemaSql);
-//        return dbp;
-//    }
 
     @Bean
     public DataSource dataSource() {
@@ -97,10 +64,8 @@ public class WebConfig {
         final JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         factoryBean.setJpaVendorAdapter(vendorAdapter);
         final Properties properties = new Properties();
-//        properties.setProperty("hibernate.hbm2ddl.auto", "update");
-
         // FIXME TODO create-drop for development only
-        properties.setProperty("hibernate.hbm2ddl.auto", "update"); // poner create en vez de update BORRA todos los datos guardados, cuidado
+        properties.setProperty("hibernate.hbm2ddl.auto", "validate"); // poner create en vez de update BORRA todos los datos guardados, cuidado
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL92Dialect");
         // TODO: BORRAR ANTES DE MANDAR A PROD
         properties.setProperty("hibernate.show_sql", "true");   // todo: setear false antes de pushear a prod
@@ -108,6 +73,11 @@ public class WebConfig {
 
         factoryBean.setJpaProperties(properties);
         return factoryBean;
+    }
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
     }
 
     @Bean
@@ -133,7 +103,7 @@ public class WebConfig {
         props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.debug", "true");
+        props.put("mail.info", "true");
 
         return mailSender;
     }

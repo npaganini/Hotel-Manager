@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriBuilder;
@@ -12,7 +11,7 @@ public class SimpleController {
         return securityContext.getUserPrincipal().getName();
     }
 
-    protected <T extends Serializable> Response sendPaginatedResponse(int currentPage, int limit, long totalCount, GenericEntity<List<T>> paginatedDtoList, UriBuilder uriBuilder) {
+    protected <T extends Serializable> Response sendPaginatedResponse(int currentPage, int limit, long totalCount, List<T> paginatedDtoList, UriBuilder uriBuilder) {
         return Response.ok(paginatedDtoList)
                 .link(uriBuilder.replaceQueryParam("page", 1).build(), "first")
                 .link(uriBuilder.replaceQueryParam("page", totalCount % limit == 0 ? (totalCount / limit) : (totalCount / limit) + 1).build(), "last")

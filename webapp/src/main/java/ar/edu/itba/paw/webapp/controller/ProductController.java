@@ -23,7 +23,7 @@ import java.io.InputStream;
 import java.util.List;
 
 @Controller
-@Path("products")
+@Path("api/products")
 public class ProductController extends SimpleController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
     public static final String DEFAULT_FIRST_PAGE = "1";
@@ -50,7 +50,7 @@ public class ProductController extends SimpleController {
         } catch (IndexOutOfBoundsException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        return sendPaginatedResponse(page, limit, products.getMaxItems(), new GenericEntity<List<ProductResponse>>(products.getList()) {}, uriInfo.getAbsolutePathBuilder());
+        return sendPaginatedResponse(page, limit, products.getMaxItems(), products.getList(), uriInfo.getAbsolutePathBuilder());
     }
 
     @POST
@@ -93,14 +93,13 @@ public class ProductController extends SimpleController {
         if (productRequest.getPrice() < 0) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Price must be valid.").build();
         }
-        LOGGER.debug("Request to add product to DB received");
+        LOGGER.info("Request to add product to DB received");
         Product newProduct = new Product(productRequest.getDescription(), productRequest.getPrice(),
                 FilesUtils.loadImg(productRequest.getImgPath()));
         newProduct = productService.saveProduct(newProduct);
-        LOGGER.debug("Product was saved successfully");
+        LOGGER.info("Product was saved successfully");
         // TODO is this ok?
-        return Response.ok(new GenericEntity<Product>(newProduct) {
-        }).build();
+        return Response.ok(newProduct).build();
     }
 
     @POST
@@ -118,7 +117,6 @@ public class ProductController extends SimpleController {
     @Path(value = "/{productId}/img")
     @Produces("image/png")
     public Response getImgForProduct(@PathParam("productId") long productId) throws EntityNotFoundException {
-        return Response.ok(new GenericEntity<byte[]>(productService.findProductById(productId).getFile()) {
-        }).build();
+        return Response.ok(productService.findProductById(productId).getFile()).build();
     }
 }

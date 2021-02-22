@@ -8,9 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service
+@Component
 public class CustomUserDetailsService implements UserDetailsService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomUserDetailsService.class);
 
@@ -23,7 +24,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        LOGGER.debug("Looking for username in database...");
+        LOGGER.info("Looking for username in database...");
         User user = userDao.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
         return new MyUserPrincipal(user);
     }

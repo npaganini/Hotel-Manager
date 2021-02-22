@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.interfaces.dtos;
 
-import ar.edu.itba.paw.models.product.Product;
+import ar.edu.itba.paw.models.room.RoomType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +10,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ChargeResponse {
+public class RoomResponse {
+    private int number;
+    private RoomType roomType;
     private long id;
-    private boolean delivered;
+    private boolean freeNow;
 }

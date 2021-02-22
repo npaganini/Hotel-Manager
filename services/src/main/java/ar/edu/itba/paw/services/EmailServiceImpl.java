@@ -10,13 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityNotFoundException;
 
-@Service
+@Component
 public class EmailServiceImpl implements EmailService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailServiceImpl.class);
@@ -193,7 +193,7 @@ public class EmailServiceImpl implements EmailService {
 
     private String getHtmlStars(String reservation, String uriInfo, String stars, int star) {
         return "<div>\n" +
-                "    <form method=\"POST\" action=\"" + uriInfo + "user/ratings/" + reservation + "/rate?rate=" + stars + "\">\n" +
+                "    <form method=\"POST\" action=\"" + uriInfo + "api/user/ratings/" + reservation + "/rate?rate=" + stars + "\">\n" +
                 "        <button type=\"submit\" class=\"btn btn-lg\">\n" +
                 "            <span>" + star + "</span>\n" +
                                 getAmountOfStars(star) +

@@ -8,17 +8,19 @@ import ar.edu.itba.paw.models.dtos.PaginatedDTO;
 import ar.edu.itba.paw.models.product.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.stream.Collectors;
 
-@Service
+@Component
 public class ProductServiceImpl implements ProductService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductServiceImpl.class);
 
     private final ProductDao productDao;
 
+    @Autowired
     public ProductServiceImpl(ProductDao productDao) {
         this.productDao = productDao;
     }
@@ -26,14 +28,14 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     @Override
     public Product saveProduct(Product product) {
-        LOGGER.debug("About to save product with description " + product.getDescription() + " and price " + product.getPrice());
+        LOGGER.info("About to save product with description " + product.getDescription() + " and price " + product.getPrice());
         return productDao.save(product);
     }
 
     @Transactional
     @Override
     public boolean disableProduct(long productId) throws EntityNotFoundException {
-        LOGGER.debug("About to unable product for visibility with id " + productId);
+        LOGGER.info("About to unable product for visibility with id " + productId);
         productDao.findById(productId).orElseThrow(() -> new EntityNotFoundException("Cant find product with id " + productId));
         return productDao.updateProductEnable(productId, false) > 0;
     }
@@ -41,7 +43,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     @Override
     public boolean enableProduct(long productId) throws EntityNotFoundException {
-        LOGGER.debug("About to enable product for visibility with id " + productId);
+        LOGGER.info("About to enable product for visibility with id " + productId);
         productDao.findById(productId).orElseThrow(() -> new EntityNotFoundException("Cant find product with id " + productId));
         return productDao.updateProductEnable(productId, true) > 0;
     }

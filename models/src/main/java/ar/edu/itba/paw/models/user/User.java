@@ -4,6 +4,7 @@ import ar.edu.itba.paw.models.reservation.Reservation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlTransient;
@@ -14,6 +15,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Setter
 @Table(name = "users")
 public class User implements Serializable    {
     public final static String KEY_ID = "id";
@@ -55,4 +57,5 @@ public class User implements Serializable    {
         this.password = password;
         this.role = UserRole.CLIENT;
     }
+
 }

@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.List;
 
@@ -17,7 +16,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "room")
-@XmlRootElement
 public class Room {
 
     public static final String KEY_ID = "id";
@@ -32,8 +30,8 @@ public class Room {
     @Column(name = "id", columnDefinition = "NUMERIC(19,0)")
     private long id;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = KEY_ROOM_TYPE)
+    @Enumerated(EnumType.STRING)
     private RoomType roomType;
 
     @Column(nullable = false, name = KEY_FREE_NOW)

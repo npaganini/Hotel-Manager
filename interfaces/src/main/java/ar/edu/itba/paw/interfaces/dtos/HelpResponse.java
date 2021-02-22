@@ -5,16 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+
+
 public class HelpResponse implements Serializable {
     private long id;
     private String helpStep;

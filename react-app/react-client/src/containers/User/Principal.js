@@ -1,14 +1,11 @@
-import React, { useState } from "react";
-import { Container, Row, Col, Card } from "react-bootstrap";
-import { Redirect } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import { Container, Row, Col } from "react-bootstrap";
 import { makeStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
 
 import { getAllReservations } from "../../api/userApi";
 import { reservationUserColumns } from "../../utils/columnsUtil";
-
 import Table from "../../components/Table/Table";
-import UserNavbar from "../../components/Navbar/UserNavbar";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -22,9 +19,10 @@ const UserPrincipal = ({ history }) => {
   const [reservations, setReservations] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
 
-  if (reservations.length == 0) {
+  const getMyReservations = () => {
     getAllReservations().then((response) => {
-      setReservations(
+        console.log(response.data);
+        setReservations(
         response.data.activeReservations.map(
           ({ roomType, startDate, endDate, roomNumber, reservationId }) => {
             const newObject = Object.assign(
@@ -51,15 +49,16 @@ const UserPrincipal = ({ history }) => {
           className="justify-content-sm-center"
           style={{ paddingTop: "40px",width: "100%" }}
         >
-          <Col xs={1} md={1}></Col>
+          <Col xs={1} md={1}/>
           <Col xs={10} md={10}>
             <Table
               columns={reservationUserColumns}
               rows={reservations}
               totalItems={totalCount}
-            ></Table>
+              pageFunction={getMyReservations}
+            />
           </Col>
-          <Col xs={1} md={1}></Col>
+          <Col xs={1} md={1}/>
         </Row>
       </Container>
     </div>

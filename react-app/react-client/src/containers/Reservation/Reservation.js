@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Reservation = ({ history }) => {
   const classes = useStyles();
+  const { t } = useTranslation();
 
   const [showRooms, show] = useState(false);
   const [room, setRoom] = useState("");
@@ -45,7 +46,6 @@ const Reservation = ({ history }) => {
   const [showDialog, updateShowDialog] = useState(false);
   const [loading, updateShowLoading] = useState(false);
   const [info, updateInfo] = useState(undefined);
-  const { t } = useTranslation();
 
   const handleDialogClose = () => {
     updateShowDialog(false);
@@ -79,11 +79,11 @@ const Reservation = ({ history }) => {
 
   const formIsValidate = () => {
     let isOk = true;
-    if (email.length == 0) {
+    if (email.length === 0) {
       setErrorInput(true);
       isOk = false;
     }
-    if (room.length == 0) {
+    if (room.length === 0) {
       isOk = false;
       setErrorDropdown(true);
     }

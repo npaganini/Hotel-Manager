@@ -146,6 +146,8 @@
   "email": "Dirección de e-mail",
   "password": "Contraseña",
   "rememberme": "Recuérdame",
+  "loginFailed": "Usuario y/o contraseña son incorrectas",
+
   "error": {
     "error": "¡Oops!",
     "500": "Hubo un problema procesando su pedido. Por favor, intente devuelta en unos minutos.",

@@ -25,7 +25,7 @@ import java.net.URI;
 import java.util.List;
 
 @Controller
-@Path("/user")
+@Path("/api/user")
 public class UserController extends SimpleController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     public static final String DEFAULT_FIRST_PAGE = "1";
@@ -52,13 +52,12 @@ public class UserController extends SimpleController {
                                    @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit,
                                    @Context SecurityContext securityContext) {
         // todo: mav was "expenses.jsp"
-        LOGGER.debug("Request received to retrieve all expenses on reservation with id " + reservationId);
+        LOGGER.info("Request received to retrieve all expenses on reservation with id " + reservationId);
         List<ChargesByUserResponse> chargesByUser = userService.checkProductsPurchasedByUserByReservationId(getUserEmailFromJwt(securityContext), reservationId);
         System.out.println(chargesByUser);
         System.out.println(reservationId);
 
-        return Response.ok(new GenericEntity<List<ChargesByUserResponse>>(chargesByUser) {
-        }).build();
+        return Response.ok(chargesByUser).build();
     }
 
     @GET
@@ -77,22 +76,21 @@ public class UserController extends SimpleController {
                                    @QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
                                    @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) {
         // todo: mav was "browseProducts.jsp"
-        LOGGER.debug("Request received to retrieve all products list");
+        LOGGER.info("Request received to retrieve all products list");
         PaginatedDTO<ProductResponse> productList;
         try {
             productList = userService.getProducts(page, limit);
         } catch (IndexOutOfBoundsException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        return sendPaginatedResponse(page, limit, productList.getMaxItems(), new GenericEntity<List<ProductResponse>>(productList.getList()) {
-        }, uriInfo.getAbsolutePathBuilder());
+        return sendPaginatedResponse(page, limit, productList.getMaxItems(), productList.getList(), uriInfo.getAbsolutePathBuilder());
     }
 
     @POST
     @Path("/{reservationId}/products/{productId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response buyProduct(@PathParam("reservationId") long reservationId, @PathParam("productId") Long productId) throws EntityNotFoundException {
-        LOGGER.debug("Request received to buy products on reservation with id " + reservationId);
+        LOGGER.info("Request received to buy products on reservation with id " + reservationId);
         if (productId != null) {
             // todo: mav was "buyProducts.jsp"
             Charge charge = userService.addCharge(productId, reservationId);
@@ -108,7 +106,7 @@ public class UserController extends SimpleController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response requestHelp(@PathParam("reservationId") long reservationId,
                                 @RequestBody HelpRequest helpRequest) throws EntityNotFoundException {
-        LOGGER.debug("Help request made on reservation with id " + reservationId);
+        LOGGER.info("Help request made on reservation with id " + reservationId);
         if (helpRequest.getHelpDescription() != null) {
             // todo: mav was "requestHelp.jsp"
             System.out.println("id ---> " + reservationId);

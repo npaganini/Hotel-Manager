@@ -15,7 +15,7 @@ import javax.ws.rs.core.*;
 import java.util.List;
 
 @Controller
-@Path("/ratings")
+@Path("/api/ratings")
 public class RatingsController extends SimpleController {
     private static final Logger LOGGER = LoggerFactory.getLogger(RatingsController.class);
     public static final String DEFAULT_FIRST_PAGE = "1";
@@ -40,7 +40,7 @@ public class RatingsController extends SimpleController {
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        return Response.ok().entity(new GenericEntity<RatingDTO>(hotelRating) {}).build();
+        return Response.ok(hotelRating).build();
     }
 
     @GET
@@ -54,7 +54,7 @@ public class RatingsController extends SimpleController {
         } catch (IndexOutOfBoundsException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        return sendPaginatedResponse(page, limit, cals.getMaxItems(), new GenericEntity<List<CalificationResponse>>(cals.getList()) {}, uriInfo.getAbsolutePathBuilder());
+        return sendPaginatedResponse(page, limit, cals.getMaxItems(), cals.getList(), uriInfo.getAbsolutePathBuilder());
     }
 
     @GET
@@ -67,7 +67,7 @@ public class RatingsController extends SimpleController {
         } catch (Exception e) {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
-        return Response.ok().entity(new GenericEntity<RatingDTO>(roomRating) {}).build();
+        return Response.ok(roomRating).build();
     }
 
     @GET
@@ -84,6 +84,6 @@ public class RatingsController extends SimpleController {
         } catch (EntityNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
-        return sendPaginatedResponse(page, limit, ratings.getMaxItems(), new GenericEntity<List<CalificationResponse>>(ratings.getList()) {}, uriInfo.getAbsolutePathBuilder());
+        return sendPaginatedResponse(page, limit, ratings.getMaxItems(), ratings.getList(), uriInfo.getAbsolutePathBuilder());
     }
 }

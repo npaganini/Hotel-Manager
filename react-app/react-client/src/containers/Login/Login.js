@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
 import { withRouter } from "react-router";
 
 import { login } from "../../api/loginApi";
+import InfoSimpleDialog from "../../components/Dialog/SimpleDialog";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,36 +51,37 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const onLoginPerformed = (
-  onSubmit,
-  { user, password },
-  { setIsLoggedIn, setIsClient }
-) => () => {
-  login(user, password)
-    .then(() => {
-      window.alert(
-        localStorage.getItem("token") + " | " + localStorage.getItem("role")
-      );
-      setIsLoggedIn(true);
-      setIsClient(localStorage.getItem("role") === "CLIENT");
-      onSubmit();
-    })
-    .catch((error) => {
-      console.log("there was an error", error);
-    });
-};
-
 const Login = ({ history, setIsLoggedIn, setIsClient }) => {
   const classes = useStyles();
   const { t } = useTranslation();
-
   const [hasLogged, onSubmit] = useState(false);
   const [user, onChangeUser] = useState("");
   const [password, onChangePassword] = useState("");
+  const [showDialog, updateShowDialog] = useState(false);
 
   const changeUser = (newUser) => onChangeUser(newUser.target.value);
   const changePassword = (newPassword) =>
     onChangePassword(newPassword.target.value);
+
+  const onLoginPerformed = (onSubmit, { user, password }, { setIsLoggedIn, setIsClient }) => () => {
+    login(user, password)
+        .then(() => {
+          window.alert(
+              localStorage.getItem("token") + " | " + localStorage.getItem("role")
+          );
+          setIsLoggedIn(true);
+          setIsClient(localStorage.getItem("role") === "CLIENT");
+          onSubmit();
+        })
+        .catch((error) => {
+          updateShowDialog(true);
+          console.log("there was an error", error);
+        });
+  };
+
+  const handleDialogClose = () => {
+    updateShowDialog(false);
+  }
 
   const submitLogin = () => {
     onSubmit(true);
@@ -93,10 +95,10 @@ const Login = ({ history, setIsLoggedIn, setIsClient }) => {
         <Row className={classes.row}>
           <Col>
             <Card className={classes.root}>
-              <CssBaseline />
+              <CssBaseline/>
               <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
-                  <LockOutlinedIcon />
+                  <LockOutlinedIcon/>
                 </Avatar>
                 <Typography component="h1" variant="h5">
                   e-Lobby
@@ -145,7 +147,7 @@ const Login = ({ history, setIsLoggedIn, setIsClient }) => {
                           { setIsClient, setIsLoggedIn }
                         )}
                       >
-                        Ingresar
+                        {t("login")}
                       </Button>
                     </Col>
                   </Row>
@@ -154,6 +156,9 @@ const Login = ({ history, setIsLoggedIn, setIsClient }) => {
             </Card>
           </Col>
         </Row>
+        <InfoSimpleDialog open={showDialog} onClose={handleDialogClose}>
+          {t("loginFailed")}
+        </InfoSimpleDialog>
       </Container>
     </div>
   );
