@@ -23,7 +23,7 @@ import java.io.InputStream;
 import java.util.List;
 
 @Controller
-@Path("products")
+@Path("api/products")
 public class ProductController extends SimpleController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
     public static final String DEFAULT_FIRST_PAGE = "1";

@@ -15,7 +15,7 @@ import javax.ws.rs.core.*;
 import java.util.List;
 
 @Controller
-@Path("help")
+@Path("api/help")
 public class HelpController extends SimpleController {
     private static final Logger LOGGER = LoggerFactory.getLogger(HelpController.class);
     public static final String DEFAULT_FIRST_PAGE = "1";

@@ -15,7 +15,7 @@ import javax.ws.rs.core.*;
 import java.util.List;
 
 @Controller
-@Path("/ratings")
+@Path("/api/ratings")
 public class RatingsController extends SimpleController {
     private static final Logger LOGGER = LoggerFactory.getLogger(RatingsController.class);
     public static final String DEFAULT_FIRST_PAGE = "1";

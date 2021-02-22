@@ -79,13 +79,13 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and();
         http.authorizeRequests()
-                .antMatchers("/login", "/products/**/img")
+                .antMatchers("/api/login", "/api/products/**/img")
                 .permitAll()
-                .antMatchers("/user/**")
+                .antMatchers("/api/user/**")
                 .hasAuthority(UserRole.CLIENT.toString())
-                .antMatchers("/rooms/**", "/reservation/**", "/products/**", "/ratings/**")
+                .antMatchers("/api/rooms/**", "/api/reservation/**", "/api/products/**", "/api/ratings/**")
                 .hasAnyAuthority(UserRole.EMPLOYEE.toString(), UserRole.MANAGER.toString())
-                .antMatchers("/", "/index", "/products/**")
+                .antMatchers("/api", "/api/index", "/api/products/**")
                 .hasAnyAuthority(UserRole.EMPLOYEE.toString(), UserRole.MANAGER.toString(), UserRole.CLIENT.toString())
                 .anyRequest().authenticated();
         http.exceptionHandling().accessDeniedPage("/403");
