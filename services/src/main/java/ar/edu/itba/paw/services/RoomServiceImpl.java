@@ -26,13 +26,10 @@ public class RoomServiceImpl implements RoomService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RoomServiceImpl.class);
 
-    private final ReservationDao reservationDao;
     private final RoomDao roomDao;
-    private final UserDao userDao;
     private final EmailService emailService;
     private final ReservationService reservationService;
     private final ChargeService chargeService;
-    private final UserService userService;
 
     @Autowired
     public RoomServiceImpl(RoomDao roomDao, UserDao userDao, ReservationDao reservationDao, EmailService emailService,
@@ -79,7 +76,7 @@ public class RoomServiceImpl implements RoomService {
                 charges.size() > 0 ? chargeService.sumCharge(reservation.getId()) : 0d);
         reservationService.inactiveReservation(reservation.getId());
         System.out.println("no debería llegar acá");
-//        emailService.sendRateStayEmail(reservationHash);
+        emailService.sendRateStayEmail(reservationHash);
         return checkoutDTO;
     }
 

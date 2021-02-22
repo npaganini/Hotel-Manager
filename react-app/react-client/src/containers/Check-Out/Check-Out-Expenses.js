@@ -9,7 +9,6 @@ import {doCheckout} from '../../api/roomApi';
 
 import Button from "../../components/Button/Button";
 import ExpensesTable from "../../components/ExpensesTable/ExpensesTable";
-import {useTranslation} from "react-i18next";
 import InfoSimpleDialog from "../../components/Dialog/SimpleDialog";
 
 const useStyles = makeStyles((theme) => ({
