@@ -65,7 +65,6 @@ public class RoomServiceImpl implements RoomService {
     public CheckoutDTO doCheckout(String reservationHash) throws ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException, RequestInvalidException {
         Reservation reservation = reservationService.getReservationByHash(reservationHash.trim());
         if (!reservation.isActive()) {
-            System.out.println("reservation not active");
             throw new RequestInvalidException();
         }
         LOGGER.debug("Request received to do the check-out on reservation with hash: " + reservationHash);
@@ -75,7 +74,6 @@ public class RoomServiceImpl implements RoomService {
         CheckoutDTO checkoutDTO = new CheckoutDTO(charges,
                 charges.size() > 0 ? chargeService.sumCharge(reservation.getId()) : 0d);
         reservationService.inactiveReservation(reservation.getId());
-        System.out.println("no debería llegar acá");
         emailService.sendRateStayEmail(reservationHash);
         return checkoutDTO;
     }
