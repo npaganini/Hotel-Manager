@@ -3,9 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-
 <html>
-
 <head>
     <title>e-lobby</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
@@ -16,10 +14,8 @@
     <script src='https://kit.fontawesome.com/a076d05399.js'></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
     <script src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js'></script>
-
 </head>
-<body class="container cont"
-      style="height: 100vh !important; width: 100vw !important;margin-left: 0 !important; margin-right: 0 !important">
+<body class="container cont" style="height: 100vh !important; width: 100vw !important;margin-left: 0 !important; margin-right: 0 !important">
 <div >
     <div class="row">
         <div class="col">
@@ -34,36 +30,61 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home"><spring:message
-                                code="logo"/></a>
+                        <a class="navbar-brand" href="${pageContext.request.contextPath}/rooms/home">
+                            <spring:message code="logo"/>
+                        </a>
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse navbar-right" id="bs-sidebar-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="${pageContext.request.contextPath}/rooms/registration">Registration</a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/checkin"><spring:message
-                                    code="reservation.checkin"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/checkout"><spring:message
-                                    code="reservation.checkout"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/reservations"><spring:message
-                                    code="reservation.plural"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/products"><spring:message
-                                    code="product.plural"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/rooms/orders"><spring:message
-                                    code="reservation.order.plural"/></a></li>
+                            <li>
+                                <a href="${pageContext.request.contextPath}/rooms/registration">
+                                    <spring:message code="registration"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="${pageContext.request.contextPath}/rooms/checkin">
+                                    <spring:message code="reservation.checkin"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="${pageContext.request.contextPath}/rooms/checkout">
+                                    <spring:message code="reservation.checkout"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="${pageContext.request.contextPath}/rooms/reservations">
+                                    <spring:message code="reservation.plural"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="${pageContext.request.contextPath}/products">
+                                    <spring:message code="product.plural"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="${pageContext.request.contextPath}/rooms/orders">
+                                    <spring:message code="reservation.order.plural"/>
+                                </a>
+                            </li>
                             <li>
                                 <a href="${pageContext.request.contextPath}/helpList">
                                     <spring:message code="help.request.plural"/>
                                 </a>
                             </li>
                             <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span
-                                        class="glyphicon glyphicon-user"></span> <spring:message
-                                        code="user.account"/><span class="caret"></span></a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    <spring:message code="user.account"/>
+                                    <span class="caret"></span>
+                                </a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="${pageContext.request.contextPath}/logout"><span
-                                            class="glyphicon glyphicon-log-in"></span> <spring:message
-                                            code="user.logout"/></a></li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/logout">
+                                            <span class="glyphicon glyphicon-log-in"></span>
+                                            <spring:message code="user.logout"/>
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>
@@ -74,17 +95,16 @@
     </div>
     <c:url value="/rooms/checkinPost" var="postPath"/>
     <form:form modelAttribute="checkinForm" id="myForm" action="${postPath}" method="post">
-
     <div class="row myheader vertical-align">
         <div class="col-xs-12" style="text-align: left">
             <div><spring:message code="reservation.checkin"/></div>
         </div>
     </div>
     <br>
-
     <div class="row">
         <div class="col-xs-6">
-            <form:label class="items" path="id_reservation"><spring:message code="reservation.id"/>: </form:label>
+            <form:label class="items" path="id_reservation">
+            <spring:message code="reservation.id"/>: </form:label>
             <div class="input-group">
                 <span class="input-group-addon"></span>
                 <form:input id="IDres" path="id_reservation" type="text" class="form-control" name="IDres"
@@ -97,31 +117,23 @@
         </div>
         <div class="col-xs-3">
             <br>
-            <button type="button" onclick="location.href='${pageContext.request.contextPath}/rooms/home'" id="back" class="btn btn-danger btn-lg"><a style="color: white"><spring:message code="cancel"/></a>
-
+            <button type="button" onclick="location.href='${pageContext.request.contextPath}/rooms/home'" id="back" class="btn btn-danger btn-lg">
+                <a style="color: white">
+                    <spring:message code="cancel"/>
+                </a>
             </button>
         </div>
-
     </div>
-
 </div>
 </form:form>
 </body>
 </html>
-
-
 <script>
     $(document).ready(function () {
-
         $('#myForm').submit(function () {
-
-
             $("#sign").attr("disabled", true);
-
             $("#back").attr("disabled", true);
-
             return true;
-
         });
     });
 </script>

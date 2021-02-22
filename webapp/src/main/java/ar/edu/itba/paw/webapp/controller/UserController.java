@@ -1,85 +1,133 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.dtos.ActiveReservationResponse;
+import ar.edu.itba.paw.interfaces.dtos.ChargesByUserResponse;
+import ar.edu.itba.paw.interfaces.dtos.ProductResponse;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
-import ar.edu.itba.paw.interfaces.services.HelpService;
+import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
+import ar.edu.itba.paw.interfaces.services.MessageSourceExternalizer;
 import ar.edu.itba.paw.interfaces.services.UserService;
-import form.BuyProductForm;
-import form.HelpForm;
+import ar.edu.itba.paw.models.charge.Charge;
+import ar.edu.itba.paw.models.dtos.PaginatedDTO;
+import ar.edu.itba.paw.models.help.Help;
+import ar.edu.itba.paw.webapp.dtos.ActiveReservationsResponse;
+import ar.edu.itba.paw.webapp.dtos.HelpRequest;
+import ar.edu.itba.paw.webapp.dtos.RateReservationRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
+import java.net.URI;
+import java.util.List;
 
 @Controller
-@RequestMapping("/user")
+@Path("/api/user")
 public class UserController extends SimpleController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+    public static final String DEFAULT_FIRST_PAGE = "1";
+    public static final String DEFAULT_PAGE_SIZE = "20";
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RoomController.class);
-
+    private final MessageSourceExternalizer messageSourceExternalizer;
     private final UserService userService;
 
+    @Context
+    private UriInfo uriInfo;
+
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(MessageSourceExternalizer messageSourceExternalizer, UserService userService) {
+        this.messageSourceExternalizer = messageSourceExternalizer;
         this.userService = userService;
     }
 
-    @GetMapping("/home")
-    public ModelAndView getLandingPage(Authentication authentication) {
-        final ModelAndView mav = new ModelAndView("userIndex");
-        LOGGER.debug("Request received to user's landing page");
-        mav.addObject("ReservationsList",
-                userService.findActiveReservations(getUsername(authentication)));
-        return mav;
+
+    @GET
+    @Path("/{reservationId}/expenses")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response boughtProducts(@PathParam(value = "reservationId") long reservationId,
+                                   @QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
+                                   @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit,
+                                   @Context SecurityContext securityContext) {
+        // todo: mav was "expenses.jsp"
+        LOGGER.info("Request received to retrieve all expenses on reservation with id " + reservationId);
+        List<ChargesByUserResponse> chargesByUser = userService.checkProductsPurchasedByUserByReservationId(getUserEmailFromJwt(securityContext), reservationId);
+        System.out.println(chargesByUser);
+        System.out.println(reservationId);
+
+        return Response.ok(chargesByUser).build();
     }
 
-    @GetMapping("/expenses")
-    public ModelAndView boughtProducts(Authentication authentication, @RequestParam(value = "reservationId") long reservationId) {
-        final ModelAndView mav = new ModelAndView("expenses");
-        LOGGER.debug("Request received to retrieve all expenses on reservation with id " + reservationId);
-        mav.addObject("ProductsList",
-                userService.checkProductsPurchasedByUserByReservationId(getUsername(authentication), reservationId));
-        return mav;
+    @GET
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public Response getActiveReservations(@QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
+                                          @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit,
+                                          @Context SecurityContext securityContext) {
+        List<ActiveReservationResponse> activeReservations = userService.findActiveReservations(getUserEmailFromJwt(securityContext));
+        return Response.ok(new ActiveReservationsResponse(activeReservations)).build();
     }
 
-    @GetMapping("/products")
-    public ModelAndView getAllProducts(@ModelAttribute("buyProductForm") BuyProductForm productForm,
-                                       @RequestParam(value = "reservationId") long reservationId) {
-        final ModelAndView mav = new ModelAndView("browseProducts");
-        LOGGER.debug("Request received to retrieve all products list");
-        mav.addObject("ProductsList", userService.getProducts());
-        return mav;
-    }
-
-    @PostMapping("/buyProducts")
-    public ModelAndView buyProduct(@ModelAttribute("buyProductForm") BuyProductForm buyProductForm, @RequestParam(value = "reservationId") long reservationId) throws EntityNotFoundException {
-        LOGGER.debug("Request received to buy products on reservation with id " + reservationId);
-        if(buyProductForm != null) {
-            final ModelAndView mav = new ModelAndView("buyProducts");
-            mav.addObject("charge", userService.addCharge(buyProductForm.getProductId(), reservationId));
-            return mav;
+    @GET
+    @Path("/{reservationId}/products")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getAllProducts(@PathParam("reservationId") long reservationId,
+                                   @QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
+                                   @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) {
+        // todo: mav was "browseProducts.jsp"
+        LOGGER.info("Request received to retrieve all products list");
+        PaginatedDTO<ProductResponse> productList;
+        try {
+            productList = userService.getProducts(page, limit);
+        } catch (IndexOutOfBoundsException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        return new ModelAndView("redirect:/products");
+        return sendPaginatedResponse(page, limit, productList.getMaxItems(), productList.getList(), uriInfo.getAbsolutePathBuilder());
     }
 
-    @GetMapping("/needHelp")
-    public ModelAndView getHelpPage(@ModelAttribute("getHelpForm") HelpForm helpForm,
-                                    @RequestParam(value = "reservationId") long reservationId) {
-        final ModelAndView mav = new ModelAndView("askHelpPage");
-        LOGGER.debug("Request received to get help page");
-        return mav;
-    }
-
-    @PostMapping("/helpUser")
-    public ModelAndView requestHelp(@ModelAttribute("getHelpForm") HelpForm helpForm, @RequestParam(value = "reservationId") long reservationId) throws EntityNotFoundException {
-        LOGGER.debug("Help request made on reservation with id " + reservationId);
-        if(helpForm != null) {
-            final ModelAndView mav = new ModelAndView("requestHelp");
-            mav.addObject("helpRequest", userService.requestHelp(helpForm.getText(), reservationId));
-            return mav;
+    @POST
+    @Path("/{reservationId}/products/{productId}")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response buyProduct(@PathParam("reservationId") long reservationId, @PathParam("productId") Long productId) throws EntityNotFoundException {
+        LOGGER.info("Request received to buy products on reservation with id " + reservationId);
+        if (productId != null) {
+            // todo: mav was "buyProducts.jsp"
+            Charge charge = userService.addCharge(productId, reservationId);
+            URI uri = uriInfo.getAbsolutePathBuilder().path("/" + charge.getId()).build();
+            return Response.created(uri).build();
         }
-        return new ModelAndView("redirect:/needHelp");
+        return Response.status(Response.Status.BAD_REQUEST).build();
+    }
+
+    // TODO FIXME
+    @POST
+    @Path("/{reservationId}/help")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response requestHelp(@PathParam("reservationId") long reservationId,
+                                @RequestBody HelpRequest helpRequest) throws EntityNotFoundException {
+        LOGGER.info("Help request made on reservation with id " + reservationId);
+        if (helpRequest.getHelpDescription() != null) {
+            // todo: mav was "requestHelp.jsp"
+            System.out.println("id ---> " + reservationId);
+
+            System.out.println("help ---> " + helpRequest.getHelpDescription());
+            Help helpRequested = userService.requestHelp(helpRequest.getHelpDescription(), reservationId);
+            // do something with this help object
+            return Response.ok().build();
+        }
+        return Response.status(Response.Status.BAD_REQUEST).build();
+    }
+
+    @POST
+    @Path("/ratings/{reservationHash}/rate")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public void rateStay(@PathParam("reservationHash") String reservationHash,
+                         @QueryParam("rate") RateReservationRequest rateRequest) {
+        try {
+            userService.rateStay(rateRequest.getRate(), reservationHash);
+        } catch (Exception e) {
+            LOGGER.debug(e.getMessage());
+        }
     }
 }

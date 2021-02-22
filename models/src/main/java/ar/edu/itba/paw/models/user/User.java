@@ -4,17 +4,18 @@ import ar.edu.itba.paw.models.reservation.Reservation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 @Getter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Setter
 @Table(name = "users")
 public class User implements Serializable    {
     public final static String KEY_ID = "id";
@@ -23,7 +24,7 @@ public class User implements Serializable    {
     public final static String KEY_PASSWORD = "password";
     public final static String KEY_ROLE = "role";
 
-    public final static String TABLE_NAME = "users";
+    public final static String NAME = "Users";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,12 +46,9 @@ public class User implements Serializable    {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
     private List<Reservation> reservations;
 
-    public User(ResultSet resultSet) throws SQLException {
-        this.id = resultSet.getInt(KEY_ID);
-        this.email = resultSet.getString(KEY_EMAIL);
-        this.role = UserRole.valueOf(resultSet.getString(KEY_ROLE));
-        this.password = resultSet.getString(KEY_PASSWORD);
-        this.username = resultSet.getString(KEY_USERNAME);
+    @XmlTransient
+    public List<Reservation> getReservations() {
+        return reservations;
     }
 
     public User(String email, String username, String password) {
@@ -59,4 +57,5 @@ public class User implements Serializable    {
         this.password = password;
         this.role = UserRole.CLIENT;
     }
+
 }

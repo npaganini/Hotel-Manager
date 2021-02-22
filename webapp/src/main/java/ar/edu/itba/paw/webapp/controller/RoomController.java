@@ -1,38 +1,50 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.dtos.ChargeDeliveryResponse;
+import ar.edu.itba.paw.interfaces.dtos.ChargesByUserResponse;
+import ar.edu.itba.paw.interfaces.dtos.ReservationConfirmedResponse;
+import ar.edu.itba.paw.interfaces.dtos.ReservationResponse;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.ChargeService;
 import ar.edu.itba.paw.interfaces.services.ReservationService;
 import ar.edu.itba.paw.interfaces.services.RoomService;
-import ar.edu.itba.paw.models.dtos.CheckoutDTO;
+import ar.edu.itba.paw.models.dtos.PaginatedDTO;
 import ar.edu.itba.paw.models.occupant.Occupant;
-import form.CheckinForm;
-import form.CheckoutForm;
-import form.RegistrationForm;
-import form.ReservationForm;
+import ar.edu.itba.paw.models.reservation.Reservation;
+import ar.edu.itba.paw.models.room.Room;
+import ar.edu.itba.paw.webapp.dtos.OccupantsRequest;
+import ar.edu.itba.paw.webapp.dtos.ReservationRequest;
+import ar.edu.itba.paw.webapp.utils.JsonToCalendar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
-import java.text.ParseException;
-import java.time.LocalDate;
-import java.util.ArrayList;
+import javax.persistence.NoResultException;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
+import java.util.Calendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@Component
 @Controller
-@RequestMapping("rooms")
+@Path("/api/rooms")
 public class RoomController extends SimpleController {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(RoomController.class);
+    public static final String DEFAULT_FIRST_PAGE = "1";
+    public static final String DEFAULT_PAGE_SIZE = "20";
 
     private final RoomService roomService;
     private final ReservationService reservationService;
     private final ChargeService chargeService;
+
+    @Context
+    private UriInfo uriInfo;
 
     @Autowired
     public RoomController(RoomService roomService, ReservationService reservationService, ChargeService chargeService) {
@@ -41,148 +53,158 @@ public class RoomController extends SimpleController {
         this.chargeService = chargeService;
     }
 
-    @GetMapping("/home")
-    public ModelAndView getAllRooms() {
-        final ModelAndView mav = new ModelAndView("index");
-        LOGGER.debug("Request received to retrieve whole roomsList");
-        mav.addObject("ReservationsList", reservationService.getRoomsReservedActive());
-        return mav;
-    }
-
-    @PostMapping("/reservationPost")
-    @Transactional
-    public ModelAndView reservationPost(@ModelAttribute("reservationForm") final ReservationForm form) throws RequestInvalidException, ParseException {
-        final ModelAndView mav = new ModelAndView("reservationPost");
-        LOGGER.debug("Request received to do a reservation on room with id: " + form.getRoomId());
-        mav.addObject("reserva", reservationService.doReservation(form.getRoomId(),
-                form.getUserEmail(), fromStringToCalendar(form.getStartDate()),
-                fromStringToCalendar(form.getEndDate())));
-        return mav;
-    }
-
-    @GetMapping("/checkin")
-    public ModelAndView checkin(@ModelAttribute("checkinForm") final CheckinForm form) {
-        return new ModelAndView("checkin");
-    }
-
-    @PostMapping("/checkinPost")
-    @Transactional
-    public ModelAndView checkinPost(@ModelAttribute("checkinForm") final CheckinForm form) throws RequestInvalidException, EntityNotFoundException {
-        final ModelAndView mav = new ModelAndView("checkinPost");
-        LOGGER.debug("Request received to do the check-in on reservation with hash: " + form.getId_reservation());
-        roomService.doCheckin(form.getId_reservation());
-        return mav;
-    }
-
-    @GetMapping("/checkout")
-    public ModelAndView checkout(@ModelAttribute("checkoutForm") final CheckoutForm form) {
-        return new ModelAndView("checkout");
-    }
-
-    @PostMapping("/checkoutPost")
-    @Transactional
-    public ModelAndView checkoutPost(@ModelAttribute("checkoutForm") final CheckoutForm form) throws RequestInvalidException, EntityNotFoundException {
-        final ModelAndView mav = new ModelAndView("checkoutPost");
-        CheckoutDTO checkoutDTO = roomService.doCheckout(form.getId_reservation());
-
-        mav.addObject("charges", checkoutDTO.getCharges());
-        mav.addObject("totalCharge", checkoutDTO.getSumCharges());
-        return mav;
-    }
-
-    @GetMapping("/reservation")
-    public ModelAndView reservation(@RequestParam(value = "startDate", required = false) String startDate,
-                                    @RequestParam(value = "endDate", required = false) String endDate,
-                                    @ModelAttribute("reservationForm") final ReservationForm form) throws ParseException {
-        final ModelAndView mav = new ModelAndView("reservation");
-        if (!(startDate == null || endDate == null) && !(startDate.isEmpty() ||
-                endDate.isEmpty()) && LocalDate.parse(startDate).isBefore(LocalDate.parse(endDate))) {
-            mav.addObject("allRooms", roomService.findAllFreeBetweenDates(
-                    fromStringToCalendar(startDate), fromStringToCalendar(endDate))
-            );
-            mav.addObject("ListState","visible");
+    @GET
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getAllRooms(@QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
+                                @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) {
+        LOGGER.info("Request received to retrieve whole roomsList");
+        PaginatedDTO<ReservationResponse> reservations;
+        try {
+            reservations = reservationService.getRoomsReservedActive(page, limit);
+        } catch (IndexOutOfBoundsException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        else
-            mav.addObject("ListState","hidden");
-        return mav;
+        return sendPaginatedResponse(page, limit, reservations.getMaxItems(), reservations.getList(), uriInfo.getAbsolutePathBuilder());
     }
 
-
-    @GetMapping("/reservations")
-    public ModelAndView reservations(@RequestParam(value = "startDate", required = false) String startDate,
-                                     @RequestParam(value = "endDate", required = false) String endDate,
-                                     @RequestParam(value = "userEmail", required = false) String userEmail,
-                                     @RequestParam(value = "guest", required = false) String guest) throws ParseException {
-        final ModelAndView mav = new ModelAndView("reservations");
-        mav.addObject("reservations",
-                reservationService.findAllBetweenDatesOrEmailAndSurname(
-                        startDate == null || startDate.length() == 0 ? null : fromStringToCalendar(startDate),
-                        endDate == null || endDate.length() == 0 ? null : fromStringToCalendar(endDate), userEmail, guest)
-        );
-        return mav;
-    }
-
-    @GetMapping("/orders")
-    public ModelAndView orders() {
-        final ModelAndView mav = new ModelAndView("orders");
-        mav.addObject("orders", chargeService.getAllChargesNotDelivered());
-        return mav;
-    }
-
-    @GetMapping("/orders/sendOrder")
-    public ModelAndView sendOrder(@RequestParam(value = "chargeId", required = false) long chargeId) throws Exception {
-        final ModelAndView mav = new ModelAndView("orderFinished");
-        chargeService.setChargeToDelivered(chargeId);
-        return mav;
-    }
-
-    @GetMapping("/registration")
-    public ModelAndView registration(@ModelAttribute("registrationForm") final RegistrationForm form) {
-        ModelAndView mav = new ModelAndView("registration");
-        mav.addObject("registered", false);
-        return mav;
-    }
-
-    @PostMapping("/registrationPost")
-    public ModelAndView registrationPost(@ModelAttribute("registrationForm") final RegistrationForm form) throws EntityNotFoundException {
-        ModelAndView mav = new ModelAndView("registration");
-        LOGGER.debug("Attempted to access registration form");
-        if(form != null) {
-            LOGGER.debug("Attempted to register occupants on reservation hash " + form.getReservation_hash());
-            reservationService.registerOccupants(form.getReservation_hash().trim(), getListOfOccupantsFromForm(form));
-            mav.addObject("registered", true);
+    @GET
+    @Path("/reservations")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getAllReservations(@QueryParam("startDate")  String startDate,
+                                       @QueryParam("endDate")  String endDate,
+                                       @QueryParam("email")  String email,
+                                       @QueryParam("lastName")  String lastName,
+                                       @QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
+                                       @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) throws Exception {
+        LOGGER.info("Request received to retrieve reservations.");
+        PaginatedDTO<ReservationResponse> reservations = null;
+        try {
+            if (startDate == null && endDate == null && email == null && lastName == null) {
+                LOGGER.info("Getting all reservations starting at page " + page);
+                reservations = reservationService.getAll(page, limit);
+            } else {
+                if (!StringUtils.isEmpty(startDate) && !StringUtils.isEmpty(endDate)) {
+                    LOGGER.info("Getting all reservations between " + startDate + " and " + endDate);
+                    Calendar startDateCalendar = JsonToCalendar.unmarshal(startDate);
+                    Calendar endDateCalendar = JsonToCalendar.unmarshal(endDate);
+                    if (startDateCalendar.before(endDateCalendar)) {
+                        LOGGER.info("Valid dates received, continuing with fetch...");
+                        reservations = reservationService.findAllBetweenDatesOrEmailAndSurname(startDateCalendar, endDateCalendar, email, lastName, page, limit);
+                    } else {
+                        LOGGER.info("Request received with invalid dates.");
+                        return Response.status(Response.Status.BAD_REQUEST).build();
+                    }
+                }
+            }
+        } catch (IllegalArgumentException e) {
+            LOGGER.info(e.getMessage());
+            System.out.println(e.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        return mav;
+        if (reservations == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        LOGGER.info("Reservation(s) found!");
+        return sendPaginatedResponse(page, limit, reservations.getMaxItems(), reservations.getList(), uriInfo.getAbsolutePathBuilder());
     }
 
-    // FIXME this is disgusting but we couldnt crate a list from jsp
-    private List<Occupant> getListOfOccupantsFromForm(RegistrationForm form) {
-        List<Occupant> occupants = new ArrayList<>();
-        if (form.getName_1() != null && form.getName_1().length() > 0
-                && form.getLast_name_1() != null && form.getLast_name_1().length() > 0)
-            occupants.add(new Occupant(form.getName_1(), form.getLast_name_1().toLowerCase()));
-
-        if (form.getName_2() != null && form.getName_2().length() > 0
-                && form.getLast_name_2() != null && form.getLast_name_2().length() > 0)
-            occupants.add(new Occupant(form.getName_2(), form.getLast_name_2().toLowerCase()));
-
-        if (form.getName_3() != null && form.getName_3().length() > 0
-                && form.getLast_name_3() != null && form.getLast_name_3().length() > 0)
-            occupants.add(new Occupant(form.getName_3(), form.getLast_name_3().toLowerCase()));
-
-        if (form.getName_4() != null && form.getName_4().length() > 0
-                && form.getLast_name_4() != null && form.getLast_name_4().length() > 0)
-            occupants.add(new Occupant(form.getName_4(), form.getLast_name_4().toLowerCase()));
-
-        if (form.getName_5() != null && form.getName_5().length() > 0
-                && form.getLast_name_5() != null && form.getLast_name_5().length() > 0)
-            occupants.add(new Occupant(form.getName_5(), form.getLast_name_5().toLowerCase()));
-
-        if (form.getName_6() != null && form.getName_6().length() > 0
-                && form.getLast_name_6() != null && form.getLast_name_6().length() > 0)
-            occupants.add(new Occupant(form.getName_6(), form.getLast_name_6().toLowerCase()));
-
-       return occupants;
+    @POST
+    @Path("/reservation")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response reservationPost(ReservationRequest reservationRequest)
+            throws RequestInvalidException {
+        LOGGER.info("Request received to do a reservation on room with id: " + reservationRequest.getRoomId());
+        final Reservation reservation = reservationService.doReservation(reservationRequest.getRoomId(),
+                reservationRequest.getUserEmail(), reservationRequest.getStartDate(), reservationRequest.getEndDate());
+        return Response.ok(reservation).build();
     }
 
+    @POST
+    @Path("/checkin/{reservationId}")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response checkinPost(@PathParam("reservationId") final String reservationId) {
+        LOGGER.info("Request received to do the check-in on reservation with hash: " + reservationId);
+        ReservationResponse reservation;
+        try {
+            reservation = roomService.doCheckin(reservationId);
+        } catch (RequestInvalidException e) {
+            return Response.status(Response.Status.CONFLICT).build();
+        } catch (EntityNotFoundException | NoResultException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        if (reservation != null) {
+            return Response.ok(reservation).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+
+    @POST
+    @Path("/checkout/{reservationHash}")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response checkoutPost(@PathParam(value = "reservationHash") final String reservationHash) throws EntityNotFoundException {
+        try {
+            // http://localhost:8080/rooms/checkout/123458
+            roomService.doCheckout(reservationHash, uriInfo.getAbsolutePathBuilder().build().toString());
+        } catch (RequestInvalidException | EntityNotFoundException | NoResultException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(chargeService.checkProductsPurchasedInCheckOut(reservationHash)).build();
+    }
+
+    @GET
+    @Path("/free")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response reservation(@QueryParam("startDate") String startDate, @QueryParam("endDate") String endDate) throws Exception {
+        if (!StringUtils.isEmpty(startDate) && !StringUtils.isEmpty(endDate)) {
+            Calendar startDateCalendar = JsonToCalendar.unmarshal(startDate);
+            Calendar endDateCalendar = JsonToCalendar.unmarshal(endDate);
+            if (startDateCalendar.before(endDateCalendar)) {
+                return Response.ok(roomService.findAllFreeBetweenDates(startDateCalendar, endDateCalendar)).build();
+            }
+        }
+        String message = "Expected 'startDate' and 'endDate' in format yyyy-mm-dd.";
+        return Response.status(Response.Status.BAD_REQUEST).entity(message).build();
+    }
+
+    @GET
+    @Path("/orders")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getUndeliveredOrders(@QueryParam("page") @DefaultValue(DEFAULT_FIRST_PAGE) int page,
+                                         @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) {
+        LOGGER.info("Request received to retrieve all undelivered orders");
+        PaginatedDTO<ChargeDeliveryResponse> orders;
+        try {
+            orders = chargeService.getAllChargesNotDelivered(page, limit);
+        } catch (IndexOutOfBoundsException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+        return sendPaginatedResponse(page, limit, orders.getMaxItems(), orders.getList(), uriInfo.getAbsolutePathBuilder());
+    }
+
+    @POST
+    @Path("/orders/{roomId}")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response sendOrder(@PathParam(value = "roomId") Long roomId) throws Exception {
+        LOGGER.info("Order request sent for room with id: " + roomId);
+        chargeService.setChargesToDelivered(roomId);
+        return Response.ok().build();
+    }
+
+    @POST
+    @Path("/occupants/{reservationHash}")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response registrationPost(@PathParam("reservationHash") String reservationHash, OccupantsRequest occupantsRequest) throws EntityNotFoundException {
+        LOGGER.info("Attempted to access registration form");
+        if (reservationHash != null && !CollectionUtils.isEmpty(occupantsRequest.getOccupants())) {
+            LOGGER.info("Attempted to register occupants on reservation hash " + reservationHash);
+            reservationService.registerOccupants(reservationHash.trim(),
+                    occupantsRequest.getOccupants()
+                            .stream()
+                            .map(occupantR -> new Occupant(occupantR.getFirstName(), occupantR.getLastName()))
+                            .collect(Collectors.toList()));
+            return Response.status(Response.Status.CREATED).build();
+        }
+        return Response.status(Response.Status.BAD_REQUEST).build();
+    }
 }

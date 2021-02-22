@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.persistence.hibernate;
 
 import ar.edu.itba.paw.interfaces.daos.RoomDao;
-import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.models.room.Room;
 import org.springframework.stereotype.Repository;
 
@@ -15,10 +14,9 @@ public class RoomRepositoryHibernate extends SimpleRepositoryHibernate<Room> imp
 
     @Override
     public List<Room> findAllFreeBetweenDates(Calendar startDate, Calendar endDate) {
-        final TypedQuery<Room> query = em.createQuery("SELECT ro FROM " + getTableName() + " as ro WHERE NOT EXISTS (" +
+        final TypedQuery<Room> query = em.createQuery("SELECT ro FROM " + getModelName() + " as ro WHERE NOT EXISTS (" +
                 "SELECT res FROM Reservation as res WHERE ((:startDate <= res.endDate " +
-                "AND :startDate >= res.startDate) OR (:endDate >= res.startDate AND :endDate <= res.endDate)) AND res.room.id = ro.id" +
-                ")", Room.class);
+                "AND :startDate >= res.startDate) OR (:endDate >= res.startDate AND :endDate <= res.endDate)) AND res.room.id = ro.id)", Room.class);
         query.setParameter("startDate", startDate);
         query.setParameter("endDate", endDate);
         return query.getResultList();
@@ -26,7 +24,7 @@ public class RoomRepositoryHibernate extends SimpleRepositoryHibernate<Room> imp
 
     @Override
     public int reserveRoom(long roomId) {
-        Room room = findById(Math.toIntExact(roomId)).orElseThrow(EntityNotFoundException::new);
+        Room room = findById(roomId).orElseThrow(EntityNotFoundException::new);
         room.setFreeNow(false);
         em.merge(room);
         return 0;
@@ -34,19 +32,14 @@ public class RoomRepositoryHibernate extends SimpleRepositoryHibernate<Room> imp
 
     @Override
     public void freeRoom(long roomId) {
-        Room room = findById(Math.toIntExact(roomId)).orElseThrow(EntityNotFoundException::new);
+        Room room = findById(roomId).orElseThrow(EntityNotFoundException::new);
         room.setFreeNow(true);
         em.merge(room);
     }
 
     @Override
-    public List<Reservation> getRoomsReservedActive() {
-        return em.createQuery("SELECT r FROM Reservation AS r WHERE r.isActive = true", Reservation.class).getResultList();
-    }
-
-    @Override
-    String getTableName() {
-        return "Room ";
+    String getModelName() {
+        return Room.NAME + " ";
     }
 
     @Override

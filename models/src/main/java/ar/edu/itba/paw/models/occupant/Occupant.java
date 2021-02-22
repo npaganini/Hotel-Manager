@@ -30,6 +30,11 @@ public class Occupant {
         this.surname = surname;
     }
 
+
+    public Reservation getReservation() {
+        return reservation;
+    }
+
     public boolean equals(Object object) {
         if (!(object instanceof Occupant)) return false;
         return id == ((Occupant) object).getId();

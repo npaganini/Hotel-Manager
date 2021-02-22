@@ -1,0 +1,217 @@
+{
+  "user": {
+    "singular": "User",
+    "plural": "Users",
+    "landingMessage": "Welcome!",
+    "greeting": "Welcome! Your reservation ID is {0}.",
+    "home": "Back To Home",
+    "logout": "Logout",
+    "account": "Account",
+    "actions": "Actions",
+    "expenses": "Expenses",
+    "help": {
+      "assistance": "Need Assistance",
+      "list": "List of help requests",
+      "me": "Help",
+      "requested": "Help Request Sent!",
+      "submit": "Request help",
+      "error": "There was an unexpected error processing your help request! Please try again.",
+      "yourMessage": "Your message:"
+    },
+    "problem": "Problem?",
+    "bought": " Product Bought!",
+    "itemsDelivered": "Items will be delivered to your room soon!",
+    "error": "There was an unexpected error buying your product! Please try again.",
+    "list": {
+      "browse": "Return to list of products",
+      "expenses": "All My Expenses",
+      "buy": "Buy Products"
+    },
+    "buy": "Buy",
+    "offered": "Browse Our Products Offered",
+    "expensesCheck": "Check Your Expenses",
+    "expensesList": "All Expenses List",
+    "product": "Product",
+    "amount": "Amount",
+    "price": "Price",
+    "total": "Total:",
+    "landing": {
+      "other": "Other Actions",
+      "history": "History"
+    },
+    "reservation": {
+      "currents": {
+        "active": "Your Current Reservations",
+        "none": "You have no current reservations!"
+      }
+    }
+  },
+
+  "product": {
+    "singular": "Product",
+    "plural": "Products",
+    "add": "Add",
+    "img": "Product Image",
+    "price": "Price",
+    "create": "Create",
+    "enabled": "Product Enabled",
+    "disabled": "Product Disabled",
+    "enabled.success": "Product Successfully Enabled!",
+    "disabled.success": "Product Successfully Disabled!",
+    "description": "Description",
+    "price.positive": "Price must be positive"
+  },
+
+  "ratings":{
+    "roomNumber": "Room Number",
+    "avgRate": "Average Rate:"
+  },
+
+
+  "reservation": {
+    "singular": "Reservation",
+    "plural": "Reservations",
+    "date": {
+      "start": "Start Date",
+      "end": "End Date",
+      "required": "Date period required!"
+    },
+    "number": "Reservation Number",
+    "room": {
+      "type": "Room Type",
+      "number": "Room Number"
+    },
+    "checkin": {
+      "message": "Check-In",
+      "successful": "Check-In Successful!",
+      "error": "Reservation not found!"
+    },
+    "checkout": {
+      "message": "Check-Out",
+      "successful": "Check-Out Successful!",
+      "error": "Reservation not found!"
+    },
+    "order": {
+      "singular": "Order",
+      "plural": "Orders"
+    },
+    "email": "Email",
+    "id": "Reservation ID",
+    "new": "New Reservation",
+    "isActive": "Active"
+  },
+
+  "order": {
+    "finish": "Order Finished!",
+    "deliver": "Order may be delivered to room.",
+    "send": "Deliver"
+  },
+
+  "help": {
+    "request": {
+      "singular": "Help Request",
+      "plural": "Help Requests"
+    },
+    "text": {
+      "singular": "Request",
+      "plural": "Requests"
+    },
+    "status": {
+      "message": "Status",
+      "update": "Status Updated",
+      "mark": {
+        "message": "Mark As",
+        "unattended": "Unattended",
+        "further": "Requires Further Action",
+        "resolved": "Resolved"
+      }
+    }
+  },
+
+  "room": {
+    "singular": "Room",
+    "room": {
+      "plural": "Rooms",
+      "type": "Type",
+      "from": "From",
+      "until": "Until",
+      "owner": "Owner",
+      "state": "Status",
+      "filter": "Filter Rooms",
+      "occupied": {
+        "singular": "Room Occupied",
+        "plural": "Rooms Occupied"
+      }
+    },
+    "roomType": {
+      "single": "single",
+      "double": "double",
+      "triple": "triple"
+    }
+  },
+
+  "login": "Login",
+  "email": "E-Mail Address",
+  "password": "Password",
+  "rememberme": "Remember Me",
+  "loginFailed": "Username and/or password are incorrect",
+
+  "error": {
+    "message": "Oops!",
+    "500": "There was a problem processing your request. Please try again in a few minutes.",
+    "403": "Request forbidden. Please log in.",
+    "404": "Resource not found."
+  },
+
+  "pagination": {
+    "first": "First",
+    "last": "Last",
+    "prev": "Previous",
+    "next": "Next",
+    "rowsperpage": "Rows per page",
+    "of": "of",
+    "moreof": "more of"
+  },
+
+  "table":{
+    "quantity": "Quantity",
+    "unit": "Unit Price",
+    "sum": "Sum",
+    "details": "Details",
+    "price": "Price",
+    "description": "Description"
+  },
+
+  "registrations":{
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "addOccupant": "Add Occupant"
+  },
+
+  "accept": "Accept",
+  "cancel": "Cancel",
+  "success": "Success!",
+  "services": "Services",
+  "send": "Send",
+  "done": "Finished!",
+  "refresh": "Refresh",
+  "enable": "Enable",
+  "disable": "Disable",
+  "add": "Add",
+  "reserve": "Reserve",
+  "register": "Register",
+  "registered": "Registered",
+  "lastname": "Last Name",
+  "firstname": "First Name",
+  "search": "Search",
+  "registration": "Registration",
+  "close": "Close",
+  "loading": "Loading...",
+  "yes": "Yes",
+  "no": "No",
+  "rates": "Rates",
+  "required": "This field is required",
+  "back": "Back",
+  "buy": "Buy"
+  
+}

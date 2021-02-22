@@ -20,7 +20,7 @@ public class Help {
     public final static String KEY_RESERVATIONID = "reservation_id";
     public final static String KEY_HELP_TEXT = "help_text";
 
-    public final static String TABLE_NAME = "charge";
+    public final static String NAME = "Help";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
