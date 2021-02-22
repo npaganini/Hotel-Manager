@@ -48,7 +48,9 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationFilter authenticationFilterBean() throws Exception {
-        return new AuthenticationFilter(authenticationManagerBean(), tokenAuthHandlerService);
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManagerBean(), tokenAuthHandlerService);
+        authenticationFilter.setFilterProcessesUrl("/api/login");
+        return authenticationFilter;
     }
 
     @Bean
