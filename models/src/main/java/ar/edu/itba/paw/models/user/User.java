@@ -4,9 +4,9 @@ import ar.edu.itba.paw.models.reservation.Reservation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.util.List;
 
@@ -14,6 +14,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Setter
 @Table(name = "users")
 public class User implements Serializable    {
     public final static String KEY_ID = "id";
@@ -44,15 +45,15 @@ public class User implements Serializable    {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
     private List<Reservation> reservations;
 
-    @XmlTransient
-    public List<Reservation> getReservations() {
-        return reservations;
-    }
-
     public User(String email, String username, String password) {
         this.email = email;
         this.username = username;
         this.password = password;
         this.role = UserRole.CLIENT;
+    }
+
+    @Enumerated(EnumType.STRING)
+    public UserRole getRole() {
+        return role;
     }
 }

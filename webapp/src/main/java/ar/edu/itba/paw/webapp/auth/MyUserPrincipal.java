@@ -24,8 +24,8 @@ public class MyUserPrincipal implements UserDetails {
     private List<GrantedAuthority> authorities;
 
     public MyUserPrincipal(User user) {
-        LOGGER.debug("Username found!");
-        LOGGER.debug("Username userDetails: " + user.getUsername());
+        LOGGER.info("Username found!");
+        LOGGER.info("Username userDetails: " + user.getUsername());
         this.user = user;
         this.authorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole().toString()));
     }

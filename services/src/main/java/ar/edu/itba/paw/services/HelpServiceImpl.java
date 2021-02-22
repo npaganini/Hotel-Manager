@@ -33,9 +33,9 @@ public class HelpServiceImpl implements HelpService {
     @Override
     public PaginatedDTO<HelpResponse> getAllHelpRequestsByReservationId(long reservationId, int page, int pageSize) {
         if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
-        LOGGER.debug("Fetching reservation by id: " + reservationId);
+        LOGGER.info("Fetching reservation by id: " + reservationId);
         Reservation reservation = reservationDao.findById(reservationId).orElseThrow(EntityNotFoundException::new);
-        LOGGER.debug("Fetching all help request for reservation: " + reservationId);
+        LOGGER.info("Fetching all help request for reservation: " + reservationId);
         PaginatedDTO<Help> helpRequests = helpDao.findHelpRequestsByReservationHash(reservation.getId(), page, pageSize);
         return new PaginatedDTO<>(helpRequests.getList()
                 .stream().map(HelpResponse::fromHelpRequest).collect(Collectors.toList()),

@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.webapp.utils;
 
 import org.apache.commons.io.FileUtils;
-import sun.misc.IOUtils;
 
 import java.io.*;
 import java.nio.file.FileSystems;
@@ -16,7 +15,12 @@ public class FilesUtils {
 
         File targetFile = new File(path.toUri());
         OutputStream outStream = new FileOutputStream(targetFile);
-        outStream.write(IOUtils.readAllBytes(file));
+
+        byte[] bytes = new byte[(int) file.available()];
+        DataInputStream dataInputStream = new DataInputStream(file);
+        dataInputStream.readFully(bytes);
+
+        outStream.write(bytes);
 
         return path.toString();
     }

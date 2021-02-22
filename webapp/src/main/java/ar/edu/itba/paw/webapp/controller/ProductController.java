@@ -93,11 +93,11 @@ public class ProductController extends SimpleController {
         if (productRequest.getPrice() < 0) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Price must be valid.").build();
         }
-        LOGGER.debug("Request to add product to DB received");
+        LOGGER.info("Request to add product to DB received");
         Product newProduct = new Product(productRequest.getDescription(), productRequest.getPrice(),
                 FilesUtils.loadImg(productRequest.getImgPath()));
         newProduct = productService.saveProduct(newProduct);
-        LOGGER.debug("Product was saved successfully");
+        LOGGER.info("Product was saved successfully");
         // TODO is this ok?
         return Response.ok(new GenericEntity<Product>(newProduct) {
         }).build();

@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Getter
@@ -32,7 +30,7 @@ public class Occupant {
         this.surname = surname;
     }
 
-    @XmlTransient
+
     public Reservation getReservation() {
         return reservation;
     }

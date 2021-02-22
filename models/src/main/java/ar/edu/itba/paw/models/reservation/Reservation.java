@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -23,6 +21,7 @@ import java.util.Random;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "reservation")
+@Embeddable
 public class Reservation {
 
     public final static String KEY_ID = "id";
@@ -68,6 +67,7 @@ public class Reservation {
     private String hash = getRandomString();
 
     @Enumerated(EnumType.STRING)
+    @Embedded
     private Calification calification;
 
     public Reservation(Room room, String userEmail, Calendar startDate, Calendar endDate, User user) {

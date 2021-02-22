@@ -1,7 +1,10 @@
 package ar.edu.itba.paw.webapp.config;
 
 import ar.edu.itba.paw.models.user.UserRole;
-import ar.edu.itba.paw.webapp.auth.*;
+import ar.edu.itba.paw.webapp.auth.AuthenticationFilter;
+import ar.edu.itba.paw.webapp.auth.AuthorizationFilter;
+import ar.edu.itba.paw.webapp.auth.CustomUserDetailsService;
+import ar.edu.itba.paw.webapp.auth.TokenAuthHandlerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
@@ -32,14 +36,10 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Value(value = "${key}")
     private String key;
 
-    private final CustomUserDetailsService userDetailsService;
-    private final TokenAuthHandlerService tokenAuthHandlerService;
-
     @Autowired
-    public WebAuthConfig(CustomUserDetailsService userDetailsService, TokenAuthHandlerService tokenAuthHandlerService) {
-        this.userDetailsService = userDetailsService;
-        this.tokenAuthHandlerService = tokenAuthHandlerService;
-    }
+    private CustomUserDetailsService userDetailsService;
+    @Autowired
+    private TokenAuthHandlerService tokenAuthHandlerService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -56,6 +56,18 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
         return new AuthorizationFilter(authenticationManagerBean(), tokenAuthHandlerService, userDetailsService);
     }
 
+//    @Autowired
+//    public void configureGlobalSecurity(AuthenticationManagerBuilder authentication) throws Exception {
+//        authentication.userDetailsService(userDetailsServiceBean());
+//        //authentication.authenticationProvider(authenticationProvider());
+//    }
+//
+//    @Override
+//    @Bean
+//    public UserDetailsService userDetailsServiceBean() throws Exception {
+//        return new CustomUserDetailsService();
+//    }
+
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -67,15 +79,15 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and();
         http.authorizeRequests()
-            .antMatchers("/login", "/products/**/img")
-            .permitAll()
-            .antMatchers("/user/**")
-            .hasAuthority(UserRole.CLIENT.toString())
-            .antMatchers("/rooms/**", "/reservation/**", "/products/**", "/ratings/**")
-            .hasAnyAuthority(UserRole.EMPLOYEE.toString(), UserRole.MANAGER.toString())
-            .antMatchers("/", "/index", "/products/**")
-            .hasAnyAuthority(UserRole.EMPLOYEE.toString(), UserRole.MANAGER.toString(), UserRole.CLIENT.toString())
-            .anyRequest().authenticated();
+                .antMatchers("/login", "/products/**/img")
+                .permitAll()
+                .antMatchers("/user/**")
+                .hasAuthority(UserRole.CLIENT.toString())
+                .antMatchers("/rooms/**", "/reservation/**", "/products/**", "/ratings/**")
+                .hasAnyAuthority(UserRole.EMPLOYEE.toString(), UserRole.MANAGER.toString())
+                .antMatchers("/", "/index", "/products/**")
+                .hasAnyAuthority(UserRole.EMPLOYEE.toString(), UserRole.MANAGER.toString(), UserRole.CLIENT.toString())
+                .anyRequest().authenticated();
         http.exceptionHandling().accessDeniedPage("/403");
         http.addFilter(authenticationFilterBean()).addFilter(authorizationFilterBean());
         // simple cors filter is used to add headers that axios needed
@@ -85,7 +97,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(final WebSecurity web) {
         web.ignoring().antMatchers(
-        "/css/**", "/js/**", "/img/**", "/bootstrap/**", "/utilities/**", "/favicon.ico", "/403"
+                "/css/**", "/js/**", "/img/**", "/bootstrap/**", "/utilities/**", "/favicon.ico", "/403"
         );
     }
 

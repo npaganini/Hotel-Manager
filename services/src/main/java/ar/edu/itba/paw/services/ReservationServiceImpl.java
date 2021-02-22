@@ -17,7 +17,7 @@ import ar.edu.itba.paw.models.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Service
+@Component
 public class ReservationServiceImpl implements ReservationService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReservationServiceImpl.class);
 
@@ -47,14 +47,14 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public Reservation getReservationByHash(String hash) throws EntityNotFoundException {
-        LOGGER.debug("About to get reservation with hash " + hash);
+        LOGGER.info("About to get reservation with hash " + hash);
         return reservationDao.findReservationByHash(hash.trim()).orElseThrow(
                 () -> new EntityNotFoundException("Reservation of hash " + hash + " not found"));
     }
 
     @Override
     public boolean activeReservation(long reservationId) throws RequestInvalidException {
-        LOGGER.debug("About to set reservation with id " + reservationId + " to active");
+        LOGGER.info("About to set reservation with id " + reservationId + " to active");
         Optional<Reservation> possibleReservation = reservationDao.findById(reservationId);
         if (!possibleReservation.isPresent()) {
             return false;
@@ -67,7 +67,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public void inactiveReservation(long reservationId) throws RequestInvalidException {
-        LOGGER.debug("About to set reservation with id " + reservationId + " to unactivated");
+        LOGGER.info("About to set reservation with id " + reservationId + " to unactivated");
         if (!reservationDao.findById(reservationId).orElseThrow(RequestInvalidException::new).isActive()) {
             throw new RequestInvalidException();
         }
@@ -78,7 +78,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Transactional
     public PaginatedDTO<ReservationResponse> getAll(int page, int pageSize) {
         if (pageSize < 1 || page < 1) throw new IndexOutOfBoundsException("Pagination requested invalid.");
-        LOGGER.debug("About to get all the confirmed reservations");
+        LOGGER.info("About to get all the confirmed reservations");
         PaginatedDTO<Reservation> reservations = reservationDao.findAll(page, pageSize);
         return new PaginatedDTO<>(reservations.getList()
                 .stream().map(ReservationResponse::fromReservation).collect(Collectors.toList()),
@@ -112,13 +112,13 @@ public class ReservationServiceImpl implements ReservationService {
         if (!isValidDate || !isRoomFree) {
             throw new RequestInvalidException(!isValidDate ? "The dates are invalid" : "The room is not available on selected dates");
         }
-        LOGGER.debug("Looking if there is already a user created with email " + userEmail);
+        LOGGER.info("Looking if there is already a user created with email " + userEmail);
         User user = userService.getUserForReservation(userEmail);
-        LOGGER.debug("Getting room...");
+        LOGGER.info("Getting room...");
         Room room = roomDao.findById(roomId).orElseThrow(javax.persistence.EntityNotFoundException::new);
-        LOGGER.debug("Saving reservation...");
+        LOGGER.info("Saving reservation...");
         Reservation reservation = reservationDao.save(new Reservation(room, userEmail, startDate, endDate, user));
-        LOGGER.debug("Sending email with confirmation of reservation to user");
+        LOGGER.info("Sending email with confirmation of reservation to user");
         emailService.sendConfirmationOfReservation(userEmail, reservation.getHash());
         return reservation;
     }
