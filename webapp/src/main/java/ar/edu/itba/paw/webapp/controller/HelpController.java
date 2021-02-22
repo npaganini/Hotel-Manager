@@ -15,7 +15,7 @@ import javax.ws.rs.core.*;
 import java.util.List;
 
 @Controller
-@Path("help")
+@Path("api/help")
 public class HelpController extends SimpleController {
     private static final Logger LOGGER = LoggerFactory.getLogger(HelpController.class);
     public static final String DEFAULT_FIRST_PAGE = "1";
@@ -43,7 +43,7 @@ public class HelpController extends SimpleController {
         } catch (IndexOutOfBoundsException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        return sendPaginatedResponse(page, limit, helpRequests.getMaxItems(), new GenericEntity<List<HelpResponse>>(helpRequests.getList()) {}, uriInfo.getAbsolutePathBuilder());
+        return sendPaginatedResponse(page, limit, helpRequests.getMaxItems(), helpRequests.getList(), uriInfo.getAbsolutePathBuilder());
     }
 
     @PUT

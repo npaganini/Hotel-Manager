@@ -22,7 +22,7 @@ public class ReservationResponse implements Serializable {
     private Calendar startDate;
     private Calendar endDate;
     private String userEmail;
-    private Room room;
+    private RoomResponse room;
     private boolean isActive;
     private List<ChargeResponse> charges;
     private List<OccupantResponse> occupants;
@@ -36,12 +36,12 @@ public class ReservationResponse implements Serializable {
         rDto.startDate = reservation.getStartDate();
         rDto.endDate = reservation.getEndDate();
         rDto.userEmail = reservation.getUserEmail();
-        rDto.room = reservation.getRoom();
+        rDto.room = new RoomResponse(reservation.getRoom().getNumber(), reservation.getRoom().getRoomType(), reservation.getRoom().getId(), reservation.getRoom().isFreeNow());
         rDto.isActive = reservation.getRoom().isFreeNow();
         rDto.charges = reservation
                 .getCharges()
                 .stream()
-                .map(charge -> new ChargeResponse(charge.getId(), charge.isDelivered(), charge.getProduct()))
+                .map(charge -> new ChargeResponse(charge.getId(), charge.isDelivered()))
                 .collect(Collectors.toList());
         rDto.occupants = reservation
                 .getOccupants()
