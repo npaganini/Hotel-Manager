@@ -53,7 +53,7 @@
     "add": "Add",
     "img": "Product Image",
     "price": "Price",
-    "create": "Crear",
+    "create": "Create",
     "enabled": "Product Enabled",
     "disabled": "Product Disabled",
     "enabled.success": "Product Successfully Enabled!",
@@ -171,6 +171,7 @@
     "of": "of",
     "moreof": "more of"
   },
+
   "table":{
     "quantity": "Quantity",
     "unit": "Unit Price",
@@ -210,4 +211,5 @@
   "rates": "Rates",
   "required": "This field is required",
   "back": "Back"
+  
 }
