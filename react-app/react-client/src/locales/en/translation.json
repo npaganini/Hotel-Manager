@@ -171,7 +171,6 @@
     "of": "of",
     "moreof": "more of"
   },
-
   "table":{
     "quantity": "Quantity",
     "unit": "Unit Price",
@@ -211,5 +210,4 @@
   "rates": "Rates",
   "required": "This field is required",
   "back": "Back"
-  
 }
