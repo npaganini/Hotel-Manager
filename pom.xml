@@ -26,7 +26,7 @@
         <logback-ext-spring.version>0.1.1</logback-ext-spring.version>
         <maven-war-plugin.version>2.6</maven-war-plugin.version>
         <org.hsqldb.version>2.3.1</org.hsqldb.version>
-        <org.hibernate.version>5.1.0.Final</org.hibernate.version>
+        <org.hibernate.version>5.2.9.Final</org.hibernate.version>
         <org.hibernate.jpa.version>1.0.0.Final</org.hibernate.jpa.version>
         <jersey.version>3.0-SNAPSHOT</jersey.version>
         <io.jsonwebtoken.jjwt.version>0.7.0</io.jsonwebtoken.jjwt.version>
@@ -56,6 +56,16 @@
                 <groupId>org.glassfish.hk2</groupId>
                 <artifactId>hk2</artifactId>
                 <version>2.5.0-b05</version> <!-- última versión compatible con Java 8 -->
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.glassfish.hk2</groupId>
+                        <artifactId>hk2-config</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.glassfish.hk2</groupId>
+                        <artifactId>spring-bridge</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.glassfish.jersey.core</groupId>
@@ -176,7 +186,7 @@
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
                 <version>${org.hibernate.version}</version>
-<!--                <scope>provided</scope>-->
+                <!--                <scope>provided</scope>-->
             </dependency>
             <dependency>
                 <groupId>org.hibernate</groupId>
@@ -200,17 +210,17 @@
                     </exclusion>
                 </exclusions>
             </dependency>
-            <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-validator</artifactId>
-                <version>${org.hibernate.validator}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.jboss.logging</groupId>
-                        <artifactId>jboss-logging</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.hibernate</groupId>-->
+<!--                <artifactId>hibernate-validator</artifactId>-->
+<!--                <version>${org.hibernate.validator}</version>-->
+<!--                <exclusions>-->
+<!--                    <exclusion>-->
+<!--                        <groupId>org.jboss.logging</groupId>-->
+<!--                        <artifactId>jboss-logging</artifactId>-->
+<!--                    </exclusion>-->
+<!--                </exclusions>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>javax.mail</groupId>
                 <artifactId>mail</artifactId>
