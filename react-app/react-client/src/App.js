@@ -25,7 +25,7 @@ import UserHelp from "./containers/User/Help";
 import UserProducts from "./containers/User/Products";
 import UserExpenses from "./containers/User/Expenses";
 import { CLIENT } from "./components/PrivateRoute/routesByRole";
-import { NotFound } from "./containers/NotFound/NotFound";
+import NotFound  from "./containers/NotFound/NotFound";
 
 const App = () => {
   const isClientL = () => localStorage.getItem("role") === CLIENT;
@@ -70,18 +70,23 @@ const App = () => {
         <PrivateRoute path="/reservation" component={Reservation} />
         <PrivateRoute path="/registration" component={Registration} />
         <PrivateRoute exact path="/checkout" component={CheckOut} />
-        <Route exact path="/checkout/:reservationId/expenses" component={CheckOutExpenses} />
+        <PrivateRoute
+          exact
+          path="/checkout/:reservationId/expenses"
+          component={CheckOutExpenses}
+        />
         <PrivateRoute path="/reservations" component={Reservations} />
-        <Route exact path="/products/:id" component={UserProducts} />
-        <Route exact path="/products" component={Products} />
+        <PrivateRoute exact path="/products/:id" component={UserProducts} />
+        <PrivateRoute exact path="/products" component={Products} />
         <PrivateRoute
           exact
           path="/products/newProduct"
           component={NewProduct}
         />
         <PrivateRoute path="/orders" component={Orders} />
-        <Route path="/help/:id" component={isClient ? UserHelp : HelpRequest} />
-        <Route path="/expenses/:id" component={UserExpenses} />
+        <PrivateRoute exact path="/help" component={HelpRequest} />
+        <PrivateRoute exact path="/help/:id" component={UserHelp} />
+        <PrivateRoute path="/expenses/:id" component={UserExpenses} />
         <Route>
           <NotFound />
         </Route>

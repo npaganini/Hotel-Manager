@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { makeStyles } from "@material-ui/core/styles";
-import { withRouter } from "react-router";
+import React, {useState} from "react";
+import {Container, Row, Col} from "react-bootstrap";
+import {makeStyles} from "@material-ui/core/styles";
+import {withRouter} from "react-router";
 
 import Button from "../../components/Button/Button";
 import DatePicker from "../../components/DatePickers/DatePicker";
@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: "40px",
         paddingLeft: "10%",
         paddingRight: "10%",
+        width: "100%"
     },
     buttonCol: {
         textAlign: "center",
@@ -34,9 +35,9 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Reservations = ({ history }) => {
+const Reservations = ({history}) => {
     const classes = useStyles();
-    const { t } = useTranslation();
+    const {t} = useTranslation();
     const [lastName, setLastName] = useState("");
     const [startDate, setDateFrom] = useState(new Date());
     const [endDate, setDateTo] = useState(new Date());
@@ -99,17 +100,17 @@ const Reservations = ({ history }) => {
                 </Row>
                 <Row className={classes.row}>
                     <Col xs={12} md={6}>
-                        <Input label={t("reservation.email")} type="email" onChange={emailOnChange} />
+                        <Input label={t("reservation.email")} type="email" onChange={emailOnChange}/>
                     </Col>
                     <Col xs={12} md={6}>
-                        <Input label={t("lastname")} type="text" onChange={lastNameOnChange} />
+                        <Input label={t("lastname")} type="text" onChange={lastNameOnChange}/>
                     </Col>
                 </Row>
-                <Row className={classes.row} style={{ textAlign: 'center' }}>
-                    <Col xs={12} md={6} style={{ textAlign: 'right' }}>
+                <Row className={classes.row} style={{textAlign: 'center'}}>
+                    <Col xs={12} md={6} style={{textAlign: 'right'}}>
                         <Button ButtonType="Save" onClick={onSearchReservations} ButtonText={t("search")}/>
                     </Col>
-                    <Col xs={12} md={6} style={{ textAlign: 'left' }}>
+                    <Col xs={12} md={6} style={{textAlign: 'left'}}>
                         <Button ButtonType="Back" onClick={back} ButtonText={t("user.home")}/>
                     </Col>
                 </Row>
@@ -118,9 +119,10 @@ const Reservations = ({ history }) => {
                     {errorStatusCode === 400 ? t("reservation.date.required") : t("reservation.checkin.error")}
                 </InfoSimpleDialog>
                 <br/>
-                <Row className="justify-content-sm-center" style={{background: "#FAF6FC"}}>
+                <Row className="justify-content-sm-center" style={{background: "#FAF6FC", width: "100%"}}>
                     <Col className={classes.tableCol}>
-                        <Table columns={reservationsColumns} rows={reservations} totalItems={totalCount} pageFunction={getAllReservationsFiltered}/>
+                        <Table columns={reservationsColumns} rows={reservations} totalItems={totalCount}
+                               pageFunction={getAllReservationsFiltered}/>
                     </Col>
                 </Row>
             </Container>

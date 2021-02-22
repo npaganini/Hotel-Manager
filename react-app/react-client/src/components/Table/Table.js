@@ -104,6 +104,10 @@ const DataTable = ({columns, rows, totalItems = 0, pageFunction = () => {}} = {}
                 page={+page - 1}
                 onChangePage={handleChangePage}
                 onChangeRowsPerPage={handleChangeRowsPerPage}
+                labelRowsPerPage={`${t("pagination.rowsperpage")}`}
+                nextIconButtonText={`${t("pagination.next")}`}
+                backIconButtonText={`${t("pagination.prev")}`}
+                labelDisplayedRows={({ from, to, count }) =>`${from}-${to} ${t("pagination.of")} ${count !== -1 ? count :`${t("pagination.moreof")} ${to}`}`}
             />
             }
         </div>

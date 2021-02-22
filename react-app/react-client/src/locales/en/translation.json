@@ -155,8 +155,11 @@
   "pagination": {
     "first": "First",
     "last": "Last",
-    "prev": "Prev",
-    "next": "Next"
+    "prev": "Previous",
+    "next": "Next",
+    "rowsperpage": "Rows per page",
+    "of": "of",
+    "moreof": "more of"
   },
 
   "accept": "Accept",

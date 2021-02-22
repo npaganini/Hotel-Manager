@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import { managerPaths, clientPaths, CLIENT, MANAGER } from "./routesByRole";
-import { Forbidden } from "../../containers/Forbidden/Forbidden";
+import Forbidden from "../../containers/Forbidden/Forbidden";
 
 export const PrivateRoute = ({
   component: Component,
@@ -14,10 +14,10 @@ export const PrivateRoute = ({
       const currentUser = localStorage.getItem("token");
       const role = localStorage.getItem("role");
 
-      console.log("current user", currentUser);
-      console.log("role", role);
+      console.log("route props", routeProps);
+      console.log("props", props);
+
       const { path } = routeProps;
-      console.log("path", path);
 
       if (path === "/login") {
         if (role && currentUser) {

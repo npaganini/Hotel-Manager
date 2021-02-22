@@ -154,7 +154,10 @@
     "first": "Primero",
     "last": "Último",
     "prev": "Anterior",
-    "next": "Siguiente"
+    "next": "Siguiente",
+    "rowsperpage": "Filas por páginas",
+    "of": "de",
+    "moreof": "más de"
   },
 
   "accept": "Aceptar",
