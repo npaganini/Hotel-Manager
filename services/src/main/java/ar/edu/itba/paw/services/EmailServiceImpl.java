@@ -186,14 +186,14 @@ public class EmailServiceImpl implements EmailService {
     private String getHtmlRating(String reservation, String uriInfo) {
         return getHtmlStars(reservation, uriInfo, messageSourceExternalizer.getMessage("email.ratings.excellent"), 5) +
                getHtmlStars(reservation, uriInfo, messageSourceExternalizer.getMessage("email.ratings.good"), 4) +
-               getHtmlStars(reservation, uriInfo, messageSourceExternalizer.getMessage("email.ratings.normal"), 3) +
+               getHtmlStars(reservation, uriInfo, messageSourceExternalizer.getMessage("email.ratings.average"), 3) +
                getHtmlStars(reservation, uriInfo, messageSourceExternalizer.getMessage("email.ratings.bad"), 2) +
                getHtmlStars(reservation, uriInfo, messageSourceExternalizer.getMessage("email.ratings.awful"), 1);
     }
 
     private String getHtmlStars(String reservation, String uriInfo, String stars, int star) {
         return "<div>\n" +
-                "    <form method=\"POST\" action=\"" + uriInfo + "api/user/ratings/" + reservation + "/rate?rate=" + stars + "\">\n" +
+                "    <form method=\"POST\" action=\"" + uriInfo + "user/ratings/" + reservation + "/rate?rate=" + stars + "\">\n" +
                 "        <button type=\"submit\" class=\"btn btn-lg\">\n" +
                 "            <span>" + star + "</span>\n" +
                                 getAmountOfStars(star) +
