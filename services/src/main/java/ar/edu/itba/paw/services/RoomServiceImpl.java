@@ -32,16 +32,12 @@ public class RoomServiceImpl implements RoomService {
     private final ChargeService chargeService;
 
     @Autowired
-    public RoomServiceImpl(RoomDao roomDao, UserDao userDao, ReservationDao reservationDao, EmailService emailService,
-                           ReservationService reservationService, ChargeService chargeService, UserService userService) {
-        this.reservationDao = reservationDao;
+    public RoomServiceImpl(RoomDao roomDao, EmailService emailService,
+                           ReservationService reservationService, ChargeService chargeService) {
         this.roomDao = roomDao;
-        this.userDao = userDao;
-
         this.emailService = emailService;
         this.reservationService = reservationService;
         this.chargeService = chargeService;
-        this.userService = userService;
     }
 
     @Override
