@@ -54,8 +54,7 @@ public class RatingsController extends SimpleController {
         } catch (IndexOutOfBoundsException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        return Response.ok(cals.getList()).build();
-//        return sendPaginatedResponse(page, limit, cals.getMaxItems(),List<CalificationResponse>(cals.getList()) {}, uriInfo.getAbsolutePathBuilder());
+        return sendPaginatedResponse(page, limit, cals.getMaxItems(), cals.getList(), uriInfo.getAbsolutePathBuilder());
     }
 
     @GET
@@ -85,6 +84,6 @@ public class RatingsController extends SimpleController {
         } catch (EntityNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
-        return sendPaginatedResponse(page, limit, ratings.getMaxItems(), new GenericEntity<List<CalificationResponse>>(ratings.getList()) {}, uriInfo.getAbsolutePathBuilder());
+        return sendPaginatedResponse(page, limit, ratings.getMaxItems(), ratings.getList(), uriInfo.getAbsolutePathBuilder());
     }
 }

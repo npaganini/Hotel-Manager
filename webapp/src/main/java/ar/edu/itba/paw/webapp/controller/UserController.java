@@ -80,8 +80,7 @@ public class UserController extends SimpleController {
         } catch (IndexOutOfBoundsException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        return sendPaginatedResponse(page, limit, productList.getMaxItems(), new GenericEntity<List<ProductResponse>>(productList.getList()) {
-        }, uriInfo.getAbsolutePathBuilder());
+        return sendPaginatedResponse(page, limit, productList.getMaxItems(), productList.getList(), uriInfo.getAbsolutePathBuilder());
     }
 
     @POST

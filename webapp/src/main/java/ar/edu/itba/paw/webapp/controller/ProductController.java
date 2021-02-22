@@ -50,8 +50,7 @@ public class ProductController extends SimpleController {
         } catch (IndexOutOfBoundsException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        return sendPaginatedResponse(page, limit, products.getMaxItems(), new GenericEntity<List<ProductResponse>>(products.getList()) {
-        }, uriInfo.getAbsolutePathBuilder());
+        return sendPaginatedResponse(page, limit, products.getMaxItems(), products.getList(), uriInfo.getAbsolutePathBuilder());
     }
 
     @POST

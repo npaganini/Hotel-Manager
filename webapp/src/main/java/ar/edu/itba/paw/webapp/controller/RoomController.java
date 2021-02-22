@@ -64,8 +64,7 @@ public class RoomController extends SimpleController {
         } catch (IndexOutOfBoundsException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        return sendPaginatedResponse(page, limit, reservations.getMaxItems(), new GenericEntity<List<ReservationResponse>>(reservations.getList()) {
-        }, uriInfo.getAbsolutePathBuilder());
+        return sendPaginatedResponse(page, limit, reservations.getMaxItems(), reservations.getList(), uriInfo.getAbsolutePathBuilder());
     }
 
     @GET
@@ -106,8 +105,7 @@ public class RoomController extends SimpleController {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         LOGGER.info("Reservation(s) found!");
-        return sendPaginatedResponse(page, limit, reservations.getMaxItems(), new GenericEntity<List<ReservationResponse>>(reservations.getList()) {
-        }, uriInfo.getAbsolutePathBuilder());
+        return sendPaginatedResponse(page, limit, reservations.getMaxItems(), reservations.getList(), uriInfo.getAbsolutePathBuilder());
     }
 
     @POST
@@ -180,8 +178,7 @@ public class RoomController extends SimpleController {
         } catch (IndexOutOfBoundsException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        return sendPaginatedResponse(page, limit, orders.getMaxItems(), new GenericEntity<List<ChargeDeliveryResponse>>(orders.getList()) {
-        }, uriInfo.getAbsolutePathBuilder());
+        return sendPaginatedResponse(page, limit, orders.getMaxItems(), orders.getList(), uriInfo.getAbsolutePathBuilder());
     }
 
     @POST

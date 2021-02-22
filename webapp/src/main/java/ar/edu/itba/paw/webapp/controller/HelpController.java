@@ -43,7 +43,7 @@ public class HelpController extends SimpleController {
         } catch (IndexOutOfBoundsException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        return sendPaginatedResponse(page, limit, helpRequests.getMaxItems(), new GenericEntity<List<HelpResponse>>(helpRequests.getList()) {}, uriInfo.getAbsolutePathBuilder());
+        return sendPaginatedResponse(page, limit, helpRequests.getMaxItems(), helpRequests.getList(), uriInfo.getAbsolutePathBuilder());
     }
 
     @PUT
