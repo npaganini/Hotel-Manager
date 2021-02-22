@@ -26,5 +26,5 @@ public interface UserService {
 
     Help requestHelp(String text, long reservationId) throws EntityNotFoundException;
 
-    void rateStay(String rate, long reservationId) throws EntityNotFoundException, RequestInvalidException;
+    void rateStay(String rate, String reservationHash) throws EntityNotFoundException, RequestInvalidException;
 }

@@ -144,7 +144,8 @@ public class RoomController extends SimpleController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response checkoutPost(@PathParam(value = "reservationHash") final String reservationHash) throws EntityNotFoundException {
         try {
-            roomService.doCheckout(reservationHash);
+            // http://localhost:8080/rooms/checkout/123458
+            roomService.doCheckout(reservationHash, uriInfo.getAbsolutePathBuilder().build().toString());
         } catch (RequestInvalidException | EntityNotFoundException | NoResultException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }

@@ -17,7 +17,7 @@ public interface RoomService {
 
     List<Room> findAllFreeBetweenDates(Calendar startDate, Calendar endDate);
 
-    CheckoutDTO doCheckout(String reservationHash) throws EntityNotFoundException, RequestInvalidException;
+    CheckoutDTO doCheckout(String reservationHash, String uriInfo) throws EntityNotFoundException, RequestInvalidException;
 
     ReservationResponse doCheckin(String reservationHash) throws RequestInvalidException, EntityNotFoundException;
 }
