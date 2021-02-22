@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 
 @Component
 @Controller
-@Path("/rooms")
+@Path("/api/rooms")
 public class RoomController extends SimpleController {
     private static final Logger LOGGER = LoggerFactory.getLogger(RoomController.class);
     public static final String DEFAULT_FIRST_PAGE = "1";
@@ -59,14 +59,12 @@ public class RoomController extends SimpleController {
                                 @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) {
         LOGGER.info("Request received to retrieve whole roomsList");
         PaginatedDTO<ReservationResponse> reservations;
-        System.out.println("hola");
         try {
             reservations = reservationService.getRoomsReservedActive(page, limit);
         } catch (IndexOutOfBoundsException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        return sendPaginatedResponse(page, limit, reservations.getMaxItems(), new GenericEntity<List<ReservationResponse>>(reservations.getList()) {
-        }, uriInfo.getAbsolutePathBuilder());
+        return sendPaginatedResponse(page, limit, reservations.getMaxItems(), reservations.getList(), uriInfo.getAbsolutePathBuilder());
     }
 
     @GET
@@ -107,8 +105,7 @@ public class RoomController extends SimpleController {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         LOGGER.info("Reservation(s) found!");
-        return sendPaginatedResponse(page, limit, reservations.getMaxItems(), new GenericEntity<List<ReservationResponse>>(reservations.getList()) {
-        }, uriInfo.getAbsolutePathBuilder());
+        return sendPaginatedResponse(page, limit, reservations.getMaxItems(), reservations.getList(), uriInfo.getAbsolutePathBuilder());
     }
 
     @POST
@@ -119,8 +116,7 @@ public class RoomController extends SimpleController {
         LOGGER.info("Request received to do a reservation on room with id: " + reservationRequest.getRoomId());
         final Reservation reservation = reservationService.doReservation(reservationRequest.getRoomId(),
                 reservationRequest.getUserEmail(), reservationRequest.getStartDate(), reservationRequest.getEndDate());
-        return Response.ok(new GenericEntity<ReservationConfirmedResponse>(new ReservationConfirmedResponse(reservation.getId(), reservation.getHash(), reservation.getRoom().getNumber())) {
-        }).build();
+        return Response.ok(reservation).build();
     }
 
     @POST
@@ -137,8 +133,7 @@ public class RoomController extends SimpleController {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         if (reservation != null) {
-            return Response.ok(new GenericEntity<ReservationResponse>(reservation) {
-            }).build();
+            return Response.ok(reservation).build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -153,8 +148,7 @@ public class RoomController extends SimpleController {
         } catch (RequestInvalidException | EntityNotFoundException | NoResultException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return Response.ok(new GenericEntity<List<ChargesByUserResponse>>(chargeService.checkProductsPurchasedInCheckOut(reservationHash)) {
-        }).build();
+        return Response.ok(chargeService.checkProductsPurchasedInCheckOut(reservationHash)).build();
     }
 
     @GET
@@ -165,8 +159,7 @@ public class RoomController extends SimpleController {
             Calendar startDateCalendar = JsonToCalendar.unmarshal(startDate);
             Calendar endDateCalendar = JsonToCalendar.unmarshal(endDate);
             if (startDateCalendar.before(endDateCalendar)) {
-                return Response.ok(new GenericEntity<List<Room>>(roomService.findAllFreeBetweenDates(startDateCalendar, endDateCalendar)) {
-                }).build();
+                return Response.ok(roomService.findAllFreeBetweenDates(startDateCalendar, endDateCalendar)).build();
             }
         }
         String message = "Expected 'startDate' and 'endDate' in format yyyy-mm-dd.";
@@ -185,8 +178,7 @@ public class RoomController extends SimpleController {
         } catch (IndexOutOfBoundsException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        return sendPaginatedResponse(page, limit, orders.getMaxItems(), new GenericEntity<List<ChargeDeliveryResponse>>(orders.getList()) {
-        }, uriInfo.getAbsolutePathBuilder());
+        return sendPaginatedResponse(page, limit, orders.getMaxItems(), orders.getList(), uriInfo.getAbsolutePathBuilder());
     }
 
     @POST

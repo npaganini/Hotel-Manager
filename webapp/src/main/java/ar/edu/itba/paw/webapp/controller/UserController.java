@@ -24,7 +24,7 @@ import java.net.URI;
 import java.util.List;
 
 @Controller
-@Path("/user")
+@Path("/api/user")
 public class UserController extends SimpleController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     public static final String DEFAULT_FIRST_PAGE = "1";
@@ -54,8 +54,7 @@ public class UserController extends SimpleController {
         System.out.println(chargesByUser);
         System.out.println(reservationId);
 
-        return Response.ok(new GenericEntity<List<ChargesByUserResponse>>(chargesByUser) {
-        }).build();
+        return Response.ok(chargesByUser).build();
     }
 
     @GET
@@ -81,8 +80,7 @@ public class UserController extends SimpleController {
         } catch (IndexOutOfBoundsException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        return sendPaginatedResponse(page, limit, productList.getMaxItems(), new GenericEntity<List<ProductResponse>>(productList.getList()) {
-        }, uriInfo.getAbsolutePathBuilder());
+        return sendPaginatedResponse(page, limit, productList.getMaxItems(), productList.getList(), uriInfo.getAbsolutePathBuilder());
     }
 
     @POST
