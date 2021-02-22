@@ -4,7 +4,6 @@ import ar.edu.itba.paw.interfaces.daos.*;
 import ar.edu.itba.paw.interfaces.dtos.ActiveReservationResponse;
 import ar.edu.itba.paw.interfaces.dtos.ChargesByUserResponse;
 import ar.edu.itba.paw.interfaces.dtos.ProductResponse;
-import ar.edu.itba.paw.interfaces.dtos.ReservationResponse;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
 import ar.edu.itba.paw.interfaces.services.EmailService;
@@ -109,8 +108,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void rateStay(String rate, long reservationId) throws EntityNotFoundException, RequestInvalidException {
-        Reservation reservation = reservationDao.findById(reservationId)
+    public void rateStay(String rate, String reservationHash) throws EntityNotFoundException, RequestInvalidException {
+        Reservation reservation = reservationDao.findReservationByHash(reservationHash)
                 .orElseThrow(() -> new EntityNotFoundException("Reservation was not found"));
         if (reservation.getCalification() != null) {
             throw new RequestInvalidException();

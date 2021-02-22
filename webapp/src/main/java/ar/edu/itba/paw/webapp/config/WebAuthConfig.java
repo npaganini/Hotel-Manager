@@ -67,7 +67,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and();
         http.authorizeRequests()
-            .antMatchers("/login", "/products/**/img")
+            .antMatchers("/login", "/products/**/img", "/user/ratings/**")
             .permitAll()
             .antMatchers("/user/**")
             .hasAuthority(UserRole.CLIENT.toString())

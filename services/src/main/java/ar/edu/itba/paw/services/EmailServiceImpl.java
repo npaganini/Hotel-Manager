@@ -22,8 +22,6 @@ public class EmailServiceImpl implements EmailService {
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailServiceImpl.class);
     public static final String BUSINESS_EMAIL = "paw.hotel.manager@gmail.com";
 
-//    @Context
-//    private UriInfo uriInfo;
     private final JavaMailSender javaMailSender;
     private final ReservationDao reservationDao;
     private final MessageSourceExternalizer messageSourceExternalizer;
@@ -169,16 +167,10 @@ public class EmailServiceImpl implements EmailService {
 
     private String getHtmlStars(String reservation, String uriInfo, String stars, int star) {
         return "<div>\n" +
-//                "    <a href=\"" + "http://pawserver.it.itba.edu.ar/paw-2019b-2/reservations/" + reservation + "/rate?rate=" + stars + "\" target=\"_blank\">\n" +
-                "    <a href=\"" + uriInfo + "user/" + reservation + "/rate?rate=" + stars + "\" target=\"_blank\">\n" +
+                "    <form method=\"post\" action=\"" + uriInfo + "user/ratings/" + reservation + "/rate?rate=" + stars + "\" target=\"_blank\">\n" +
                 "        <button type=\"submit\" class=\"btn btn-lg\">\n" +
                 "            <span>" + star + "</span>\n" +
                                 getAmountOfStars(star) +
-//                "            <span style=\'color:orange\'>&#9733;</span>\n" +
-//                "            <span style=\'color:orange\'>&#9733;</span>\n" +
-//                "            <span style=\'color:orange\'>&#9733;</span>\n" +
-//                "            <span style=\'color:orange\'>&#9733;</span>\n" +
-//                "            <span style=\'color:orange\'>&#9733;</span>\n" +
                 "        </button>\n" +
                 "    </a>\n" +
                 "</div>\n" +

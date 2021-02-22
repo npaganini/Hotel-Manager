@@ -3,22 +3,19 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfaces.dtos.ActiveReservationResponse;
 import ar.edu.itba.paw.interfaces.dtos.ChargesByUserResponse;
 import ar.edu.itba.paw.interfaces.dtos.ProductResponse;
-import ar.edu.itba.paw.interfaces.dtos.ReservationResponse;
 import ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.RequestInvalidException;
+import ar.edu.itba.paw.interfaces.services.MessageSourceExternalizer;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.charge.Charge;
 import ar.edu.itba.paw.models.dtos.PaginatedDTO;
 import ar.edu.itba.paw.models.help.Help;
-import ar.edu.itba.paw.models.product.Product;
-import ar.edu.itba.paw.models.reservation.Reservation;
 import ar.edu.itba.paw.webapp.dtos.ActiveReservationsResponse;
 import ar.edu.itba.paw.webapp.dtos.HelpRequest;
 import ar.edu.itba.paw.webapp.dtos.RateReservationRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -34,13 +31,15 @@ public class UserController extends SimpleController {
     public static final String DEFAULT_FIRST_PAGE = "1";
     public static final String DEFAULT_PAGE_SIZE = "20";
 
+    private final MessageSourceExternalizer messageSourceExternalizer;
     private final UserService userService;
 
     @Context
     private UriInfo uriInfo;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(MessageSourceExternalizer messageSourceExternalizer, UserService userService) {
+        this.messageSourceExternalizer = messageSourceExternalizer;
         this.userService = userService;
     }
 
@@ -122,14 +121,18 @@ public class UserController extends SimpleController {
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
-    // TODO FIXME
     @POST
-    @Path("/ratings/{reservationId}/rate")
+    @Path("/ratings/{reservationHash}/rate")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response rateStay(@PathParam("reservationId") long reservationId,
-                             @RequestBody RateReservationRequest rateRequest) throws RequestInvalidException, EntityNotFoundException {
-        // todo: mav was "thanksMessage.jsp"
-        userService.rateStay(rateRequest.getRate(), reservationId);
-        return Response.ok().build();
+    public Response rateStay(@PathParam("reservationHash") String reservationHash,
+                             @QueryParam("rate") RateReservationRequest rateRequest) {
+        try {
+            userService.rateStay(rateRequest.getRate(), reservationHash);
+        } catch (RequestInvalidException e) {
+            return Response.status(Response.Status.CONFLICT).build();
+        } catch (EntityNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok().entity(messageSourceExternalizer.getMessage("email.ratings.thanks")).build();
     }
 }
