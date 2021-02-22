@@ -124,15 +124,12 @@ public class UserController extends SimpleController {
     @POST
     @Path("/ratings/{reservationHash}/rate")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response rateStay(@PathParam("reservationHash") String reservationHash,
-                             @QueryParam("rate") RateReservationRequest rateRequest) {
+    public void rateStay(@PathParam("reservationHash") String reservationHash,
+                         @QueryParam("rate") RateReservationRequest rateRequest) {
         try {
             userService.rateStay(rateRequest.getRate(), reservationHash);
-        } catch (RequestInvalidException e) {
-            return Response.status(Response.Status.CONFLICT).build();
-        } catch (EntityNotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+        } catch (Exception e) {
+            LOGGER.debug(e.getMessage());
         }
-        return Response.ok().entity(messageSourceExternalizer.getMessage("email.ratings.thanks")).build();
     }
 }

@@ -115,6 +115,7 @@ public class UserServiceImpl implements UserService {
             throw new RequestInvalidException();
         }
         reservationDao.rateStay(reservation.getId(), rate);
+        emailService.sendConfirmationOfRate(reservationHash);
     }
 
     private boolean isValidString(String text) {

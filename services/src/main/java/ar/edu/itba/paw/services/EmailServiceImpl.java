@@ -92,6 +92,32 @@ public class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
+    public void sendConfirmationOfRate(String reservationHash) {
+        LOGGER.debug("About to send e-mail thanking for feedback for reservation " + reservationHash);
+        String userEmail = reservationDao
+                .findReservationByHash(reservationHash.trim())
+                .orElseThrow(() -> new EntityNotFoundException("Can't find reservation with"))
+                .getUserEmail();
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+        String subject = messageSourceExternalizer.getMessage("email.ratings.thank");
+        try {
+            helper.setText(createThankText(), true);
+            helper.setTo(userEmail);
+            helper.setSubject(subject);
+            helper.setFrom(BUSINESS_EMAIL);
+        } catch (MessagingException e) {
+            LOGGER.error(e.toString());
+        }
+        javaMailSender.send(mimeMessage);
+    }
+
+    private String createThankText() {
+        return messageSourceExternalizer.getMessage("email.ratings.thanks");
+    }
+
+    @Async
+    @Override
     public void sendRateStayEmail(String reservationHash, String uriInfo) {
         LOGGER.debug("About to send e-mail asking to rate stay for reservation " + reservationHash);
         String userEmail = reservationDao
@@ -160,14 +186,14 @@ public class EmailServiceImpl implements EmailService {
     private String getHtmlRating(String reservation, String uriInfo) {
         return getHtmlStars(reservation, uriInfo, messageSourceExternalizer.getMessage("email.ratings.excellent"), 5) +
                getHtmlStars(reservation, uriInfo, messageSourceExternalizer.getMessage("email.ratings.good"), 4) +
-               getHtmlStars(reservation, uriInfo, messageSourceExternalizer.getMessage("email.ratings.average"), 3) +
+               getHtmlStars(reservation, uriInfo, messageSourceExternalizer.getMessage("email.ratings.normal"), 3) +
                getHtmlStars(reservation, uriInfo, messageSourceExternalizer.getMessage("email.ratings.bad"), 2) +
                getHtmlStars(reservation, uriInfo, messageSourceExternalizer.getMessage("email.ratings.awful"), 1);
     }
 
     private String getHtmlStars(String reservation, String uriInfo, String stars, int star) {
         return "<div>\n" +
-                "    <form method=\"post\" action=\"" + uriInfo + "user/ratings/" + reservation + "/rate?rate=" + stars + "\" target=\"_blank\">\n" +
+                "    <form method=\"POST\" action=\"" + uriInfo + "user/ratings/" + reservation + "/rate?rate=" + stars + "\">\n" +
                 "        <button type=\"submit\" class=\"btn btn-lg\">\n" +
                 "            <span>" + star + "</span>\n" +
                                 getAmountOfStars(star) +
@@ -193,7 +219,7 @@ public class EmailServiceImpl implements EmailService {
 
     private String getHtmlEnd() {
         return  "<div>\n" +
-                    "<h3>" + messageSourceExternalizer.getMessage("email.ratings.thanks") + "</h3>\n" +
+                    "<h3>" + messageSourceExternalizer.getMessage("email.ratings.thank") + "</h3>\n" +
                 "</div>\n" +
             "</body>\n" +
         "</html>";
