@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { makeStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
+import { useTranslation } from "react-i18next";
 
 import {doCheckout} from '../../api/roomApi';
 

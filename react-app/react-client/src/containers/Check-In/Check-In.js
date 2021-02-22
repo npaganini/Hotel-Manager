@@ -102,7 +102,7 @@ const checkIn = ({ history }) => {
                         <Card className={classes.card}>
                             <Row className={classes.buttonRow}>
                                 <Col xs={12} md={6} style={{ marginBottom: '10px' }}>
-                                    <Input label={t('reservation.id')} error={errorInput} helperText={errorInput && "El campo es requerido"} required={true} onChange={onChangeCheckIn} />
+                                    <Input label={t('reservation.number')} error={errorInput} helperText={errorInput && "El campo es requerido"} required={true} onChange={onChangeCheckIn} />
                                 </Col>
                                 <Col xs={6} md={2} className={classes.buttonColLeft}>
                                     <Button ButtonType="Save" onClick={(checkInSubmit)} ButtonText={t('accept')} />

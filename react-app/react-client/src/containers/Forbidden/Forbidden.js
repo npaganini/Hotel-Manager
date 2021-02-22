@@ -48,12 +48,12 @@ const Forbidden = ({ history }) => {
                         <Card className={classes.card}>
                             <Row className={classes.buttonRow}>
                                 <Col xs={12} md={12} style={{ marginTop: '30px' }}>
-                                    <h1 style={{font:'arial', color:'grey'}}>Request forbidden. Please log in.</h1>
+                                    <h1 style={{font:'arial', color:'grey'}}>{t("error.403")}</h1>
                                 </Col>
                             </Row>
                             <Row style={{width: "100%"}}>
                             <Col xs={12} md={12} style={{marginTop:'10px',textAlign:'center',justifyContent:'center'}}>
-                                    <Button ButtonType="Save" onClick={(back)} ButtonText='Volver a Inicio' />
+                                    <Button ButtonType="Save" onClick={(back)} ButtonText={t("user.home")} />
                                 </Col>
                             </Row>
                         </Card>

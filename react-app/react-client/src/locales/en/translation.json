@@ -50,8 +50,10 @@
   "product": {
     "singular": "Product",
     "plural": "Products",
-    "add": "Add Product!",
+    "add": "Add",
     "img": "Product Image",
+    "price": "Price",
+    "create": "Crear",
     "enabled": "Product Enabled",
     "disabled": "Product Disabled",
     "enabled.success": "Product Successfully Enabled!",
@@ -59,6 +61,12 @@
     "description": "Description",
     "price.positive": "Price must be positive"
   },
+
+  "ratings":{
+    "roomNumber": "Room Number",
+    "avgRate": "Average Rate:"
+  },
+
 
   "reservation": {
     "singular": "Reservation",
@@ -68,6 +76,7 @@
       "end": "End Date",
       "required": "Date period required!"
     },
+    "number": "Reservation Number",
     "room": {
       "type": "Room Type",
       "number": "Room Number"
@@ -94,7 +103,8 @@
 
   "order": {
     "finish": "Order Finished!",
-    "deliver": "Order may be delivered to room."
+    "deliver": "Order may be delivered to room.",
+    "send": "Deliver"
   },
 
   "help": {
@@ -161,8 +171,21 @@
     "of": "of",
     "moreof": "more of"
   },
+  "table":{
+    "quantity": "Quantity",
+    "unit": "Unit Price",
+    "sum": "Sum",
+    "details": "Details",
+    "price": "Price",
+    "description": "Description"
+  },
 
-  "required": "Required",
+  "registrations":{
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "addOccupant": "Add Occupant"
+  },
+
   "accept": "Accept",
   "cancel": "Cancel",
   "success": "Success!",
@@ -183,5 +206,8 @@
   "close": "Close",
   "loading": "Loading...",
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+  "rates": "Rates",
+  "required": "This field is required",
+  "back": "Back"
 }

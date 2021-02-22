@@ -3,7 +3,6 @@ import { Container, Row, Col, Card } from 'react-bootstrap'
 import { makeStyles } from '@material-ui/core/styles';
 import { withRouter } from "react-router";
 
-import Navbar from '../../components/Navbar/Navbar';
 import Button from '../../components/Button/Button';
 import Input from '../../components/Input/Input';
 import { useTranslation } from "react-i18next";
@@ -75,7 +74,7 @@ const checkOut = ({ history }) => {
                         <Card className={classes.card}>
                             <Row className={classes.buttonRow}>
                                 <Col xs={12} md={6} style={{ marginBottom: '10px' }}>
-                                    <Input label={t("reservation.hash")} error={errorInput} helperText={errorInput && t("required")} required={true} onChange={onChangeCheckOut}/>
+                                    <Input label={t("reservation.number")} error={errorInput} helperText={errorInput && t("required")} required={true} onChange={onChangeCheckOut}/>
                                 </Col>
                                 <Col xs={6} md={2} className={classes.buttonColLeft}>
                                     <Button ButtonType="Save" onClick={checkOutSubmit} ButtonText={t('accept')}/>

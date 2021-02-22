@@ -132,14 +132,14 @@ const Reservation = ({ history }) => {
           <Col xs={12} md={6}>
             <DatePicker
               Id="from"
-              label="Desde"
+              label={t("room.room.from")}
               onChange={dateFromOnChange}
             ></DatePicker>
           </Col>
           <Col xs={12} md={6}>
             <DatePicker
               Id="to"
-              label="Hasta"
+              label={t("room.room.until")}
               onChange={dateToOnChange}
             ></DatePicker>
           </Col>
@@ -149,7 +149,7 @@ const Reservation = ({ history }) => {
             <Button
               ButtonType="Inherit"
               Id="search-availability"
-              ButtonText="Buscar Disponibles"
+              ButtonText={t("room.room.filter")}
               onClick={showRoomsHandler(dateFrom, dateTo)}
             ></Button>
           </Col>
@@ -157,11 +157,11 @@ const Reservation = ({ history }) => {
         <Row className={classes.row}>
           <Col xs={12} md={2}>
             {showRooms && (
-              <Dropdown onChange={onRoomChange} error={errorDropdown} helperText={errorDropdown && "El campo es requerido"} required={true} options={options} />
+              <Dropdown onChange={onRoomChange} error={errorDropdown} helperText={errorDropdown && t("required")} required={true} options={options} />
             )}
           </Col>
           <Col xs={12} md={6}>
-            <Input label="Email" error={errorInput} helperText={errorInput && "El campo es requerido"} required={true} type="email" onChange={emailOnChange} />
+            <Input label={t("room.room.owner")} error={errorInput} helperText={errorInput && t("required")} required={true} type="email" onChange={emailOnChange} />
           </Col>
           <Col xs={6} md={2}>
             <Button
@@ -172,22 +172,22 @@ const Reservation = ({ history }) => {
                 userEmail: email,
                 roomId: room,
               })}
-              ButtonText="Accept"
+              ButtonText={t("accept")}
             ></Button>
           </Col>
           <Col xs={6} md={2}>
             <Button
               ButtonType="Back"
               onClick={reservationCancel}
-              ButtonText="Cancel"
+              ButtonText={t("back")}
             ></Button>
           </Col>
         </Row>
         <InfoSimpleDialog open={loading} title={t('loading')} />
         <InfoSimpleDialog open={showDialog} onClose={handleDialogClose} title={info ? "La reserva se realizo correctamente!" : ''}>
           {info ? <div>
-            <div>Clave de la reserva: {info.reservationHash}</div>
-            <div>Habitacion: {info.roomNumber}</div>
+            <div>{t("reservation.number")}: {info.reservationHash}</div>
+            <div>{t("ratings.roomNumber")}: {info.roomNumber}</div>
           </div> : <div>{t('reservation.checkin.error')}</div>}
         </InfoSimpleDialog>
       </Container>
