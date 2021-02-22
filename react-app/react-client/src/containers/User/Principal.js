@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { makeStyles } from "@material-ui/core/styles";
-import { withRouter } from "react-router";
+import React, {useState} from "react";
+import {Col, Container, Row} from "react-bootstrap";
+import {makeStyles} from "@material-ui/core/styles";
+import {withRouter} from "react-router";
 
-import { getAllReservations } from "../../api/userApi";
-import { reservationUserColumns } from "../../utils/columnsUtil";
+import {getAllReservations} from "../../api/userApi";
+import {reservationUserColumns} from "../../utils/columnsUtil";
 import Table from "../../components/Table/Table";
 
 const useStyles = makeStyles((theme) => ({
@@ -21,21 +21,18 @@ const UserPrincipal = ({ history }) => {
 
   const getMyReservations = () => {
     getAllReservations().then((response) => {
-        console.log(response.data);
         setReservations(
         response.data.activeReservations.map(
           ({ roomType, startDate, endDate, roomNumber, reservationId }) => {
-            const newObject = Object.assign(
-              {},
-              { roomType, startDate, endDate, roomNumber },
-              {
-                actions: () => history.push(`/products/${reservationId}`),
-                expenses: () => history.push(`/expenses/${reservationId}`),
-                help: () => history.push(`/help/${reservationId}`),
-              }
+              return Object.assign(
+                {},
+                {roomType, startDate, endDate, roomNumber},
+                {
+                    actions: () => history.push(`/products/${reservationId}`),
+                    expenses: () => history.push(`/expenses/${reservationId}`),
+                    help: () => history.push(`/help/${reservationId}`),
+                }
             );
-            console.log("newObject", newObject);
-            return newObject;
           }
         )
       );

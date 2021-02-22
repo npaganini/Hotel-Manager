@@ -84,18 +84,13 @@ const registration = ({ history }) => {
 
   const registrationSubmit = () => {
     onSubmit(true);
-    console.log("registrando");
     const filtederdOccupants = occupants.filter(
       (occupant) => !isEmpty(occupant.firstName) && !isEmpty(occupant.lastName)
     );
     registerOccupants({ occupants: filtederdOccupants }, reservationId)
       .then((response) => {
         history.push("/");
-      })
-      .catch((error) => {
-        console.log("error", error);
       });
-    occupants.map((ocup) => console.log(ocup));
   };
 
   const back = () => {
@@ -105,12 +100,9 @@ const registration = ({ history }) => {
   const onAddOccupant = () => addOccupant([...occupants, emptyOccupantCopy()]);
 
   const onOccupantChange = (field) => (index) => (event) => {
-    console.log("event", event.target.value);
     occupants[index][field] = event.target.value;
     addOccupant([...occupants]);
   };
-
-  console.log("occupants", occupants);
 
   const onFirstNameChange = onOccupantChange("firstName");
   const onLastNameChange = onOccupantChange("lastName");

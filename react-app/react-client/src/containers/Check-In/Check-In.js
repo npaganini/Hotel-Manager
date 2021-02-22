@@ -73,17 +73,15 @@ const checkIn = ({ history }) => {
             doCheckin(checkIn)
                 .then((response) => {
                     updateShowLoading(false);
-                    console.log(response)
                     // call show dialog in InfoSimpleDialog
                     updateShowDialog(true);
                     // send result to dialog window to show it
                     updateInfo(response.data);
                 })
-                .catch((error) => {
+                .catch(() => {
                     updateShowLoading(false);
                     updateShowDialog(true);
                     updateInfo(undefined);
-                    console.log("There was an error processing the request!\n\n", error);
                 });
             // Once dialog window closes, redirect to occupants
         }

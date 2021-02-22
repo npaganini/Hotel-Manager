@@ -34,8 +34,6 @@ const Principal = ({history}) => {
         getAllBusyRooms({page, limit})
             .then((response) => {
                 setTableInfo({busyRooms: response.data, totalCount: +response.headers["x-total-count"]})
-            }).catch((error) => {
-                console.log("There was an error while fetching all busy rooms! ", error);
             }
         );
     };

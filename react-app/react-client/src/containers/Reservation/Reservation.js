@@ -70,9 +70,6 @@ const Reservation = ({ history }) => {
     getFreeRooms({ startDate, endDate })
       .then((result) => {
         setOptions(result.data);
-      })
-      .catch((err) => {
-        console.log("error", err);
       });
     if (!showRooms) show(true);
   };
@@ -107,11 +104,10 @@ const Reservation = ({ history }) => {
           updateShowDialog(true);
           updateInfo(response.data);
         })
-        .catch((err) => {
+        .catch(() => {
           updateShowLoading(false);
           updateShowDialog(true);
           updateInfo(undefined);
-          console.log("error", err);
         });
     }
   };

@@ -46,10 +46,8 @@ const UserExpenses = ({ history, match }) => {
             })
           )
         );
-      })
-      .catch((error) => {
-        console.log("there was an error on get all expenses", error);
-      });
+      }
+    );
   }
 
   const back = () => {

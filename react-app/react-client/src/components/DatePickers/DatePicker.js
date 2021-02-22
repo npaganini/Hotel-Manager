@@ -15,8 +15,7 @@ const DatePickers = (props) => {
   const classes = useStyles();
   const {onChange} = props;
 
-  console.log(props.Date);
-  return (      
+  return (
       <TextField
         id={props.Id}
         label={props.label}

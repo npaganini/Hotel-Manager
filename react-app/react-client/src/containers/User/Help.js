@@ -34,17 +34,10 @@ const UserHelp = ({ match, history }) => {
 
   const onSubmitHelp = ({ helpDescription }) => () => {
       requestHelp(match.params.id, { helpDescription })
-        .then((response) => {
-          console.log(response.status);
-          console.log(history);
+        .then(() => {
           history.push("/");
-        })
-        .catch((error) => {
-          console.log(
-            "there was an error trying to generate a help request",
-            error
-          );
-        });
+        }
+      );
   };
 
   const back = () => {
