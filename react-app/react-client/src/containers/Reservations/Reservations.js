@@ -50,12 +50,10 @@ const Reservations = ({history}) => {
     const getAllReservationsFiltered = (page = 1, limit = 20, startDate, endDate, email, lastName) => {
         getAllReservations({page, limit, startDate, endDate, email, lastName})
             .then((response) => {
-                console.log(response.data);
                 setTableInfo({reservations: response.data, totalCount: +response.headers["x-total-count"]})
             }).catch((error) => {
                 setErrorStatusCode(error.response.status);
                 updateShowDialog(true);
-                console.log("There was an error while fetching all busy rooms! ", error);
             }
         );
     };

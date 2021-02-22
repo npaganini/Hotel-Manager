@@ -50,8 +50,6 @@ const ExpensesTable = (props) => {
   const classes = useStyles();
   const {t} = useTranslation();
 
-  console.log("expenses table", props.rows);
-
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="spanning table">

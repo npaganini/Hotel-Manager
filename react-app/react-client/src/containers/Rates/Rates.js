@@ -53,37 +53,32 @@ const Rates = ({ history }) => {
             .then((response) => {
                 setTableInfo({ rates: response.data, totalCount: +response.headers["x-total-count"] });
             })
-            .catch((error) => {
+            .catch(() => {
                 updateShowDialog(true);
-                console.log("There was an error while fetching all ratings! ", error);
             }
-            );
+        );
 
         getAvgHotelRating()
             .then((response) => {
                 setAvg(response.data.rating);
-            })
-            .catch((error) => console.log("error", error));
+            });
     };
 
     const searchHandler = (page = 1, limit = 20) => {
-        console.log("llama");
         getAllRoomRatings(search, { page, limit })
             .then((response) => {
                 setTableInfo({ rates: response.data, totalCount: +response.headers["x-total-count"] });
-                console.log("resp", response);
             })
             .catch((error) => {
                 updateShowDialog(true);
-                console.log("There was an error while fetching all ratings! ", error);
             }
-            );
+        );
 
         getAvgRoomRating(search)
             .then((response) => {
                 setAvg(response.data.rating);
-            })
-            .catch((error) => console.log("error", error));
+            }
+        );
     }
 
 

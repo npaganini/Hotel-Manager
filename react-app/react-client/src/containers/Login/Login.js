@@ -65,18 +65,14 @@ const Login = ({ history, setIsLoggedIn, setIsClient }) => {
 
   const onLoginPerformed = (onSubmit, { user, password }, { setIsLoggedIn, setIsClient }) => () => {
     login(user, password)
-        .then(() => {
-          window.alert(
-              localStorage.getItem("token") + " | " + localStorage.getItem("role")
-          );
-          setIsLoggedIn(true);
-          setIsClient(localStorage.getItem("role") === "CLIENT");
-          onSubmit();
-        })
-        .catch((error) => {
-          updateShowDialog(true);
-          console.log("there was an error", error);
-        });
+      .then(() => {
+        setIsLoggedIn(true);
+        setIsClient(localStorage.getItem("role") === "CLIENT");
+        onSubmit();
+      })
+      .catch((error) => {
+        updateShowDialog(true);
+      });
   };
 
   const handleDialogClose = () => {
@@ -85,7 +81,6 @@ const Login = ({ history, setIsLoggedIn, setIsClient }) => {
 
   const submitLogin = () => {
     onSubmit(true);
-    console.log("history", history);
     history.push("/");
   };
 

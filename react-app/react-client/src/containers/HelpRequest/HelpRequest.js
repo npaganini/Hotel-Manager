@@ -39,14 +39,11 @@ const HelpRequest = ({history}) => {
         getAllHelpRequests({page, limit})
             .then((response) => {
                 setTableInfo({helpList: response.data, totalCount: +response.headers["x-total-count"]})
-            }).catch((error) => {
-                console.log("There was an error while fetching all help requests! ", error);
             }
         );
     };
 
     const onSubmitHelpRequest = () => {
-        console.log(history);
         history.push("/help")
     }
 

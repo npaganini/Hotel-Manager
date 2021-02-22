@@ -14,9 +14,6 @@ export const PrivateRoute = ({
       const currentUser = localStorage.getItem("token");
       const role = localStorage.getItem("role");
 
-      console.log("route props", routeProps);
-      console.log("props", props);
-
       const { path } = routeProps;
 
       if (path === "/login") {
