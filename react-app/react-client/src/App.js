@@ -39,7 +39,7 @@ const App = () => {
   const handleSetIsClient = (value) => setIsClient(value);
 
   return (
-    <Router>
+    <Router basename="/paw-2019b-2">
       {isLoggedIn ? (
         isClient ? (
           <UserNavbar
