@@ -333,6 +333,18 @@
                     <version>${maven-war-plugin.version}</version>
                     <configuration>
                         <packagingExcludes>**/logback-test.xml</packagingExcludes>
+                        <webResources>
+                            <resource>
+                                <directory>../react-app/react-client/build</directory>
+                            </resource>
+                            <resource>
+                                <filtering>true</filtering>
+                                <directory>src/main/webapp</directory>
+                                <includes>
+                                    <include>**/web.xml</include>
+                                </includes>
+                            </resource>
+                        </webResources>
                     </configuration>
                 </plugin>
             </plugins>

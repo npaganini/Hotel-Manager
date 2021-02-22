@@ -9,6 +9,8 @@ import Button from "../Button/Button";
 import Typography from "@material-ui/core/Typography";
 import { getProductFile } from "../../api/productApi";
 import { buyProduct } from "../../api/userApi";
+import {useTranslation} from "react-i18next";
+
 
 const useStyles = makeStyles({
   root: {
@@ -24,6 +26,8 @@ const ImgMediaCard = (props) => {
   const classes = useStyles();
 
   const { id, price, name, reservationId } = props;
+  const {t} = useTranslation();
+
 
   const onSubmitBuy = (productId) =>
     buyProduct({ productId, reservationId })
@@ -55,7 +59,7 @@ const ImgMediaCard = (props) => {
               ButtonType="Save"
               size="large"
               onClick={() => onSubmitBuy(id)}
-              ButtonText="Comprar"
+              ButtonText={t("buy")}
             ></Button>
           </CardActions>
         </Card>

@@ -59,6 +59,7 @@ public class RoomController extends SimpleController {
                                 @QueryParam("limit") @DefaultValue(DEFAULT_PAGE_SIZE) int limit) {
         LOGGER.info("Request received to retrieve whole roomsList");
         PaginatedDTO<ReservationResponse> reservations;
+        System.out.println("hola");
         try {
             reservations = reservationService.getRoomsReservedActive(page, limit);
         } catch (IndexOutOfBoundsException e) {

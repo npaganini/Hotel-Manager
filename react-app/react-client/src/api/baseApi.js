@@ -8,7 +8,10 @@ const options = (token) => ({
 });
 
 // FIXME add to configs
-export const baseURL = "http://localhost:8080";
+// export const baseURL = "http://localhost:8080";
+
+export const baseURL = "/paw-2019b-2/api";
+
 
 export const post = async (url, body) =>
   axios.post(baseURL + url, body, options(localStorage.getItem("token")));
