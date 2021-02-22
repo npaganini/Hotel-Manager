@@ -54,8 +54,7 @@ public class UserController extends SimpleController {
         System.out.println(chargesByUser);
         System.out.println(reservationId);
 
-        return Response.ok(new GenericEntity<List<ChargesByUserResponse>>(chargesByUser) {
-        }).build();
+        return Response.ok(chargesByUser).build();
     }
 
     @GET

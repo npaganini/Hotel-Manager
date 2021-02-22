@@ -118,8 +118,7 @@ public class RoomController extends SimpleController {
         LOGGER.info("Request received to do a reservation on room with id: " + reservationRequest.getRoomId());
         final Reservation reservation = reservationService.doReservation(reservationRequest.getRoomId(),
                 reservationRequest.getUserEmail(), reservationRequest.getStartDate(), reservationRequest.getEndDate());
-        return Response.ok(new GenericEntity<ReservationConfirmedResponse>(new ReservationConfirmedResponse(reservation.getId(), reservation.getHash(), reservation.getRoom().getNumber())) {
-        }).build();
+        return Response.ok(reservation).build();
     }
 
     @POST
@@ -136,8 +135,7 @@ public class RoomController extends SimpleController {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         if (reservation != null) {
-            return Response.ok(new GenericEntity<ReservationResponse>(reservation) {
-            }).build();
+            return Response.ok(reservation).build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -152,8 +150,7 @@ public class RoomController extends SimpleController {
         } catch (RequestInvalidException | EntityNotFoundException | NoResultException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return Response.ok(new GenericEntity<List<ChargesByUserResponse>>(chargeService.checkProductsPurchasedInCheckOut(reservationHash)) {
-        }).build();
+        return Response.ok(chargeService.checkProductsPurchasedInCheckOut(reservationHash)).build();
     }
 
     @GET
@@ -164,8 +161,7 @@ public class RoomController extends SimpleController {
             Calendar startDateCalendar = JsonToCalendar.unmarshal(startDate);
             Calendar endDateCalendar = JsonToCalendar.unmarshal(endDate);
             if (startDateCalendar.before(endDateCalendar)) {
-                return Response.ok(new GenericEntity<List<Room>>(roomService.findAllFreeBetweenDates(startDateCalendar, endDateCalendar)) {
-                }).build();
+                return Response.ok(roomService.findAllFreeBetweenDates(startDateCalendar, endDateCalendar)).build();
             }
         }
         String message = "Expected 'startDate' and 'endDate' in format yyyy-mm-dd.";

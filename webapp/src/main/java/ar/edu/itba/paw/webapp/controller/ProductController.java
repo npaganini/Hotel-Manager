@@ -50,7 +50,8 @@ public class ProductController extends SimpleController {
         } catch (IndexOutOfBoundsException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        return sendPaginatedResponse(page, limit, products.getMaxItems(), new GenericEntity<List<ProductResponse>>(products.getList()) {}, uriInfo.getAbsolutePathBuilder());
+        return sendPaginatedResponse(page, limit, products.getMaxItems(), new GenericEntity<List<ProductResponse>>(products.getList()) {
+        }, uriInfo.getAbsolutePathBuilder());
     }
 
     @POST
@@ -99,8 +100,7 @@ public class ProductController extends SimpleController {
         newProduct = productService.saveProduct(newProduct);
         LOGGER.info("Product was saved successfully");
         // TODO is this ok?
-        return Response.ok(new GenericEntity<Product>(newProduct) {
-        }).build();
+        return Response.ok(newProduct).build();
     }
 
     @POST
@@ -118,7 +118,6 @@ public class ProductController extends SimpleController {
     @Path(value = "/{productId}/img")
     @Produces("image/png")
     public Response getImgForProduct(@PathParam("productId") long productId) throws EntityNotFoundException {
-        return Response.ok(new GenericEntity<byte[]>(productService.findProductById(productId).getFile()) {
-        }).build();
+        return Response.ok(productService.findProductById(productId).getFile()).build();
     }
 }

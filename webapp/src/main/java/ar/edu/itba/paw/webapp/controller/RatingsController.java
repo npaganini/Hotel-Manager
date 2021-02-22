@@ -40,7 +40,7 @@ public class RatingsController extends SimpleController {
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        return Response.ok().entity(new GenericEntity<RatingDTO>(hotelRating) {}).build();
+        return Response.ok(hotelRating).build();
     }
 
     @GET
@@ -68,7 +68,7 @@ public class RatingsController extends SimpleController {
         } catch (Exception e) {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
-        return Response.ok().entity(new GenericEntity<RatingDTO>(roomRating) {}).build();
+        return Response.ok(roomRating).build();
     }
 
     @GET
