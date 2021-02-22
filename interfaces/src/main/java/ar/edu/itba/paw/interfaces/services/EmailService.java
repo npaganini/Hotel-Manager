@@ -10,5 +10,5 @@ public interface EmailService {
 
     void sendCheckinEmail(Reservation reservation);
 
-    void sendRateStayEmail(String reservationHash);
+    void sendRateStayEmail(String reservationHash, String uriInfo);
 }

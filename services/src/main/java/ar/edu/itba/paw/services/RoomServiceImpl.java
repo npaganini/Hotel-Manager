@@ -58,7 +58,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional
-    public CheckoutDTO doCheckout(String reservationHash) throws ar.edu.itba.paw.interfaces.exceptions.EntityNotFoundException, RequestInvalidException {
+    public CheckoutDTO doCheckout(String reservationHash, String uriInfo) throws EntityNotFoundException, RequestInvalidException {
         Reservation reservation = reservationService.getReservationByHash(reservationHash.trim());
         if (!reservation.isActive()) {
             throw new RequestInvalidException();
@@ -70,7 +70,7 @@ public class RoomServiceImpl implements RoomService {
         CheckoutDTO checkoutDTO = new CheckoutDTO(charges,
                 charges.size() > 0 ? chargeService.sumCharge(reservation.getId()) : 0d);
         reservationService.inactiveReservation(reservation.getId());
-        emailService.sendRateStayEmail(reservationHash);
+        emailService.sendRateStayEmail(reservationHash, uriInfo.split("rooms")[0]);
         return checkoutDTO;
     }
 

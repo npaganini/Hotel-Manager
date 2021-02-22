@@ -22,10 +22,11 @@ public class EmailServiceImpl implements EmailService {
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailServiceImpl.class);
     public static final String BUSINESS_EMAIL = "paw.hotel.manager@gmail.com";
 
+//    @Context
+//    private UriInfo uriInfo;
     private final JavaMailSender javaMailSender;
     private final ReservationDao reservationDao;
     private final MessageSourceExternalizer messageSourceExternalizer;
-
 
     @Autowired
     public EmailServiceImpl(final JavaMailSender javaMailSender, final ReservationDao reservationDao,
@@ -93,7 +94,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendRateStayEmail(String reservationHash) {
+    public void sendRateStayEmail(String reservationHash, String uriInfo) {
         LOGGER.debug("About to send e-mail asking to rate stay for reservation " + reservationHash);
         String userEmail = reservationDao
                 .findReservationByHash(reservationHash.trim())
@@ -104,7 +105,7 @@ public class EmailServiceImpl implements EmailService {
         String subject = messageSourceExternalizer.getMessage("email.ratings.subject");
         LOGGER.debug("Got the following message from message source " + subject);
         try {
-            helper.setText(createEmailText(reservationHash.trim()), true);
+            helper.setText(createEmailText(reservationHash.trim(), uriInfo), true);
             helper.setTo(userEmail);
             helper.setSubject(subject);
             helper.setFrom(BUSINESS_EMAIL);
@@ -139,8 +140,8 @@ public class EmailServiceImpl implements EmailService {
                 password + "</p>";
     }
 
-    private String createEmailText(String reservation) {
-        return getHtmlBeginning() + getHtmlRating(reservation) + getHtmlEnd();
+    private String createEmailText(String reservation, String uriInfo) {
+        return getHtmlBeginning() + getHtmlRating(reservation, uriInfo) + getHtmlEnd();
     }
 
     private String getHtmlBeginning() {
@@ -158,28 +159,44 @@ public class EmailServiceImpl implements EmailService {
                 "<br><br>\n";
     }
 
-    private String getHtmlRating(String reservation) {
-        return getHtmlStars(reservation, messageSourceExternalizer.getMessage("email.ratings.excellent")) +
-                getHtmlStars(reservation, messageSourceExternalizer.getMessage("email.ratings.good")) +
-                getHtmlStars(reservation, messageSourceExternalizer.getMessage("email.ratings.average")) +
-                getHtmlStars(reservation, messageSourceExternalizer.getMessage("email.ratings.bad")) +
-                getHtmlStars(reservation, messageSourceExternalizer.getMessage("email.ratings.awful"));
+    private String getHtmlRating(String reservation, String uriInfo) {
+        return getHtmlStars(reservation, uriInfo, messageSourceExternalizer.getMessage("email.ratings.excellent"), 5) +
+               getHtmlStars(reservation, uriInfo, messageSourceExternalizer.getMessage("email.ratings.good"), 4) +
+               getHtmlStars(reservation, uriInfo, messageSourceExternalizer.getMessage("email.ratings.average"), 3) +
+               getHtmlStars(reservation, uriInfo, messageSourceExternalizer.getMessage("email.ratings.bad"), 2) +
+               getHtmlStars(reservation, uriInfo, messageSourceExternalizer.getMessage("email.ratings.awful"), 1);
     }
 
-    private String getHtmlStars(String reservation, String stars) {
+    private String getHtmlStars(String reservation, String uriInfo, String stars, int star) {
         return "<div>\n" +
-                "    <a href=\"http://pawserver.it.itba.edu.ar/paw-2019b-2/reservations/" + reservation + "/rate?rate=" + stars + "\" target=\"_blank\">\n" +
+//                "    <a href=\"" + "http://pawserver.it.itba.edu.ar/paw-2019b-2/reservations/" + reservation + "/rate?rate=" + stars + "\" target=\"_blank\">\n" +
+                "    <a href=\"" + uriInfo + "user/" + reservation + "/rate?rate=" + stars + "\" target=\"_blank\">\n" +
                 "        <button type=\"submit\" class=\"btn btn-lg\">\n" +
-                "            <span>5</span>\n" +
-                "            <span style=\'color:orange\'>&#9733;</span>\n" +
-                "            <span style=\'color:orange\'>&#9733;</span>\n" +
-                "            <span style=\'color:orange\'>&#9733;</span>\n" +
-                "            <span style=\'color:orange\'>&#9733;</span>\n" +
-                "            <span style=\'color:orange\'>&#9733;</span>\n" +
+                "            <span>" + star + "</span>\n" +
+                                getAmountOfStars(star) +
+//                "            <span style=\'color:orange\'>&#9733;</span>\n" +
+//                "            <span style=\'color:orange\'>&#9733;</span>\n" +
+//                "            <span style=\'color:orange\'>&#9733;</span>\n" +
+//                "            <span style=\'color:orange\'>&#9733;</span>\n" +
+//                "            <span style=\'color:orange\'>&#9733;</span>\n" +
                 "        </button>\n" +
                 "    </a>\n" +
                 "</div>\n" +
                 "<br>\n";
+    }
+
+    private String getAmountOfStars(final int stars) {
+        int index = 0;
+        StringBuilder result = new StringBuilder();
+        while (stars - index > 0) {
+            result.append("            <span style=\'color:orange\'>&#9733;</span>\n");
+            index++;
+        }
+        while (index < 5) {
+            result.append("            <span style=\'color:grey\'>&#9733;</span>\n");
+            index++;
+        }
+        return result.toString();
     }
 
     private String getHtmlEnd() {
