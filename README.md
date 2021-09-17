@@ -64,12 +64,18 @@ The application should be running in [http://localhost:3000](http://localhost:30
 ### Manager & Employees
 
 Username: `manager`
+
 Password: `password`
 
+
+
+
 Username: `employee`
+
 Password: `password`
 
 ### Hotel guests
 
 Username: e-mail entered during reservation
+
 Password: passwords are mailed to the reservation e-mail after performing log in.
